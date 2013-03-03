@@ -1,24 +1,10 @@
 jLEMS
 =====
 
-Java Interpreter for the Low Entropy Model Specification language.
+Experimental candidate elements for LEMS.
+ 
+See https://github.com/LEMS/jLEMS for the Java implementations of LEMS. 
+Use that if you wish to run LEMS models.
 
-See http://lems.github.com/jLEMS/
-
-
-Quick installation
-------------------
-
-Clone the repository:
-
-    git clone git://github.com/LEMS/jLEMS.git
-
-Build with Ant (http://ant.apache.org):
-
-    cd jLEMS
-    ant viz-jar
-
-Run an example:
-
-    ./lems examples/example1.xml        (Linux/Mac)
-    lems.bat examples\example1.xml      (Windows)
+This repository contains experimental code for new elements and possible extensions to jLEMS.
+ 
