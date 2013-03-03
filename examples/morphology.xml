@@ -105,6 +105,8 @@ fall back to using the distal point of the parent segment -->
 	<Parameter name="conductivity" dimension="conductivity"/>
 	<Children name="inputs" type="PointConductance"/>
 	
+	<Children name="channelDistributions" type="ChannelDistribution"/>
+	
 	<SimulatorShortcut for="jLEMS">
 		<CableCell conductivityField="conductivity" capacitanceField="membraneCapacitance"
 					morphologyField="morphology" morphologyFormat="proximal,distal,x,y,z,r">
@@ -125,6 +127,11 @@ fall back to using the distal point of the parent segment -->
 			<ScalarField name="r" dimension="length" value="radius()"/>
 			<ScalarField name="p" dimension="length" value="pathLength()"/>
 		</Skeleton>
+		
+		
+		<Distribution of="channelDistributions" density="..."
+		     set="gbase" from=".."/>		
+		
 	</Geometry>
 	
 	
@@ -144,6 +151,27 @@ fall back to using the distal point of the parent segment -->
 		a time-varying conductance and driving potential. -->			
 		<DerivedPunctateField name="g_in" region="skel" select="inputs/g"/>
 		<DerivedPunctateField name="e_in" region="skel" select="inputs/e"/>
+			
+		<!--  need area terms in these somewhere -->	
+		<DerivedScalarField name="g_in_cont" region="skel" select="inputs/g"/>
+		<DerivedScalarField name="ge_in_cont" region="skel" select="inputs/ge"/>
+		<DerivedScalarField name="e_in_cont" region="skel" value="ge_in_cont / g_in_cont"/>
+			
+			
+		<!--  need dv/dt = sum(g_i(e_i - v)) over channel sources  
+		  this is of the form G (E - v) where 
+		  G = sum(g_i),   G E = sim(g_i e_i)  so E = sum(g_i e_i)/ sum(g_i)
+		  so G is just a sum(channelPops/g)
+		  E is sum(channelPops/g * channelPops/e) / G
+		  could be unclear that the product of arrays is pairwise rather than
+		  an outer product or a matrix product?
+			maybe better computer g*e in the channel pop?
+			could also use (*,) indexes like yorick? better to avoid if can
+		-->	
+		<DerivedScalarField name="g_smooth" region="skel" select=""/>	
+			
+			
+			
 			
 		<!--  time derivative as normal except all the terms are now scalar fields.
 		The laplacian function here reduces to d^2v/dx^2 if x is path distance along the 

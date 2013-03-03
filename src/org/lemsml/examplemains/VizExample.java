@@ -3,11 +3,11 @@ package org.lemsml.examplemains;
 import java.io.File;
 import java.util.Timer;
 
-import org.lemsml.jlemsio.examples.RunFileExample;
-import org.lemsml.jlemsio.logging.DefaultLogger;
-import org.lemsml.jlemsio.logging.TimeLogger;
-import org.lemsml.jlemsio.out.FileResultWriterFactory;
-import org.lemsml.jlemsviz.datadisplay.SwingDataViewerFactory;
+import org.lemsml.jlems.io.examples.RunFileExample;
+import org.lemsml.jlems.io.logging.DefaultLogger;
+import org.lemsml.jlems.io.logging.TimeLogger;
+import org.lemsml.jlems.io.out.FileResultWriterFactory;
+import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
 
 public final class VizExample {
 	
