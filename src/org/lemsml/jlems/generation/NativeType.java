@@ -1,4 +1,4 @@
-package org.lemsml.jlems.gen;
+package org.lemsml.jlems.generation;
 
 import org.lemsml.jlems.core.run.GeneratedInstance;
 import org.lemsml.jlems.core.run.RuntimeType;

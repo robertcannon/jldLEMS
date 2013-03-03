@@ -1,4 +1,4 @@
-package org.lemsml.jlems.gen;
+package org.lemsml.jlems.generation;
 
 import java.io.File;
 import java.io.IOException;

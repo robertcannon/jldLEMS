@@ -1,4 +1,4 @@
-package org.lemsml.jlems.gen;
+package org.lemsml.jlems.generation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
