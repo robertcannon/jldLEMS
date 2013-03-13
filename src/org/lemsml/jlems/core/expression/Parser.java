@@ -94,9 +94,9 @@ public class Parser {
 	 	ParseTree ev = parse(e);
 		if (ev.isFloat()) {
 			ret = ev;
-        	} else {
-           		E.error("not a condition: " + e);
-           }
+        } else {
+           		E.error("not an expression: " + e);
+          }
       
 		return ret;
 	}
@@ -210,6 +210,7 @@ public class Parser {
 		ArrayList<Node> ret = new ArrayList<Node>();
 		
 		String ewk = disambiguate(e);
+			
 		for (String op : opHM.keySet()) {
 			ewk = replaceAll(ewk, op, " " + op + " ");
 		}
@@ -318,16 +319,14 @@ public class Parser {
 	
 	private String mapEs(String frm, String to, String str) {
 	 
-		int strlen = str.length();
-
-		
+		int strlen = str.length();		
 		String ret = "";
 		int lastmatch = 0;
 		int newmatch = str.indexOf(frm);
 		while (newmatch >= 0) {
 			ret += str.substring(lastmatch, newmatch);
 
-			if (newmatch + 3 < strlen && numberHS.contains(str.substring(newmatch + 2, newmatch + 3))) {
+			if (newmatch + 3 <= strlen && numberHS.contains(str.substring(newmatch + 2, newmatch + 3))) {
 				ret += to;
 			} else {
 				ret += frm;
