@@ -67,10 +67,21 @@ public class ParserTest {
 		res = 5e24;
 		assertEquals(res, eval, 0);
 		
+		src = "1.E-9";
+		pt = p.parseExpression(src);
+		eval = pt.makeFloatEvaluator().evalD(valHM);
+		res = 1.e-9;
+		assertEquals(res, eval, 0);
+		
+		
 
-
-		String[] tests = new String[] { "(v/VOLT)", "rate * exp((v - midpoint)/scale)", "(exp(73 * X))",
-				"( 0.76 ) / TIME_SCALE", "sqrt(4)", "exp (x * (-0.059))", "1.2 * 5 * 5.0e-3 * 6e34" };
+		String[] tests = new String[] { "(v/VOLT)", 
+				"rate * exp((v - midpoint)/scale)", 
+				"(exp(73 * X))",
+				"( 0.76 ) / TIME_SCALE", 
+				"sqrt(4)", 
+				"exp (x * (-0.059))", 
+				"1.2 * 5 * 5.0e-3 * 6e34" };
 
 		for (String test : tests) {
 			pt = p.parseExpression(test);
