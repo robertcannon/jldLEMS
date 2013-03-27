@@ -19,6 +19,8 @@ public class Flattener {
 	ArrayList<VariableROC> rocA = new ArrayList<VariableROC>();
 	ArrayList<String> svA = new ArrayList<String>();
 	
+	ArrayList<VariableAssignment> initializationAssignments = new ArrayList<VariableAssignment>();
+	
 	
 	public void addIndependentVariable(String s) {
 		if (indepsA.contains(s)) {
@@ -246,6 +248,11 @@ public class Flattener {
 		return ret;
 	}
 	
+
+	public void addInitializationAssignment(VariableAssignment va) {
+		initializationAssignments.add(va);
+	}
+
 	
 	
 	
@@ -272,9 +279,18 @@ public class Flattener {
 		for (VariableROC vr : rocA) {
  			ret.addVariableROC(vr);
  		}
+		
+		if (initializationAssignments.size() > 0) {
+			ActionBlock ab = new ActionBlock();
+			for (VariableAssignment va : initializationAssignments) {
+				ab.addVariableAssignment(va);
+			}
+			ret.addInitialization(ab);
+		}
+		
 	}
 
-	
+
 	
 	
 	

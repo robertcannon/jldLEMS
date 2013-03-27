@@ -1,0 +1,107 @@
+<Lems>
+    <Dimension name="time" m="0" l="0" t="1" i="0" k="0" n="0" j="0"/>
+    <Dimension name="per_time" m="0" l="0" t="-1" i="0" k="0" n="0" j="0"/>
+    <Dimension name="voltage" m="1" l="2" t="-3" i="-1" k="0" n="0" j="0"/>
+    <Unit name="s" symbol="s" dimension="time" power="0" scale="1.0" offset="0.0"/>
+    <Unit name="per_s" symbol="per_s" dimension="per_time" power="0" scale="1.0" offset="0.0"/>
+    <Unit name="ms" symbol="ms" dimension="time" power="-3" scale="1.0" offset="0.0"/>
+    <Unit name="per_ms" symbol="per_ms" dimension="per_time" power="3" scale="1.0" offset="0.0"/>
+    <ComponentType name="Display" standalone="false">
+        <Parameter name="xmin" dimension="none"/>
+        <Parameter name="xmax" dimension="none"/>
+        <Parameter name="ymin" dimension="none"/>
+        <Parameter name="ymax" dimension="none"/>
+        <Parameter name="timeScale" dimension="time"/>
+        <Children name="lines" type="Line"/>
+        <Simulation idCounter="0">
+            <DataDisplay title="title" dataRegion="xmin,xmax,ymin,ymax"/>
+        </Simulation>
+        <Text name="title"/>
+    </ComponentType>
+    <ComponentType name="Line" standalone="false">
+        <Parameter name="scale" dimension="*"/>
+        <Parameter name="timeScale" dimension="*"/>
+        <Simulation idCounter="0">
+            <Record quantity="quantity" timeScale="timeScale" scale="scale" color="color"/>
+        </Simulation>
+        <Path name="quantity"/>
+        <Text name="color"/>
+    </ComponentType>
+    <ComponentType name="Simulation" standalone="false">
+        <Parameter name="length" dimension="time"/>
+        <Parameter name="step" dimension="time"/>
+        <Children name="displays" type="Display"/>
+        <Children name="outputs" type="OutputFile"/>
+        <ComponentReference name="target" type="Component" isAny="true"/>
+        <Dynamics simultaneous="false">
+            <StateVariable name="t" dimension="time"/>
+        </Dynamics>
+        <Simulation idCounter="0">
+            <Run component="target" variable="t" increment="step" total="length"/>
+        </Simulation>
+    </ComponentType>
+    <ComponentType name="OutputFile" standalone="false">
+        <Children name="outputColumn" type="OutputColumn"/>
+        <Simulation idCounter="0">
+            <DataWriter path="path" fileName="fileName"/>
+        </Simulation>
+        <Text name="path"/>
+        <Text name="fileName"/>
+    </ComponentType>
+    <ComponentType name="OutputColumn" standalone="false">
+        <Simulation idCounter="0">
+            <Record quantity="quantity"/>
+        </Simulation>
+        <Path name="quantity"/>
+    </ComponentType>
+    
+    
+    <ComponentType name="case00017" standalone="false">
+        <Parameter name="k1" dimension="none"/>
+        <Parameter name="k2" dimension="none"/>
+        <Exposure name="S1" dimension="none"/>
+        <Exposure name="S2" dimension="none"/>
+        <Exposure name="S3" dimension="none"/>
+        <Exposure name="S4" dimension="none"/>
+        <Dynamics simultaneous="true">
+            <StateVariable name="S1" dimension="none" exposure="S1"/>
+            <StateVariable name="S2" dimension="none" exposure="S2"/>
+            <StateVariable name="S3" dimension="none" exposure="S3"/>
+            <StateVariable name="S4" dimension="none" exposure="S4"/>
+            
+            <TimeDerivative variable="S1" value="tscale * (0 - (compartment*k1*S1*S2) + (compartment*k2*S3*S4)) / compartment"/>
+            <TimeDerivative variable="S2" value="tscale * (0 - (compartment*k1*S1*S2) + (compartment*k2*S3*S4)) / compartment"/>
+         	<TimeDerivative variable="S3" value="tscale * (0 + (compartment*k1*S1*S2) - (compartment*k2*S3*S4)) / compartment"/>
+            <TimeDerivative variable="S4" value="tscale * (0 + ((compartment*k1*S1*S2) * 2.0) - (compartment*k2*S3*S4)) / compartment"/>
+           
+           <OnStart>
+                <StateAssignment variable="S1" value="init_S1"/>
+                <StateAssignment variable="S2" value="init_S2"/>
+                <StateAssignment variable="S3" value="init_S3"/>
+                <StateAssignment variable="S4" value="init_S4"/>
+            </OnStart>
+        </Dynamics>
+        <Constant name="compartment" value="1.0 " dimension="none"/>
+        <Constant name="init_S1" value="0.1 " dimension="none"/>
+        <Constant name="init_S2" value="0.1 " dimension="none"/>
+        <Constant name="init_S3" value="0.2 " dimension="none"/>
+        <Constant name="init_S4" value="0.1 " dimension="none"/>
+        <Constant name="tscale" value="1per_s" dimension="per_time"/>
+    </ComponentType>
+    <case00017 id="case00017_0" k1="7.5" k2="2.5"/>
+    <Simulation id="sim1" target="case00017_0" length="70.0s" step="0.05s">
+        <Display id="disp1" timeScale="1s" title="Simulation of SBML model: case00017 from file: src/test/resources/sbmlTestSuite/cases/semantic/00017/00017-sbml-l3v1.xml" xmin="0" xmax="70.0" ymin="-0.05" ymax="0.4">
+            <Line id="ls_S1" scale="1" quantity="S1" color="#000000" timeScale="1s"/>
+            <Line id="ls_S2" scale="1" quantity="S2" color="#ff0000" timeScale="1s"/>
+            <Line id="ls_S3" scale="1" quantity="S3" color="#00ff00" timeScale="1s"/>
+            <Line id="ls_S4" scale="1" quantity="S4" color="#0000ff" timeScale="1s"/>
+        </Display>
+        <OutputFile id="outputFile1" fileName="case00017.dat" path="./">
+            <OutputColumn id="os_S1" quantity="S1"/>
+            <OutputColumn id="os_S2" quantity="S2"/>
+            <OutputColumn id="os_S3" quantity="S3"/>
+            <OutputColumn id="os_S4" quantity="S4"/>
+        </OutputFile>
+    </Simulation>
+    <Target component="sim1"/>
+</Lems>

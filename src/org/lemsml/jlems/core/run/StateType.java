@@ -415,11 +415,15 @@ public class StateType implements RuntimeType {
 	public void eulerAdvance(StateInstance uin, StateRunnable parent, double t, double dt) throws RuntimeError, ContentError {
  		HashMap<String, DoublePointer> varHM = uin.getVarHM();
 		varHM.get("t").set(t);
-			
+		
 		evalDerived(uin, varHM, parent);
 		
 		for (VariableROC vroc : rates) {
-			varHM.get(vroc.varname).set(varHM.get(vroc.varname).get() + dt * vroc.evalptr(varHM));
+			vroc.work = vroc.evalptr(varHM);
+		}
+		
+		for (VariableROC vroc : rates) {
+			varHM.get(vroc.varname).set(varHM.get(vroc.varname).get() + dt * vroc.work);
 		}
 	 
 		for (ConditionAction ca : conditionResponses) {
@@ -445,8 +449,9 @@ public class StateType implements RuntimeType {
 	// created by by getConsolidatedComponentDynamics, which generally 
 	// absorbs some or all of the child objects within a new dynamics definition.
 	public void rk4Advance(StateInstance uin, StateRunnable parent, double t, double dt) throws RuntimeError, ContentError {
-			
+		
 		HashMap<String, DoublePointer> varHM = uin.getVarHM();
+		
 		varHM.get("t").set(t);
 		
 		if (der1 == null) {
@@ -634,6 +639,10 @@ public class StateType implements RuntimeType {
 	
 	
 	public void fix() {
+		
+		E.info("Fixing " + this + " " + initBlocks.size());
+		new Exception().printStackTrace();
+		
 		HashSet<String> vHS = new HashSet<String>();
 		for (VariableROC vroc : rates) {
 			String vnm = vroc.getVariableName();
@@ -984,6 +993,12 @@ public class StateType implements RuntimeType {
 		}
 		for (VariableROC vroc : rates) {
 			fl.add(vroc.makeFlat(fullpfx, indHS));
+		}
+		
+		for (ActionBlock ab : initBlocks) {
+			for (VariableAssignment va : ab.getAssignments()) {
+				fl.addInitializationAssignment(va.makeFlat(fullpfx));
+			}
 		}
 	}
 	
