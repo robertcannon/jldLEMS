@@ -25,19 +25,14 @@ public class ComponentReference implements Named  {
 
 	private boolean inResolve = false;
 	
+	public boolean local = false;
+	
 	
 	public ComponentReference() {
 		// maybe only one constructor?
 	}
 	
 	
-	public ComponentReference(String sn, String st, ComponentType t) {
-		name = sn;
-		type = st;
-		r_type = t;
-	}
-
-
 	
 	
 	public void resolve(Lems lems, Parser p) throws ContentError, ParseError {
@@ -83,12 +78,16 @@ public class ComponentReference implements Named  {
 
 
 	public ComponentReference makeCopy() {
-		 return new ComponentReference(name, type, r_type);
-	}
+		ComponentReference ret = new ComponentReference();
+		ret.name = name;
+		ret.type = type;
+		ret.r_type = r_type;
+		return ret; 
+ 	}
 
 
 	public boolean isLocal() {
-		return false;
+		return local;
 	}
 
 

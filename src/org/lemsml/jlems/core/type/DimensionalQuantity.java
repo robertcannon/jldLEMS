@@ -73,4 +73,12 @@ public class DimensionalQuantity {
 		return ok;
 	}
 
+	public boolean isZero() {
+		boolean ret = false;
+		if (value == 0.0) {
+			ret = true;
+		}
+		return ret;
+	}
+
 }

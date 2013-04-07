@@ -42,18 +42,18 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
 
    public WorldCanvas() {
-      this(true);
+      this(true, 800, 600);
    }
 
 
-   public WorldCanvas(boolean interactive) {
+   public WorldCanvas(boolean interactive, int w, int h) {
       super();
 
 
       mouse = new Mouse(this, interactive);
 
 
-      wt = new WorldTransform();
+      wt = new WorldTransform(w, h);
    
 
       painter = new Painter(wt);
@@ -284,6 +284,10 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
       mouse.setHandler(mh);
    }
 
+   public void setLeadHandler(BaseMouseHandler mh) {
+	   mouse.setLeadHandler(mh);
+   }
+   
 
    public void fixRanges() {
       wt.fixRanges();

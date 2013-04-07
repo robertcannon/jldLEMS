@@ -81,9 +81,9 @@ public final class WorldTransform {
    private final Size p_pixelSize;
 
 
-   public WorldTransform() {
-      setWidth(100);
-      setHeight(100);
+   public WorldTransform(int w0, int h0) {
+      setWidth(w0);
+      setHeight(h0);
       setXRescalable(true);
       setYRescalable(true);
 
@@ -228,6 +228,7 @@ public final class WorldTransform {
 
 
    public void setWidth(int w) {
+ 	   
 	   if (canvasWidth != w) {
 		   canvasWidth = w;
 		   dataAreaWidth = (canvasWidth - leftMargin - rightMargin) / 2;
@@ -724,6 +725,10 @@ public final class WorldTransform {
          pSetXRange(xl, xh);
          pSetYRange(yl, yh);
       }
+      
+      
+      System.out.println("done ensure covers " + xl + " " + xh + " " + dataAreaWidth);
+      
       notifyRangeChange();
    }
 

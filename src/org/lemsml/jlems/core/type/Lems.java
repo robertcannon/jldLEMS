@@ -420,6 +420,26 @@ public class Lems {
 		targets.add(t);
 		
 	}
+
+
+	public ArrayList<ComponentRelative> getComponentReferenceTargets(Component cpt,
+			ComponentReference cr) {
+		ArrayList<ComponentRelative> ret = new ArrayList<ComponentRelative>();
+		if (cr.isLocal()) {
+			E.missing();
+			
+			
+		} else {
+			ComponentType tgtType = cr.getComponentType();
+			for (Component c : components) {
+				if (c.getComponentType().isOrExtendsType(tgtType)) {
+					ret.add(new ComponentRelative(c, ""));
+				}
+			}
+		}
+		
+		return ret;
+	}
  
 
 

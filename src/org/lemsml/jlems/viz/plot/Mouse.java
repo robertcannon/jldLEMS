@@ -39,9 +39,11 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
   //  private long timeDown;
  // private long periodDownToDown;
  
+   private BaseMouseHandler leadHandler;
 
    private BaseMouseHandler activeHandler;
    private BaseMouseHandler motionHandler;
+   
 
 
    private final WorldCanvas canvas;
@@ -62,6 +64,10 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
  
    }
 
+   
+   public void setLeadHandler(BaseMouseHandler h) {
+	   leadHandler = h;
+   }
    
    public void setHandler(BaseMouseHandler h) {
 	   activeHandler = h;
@@ -147,6 +153,15 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
 
       readPosition(e);
 
+      boolean handled = false;
+      if (leadHandler != null) {
+    	  if (leadHandler.motionChange(this)) {
+    		  handled = true;
+    		  canvas.repaint();
+    	  }
+      }
+      
+      if (!handled) {  
       if (motionHandler != null) {
             if (motionHandler.motionChange(this)) {
  
@@ -157,6 +172,7 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
 
             }
          }
+      }
      
    }
 
@@ -172,6 +188,18 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
       // long tp = e.getWhen();
      // periodDownToDown = tp - timeDown;
      // timeDown = tp;
+      
+      boolean handled = false;
+      if (leadHandler != null) {
+    	  leadHandler.init(this);
+    	  
+      }
+ 
+      if (leadHandler != null && leadHandler.isIn()) {
+    	  leadHandler.applyOnDown(this);
+    	  // handled
+    	  
+      } else {
  
       if (activeHandler != null) {
     	  activeHandler.init(this);
@@ -180,7 +208,7 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
       if (activeHandler != null) {
          activeHandler.applyOnDown(this);
       }
- 
+      }
 
    }
 
@@ -190,9 +218,14 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
       if (!down) {
          return;
       }
-      readPosition(e);
- 
-      if (activeHandler != null) {
+      readPosition(e);   
+      
+      
+      if (leadHandler != null && leadHandler.isIn()) {
+    	  leadHandler.applyOnDrag(this);
+    	   requestRepaint();
+    	
+      } else if (activeHandler != null) {
          activeHandler.applyOnDrag(this);
 
          if (activeHandler.getRepaintStatus() == BaseMouseHandler.FULL) {
@@ -215,19 +248,24 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
          return;
       }
 
+      down = false;
       readPosition(e);
- 
-      if (activeHandler != null) {
-         activeHandler.applyOnRelease(this);
-      }
+
+      if (leadHandler != null && leadHandler.isIn()) {
+    	  leadHandler.applyOnRelease(this);
+    	  requestRepaint();
+    	  
+      } else if (activeHandler != null) {
+    		  activeHandler.applyOnRelease(this);
+    	  
 
     
-      down = false;
-      requestRepaint();
+         requestRepaint();
 
-      canvas.fixRanges();
+         canvas.fixRanges();
 
-      updateCanvasDimensions(); // EFF ?? here
+         updateCanvasDimensions(); // EFF ?? here
+    	  }
    }
 
 
@@ -323,15 +361,16 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
 
 
    void echoPaint(Graphics2D g) {
-      if (activeHandler != null) {
+	   
+	   if (leadHandler != null) {
+		   leadHandler.echoPaint(g);
 
+	   } else if (activeHandler != null) {
          activeHandler.echoPaint(g);
-
          activeHandler.setRepaintStatus(BaseMouseHandler.NONE);
 
       } else if (motionHandler != null) {
-         motionHandler.echoPaint(g);
-
+    	  motionHandler.echoPaint(g);
          // activeHandler.setRepaintStatus(MouseHandler.NONE);
 
       }

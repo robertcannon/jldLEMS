@@ -24,8 +24,11 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	// in which case the
 	// element is instantiated, called "xyz", and added to the components list
 	
-	@ModelProperty(info="Name by which the component was declared - this shouldn't be accessible.")
 	public String name;
+	
+	
+	@ModelProperty(info="Name by which the component was declared - this shouldn't be accessible.")
+	public String declaredType;
  
 	
 	@ModelProperty(info="")
@@ -96,11 +99,16 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public void setName(String s) {
 		name = s;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
 	
+	
+	public void setDeclaredName(String s) {
+		declaredType = s;
+	}
+
 	
 	public void setType(String s) {
 		type = s;
@@ -215,9 +223,11 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return ret;
 	}
 	
-	
-	
 	public void resolve(Lems lems, ComponentType parentType, boolean bwarn) throws ContentError, ParseError {
+		resolve(lems, parentType, bwarn, false);
+	}
+	
+	public void resolve(Lems lems, ComponentType parentType, boolean bwarn, boolean dfltZero) throws ContentError, ParseError {
 		if (eXtends != null) {
 			if (lems.hasComponent(eXtends)) {
 				Component cp = lems.getComponent(eXtends);
@@ -239,6 +249,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		for (Attribute att : attributes) {
 			att.clearFlag();
 		}
+		
+		if (attributes.hasName("name")) {
+			Attribute att = attributes.getByName("name");
+			String attval = att.getValue();
+			name = attval;
+			att.setFlag();
+		}
+		
 
 		if (paramValues == null) {
 			paramValues = new LemsCollection<ParamValue>();
@@ -282,12 +300,12 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 				throw new ContentError("Component " + id + " must set 'type' or 'extends' attributes");
 			}
 		} else {
-			if (type == null && name != null) {
+			if (type == null && declaredType != null) {
 				if (parentType != null) {
-					type = parentType.getChildType(name);
+					type = parentType.getChildType(declaredType);
 				}
 				if (type == null) {
-					type = name;
+					type = declaredType;
 				}
 			}
 			if (type == null) {
@@ -354,6 +372,9 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			} else if (dp instanceof DerivedFinalParam) {
 				// will populate it later
 
+			} else if (dfltZero) {
+				atval = "0";
+				
 			} else {
 				String msg = "no value supplied for parameter: " + pvn + " in " + this + "\n";
 				msg += "Defined attributes: " + makeAttributeText();
@@ -371,8 +392,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 				Attribute att = attributes.getByName(crn);
 				String attval = att.getValue();
 				att.setFlag();
-				Component cpt = lems.getComponent(attval);
-
+				
+				Component cpt = null;
+				if (cr.isLocal()) {
+					cpt = r_parent.getLocalByID(attval);
+				} else {	
+					cpt = lems.getComponent(attval);
+				}
+				
 				if (cpt != null) {
 					refHM.put(crn, cpt);
 
@@ -391,35 +418,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 				} 
 			}
 		}
-
-		for (Link lin : r_type.getLinks()) {
-			String crn = lin.getName();
-			if (attributes.hasName(crn)) {
-				Attribute att = attributes.getByName(crn);
-				String attval = att.getValue();
-				att.setFlag();
-				Component cpt = null;
-
-				/*
-				 * PathEvaluator pe = new PathEvaluator(); cpt =
-				 * pe.getComponent(r_parent, attval);
-				 */
-
-				cpt = r_parent.getLocalByID(attval);
-
-				if (cpt != null) {
-					refHM.put(crn, cpt);
-				} else {
-					E.error("The path " + attval + " for attribute '" + crn + "'" +
-							"does not match any component relative to my (" + this + ") parent:\n" + 
-							this.getParent().details(""));
-				}
-			} else {
-				if (bwarn) {
-					throw new ContentError("Component " + this + " must supply a value for link '" + crn + "'");
-				}
-			}
-		}
+ 
 
 		for (Component cpt : components) {		
 			cpt.checkResolve(lems, r_type);
@@ -646,14 +645,6 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return r_type;
 	}
 
-	public void setDeclaredName(String snm) {
-		name = snm;
-	}
-	
-	
-	public void setTypeName(String scl) {
-		type = scl;
-	}
 
 	public boolean hasTextParam(String pnm) {
 		boolean ret = false;

@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.type.LemsCollection;
 import org.lemsml.jlems.io.util.FileUtil;
 
-public class LemsModelGenerator {
+// NB this is not used - it could be used to create a set of plain java classes for instantiating the data model 
+// and operating on them as a preliminary stage before mapping to the core/type classes.
+// or maybe as an API
 
-	 
-	
+
+public class ModelGenerator {
+
 
 	private void generateModelSource(File destdir) throws IOException {
 		LemsClasses lclasses = LemsClasses.getInstance();
@@ -173,10 +177,38 @@ public class LemsModelGenerator {
 		return ret;
 	}
 	
-	 
+	
+	private void appendListItemInstantiation(StringBuilder sb, Class<?> c) {
+	sb.append("        for (XMLElement cel : xel.getXMLElements()) {\n");
+	sb.append("            String xn = cel.getTag();\n\n");
+	sb.append("            Object obj = instantiateFromXMLElement(cel);\n");
+	
+	sb.append("            if (xn.equals(\"UNUSED\")) {\n");
+	
+	for (Field f : c.getFields()) {
+		if (java.lang.reflect.Modifier.isPublic(f.getModifiers())) {
+			if (f.getType() == LemsCollection.class) {
+				
+				String ccnm = getListClassName(f.getName());
+				
+				sb.append("            } else if (obj instanceof " + ccnm + ") {\n");
+				sb.append("                ret." + f.getName() + ".add((" + ccnm + ")obj);\n");
+				
+			}
+		}
+	}	
+ 
+	sb.append("            } else {\n");
+	sb.append("                E.warning(\"unrecognized element \" + cel);\n");
+	sb.append("            }\n");
+	sb.append("        }\n\n\n");
+	}
+	
+	
+	
 	
 	public static void main(String[] argv) throws IOException {
-		LemsModelGenerator lmg = new LemsModelGenerator();
+		ModelGenerator lmg = new ModelGenerator();
 		
 		File fmod = new File("src/org/lemsml/jlems/model");
 		

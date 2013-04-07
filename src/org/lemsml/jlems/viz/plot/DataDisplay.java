@@ -50,7 +50,7 @@ public class DataDisplay extends BasePanel implements ModeSettable, Repaintable,
       yAxisCanvas.setPreferredSize(new Dimension(leftmargin, 200));
       
       
-      pwCanvas = new PickWorldCanvas(interactive);
+      pwCanvas = new PickWorldCanvas(interactive, 800, 600);
 
       cornerPanel = new CornerPanel();
 

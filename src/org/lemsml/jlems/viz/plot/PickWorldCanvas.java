@@ -24,14 +24,14 @@ public class PickWorldCanvas extends WorldCanvas {
    boolean drawGrid = true;
 
 
-   public PickWorldCanvas(boolean interact) {
-      super(interact);
+   public PickWorldCanvas(boolean interact, int tgtW, int tgtH) {
+      super(interact, tgtW, tgtH);
 
       pickStore = new PickStore();
       builder = new Builder(getPainter(), pickStore);
       pickHandler = new PickHandler(pickStore, getWorldTransform());
      
-      // prependHandler(pickHandler);
+      setLeadHandler(pickHandler);
       
       gridPainter = new GridPainter();
 

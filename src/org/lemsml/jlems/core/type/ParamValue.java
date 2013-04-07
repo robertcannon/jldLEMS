@@ -58,6 +58,9 @@ public class ParamValue implements Named {
 		} else if (dq.dimensionsMatch(dtgt)) {
 			value = dq.getDoubleValue();
 			
+		} else if (dq.isZero()) {
+			value = 0.;
+			
 		} else {			
 			throw new ContentError("Can't set parameter: "+getName()+" with dimensions " + r_finalParam.getDimension() + " with string " + atval + ", " + dq);
 		}

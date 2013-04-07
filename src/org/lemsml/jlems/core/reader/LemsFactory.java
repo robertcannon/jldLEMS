@@ -9,6 +9,8 @@ import org.lemsml.jlems.core.type.procedure.*;
 
 import org.lemsml.jlems.core.type.geometry.*;
 
+import org.lemsml.jlems.core.type.visualization.*;
+
 import org.lemsml.jlems.core.xml.XMLElement;
 import org.lemsml.jlems.core.xml.XMLAttribute;
 import org.lemsml.jlems.core.logging.E;
@@ -57,8 +59,6 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildChild(xel);
         } else if (tag.equals("Children")) {
             ret = buildChildren(xel);
-        } else if (tag.equals("Link")) {
-            ret = buildLink(xel);
         } else if (tag.equals("ComponentReference")) {
             ret = buildComponentReference(xel);
         } else if (tag.equals("ComponentTypeReference")) {
@@ -185,6 +185,22 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildSkeleton(xel);
         } else if (tag.equals("ScalarField")) {
             ret = buildScalarField(xel);
+        } else if (tag.equals("Visualization")) {
+            ret = buildVisualization(xel);
+        } else if (tag.equals("LinkSourceConnector")) {
+            ret = buildLinkSourceConnector(xel);
+        } else if (tag.equals("LinkTargetConnector")) {
+            ret = buildLinkTargetConnector(xel);
+        } else if (tag.equals("Circle")) {
+            ret = buildCircle(xel);
+        } else if (tag.equals("Oval")) {
+            ret = buildOval(xel);
+        } else if (tag.equals("Rectangle")) {
+            ret = buildRectangle(xel);
+        } else if (tag.equals("PolyFill")) {
+            ret = buildPolyFill(xel);
+        } else if (tag.equals("PolyLine")) {
+            ret = buildPolyLine(xel);
         } else {
             E.error("Unrecognized name " + tag);
         }
@@ -377,6 +393,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.id = parseString(xv);
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
+            } else if (xn.equals("declaredType")) {
+                ret.declaredType = parseString(xv);
             } else if (xn.equals("type")) {
                 ret.type = parseString(xv);
             } else if (xn.equals("eXtends")) {
@@ -456,8 +474,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.childs.add((Child)obj);
             } else if (obj instanceof Children) {
                 ret.childrens.add((Children)obj);
-            } else if (obj instanceof Link) {
-                ret.links.add((Link)obj);
             } else if (obj instanceof ComponentReference) {
                 ret.componentReferences.add((ComponentReference)obj);
             } else if (obj instanceof ComponentTypeReference) {
@@ -478,6 +494,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.procedures.add((Procedure)obj);
             } else if (obj instanceof Geometry) {
                 ret.geometrys.add((Geometry)obj);
+            } else if (obj instanceof Visualization) {
+                ret.visualizations.add((Visualization)obj);
             } else if (obj instanceof Fixed) {
                 ret.fixeds.add((Fixed)obj);
             } else if (obj instanceof Constant) {
@@ -708,31 +726,6 @@ public class LemsFactory extends AbstractLemsFactory {
         return ret;
     }
 
-    private Link buildLink(XMLElement xel) {
-        Link ret = new Link();
-
-        for (XMLAttribute xa : xel.getAttributes()) {
-            String xn = internalFieldName(xa.getName());
-            String xv = xa.getValue();
-
-            if (xn.equals("UNUSED")) {
-            } else if (xn.equals("name")) {
-                ret.name = parseString(xv);
-            } else if (xn.equals("type")) {
-                ret.type = parseString(xv);
-            } else if (xn.equals("root")) {
-                ret.root = parseString(xv);
-            } else if (xn.equals("isAny")) {
-                ret.isAny = parseBoolean(xv);
-            } else {
-                E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        return ret;
-    }
-
     private ComponentReference buildComponentReference(XMLElement xel) {
         ComponentReference ret = new ComponentReference();
 
@@ -749,6 +742,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.root = parseString(xv);
             } else if (xn.equals("isAny")) {
                 ret.isAny = parseBoolean(xv);
+            } else if (xn.equals("local")) {
+                ret.local = parseBoolean(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }
@@ -2527,6 +2522,257 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.dimension = parseString(xv);
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Visualization buildVisualization(XMLElement xel) {
+        Visualization ret = new Visualization();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof DrawingElement) {
+                ret.drawingElements.add((DrawingElement)obj);
+            } else if (obj instanceof DrawingConnector) {
+                ret.drawingConnectors.add((DrawingConnector)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private LinkSourceConnector buildLinkSourceConnector(XMLElement xel) {
+        LinkSourceConnector ret = new LinkSourceConnector();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("x")) {
+                ret.x = parseDouble(xv);
+            } else if (xn.equals("y")) {
+                ret.y = parseDouble(xv);
+            } else if (xn.equals("visible")) {
+                ret.visible = parseBoolean(xv);
+            } else if (xn.equals("componentReference")) {
+                ret.componentReference = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private LinkTargetConnector buildLinkTargetConnector(XMLElement xel) {
+        LinkTargetConnector ret = new LinkTargetConnector();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("x")) {
+                ret.x = parseDouble(xv);
+            } else if (xn.equals("y")) {
+                ret.y = parseDouble(xv);
+            } else if (xn.equals("visible")) {
+                ret.visible = parseBoolean(xv);
+            } else if (xn.equals("componentReference")) {
+                ret.componentReference = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Circle buildCircle(XMLElement xel) {
+        Circle ret = new Circle();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("diameter")) {
+                ret.diameter = parseDouble(xv);
+            } else if (xn.equals("x")) {
+                ret.x = parseDouble(xv);
+            } else if (xn.equals("y")) {
+                ret.y = parseDouble(xv);
+            } else if (xn.equals("xpts")) {
+                ret.xpts = parseString(xv);
+            } else if (xn.equals("ypts")) {
+                ret.ypts = parseString(xv);
+            } else if (xn.equals("lineWidth")) {
+                ret.lineWidth = parseDouble(xv);
+            } else if (xn.equals("lineColor")) {
+                ret.lineColor = parseString(xv);
+            } else if (xn.equals("fillColor")) {
+                ret.fillColor = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Oval buildOval(XMLElement xel) {
+        Oval ret = new Oval();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("length")) {
+                ret.length = parseDouble(xv);
+            } else if (xn.equals("breadth")) {
+                ret.breadth = parseDouble(xv);
+            } else if (xn.equals("rotation")) {
+                ret.rotation = parseDouble(xv);
+            } else if (xn.equals("x")) {
+                ret.x = parseDouble(xv);
+            } else if (xn.equals("y")) {
+                ret.y = parseDouble(xv);
+            } else if (xn.equals("xpts")) {
+                ret.xpts = parseString(xv);
+            } else if (xn.equals("ypts")) {
+                ret.ypts = parseString(xv);
+            } else if (xn.equals("lineWidth")) {
+                ret.lineWidth = parseDouble(xv);
+            } else if (xn.equals("lineColor")) {
+                ret.lineColor = parseString(xv);
+            } else if (xn.equals("fillColor")) {
+                ret.fillColor = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Rectangle buildRectangle(XMLElement xel) {
+        Rectangle ret = new Rectangle();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("width")) {
+                ret.width = parseDouble(xv);
+            } else if (xn.equals("height")) {
+                ret.height = parseDouble(xv);
+            } else if (xn.equals("cornerRadius")) {
+                ret.cornerRadius = parseDouble(xv);
+            } else if (xn.equals("x")) {
+                ret.x = parseDouble(xv);
+            } else if (xn.equals("y")) {
+                ret.y = parseDouble(xv);
+            } else if (xn.equals("xpts")) {
+                ret.xpts = parseString(xv);
+            } else if (xn.equals("ypts")) {
+                ret.ypts = parseString(xv);
+            } else if (xn.equals("lineWidth")) {
+                ret.lineWidth = parseDouble(xv);
+            } else if (xn.equals("lineColor")) {
+                ret.lineColor = parseString(xv);
+            } else if (xn.equals("fillColor")) {
+                ret.fillColor = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private PolyFill buildPolyFill(XMLElement xel) {
+        PolyFill ret = new PolyFill();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("x")) {
+                ret.x = parseDouble(xv);
+            } else if (xn.equals("y")) {
+                ret.y = parseDouble(xv);
+            } else if (xn.equals("xpts")) {
+                ret.xpts = parseString(xv);
+            } else if (xn.equals("ypts")) {
+                ret.ypts = parseString(xv);
+            } else if (xn.equals("lineWidth")) {
+                ret.lineWidth = parseDouble(xv);
+            } else if (xn.equals("lineColor")) {
+                ret.lineColor = parseString(xv);
+            } else if (xn.equals("fillColor")) {
+                ret.fillColor = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private PolyLine buildPolyLine(XMLElement xel) {
+        PolyLine ret = new PolyLine();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("x")) {
+                ret.x = parseDouble(xv);
+            } else if (xn.equals("y")) {
+                ret.y = parseDouble(xv);
+            } else if (xn.equals("xpts")) {
+                ret.xpts = parseString(xv);
+            } else if (xn.equals("ypts")) {
+                ret.ypts = parseString(xv);
+            } else if (xn.equals("lineWidth")) {
+                ret.lineWidth = parseDouble(xv);
+            } else if (xn.equals("lineColor")) {
+                ret.lineColor = parseString(xv);
+            } else if (xn.equals("fillColor")) {
+                ret.fillColor = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }

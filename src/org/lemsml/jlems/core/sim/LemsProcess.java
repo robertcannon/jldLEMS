@@ -64,10 +64,7 @@ public class LemsProcess {
 		XMLElementReader exmlr = new XMLElementReader(stxt + "    ");
 
 		XMLElement xel = exmlr.getRootElement();
-
-		
-		// E.info("read xml " + xel.toXMLString(""));
-
+ 
 	
 		LemsFactory lf = new LemsFactory();
 		lems = lf.buildLemsFromXMLElement(xel);

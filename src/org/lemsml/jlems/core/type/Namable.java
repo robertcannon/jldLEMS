@@ -2,7 +2,7 @@ package org.lemsml.jlems.core.type;
 
 public interface Namable {
 
-	void setName(String s);
+	void setDeclaredName(String s);
 	
 	String getName();
 	

@@ -64,4 +64,12 @@ public final class VizExample {
 	}
 	
 	
+	public static void runSrc(String srcText) { 
+		initIO();
+		TimeLogger tim = new TimeLogger();
+ 		
+	}
+	
+	
+	
 }

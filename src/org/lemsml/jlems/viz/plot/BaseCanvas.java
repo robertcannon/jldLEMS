@@ -99,7 +99,13 @@ public class BaseCanvas extends BasePanel implements Repaintable {
       repaint();
    }
 
-
+   public void setPreferredSize(int w, int h) {
+	   setPreferredSize(new Dimension(w, h));
+   }
+   
+   public void setPreferredHeight(int h) {
+	  setPreferredSize(new Dimension(getWidth(), h)); 
+   }
 
    /*
      is this ever necessary now??

@@ -1,5 +1,5 @@
 package org.lemsml.jlems.schema;
- 
+
 import java.util.ArrayList;
 
 import org.lemsml.jlems.core.type.About;
@@ -21,7 +21,6 @@ import org.lemsml.jlems.core.type.Fixed;
 import org.lemsml.jlems.core.type.Insertion;
 import org.lemsml.jlems.core.type.IntegerParameter;
 import org.lemsml.jlems.core.type.Lems;
-import org.lemsml.jlems.core.type.Link;
 import org.lemsml.jlems.core.type.Location;
 import org.lemsml.jlems.core.type.Meta;
 import org.lemsml.jlems.core.type.PairCollection;
@@ -84,6 +83,14 @@ import org.lemsml.jlems.core.type.structure.PairFilter;
 import org.lemsml.jlems.core.type.structure.PairsEventConnection;
 import org.lemsml.jlems.core.type.structure.Structure;
 import org.lemsml.jlems.core.type.structure.With;
+import org.lemsml.jlems.core.type.visualization.Circle;
+import org.lemsml.jlems.core.type.visualization.LinkSourceConnector;
+import org.lemsml.jlems.core.type.visualization.LinkTargetConnector;
+import org.lemsml.jlems.core.type.visualization.Oval;
+import org.lemsml.jlems.core.type.visualization.PolyFill;
+import org.lemsml.jlems.core.type.visualization.PolyLine;
+import org.lemsml.jlems.core.type.visualization.Rectangle;
+import org.lemsml.jlems.core.type.visualization.Visualization;
 
 public final class LemsClasses {
 
@@ -114,6 +121,7 @@ public final class LemsClasses {
 		classList.addAll(getSimulationClasses());
 		classList.addAll(getProcedureClasses());
 		classList.addAll(getGeometryClasses());
+		classList.addAll(getVisualizationClasses());
 	}
 
 	public ArrayList<LemsClass> getClasses() {
@@ -205,9 +213,6 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Exposure.class, section));
 		ret.add(new LemsClass(Child.class, section));
 		ret.add(new LemsClass(Children.class, section));
-		// NB Link has to come before ComponentRef here becuase it is a subclass and we want
-		// link elts in the right list. TODO - make same with different scope parameter
-		ret.add(new LemsClass(Link.class, section));
  		ret.add(new LemsClass(ComponentReference.class, section));
  		ret.add(new LemsClass(ComponentTypeReference.class, section));
  		ret.add(new LemsClass(Collection.class, section));
@@ -263,5 +268,23 @@ public final class LemsClasses {
 		
 		return ret;
 	}
+	
+	
+	
+	private ArrayList<LemsClass> getVisualizationClasses() {
+		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
+		String section = "visualization";
+		ret.add(new LemsClass(Visualization.class, section));
+		ret.add(new LemsClass(LinkSourceConnector.class, section));
+		ret.add(new LemsClass(LinkTargetConnector.class, section));
+		ret.add(new LemsClass(Circle.class, section));
+		ret.add(new LemsClass(Oval.class, section));
+		ret.add(new LemsClass(Rectangle.class, section));
+		ret.add(new LemsClass(PolyFill.class, section));
+		ret.add(new LemsClass(PolyLine.class, section));
+		
+		return ret;
+	}
+		
 	
 }

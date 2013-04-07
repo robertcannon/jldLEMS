@@ -52,6 +52,7 @@ public class XMLElementReader {
 			readChildren(container);
 		} catch (Exception ex) {
 			E.info("Failed to read " + ex);
+			ex.printStackTrace();
 		}
 			
 			if (container.getXMLElements().size() == 1) {
@@ -91,7 +92,8 @@ public class XMLElementReader {
 					
 				} else {
 					throw new XMLException("Non matching close tag at " + printLine() + "\n" +
-							"tag is " + tg + " closer is " + sctag);
+							"tag is " + tg + " closer is " + sctag + " at line " + getLineNumber() + "\n" + 
+							getLineText());
 				}
 				
 			} else if (nextString(4).equals("<!--")) {
@@ -128,13 +130,20 @@ public class XMLElementReader {
 				XMLElement child = new XMLElement(enm);
 				iwk = icb + 1;
 				parent.add(child);
-				readChildren(child);
+				
+				// TMP!!!!
+				if (child.getName().equals("About")) {
+					readRaw(child);
+				} else {					
+					readChildren(child);
+				}
 				
 			} else if (isp < icb && isp < ice) {
 				// 
 				String enm = srcString.substring(inx + 1, isp);			 
  				XMLElement child = new XMLElement(enm);
 				parent.add(child);
+ 				
 				iwk = isp + 1;
 				
 				int jca = inextHigh("/>");
@@ -149,13 +158,41 @@ public class XMLElementReader {
 					String attstring = srcString.substring(iwk, jce);
 					iwk = jce + 1;
 					addAttributes(child, attstring);
-					readChildren(child);
+
+					// TMP!!!!
+					if (child.getName().equals("About")) {
+						readRaw(child);
+				 
+						
+					} else {
+						readChildren(child);
+					}
+				
 				}
 			}
 			}
 		}
 		}
 	}
+	
+	
+	private void readRaw(XMLElement child) throws XMLException {
+		String cnm = "</" + child.getName() + ">";
+		int ica = inext(cnm);
+		if (ica >= 0) {
+			String sb =  srcString.substring(iwk, ica);
+			child.setBody(sb);		
+			iwk = ica + child.getName().length() + 3;
+			
+		} else {
+			throw new XMLException("No closer for " + child + " " + printLine());
+		}
+	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -211,6 +248,17 @@ public class XMLElementReader {
 	}
 	
 	
+	private int getLineNumber() {
+		int ilin = bisectFind(lineOffsets, iwk);
+		return ilin;
+	}
+	
+	
+	private String getLineText() {
+		int ilin = bisectFind(lineOffsets, iwk);
+		String ret=  lines[ilin];
+		return ret;
+	}
 	
 	private String printLine() {
 		int ilin = bisectFind(lineOffsets, iwk);
@@ -293,5 +341,11 @@ public class XMLElementReader {
 		String ret = stxt.replaceAll("\\r|\\n|\\t| ", "");
 		return ret;
 	}
+
+	
+ 
+
+	
+	
 	
 }

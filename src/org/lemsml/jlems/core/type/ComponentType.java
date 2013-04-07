@@ -20,6 +20,7 @@ import org.lemsml.jlems.core.type.geometry.Geometry;
 import org.lemsml.jlems.core.type.procedure.Procedure;
 import org.lemsml.jlems.core.type.simulation.Simulation;
 import org.lemsml.jlems.core.type.structure.Structure;
+import org.lemsml.jlems.core.type.visualization.Visualization;
 import org.lemsml.jlems.core.xml.XMLElement;
 
 @ModelElement(info="Root element for defining component types.")
@@ -49,8 +50,6 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<Children> childrens = new LemsCollection<Children>();
 
-	public LemsCollection<Link> links = new LemsCollection<Link>();
-
 	public LemsCollection<ComponentReference> componentReferences = new LemsCollection<ComponentReference>();
 
 	public LemsCollection<ComponentTypeReference> componentTypeReferences = new LemsCollection<ComponentTypeReference>();
@@ -73,6 +72,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	
 	public LemsCollection<Geometry> geometrys = new LemsCollection<Geometry>();
  	
+	public LemsCollection<Visualization> visualizations = new LemsCollection<Visualization>();
 	
 	public LemsCollection<Fixed> fixeds = new LemsCollection<Fixed>();
 
@@ -277,10 +277,6 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			tr.resolve(lems, p);
 		}
 
-		for (Link lin : links) {
-			lin.resolve(lems, p);
-		}
-
 		for (Children chn : childrens) {
 			chn.resolve(lems, p);
 		}
@@ -329,9 +325,6 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 				componentReferences.addIfNew(cr.makeCopy());
 			}
 
-			for (Link lin : r_extends.getLinks()) {
-				links.addIfNew(lin.makeLinkCopy());
-			}
 			for (Requirement req : r_extends.getRequirements()) {
 				requirements.addIfNew(req.makeCopy());
 			}
@@ -565,6 +558,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public boolean hasChild(String scb) throws ContentError {
 		return childs.hasName(scb);
 	}
+	 
 
 	public Children getChildren(ComponentType ftype) throws ContentError {
 		Children ret = null;
@@ -641,11 +635,17 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return componentReferences;
 	}
 
-	public LemsCollection<Link> getLinks() {
-		return links;
+
+	public ArrayList<ComponentReference> getLocalComponentReferences() {
+		ArrayList<ComponentReference> ret = new ArrayList<ComponentReference>();
+		for (ComponentReference cr : componentReferences) {
+			if (cr.isLocal()) {
+				ret.add(cr);
+			}
+		}
+		return ret;
 	}
-
-
+	
 	public void checkEquations(HashMap<String, Dimensional> cdimHM) throws ContentError {
 		for (Dynamics b : dynamicses) {
 			b.checkEquations(cdimHM);
@@ -957,6 +957,15 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		dynamicses.add(td);
 		
 	}
+
+	public Visualization getVisualization() {
+		Visualization ret = null;
+		if (visualizations.size() > 0) {
+			ret= visualizations.get(0);
+		}
+		return ret;
+	}
+
  
 
  

@@ -82,6 +82,8 @@ public class PickHandler extends BaseMouseHandler {
          }
       }
 
+      
+      /*
       if (changed) {
          hoverItem = null;
          if (echoItem == null) {
@@ -90,14 +92,15 @@ public class PickHandler extends BaseMouseHandler {
             hTimer.start();
          }
       }
-
+      */
+      
       return changed;
    }
 
 
 
    public void echoPaint(Painter p, boolean tips) {
-      if (echoItem != null) {
+ 	   if (echoItem != null) {
 
          if (echoItem instanceof PickablePoint) {
             p.setColor(Color.white);
@@ -225,7 +228,7 @@ public void missedPress(Mouse m) {
 
 
    public void applyOnRelease(Mouse m) {
-
+	   System.out.println("Pick released... " + pickListener);
       if (pickListener != null) {
          pickListener.pickReleased(activePick, m.getButton());
 

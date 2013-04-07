@@ -494,13 +494,15 @@ public class StateType implements RuntimeType {
 		
 	    evalDerivs(val1,  t,   der1);
 	    
-	    applyDerivs(val1, der1, t, 0.5 * dt, val2);
-	    evalDerivs(val2,  t + 0.5 * dt, der2);
+	    double hdt = 0.5 * dt;
 	    
-	    applyDerivs(val1, der2, t, 0.5 * dt, val3);
-	    evalDerivs(val3, t + 0.5 * dt,  der3);
+	    applyDerivs(val1, der1, hdt, val2);
+	    evalDerivs(val2,  t + hdt, der2);
 	    
-	    applyDerivs(val1, der3, t, dt, val4);
+	    applyDerivs(val1, der2, hdt, val3);
+	    evalDerivs(val3, t + hdt,  der3);
+	    
+	    applyDerivs(val1, der3, dt, val4);
 	    evalDerivs(val4,  t + dt, der4);
 		  
 	   
@@ -511,6 +513,28 @@ public class StateType implements RuntimeType {
 	        double d = (der1.get(sn) + 2 * der2.get(sn) + 2 * der3.get(sn) + der4.get(sn)) / 6.;
 	    	varHM.get(sn).set(v0 + dt * d);
 	    }
+	    
+	   /* 
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(" " + t + " ");
+	   
+	    sb.append(der1.get("S3") + ", " + der2.get("S3") + ", " + der3.get("S3") + ", " + der4.get("S3"));
+	    sb.append(val1.get("S3") + ", " + val2.get("S3") + ", " + val3.get("S3") + ", " + val4.get("S3"));
+	    
+	    
+	    for (VariableROC vroc : rates) {
+	    	String sn = vroc.varname;
+	    	// double d = (der1.get(sn) + 2 * der2.get(sn) + 2 * der3.get(sn) + der4.get(sn)) / 6.;
+	    	double d = der3.get(sn);
+	    //	sb.append(" " + sn + "=" + d + ", ");
+	    }
+	    for (String s : val1.keySet()) {
+	    	// sb.append(" " + s + "=" + val1.get(s));
+	    }
+	    
+	    System.out.println(sb.toString());
+	    */
+	    
 	    
 		
 		for (ConditionAction ca : conditionResponses) {
@@ -545,7 +569,7 @@ public class StateType implements RuntimeType {
 	
 	
 	void applyDerivs(HashMap<String, Double> v0, HashMap<String, Double> der, 
-			double t, double delta, HashMap<String, Double> ret) {
+			 double delta, HashMap<String, Double> ret) {
 		
 		for (String sk : v0.keySet()) {
 			ret.put(sk, v0.get(sk));
