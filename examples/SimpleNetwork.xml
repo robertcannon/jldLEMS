@@ -16,8 +16,8 @@
 
 
 <ComponentType name="EventConnectivity">
-    <Link name="source" type="Population"/>
-    <Link name="target" type="Population"/>
+    <ComponentReference name="source" type="Population" local="true"/>
+    <ComponentReference name="target" type="Population" local="true"/>
     <Child name="Connections" type="ConnectionPattern"/>
 </ComponentType>
 

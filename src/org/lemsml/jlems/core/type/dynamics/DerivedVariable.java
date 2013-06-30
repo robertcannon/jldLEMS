@@ -7,7 +7,7 @@ import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.ComponentType;
@@ -79,7 +79,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 
  
 	
-	public void resolve(Lems lems, LemsCollection<Dimension> dimensions, ComponentType type, HashMap<String, Valued> valHM, Parser parser) throws ContentError, ParseError {
+	public void resolve(Lems lems, LemsCollection<Dimension> dimensions, ComponentType type, HashMap<String, Valued> valHM, ExpressionParser expressionParser) throws ContentError, ParseError {
 		if (select == null) {
 			super.extract();
 		}
@@ -95,7 +95,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
         }
 
         if (value != null) {
-        	parseTree = parser.parseExpression(value);
+        	parseTree = expressionParser.parseExpression(value);
          }
 
         if (select != null && select.trim().length() > 0) {

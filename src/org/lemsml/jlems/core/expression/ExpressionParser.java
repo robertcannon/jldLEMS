@@ -7,7 +7,7 @@ import java.util.HashSet;
 
 import org.lemsml.jlems.core.logging.E;
 
-public class Parser {
+public class ExpressionParser {
 	
 	static String[] sf = {"sin", "cos", "tan", "exp", "sqrt", "sum", "product", "ln", "log", "random"};
 	static HashSet<String> stdFuncs = new HashSet<String>();
@@ -60,12 +60,12 @@ public class Parser {
 	boolean verbose = false;
 	
 	
-	public Parser() {
+	public ExpressionParser() {
 		this(null);
 	}
 	
 	
-	public Parser(HashSet<String> fhs) {
+	public ExpressionParser(HashSet<String> fhs) {
 		funcHS.addAll(stdFuncs);
 		if (fhs != null) {
 			funcHS.addAll(fhs);

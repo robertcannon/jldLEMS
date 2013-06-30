@@ -7,7 +7,7 @@ import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.Constants;
@@ -231,7 +231,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return cpts;
 	}
 
-	public void resolve(Lems lems, Parser p) throws ContentError, ParseError {
+	public void resolve(Lems lems, ExpressionParser p) throws ContentError, ParseError {
 
 		 
 		
@@ -425,7 +425,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return instancePropertys;
 	}
 	
-	public void checkResolve(Lems lems, Parser p) throws ContentError,
+	public void checkResolve(Lems lems, ExpressionParser p) throws ContentError,
 			ParseError {
 		if (!resolved) {
 			resolve(lems, p);

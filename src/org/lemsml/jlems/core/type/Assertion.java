@@ -7,7 +7,7 @@ import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
@@ -38,7 +38,7 @@ public class Assertion {
 	    }
 
 	
-	 public void check(LemsCollection<Dimension> dimensions, Parser parser) throws ContentError, ParseError {
+	 public void check(LemsCollection<Dimension> dimensions, ExpressionParser expressionParser) throws ContentError, ParseError {
 		 
 		 HashMap<String, Dimension> adm = dimensions.getMap();
 
@@ -48,7 +48,7 @@ public class Assertion {
 		 }
 		 
 	 
-			 ParseTree pt = parser.parse(matches);
+			 ParseTree pt = expressionParser.parse(matches);
 			 
 			 Dimensional dm = pt.evaluateDimensional(adml);
 			 

@@ -4,7 +4,7 @@ package org.lemsml.jlems.core.check;
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.logging.E;
 
  
@@ -35,7 +35,7 @@ public class ParserCheck {
 	
 	
 	public void parseCheck() {   
-         Parser p = new Parser();
+         ExpressionParser p = new ExpressionParser();
         	 for (String expr: expressions) {
         		
         		 try {
@@ -54,7 +54,7 @@ public class ParserCheck {
 	
     public void evalCheck1() {
     	try {
-        Parser p = new Parser();
+        ExpressionParser p = new ExpressionParser();
         String src = "3 + (1.3e-4 + 5) + (3 *4)+ 4/(4.*45) + 34.2E-2 + sin(a + b) / cos(b + c)";
         ParseTree pt = p.parseExpression(src);
 
@@ -88,7 +88,7 @@ public class ParserCheck {
     
     public void evalCheck2() {
     	try {
-    	Parser p = new Parser();
+    	ExpressionParser p = new ExpressionParser();
 
         String src= "ln(c)";
         ParseTree pt = p.parseExpression(src);
@@ -116,7 +116,7 @@ public class ParserCheck {
 
 
     public void conditionChecks() {
-        Parser p = new Parser();
+        ExpressionParser p = new ExpressionParser();
       
         HashMap<String, Double> valHM = new HashMap<String, Double>();
         valHM.put("a", 4.);

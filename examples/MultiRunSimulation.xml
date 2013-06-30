@@ -40,7 +40,7 @@
     <Parameter name="length" dimension="time"/>
     <Parameter name="step" dimension="time"/>
     <ComponentReference name="target" type="Component"/>
-    <Link name="display" type="Display"/>
+    <ComponentReference name="display" type="Display" local="true"/>
     <Children name="outputs" type="DisplayList"/>
     <Dynamics>
         <StateVariable name="t" dimension="time"/>

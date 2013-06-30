@@ -10,7 +10,7 @@ import org.lemsml.jlems.core.eval.DoubleEvaluator;
 import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.ComponentType;
@@ -64,7 +64,7 @@ public class ConditionalDerivedVariable implements Valued {
 
  
 	
-	public void resolve(Lems lems, LemsCollection<Dimension> dimensions, ComponentType type, HashMap<String, Valued> valHM, Parser parser) throws ContentError, ParseError {
+	public void resolve(Lems lems, LemsCollection<Dimension> dimensions, ComponentType type, HashMap<String, Valued> valHM, ExpressionParser expressionParser) throws ContentError, ParseError {
 	 
         if (dimension != null) {
             Dimension d = dimensions.getByName(dimension);
@@ -77,7 +77,7 @@ public class ConditionalDerivedVariable implements Valued {
         }
 
         for (Case c : cases) {
-        	c.resolve(lems, dimensions, parser);
+        	c.resolve(lems, dimensions, expressionParser);
         }
         
 

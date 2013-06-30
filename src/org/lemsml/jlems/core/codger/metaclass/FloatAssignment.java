@@ -32,4 +32,12 @@ public class FloatAssignment extends AbstractOperation {
 		ret = ret.trim();
 		return ret;
 	}
+
+	public String getExpression() {
+		return expr;
+	}
+
+	public String geVariableName() {
+		return varName;
+	}
 }

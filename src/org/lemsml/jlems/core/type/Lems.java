@@ -7,7 +7,7 @@ import java.util.Random;
 import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
@@ -48,7 +48,7 @@ public class Lems {
  
 	public LemsCollection<Target> targets = new LemsCollection<Target>();
  
-    Parser parser;
+    ExpressionParser expressionParser;
 
     public String description;
 
@@ -65,7 +65,7 @@ public class Lems {
     
     public Lems() {
         globals.add(new IndVar("t"));
-        parser = new Parser();
+        expressionParser = new ExpressionParser();
     }
     
 
@@ -97,7 +97,7 @@ public class Lems {
     	if (!resolved) {
     		resolve();
     	}
-    	ct.checkResolve(this, parser);
+    	ct.checkResolve(this, expressionParser);
     }
     
     
@@ -127,12 +127,12 @@ public class Lems {
         }
         
         for (Assertion da : assertions) {
-        	da.check(dimensions, parser);
+        	da.check(dimensions, expressionParser);
         }
         
         HashMap<String, Double> cvalHM = new HashMap<String, Double>();
         for (Constant c : constants) {
-        	c.resolve(dimensions, null, parser, cvalHM);
+        	c.resolve(dimensions, null, expressionParser, cvalHM);
         	cvalHM.put(c.getSymbol(), c.getValue());
         }
         Constants.setConstantsHM(cvalHM);
@@ -146,7 +146,7 @@ public class Lems {
         for (ComponentType t : componentTypes) {
             // some types cause others to be resolved first, so they may already have been resolved when we
             // get to them here. Call checkResolve instead of plain resolve
-            t.checkResolve(this, parser);
+            t.checkResolve(this, expressionParser);
         }
 
         for (Component inst : components) {
@@ -375,8 +375,8 @@ public class Lems {
         return ret;
     }
 
-    public Parser getParser() {
-        return parser;
+    public ExpressionParser getParser() {
+        return expressionParser;
     }
 
     public String[] getSubtypeNames(String typeName) throws ContentError {

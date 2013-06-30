@@ -3,7 +3,7 @@ package org.lemsml.jlems.core.type;
 import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.sim.ContentError;
  
 
@@ -33,7 +33,7 @@ public class Children implements Named  {
         return "Children {" + name + ", type=" + type + "}";
     }
 
-    public void resolve(Lems lems, Parser p) throws ContentError, ParseError {
+    public void resolve(Lems lems, ExpressionParser p) throws ContentError, ParseError {
         LemsCollection<ComponentType> classes = lems.getComponentTypes();
           
         ComponentType t = classes.getByName(type);

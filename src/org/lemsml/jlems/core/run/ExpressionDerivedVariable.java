@@ -83,6 +83,12 @@ public class ExpressionDerivedVariable {
 		return rateexp.getExpressionString();
 	}
 
+	public String getReversePolishExpressionString() {
+		return rateexp.getReversePolishExpressionString();
+	}
+
+	
+	
 	public boolean onlyDependsOn(HashSet<String> known) {
 		boolean ret = false;
 		if (rateexp.variablesIn(known)) {

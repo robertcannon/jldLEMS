@@ -12,7 +12,7 @@ import org.lemsml.jlems.core.expression.AndNode;
 import org.lemsml.jlems.core.expression.OrNode;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.io.logging.DefaultLogger;
@@ -25,7 +25,7 @@ public class ParserTest {
 
 	@Test
 	public void testEvaluatingDouble() throws ParseError, ContentError {
- 		Parser p = new Parser();
+ 		ExpressionParser p = new ExpressionParser();
  		String src1 = "a + b";
  		ParseTree pt1 = p.parseExpression(src1); 		
  		// DoubleEvaluator dev = 
@@ -81,7 +81,9 @@ public class ParserTest {
 				"( 0.76 ) / TIME_SCALE", 
 				"sqrt(4)", 
 				"exp (x * (-0.059))", 
-				"1.2 * 5 * 5.0e-3 * 6e34" };
+				"1.2 * 5 * 5.0e-3 * 6e34",
+				"x^3",
+				"m_q ^ 3.0)"};
 
 		for (String test : tests) {
 			pt = p.parseExpression(test);
@@ -107,7 +109,7 @@ public class ParserTest {
 
 	@Test
 	public void testEvaluatingBoolean() throws ParseError, ContentError {
-		Parser p = new Parser();
+		ExpressionParser p = new ExpressionParser();
 		String src = "3 + 4^a .lt. 5 * b";
 		ParseTree pt = p.parseCondition(src);
 

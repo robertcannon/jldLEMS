@@ -103,6 +103,10 @@ public class ConditionalDBase implements DoubleEvaluator {
 		return null;
 	}
 
-	
+	@Override
+	public String getReversePolishExpressionString() {
+		E.missing();
+		return null;
+	}
 	
 }

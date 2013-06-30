@@ -39,8 +39,14 @@ public class Example1Test {
     	File fdir = new File("examples");
     	File f = new File(fdir, filename);
     	FileInclusionReader fir = new FileInclusionReader(f);
-    	Sim sim = new Sim(fir.read());
+    
+    	E.info("Reading from " + f.getAbsolutePath());
+    	String stxt = fir.read();
+    	
+    	
+    	Sim sim = new Sim(stxt);
 
+    	
         sim.readModel();
         
         sim.setMaxExecutionTime(1000);

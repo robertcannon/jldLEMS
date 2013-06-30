@@ -662,11 +662,7 @@ public class StateType implements RuntimeType {
 	
 	
 	
-	public void fix() {
-		
-		E.info("Fixing " + this + " " + initBlocks.size());
-		new Exception().printStackTrace();
-		
+	public void fix() {		
 		HashSet<String> vHS = new HashSet<String>();
 		for (VariableROC vroc : rates) {
 			String vnm = vroc.getVariableName();

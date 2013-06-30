@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Child;
@@ -34,7 +34,7 @@ import org.lemsml.jlems.core.util.StringUtil;
 public class ComponentFlattener {
 
 	Lems lems;
-	Parser parser;
+	ExpressionParser expressionParser;
 	
 	Component srcComponent;
 	
@@ -49,7 +49,7 @@ public class ComponentFlattener {
 	
 	
 	public void checkBuilt() throws ContentError, ParseError, ConnectionError {
-		parser = lems.getParser();
+		expressionParser = lems.getParser();
 		if (cbuilder == null) {
 			buildFlat();
 		}
@@ -146,13 +146,18 @@ public class ComponentFlattener {
 
 		
 		for (Component child : cpt.getAllChildren()) {
-			String cid = "";
-			if (child.getID() != null) {
-				cid = child.getID();
-			} else {
+			String cid = child.getID();
+			if (cid == null) {
+				cid = child.getDeclaredType();
+			}
+			if (cid == null) {
 				cid = child.getName();
 			}
 			
+			if (cid == null) {
+				throw new ContentError("No identifier for child: " + child);
+			}
+		
 			String childPrefix = flatName(cid, prefix);
 			importFlattened(child, childPrefix);
 		}
@@ -264,7 +269,7 @@ public class ComponentFlattener {
 	
 	private String substituteVariables(String expr, HashMap<String, String> varHM) throws ParseError, ContentError {
 		
-		ParseTree ptree = parser.parse(expr);
+		ParseTree ptree = expressionParser.parse(expr);
 		
 		ptree.substituteVariables(varHM);
 		

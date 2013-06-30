@@ -3,7 +3,7 @@ package org.lemsml.jlems.core.type;
 import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.sim.ContentError;
 
 @ModelElement(info="Specifies that a component can have a child of a particular type. The name supplied here can be used in " +
@@ -28,7 +28,7 @@ public class Child implements Named {
 
    
     
-    public void resolve(Lems lems, Parser p) throws ContentError, ParseError {
+    public void resolve(Lems lems, ExpressionParser p) throws ContentError, ParseError {
         LemsCollection<ComponentType> types = lems.getComponentTypes();
          
         

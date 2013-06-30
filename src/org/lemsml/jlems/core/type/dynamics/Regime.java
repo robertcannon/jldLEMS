@@ -9,7 +9,7 @@ import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ExprDimensional;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ActionBlock;
@@ -110,7 +110,7 @@ public class Regime implements Named {
 	 
 	
 	
-	public void resolve(LemsCollection<StateVariable> psv, Lems lems, Parser parser, HashMap<String, Integer> exposedHM) throws ContentError, ParseError {
+	public void resolve(LemsCollection<StateVariable> psv, Lems lems, ExpressionParser expressionParser, HashMap<String, Integer> exposedHM) throws ContentError, ParseError {
 		
 		LemsCollection<StateVariable> allSV = new LemsCollection<StateVariable>();
 		allSV.addAll(psv);
@@ -139,7 +139,7 @@ public class Regime implements Named {
 	 
 		
 		for (DerivedVariable dvar : derivedVariables) {
-	 		dvar.resolve(lems, lems.getDimensions(), typ, valHM, parser);
+	 		dvar.resolve(lems, lems.getDimensions(), typ, valHM, expressionParser);
 	 		if (dvar.hasExposure()) {
 	 			countExposure(dvar.getExposure(), exposedHM);
 	 		}
@@ -154,23 +154,23 @@ public class Regime implements Named {
 	 		}
 		}
 		for (TimeDerivative sd : timeDerivatives) {
-			sd.resolve(allSV, valHM, parser);
+			sd.resolve(allSV, valHM, expressionParser);
 		}
 		
 		for (OnStart os : onStarts) {
-			os.resolve(r_behavior, allSV, valHM, parser);
+			os.resolve(r_behavior, allSV, valHM, expressionParser);
 		}
 		
 		for (OnEvent oe : onEvents) {
-			oe.resolve(r_behavior, allSV, valHM, parser);
+			oe.resolve(r_behavior, allSV, valHM, expressionParser);
 		}
 		
 		for (OnEntry oe : onEntrys) {
-			oe.resolve(r_behavior,  allSV, valHM, parser);
+			oe.resolve(r_behavior,  allSV, valHM, expressionParser);
 		}
 		
 		for (OnCondition oc : onConditions) {
-			oc.resolve(r_behavior, allSV, valHM, parser);
+			oc.resolve(r_behavior, allSV, valHM, expressionParser);
 		}
 	}
 	

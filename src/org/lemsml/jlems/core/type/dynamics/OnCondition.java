@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.LemsCollection;
@@ -21,14 +21,14 @@ public class OnCondition extends PointResponse   {
 	 
    
 	
-	public void resolve(Dynamics bhv, LemsCollection<StateVariable> stateVariables, HashMap<String, Valued> valHM, Parser parser) throws ContentError, ParseError {
+	public void resolve(Dynamics bhv, LemsCollection<StateVariable> stateVariables, HashMap<String, Valued> valHM, ExpressionParser expressionParser) throws ContentError, ParseError {
 		if (trigger != null) {
 			test = trigger.getCondition();
 		}
 	 
-		parseTree = parser.parseCondition(test);
+		parseTree = expressionParser.parseCondition(test);
   	 
-		supResolve(bhv, stateVariables, valHM, parser);
+		supResolve(bhv, stateVariables, valHM, expressionParser);
 	}
 
 

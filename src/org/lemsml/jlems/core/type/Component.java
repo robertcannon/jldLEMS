@@ -109,6 +109,10 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		declaredType = s;
 	}
 
+	public String getDeclaredType() {
+		return declaredType;
+	}
+	
 	
 	public void setType(String s) {
 		type = s;
@@ -422,14 +426,18 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 		for (Component cpt : components) {		
 			cpt.checkResolve(lems, r_type);
-			String scb = cpt.getName();
+
+			String snm = cpt.getName();
+			// Called By
+			String scb = cpt.getDeclaredType();
+			
 			boolean done = false;
 			if (scb != null) {
  				if (r_type.hasChild(scb)) {
 					childHM.put(scb, cpt);
 					done = true;
-				}
-			}
+				}  
+			}  
 
 			if (!done) {
 				if (freeChildren == null) {

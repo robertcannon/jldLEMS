@@ -13,7 +13,7 @@ import org.lemsml.jlems.core.expression.MathMLWriter;
 import org.lemsml.jlems.core.expression.OrNode;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.io.logging.DefaultLogger;
@@ -42,7 +42,7 @@ public class MathMLWriterTest {
 		StringBuilder sb = new StringBuilder();
 		MathMLWriter mmw = new MathMLWriter();
 
-		Parser p = new Parser();
+		ExpressionParser p = new ExpressionParser();
 		for (String s : expressions) {
 			ParseTree pt = p.parseExpression(s);
 			

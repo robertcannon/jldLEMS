@@ -6,7 +6,7 @@ import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.sim.ContentError;
 
@@ -39,7 +39,7 @@ public class Constant implements Named, Valued  {
     	return ret;
     }
   
-	public void resolve(LemsCollection<Dimension> dimensions, LemsCollection<Unit> units, Parser parser, HashMap<String, Double> valHM) throws ContentError, ParseError {
+	public void resolve(LemsCollection<Dimension> dimensions, LemsCollection<Unit> units, ExpressionParser expressionParser, HashMap<String, Double> valHM) throws ContentError, ParseError {
 		Dimension d = dimensions.getByName(dimension);
 		if (d != null) {
 			r_dimension = d;
@@ -49,7 +49,7 @@ public class Constant implements Named, Valued  {
 		}		
 		
 		if (value.indexOf("*") > 0 || value.indexOf("/") > 0) {
-			ParseTree pt = parser.parseExpression(value);
+			ParseTree pt = expressionParser.parseExpression(value);
 			p_value = pt.makeFloatEvaluator().evalD(valHM);
 			
 		} else {

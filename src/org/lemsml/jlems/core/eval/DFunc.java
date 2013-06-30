@@ -29,12 +29,17 @@ public class DFunc extends AbstractDVal {
 	}
 	
 	
-        @Override
-        public String toExpression() {
-                return fname + "(" + arg.toExpression() + ")";
-        }
+	@Override
+	public String toExpression() {
+		return fname + "(" + arg.toExpression() + ")";
+	}
 
-     
+    
+	@Override
+	public String toReversePolishExpression() {
+		return arg.toReversePolishExpression() + " " + fname + "()";
+	}
+	
 
 	 
 	public double eval() {

@@ -6,7 +6,7 @@ import org.lemsml.jlems.core.eval.DoubleEvaluator;
 import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.run.ActionBlock;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -21,10 +21,10 @@ public class PointResponse {
 	 
 	public LemsCollection<Transition> transitions = new LemsCollection<Transition>();
 	 
-	public void supResolve(Dynamics bhv, LemsCollection<StateVariable> stateVariables, HashMap<String, Valued> valHM, Parser parser) throws ContentError, ParseError {
+	public void supResolve(Dynamics bhv, LemsCollection<StateVariable> stateVariables, HashMap<String, Valued> valHM, ExpressionParser expressionParser) throws ContentError, ParseError {
 	 
 		for (StateAssignment sa : stateAssignments) {
-			sa.resolve(stateVariables, valHM, parser);
+			sa.resolve(stateVariables, valHM, expressionParser);
 		}
 		for (EventOut eo : eventOuts) {
 			eo.resolve(bhv.getComponentType());

@@ -35,6 +35,12 @@ public class DBase implements DoubleEvaluator {
     public String getExpressionString() {
  		return root.toExpression();
 	}
+    
+    
+    public String getReversePolishExpressionString() {
+ 		return root.toReversePolishExpression();
+	}
+    
 	
 	public double evalD(HashMap<String, Double> valHM) {
 		for (int i = 0; i < vars.length; i++) {

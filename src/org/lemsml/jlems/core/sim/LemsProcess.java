@@ -1,6 +1,7 @@
 package org.lemsml.jlems.core.sim;
   
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
@@ -37,7 +38,7 @@ public class LemsProcess {
 	boolean allowConsolidation = true;
 
 	  
-    ArrayList<RuntimeType> substitutions = new ArrayList<RuntimeType>();
+    HashMap<String, RuntimeType> substitutions = new HashMap<String, RuntimeType>();
     
 
 	public LemsProcess(String str) {
@@ -46,9 +47,12 @@ public class LemsProcess {
 
 	
 	public void addSubstitutionType(RuntimeType rt) {
-		substitutions.add(rt);
+		addSubstitutionType(rt.getID(), rt);
 	}
-	 
+	
+	public void addSubstitutionType(String id, RuntimeType rt) {
+		substitutions.put(id, rt);
+	}
 
 	public void setNoConsolidation() {
 		allowConsolidation = false;
@@ -107,10 +111,9 @@ public class LemsProcess {
 	
 	public void applySubstitutions() throws ContentError {
 		if (substitutions != null) {
-			for (RuntimeType rt : substitutions) {
-				String sid = rt.getID();
+			for (String sid : substitutions.keySet()) {
 				Component cpt = lems.getComponent(sid);
-				cpt.setRuntimeType(rt);
+				cpt.setRuntimeType(substitutions.get(sid));
 				E.info("Replaced runtime type in " + cpt);
 			}
 		}

@@ -20,7 +20,7 @@ import org.lemsml.jlems.core.expression.ModuloNode;
 import org.lemsml.jlems.core.expression.Node;
 import org.lemsml.jlems.core.expression.OpenNode;
 import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.PlusNode;
 import org.lemsml.jlems.core.expression.PrecedenceComparator;
 import org.lemsml.jlems.core.expression.TimesNode;
@@ -45,7 +45,7 @@ public class SelectionParser {
 //	static Pattern numpat = Pattern.compile("([\\d\\.]*[Ee]([\\+-]?)[\\d]+)");
   
 	
-	Parser expressionParser = new Parser();
+	ExpressionParser expressionParser = new ExpressionParser();
 	
 	static {
 		for (int i = 0; i <= 9; i++) {

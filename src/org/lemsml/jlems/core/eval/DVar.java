@@ -52,6 +52,11 @@ public class DVar extends AbstractDVal {
             return varname;
     }
  
+    @Override
+    public String toReversePolishExpression() {
+            return varname;
+    }
+    
 	 
 	public void recAdd(ArrayList<DVar> val) {
 		val.add(this);

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -40,7 +40,7 @@ public abstract class AbstractStateChange extends ExpressionValued {
    }
    
 	
-	public void resolve(LemsCollection<StateVariable> stateVariables, HashMap<String, Valued> valHM, Parser parser) throws ContentError, ParseError {
+	public void resolve(LemsCollection<StateVariable> stateVariables, HashMap<String, Valued> valHM, ExpressionParser expressionParser) throws ContentError, ParseError {
 		super.extract();
 		
 		if (stateVariables.hasName(variable)) {
@@ -54,7 +54,7 @@ public abstract class AbstractStateChange extends ExpressionValued {
 			}
 			throw new ContentError(sb.toString());
 		}
-		parseTree = parser.parseExpression(value);
+		parseTree = expressionParser.parseExpression(value);
 	}
 	
 	

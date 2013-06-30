@@ -11,7 +11,7 @@ import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ExprDimensional;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ActionBlock;
@@ -148,15 +148,15 @@ public class Dynamics  {
 	
 	
 	
-	public void resolve(Lems lems, Parser parser) throws ContentError, ParseError {
+	public void resolve(Lems lems, ExpressionParser expressionParser) throws ContentError, ParseError {
 		if (r_peer != null) {
-			r_peer.realResolve(lems, parser);
+			r_peer.realResolve(lems, expressionParser);
 		} else {
-			realResolve(lems, parser);
+			realResolve(lems, expressionParser);
 		}
 	}
 		
-	private void realResolve(Lems lems, Parser parser) throws ContentError, ParseError {
+	private void realResolve(Lems lems, ExpressionParser expressionParser) throws ContentError, ParseError {
 		if (lems.looseResolving()) {
 			// then we expose anything with a name that matches the name of an exposure
 			HashSet<String> expHS = new HashSet<String>();
@@ -206,14 +206,14 @@ public class Dynamics  {
 		addToMap(lems.getConstantValueds(), valHM);
 		 	
 		for (DerivedVariable dvar : derivedVariables) {
-	 		dvar.resolve(lems, lems.getDimensions(), r_type, valHM, parser);
+	 		dvar.resolve(lems, lems.getDimensions(), r_type, valHM, expressionParser);
 	 		if (dvar.hasExposure()) {
 	 			countExposure(dvar.getExposure(), exposedHM);
 	 		}
 		}
 		
 		for (ConditionalDerivedVariable dvar : conditionalDerivedVariables) {
-	 		dvar.resolve(lems, lems.getDimensions(), r_type, valHM, parser);
+	 		dvar.resolve(lems, lems.getDimensions(), r_type, valHM, expressionParser);
 	 		if (dvar.hasExposure()) {
 	 			countExposure(dvar.getExposure(), exposedHM);
 	 		}
@@ -240,24 +240,24 @@ public class Dynamics  {
 		
 		
 		for (TimeDerivative sd : timeDerivatives) {
-			sd.resolve(stateVariables, valHM, parser);
+			sd.resolve(stateVariables, valHM, expressionParser);
 		}
 		
 		for (OnStart os : onStarts) {
-			os.resolve(this, stateVariables, valHM, parser);
+			os.resolve(this, stateVariables, valHM, expressionParser);
 		}
 		
 		for (OnEvent oe : onEvents) {
-			oe.resolve(this, stateVariables, valHM, parser);
+			oe.resolve(this, stateVariables, valHM, expressionParser);
 		}
 		
 		for (OnCondition oc : onConditions) {
-			oc.resolve(this, stateVariables, valHM, parser);
+			oc.resolve(this, stateVariables, valHM, expressionParser);
 		}
 		
 		for (Regime reg : regimes) {
 			reg.setBehavior(this);
-			reg.resolve(stateVariables, lems, parser, exposedHM);
+			reg.resolve(stateVariables, lems, expressionParser, exposedHM);
 		}
 	
 		for (KineticScheme ks : kineticSchemes) {
