@@ -20,6 +20,10 @@ public final class VizExample {
 		run("examples", s);
 	}
 	
+	public static void runDev(String s) {
+		run("devexamples", s);
+	}
+	
 	
 	private static void initIO() {
 		SwingDataViewerFactory.initialize();

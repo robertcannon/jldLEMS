@@ -18,7 +18,12 @@ public class ExpressionDerivedVariable {
 
     @Override
     public String toString() {
-        return "ExpressionDerivedVariable: "+ varname+" (ex: " + exposeAs + "), " + rateexp;
+    	String ret = "ExpressionDerivedVariable " + varname;
+    	if (exposeAs != null) {
+    		ret += ", exposed as " + exposeAs;
+    	}
+    	ret += ", expression=" + rateexp.getExpressionString();
+        return ret;
     }
 
 

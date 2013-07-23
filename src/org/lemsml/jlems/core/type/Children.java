@@ -35,7 +35,12 @@ public class Children implements Named  {
 
     public void resolve(Lems lems, ExpressionParser p) throws ContentError, ParseError {
         LemsCollection<ComponentType> classes = lems.getComponentTypes();
-          
+        
+        if (type == null) {
+        	throw new ContentError("The Children element " + name + " must specify the 'type' field for its components");
+        }
+        
+        
         ComponentType t = classes.getByName(type);
         if (t != null) {
             r_type = t;

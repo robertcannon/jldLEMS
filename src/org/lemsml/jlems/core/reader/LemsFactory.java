@@ -45,6 +45,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildParameter(xel);
         } else if (tag.equals("PathParameter")) {
             ret = buildPathParameter(xel);
+        } else if (tag.equals("LocalParameters")) {
+            ret = buildLocalParameters(xel);
         } else if (tag.equals("Property")) {
             ret = buildProperty(xel);
         } else if (tag.equals("DerivedParameter")) {
@@ -129,6 +131,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildMultiInstantiate(xel);
         } else if (tag.equals("CoInstantiate")) {
             ret = buildCoInstantiate(xel);
+        } else if (tag.equals("Instance")) {
+            ret = buildInstance(xel);
         } else if (tag.equals("Assign")) {
             ret = buildAssign(xel);
         } else if (tag.equals("Choose")) {
@@ -466,6 +470,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.derivedParameters.add((DerivedParameter)obj);
             } else if (obj instanceof PathParameter) {
                 ret.pathParameters.add((PathParameter)obj);
+            } else if (obj instanceof LocalParameters) {
+                ret.localParameterss.add((LocalParameters)obj);
             } else if (obj instanceof Requirement) {
                 ret.requirements.add((Requirement)obj);
             } else if (obj instanceof Exposure) {
@@ -552,6 +558,25 @@ public class LemsFactory extends AbstractLemsFactory {
 
     private PathParameter buildPathParameter(XMLElement xel) {
         PathParameter ret = new PathParameter();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private LocalParameters buildLocalParameters(XMLElement xel) {
+        LocalParameters ret = new LocalParameters();
 
         for (XMLAttribute xa : xel.getAttributes()) {
             String xn = internalFieldName(xa.getName());
@@ -744,6 +769,10 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.isAny = parseBoolean(xv);
             } else if (xn.equals("local")) {
                 ret.local = parseBoolean(xv);
+            } else if (xn.equals("required")) {
+                ret.required = parseBoolean(xv);
+            } else if (xn.equals("defaultComponent")) {
+                ret.defaultComponent = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }
@@ -1656,6 +1685,42 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.component = parseString(xv);
             } else if (xn.equals("componentType")) {
                 ret.componentType = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof Assign) {
+                ret.assigns.add((Assign)obj);
+            } else if (obj instanceof BuildElement) {
+                ret.buildElements.add((BuildElement)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Instance buildInstance(XMLElement xel) {
+        Instance ret = new Instance();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("localParameters")) {
+                ret.localParameters = parseString(xv);
+            } else if (xn.equals("component")) {
+                ret.component = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }

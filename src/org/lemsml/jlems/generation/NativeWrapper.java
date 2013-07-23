@@ -148,6 +148,13 @@ public class NativeWrapper implements StateRunnable {
 		E.missing("Native wrapper");
 		return null;
 	}
+	
+	
+	@Override
+	public boolean hasChildInstance(String string) {
+		E.missing("Native wrapper");
+		return true;
+	}
 
 
 	@Override

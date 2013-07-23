@@ -69,7 +69,7 @@ public class Regime implements Named {
 
     @Override
 	public String toString() {
-		return "Regime: "+name + " (initial = " + isInitial() + ")"; //  + hashCode();
+		return "Regime: " + name + " (initial = " + isInitial() + ")"; //  + hashCode();
 	}
 	
 	
@@ -77,8 +77,13 @@ public class Regime implements Named {
 		r_behavior = b;
 	}
 
+	
     public boolean isInitial(){
-        return (initial!=null && initial.equals("true"));
+        boolean ret = false;
+        if (initial != null && initial.equals("true")) {
+        	ret = true;
+        }
+        return ret;
     }
 	
 	

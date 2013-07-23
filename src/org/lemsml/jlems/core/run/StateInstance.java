@@ -12,6 +12,10 @@ public class StateInstance implements StateRunnable {
 
 	StateType uclass;
 	String id;
+
+	private HashMap<String, DoublePointer> localHM;
+	
+	 
 	private HashMap<String, DoublePointer> varHM;
 	private HashMap<String, DoublePointer> expHM;
 
@@ -73,6 +77,11 @@ public class StateInstance implements StateRunnable {
 	public StateInstance(StateType uc) {
 		uclass = uc;
 		id = uc.getComponentID();
+		String uct = uc.getTypeName();
+		if (uct.equals("Instance")) {
+			E.trace();
+		}
+		E.info("Creaed si " + id + " - " + uct);
 	}
 
 	public String getID() {
@@ -98,6 +107,7 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
+	
 	
 	public double getCurrentTime() {
 		return currentTime;
@@ -125,8 +135,6 @@ public class StateInstance implements StateRunnable {
 	
 
 	public void initialize(StateRunnable parent) throws RuntimeError, ContentError {
-	 
-		
 		currentTime = 0;
 		uclass.initialize(this, parent, false);
 		if (debug) {
@@ -322,6 +330,20 @@ public class StateInstance implements StateRunnable {
 		}
 	}
 
+	public void setLocalValues(HashMap<String, DoublePointer> lpvals) {
+		localHM = lpvals;
+		for (String s : localHM.keySet()) {
+			double v = localHM.get(s).getValue();
+			if (varHM.containsKey(s)) {
+				varHM.get(s).set(v);
+			} else {
+				varHM.put(s, new DoublePointer(v));
+				E.warning("setLocals is assigning a value for varialbe '" + s + "' that wasn't previously known.");
+			}
+		}
+	}
+	
+	
 	public HashMap<String, DoublePointer> getVarHM() {
 		return varHM;
 	}
@@ -460,21 +482,28 @@ public class StateInstance implements StateRunnable {
 		// now only exposing variables that are in expHM, not stuff in varHM.
 		if (expHM != null && expHM.containsKey(varname)) {
 			ret = expHM.get(varname).get();
-		 
-		} else {
- 			if (varHM.containsKey(varname)) {
-			ret = varHM.get(varname).get();
+			checkReturn(ret, varname);
 			
 		} else {
-			if (parent != null) {
-				ret = parent.getVariable(varname);
-			}
+ 			if (varHM.containsKey(varname)) {
+ 				ret = varHM.get(varname).get();
+ 				checkReturn(ret, varname);
+ 				
+ 			} else {
+ 				if (parent != null) {
+ 					ret = parent.getVariable(varname);
+ 					checkReturn(ret, varname);
+ 				}
+ 			}
 		}
-		}
-
-		if (Double.isNaN(ret)) {
-			StringBuilder err = new StringBuilder("Problem getting exposed var " + varname + " in: " + this + "\n" + 
-					"Exposed: " + expHM + "\n" + "Vars: " + varHM + "\n");
+		return ret;
+	}
+	
+	
+	private void checkReturn(double ret, String varname)  throws RuntimeError {
+		if (Double.isNaN(ret) || Double.isInfinite(ret)) {
+			StringBuilder err = new StringBuilder("" + varname + " is NaN in: " + this + "\n" + 
+					"Exposed: " + expHM + "\n" + "Variables: " + varHM + "\n");
 			if (childA != null) {
 				for (StateRunnable si : childA) {
 					err.append("Child: " + si + ", vars: " + si.getVariables() + "\n");
@@ -492,9 +521,16 @@ public class StateInstance implements StateRunnable {
 			}
 			throw new RuntimeError(err.toString());
 		}
-		return ret;
 	}
 
+	public int getChildCount() {
+		int ret= 0;
+		if (childA != null) {
+			ret = childA.size();
+		}
+		return ret;
+	}
+	
 	
 	public void addChild(String s, StateRunnable newInstance) {
 		if (newInstance == null) {
@@ -575,8 +611,21 @@ public class StateInstance implements StateRunnable {
 		// don't always need that
 		// now they go in refHM and don't automaticlly get instances added as
 		// children
-		// which to do????
+		 
 		StateRunnable ret = null;
+	 
+		if (hasChildInstance(snm)) {
+			ret = childHM.get(snm);
+		
+		} else {
+			throw new ContentError("seeking child instance " + snm + " in " + this + " but there are no children");
+		}
+		return ret;
+	}
+	
+	
+	public boolean hasChildInstance(String snm) throws ContentError {
+		boolean ret = false;
 		try {
 			checkBuilt();
 		} catch (RuntimeError er) {
@@ -585,11 +634,8 @@ public class StateInstance implements StateRunnable {
 			throw new ContentError("Can't build " + this, er);
 		}
 			
-		if (childHM != null && childHM.containsKey(snm)) {
-			ret = childHM.get(snm);
-		
-		} else {
-			throw new ContentError("seeking child instance " + snm + " in " + this + " but there are no children");
+		if (childHM != null && childHM.containsKey(snm)) {	
+			ret = true;
 		}
 		return ret;
 	}
@@ -786,6 +832,9 @@ public class StateInstance implements StateRunnable {
 	// TODO this sets component level variables - should probably keep them
 	// separate
 	public void setNewVariable(String vnm, double pval) {
+		if (Double.isNaN(pval) || Double.isInfinite(pval)) {
+			E.error("Nan for " + vnm);
+		}
 		varHM.put(vnm, new DoublePointer(pval));
 	}
 
@@ -1030,11 +1079,11 @@ public class StateInstance implements StateRunnable {
 		// instance properties
 
 		double ret = quietGetFloatProperty(sel);
-		if (Double.isNaN(ret)) {
+		if (Double.isNaN(ret) || Double.isInfinite(ret)) {
 			ret = parent.quietGetFloatProperty(sel);
 		}
 
-		if (Double.isNaN(ret)) {
+		if (Double.isNaN(ret) || Double.isInfinite(ret)) {
 			throw new ContentError("no such property " + sel + " in " + this);
 		}
 		return ret;
@@ -1082,4 +1131,6 @@ public class StateInstance implements StateRunnable {
 	public Object getComponentID() {
 		return uclass.getComponentID();
 	}
+
+	
 }

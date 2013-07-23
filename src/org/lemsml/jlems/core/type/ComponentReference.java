@@ -23,9 +23,15 @@ public class ComponentReference implements Named  {
 	
 	public boolean isAny = false;
 
-	private boolean inResolve = false;
 	
 	public boolean local = false;
+	
+	public boolean required = true;
+	
+	public String defaultComponent;
+	
+	private boolean inResolve = false;
+
 	
 	
 	public ComponentReference() {
@@ -82,6 +88,9 @@ public class ComponentReference implements Named  {
 		ret.name = name;
 		ret.type = type;
 		ret.r_type = r_type;
+		if (defaultComponent != null) {
+			ret.defaultComponent= defaultComponent;
+		}
 		return ret; 
  	}
 
@@ -90,9 +99,24 @@ public class ComponentReference implements Named  {
 		return local;
 	}
 
+	
+	public boolean isRequired() {
+		boolean ret = true;
+		if (!required) {
+			ret = false;
+		}
+		return ret;
+	}
 
 	public boolean resolving() {
 		return inResolve;
+	}
+
+
+
+
+	public String getDefaultComponent() {
+		return defaultComponent;
 	}
 
 

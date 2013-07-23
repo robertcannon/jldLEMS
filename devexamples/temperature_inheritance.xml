@@ -1,0 +1,78 @@
+<Lems>
+
+	<Target component="sim1" />
+
+	<Include file="../NeuroML2/NeuroML2CoreTypes/Cells.xml" />
+	<Include file="../NeuroML2/NeuroML2CoreTypes/Networks.xml" />
+	<Include file="../NeuroML2/NeuroML2CoreTypes/Simulation.xml" />
+	<!-- Important bits. Try swapping dummyBlockMechanism and temperatureBlockMechanism 
+		inside nmdaSyn1. In one case the simulation runs fine and the block mechanism 
+		"sees" the correct value for the temperature, while in the other case the 
+		temperature appears to be zero. -->
+
+	<ComponentType name="temperatureBlockMechanism" extends="baseBlockMechanism">
+		<Constant name="scalingTemperature" dimension="temperature"
+			value="280 K" />
+		<Requirement name="temperature" dimension="temperature" />
+		<Dynamics>
+			<DerivedVariable name="blockFactor" dimension="none"
+				exposure="blockFactor" value="scalingTemperature/temperature" />
+			<DerivedVariable name="blockTemperature" dimension="temperature"
+				value="temperature" />
+		</Dynamics>
+	</ComponentType>
+
+	<ComponentType name="dummyBlockMechanism" extends="baseBlockMechanism">
+		<Requirement name="temperature" dimension="temperature" />
+		<Dynamics>
+			<DerivedVariable name="blockFactor" dimension="none"
+				exposure="blockFactor" value="1" />
+			<DerivedVariable name="blockTemperature" dimension="temperature"
+				value="temperature" />
+		</Dynamics>
+	</ComponentType>
+
+	<blockingPlasticSynapse id="nmdaSyn1" gbase="0.5nS"
+		erev="0mV" tauRise="2ms" tauDecay="8ms">
+	<!--  <blockMechanism type="dummyBlockMechanism"/> -->
+ 		<blockMechanism type="temperatureBlockMechanism" />
+	</blockingPlasticSynapse>
+
+
+
+
+	<!-- boilerplate stuff and simulation control -->
+	<ionChannel id="passive" name="Passive conductance" type="ionChannelPassive"
+		conductance="10pS">
+		<notes>Leak conductance</notes>
+	</ionChannel>
+
+
+	<spikeGenerator id="spikeGen55ms" period="75ms" />
+
+	<abstractCell id="passiveCell" type="pointCellCondBased"
+		C="10pF" v0="-55mV" thresh="20mV">
+		<channelPopulation id="leak" ionChannel="passive"
+			number="300" erev="-54.3mV" />
+	</abstractCell>
+
+	<network id="net">
+		<extracellularProperties temperature="300 K" />
+		<population id="srcPop" component="spikeGen55ms" size="1" />
+		<population id="pasPop1" component="passiveCell" size="1" />
+		<synapticConnection from="srcPop[0]" to="pasPop1[0]"
+			synapse="nmdaSyn1" destination="synapses" />
+	</network>
+
+	<Simulation id="sim1" length="400ms" step="0.01ms" target="net">
+		<Display id="SampleGraph_T" title="temperature" xmin="-0.030"
+			xmax="0.33" ymin="-0.5" ymax="310" timeScale="1s">
+			<Line id="network temperature" timeScale="1s" quantity="temperature"
+				scale="1 V" color="#000000" />
+			<Line id="block temperature" timeScale="1s"
+				quantity="pasPop1[0]/nmdaSyn1/blockMechanism/blockTemperature"
+				scale="1 V" color="#01DF01" />
+		</Display>
+	</Simulation>
+
+</Lems>

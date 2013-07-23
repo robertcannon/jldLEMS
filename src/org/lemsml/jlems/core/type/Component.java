@@ -7,6 +7,7 @@ import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.run.DoublePointer;
 import org.lemsml.jlems.core.run.RuntimeType;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -59,6 +60,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public double xPosition;
 	public double yPosition;
 	
+	private HashMap<String, ArrayList<LocalParameterValue>> localValues = null;
 	
 	final HashMap<String, TextParam> textParamHM = new HashMap<String, TextParam>();
 
@@ -414,11 +416,34 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 					}
 					E.error(err);
 				}
+				
+			} else if (cr.getDefaultComponent() != null) {
+				String path = cr.getDefaultComponent();	
+				if (path.startsWith("../")) {
+					String ppath = path.substring(3, path.length());
+					// TODO could call getInheritableLinkTarget (needs name change)
+					Component cpt =  r_parent.quietGetChild(ppath);
+					if (cpt != null) {
+						refHM.put(crn, cpt);
+
+					} else {
+						E.error("Can't locate target component in parent: " + path);
+					}
+					
+					
+				} else {
+					throw new ContentError("Cant locate defaultComponent at " + path);
+				}
+				
+				
+			} else if (!cr.isRequired()) {
+				// OK to not have one
+				
 			} else {
 				// can be OK to resolve with dangling refs as long as we will resolve them again
 				// before trying to run it
 				if (bwarn) {
-					E.warning("component reference " + crn + " missing in " + this + " type " + r_type);
+					E.warning("component reference '" + crn + "' missing in " + this + " type " + r_type + " required=" + cr.isRequired());
 				} 
 			}
 		}
@@ -495,7 +520,18 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			if (att.flagged()) {
 				// fine - we've used it
 			} else {
-				E.shortWarning("Unused attribute in " + this + ": " + att);
+				if (r_type.hasLocalParameters()) {
+					// TODO - maybe more than one se of local parameters?
+					String setname = r_type.getLocalParametersName();
+					String atnm = att.getName();
+					String atval = att.getValue();
+					DimensionalQuantity dq = QuantityReader.parseValue(atval, lems.getUnits());
+					LocalParameterValue lpv = new LocalParameterValue(atnm, dq);
+					addLocalParameter(setname, lpv);
+					
+				} else {					
+					E.shortWarning("Unused attribute in " + this + ": " + att);
+				}
 			}
 		}
 
@@ -506,6 +542,17 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		// ": attributes: "+attributes);
 	}
 
+	
+	
+	private void addLocalParameter(String snm, LocalParameterValue lpv) {
+		if (localValues == null) {
+			localValues = new HashMap<String, ArrayList<LocalParameterValue>>();
+		}
+		if (!localValues.containsKey(snm)) {
+			localValues.put(snm, new ArrayList<LocalParameterValue>());
+		}
+		localValues.get(snm).add(lpv);
+	}
 	
 	
 	public String getListName(Component cpt) throws ContentError {
@@ -878,10 +925,10 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public Component getChild(String rp) throws ContentError {
 		Component ret = quietGetChild(rp);
 		if (ret == null) {
-			String info = "no such child " + rp + " in " + this;
-			info = info + "\n - Child: " + childHM;
-			info = info + "\n - Children: " + childrenHM;
-			info = info + "\n - Refs: " + refHM;
+			String info = "no such child " + rp + " in " + this + "\n";
+			info += " Child: " + childHM + "\n";
+			info += " Children: " + childrenHM + "\n";
+			info += " Refs: " + refHM + "\n";
 			throw new ContentError(info);
 		}
 		return ret;
@@ -1008,6 +1055,25 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return components;
 	}
 
+	public ArrayList<LocalParameterValue> getLocalValues(String snm) {
+		ArrayList<LocalParameterValue> ret = null;
+		if (localValues.containsKey(snm)) {
+			ret = localValues.get(snm);
+		}
+		return ret;
+	}
+
+	
+	public HashMap<String, DoublePointer> getLocalValuesMap(String snm) {
+ 		ArrayList<LocalParameterValue> lpa = getLocalValues(snm);
+		HashMap<String, DoublePointer> ret = new HashMap<String, DoublePointer>();
+	 
+		for (LocalParameterValue lp : lpa) {
+			ret.put(lp.getName(), new DoublePointer(lp.getValue()));
+		}
+	 
+		return ret;
+	}
 
 
 

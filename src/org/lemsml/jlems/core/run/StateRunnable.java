@@ -39,6 +39,8 @@ public interface StateRunnable {
 
 	Object getComponentID();
 
+	boolean hasChildInstance(String str) throws ContentError;
+	
 	StateRunnable getChildInstance(String string) throws ContentError;
 
 	ArrayList<StateRunnable> quietGetStateInstances(String path) throws ConnectionError, ContentError, RuntimeError;

@@ -42,6 +42,9 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<PathParameter> pathParameters = new LemsCollection<PathParameter>();
 
+	public LemsCollection<LocalParameters> localParameterss = new LemsCollection<LocalParameters>();
+
+	
 	public LemsCollection<Requirement> requirements = new LemsCollection<Requirement>();
 
 	public LemsCollection<Exposure> exposures = new LemsCollection<Exposure>();
@@ -49,7 +52,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public LemsCollection<Child> childs = new LemsCollection<Child>();
 
 	public LemsCollection<Children> childrens = new LemsCollection<Children>();
-
+	 
 	public LemsCollection<ComponentReference> componentReferences = new LemsCollection<ComponentReference>();
 
 	public LemsCollection<ComponentTypeReference> componentTypeReferences = new LemsCollection<ComponentTypeReference>();
@@ -635,6 +638,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return componentReferences;
 	}
 
+	 
 
 	public ArrayList<ComponentReference> getLocalComponentReferences() {
 		ArrayList<ComponentReference> ret = new ArrayList<ComponentReference>();
@@ -958,6 +962,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		
 	}
 
+	
 	public Visualization getVisualization() {
 		Visualization ret = null;
 		if (visualizations.size() > 0) {
@@ -965,6 +970,29 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		}
 		return ret;
 	}
+	
+
+	public LocalParameters getLocalParameters(String lpn) throws ContentError {
+		 LocalParameters ret = localParameterss.getByName(lpn);
+	 
+		 return ret;
+	}
+
+	public boolean hasLocalParameters() {
+		boolean ret = false;
+		if (localParameterss.size() > 0) {
+			ret = true;
+		}
+		return ret;
+	}
+
+	public String getLocalParametersName() {
+		LocalParameters lp0 = localParameterss.get(0);
+		String ret = lp0.getName();
+		return ret;
+	}
+	
+	
 
  
 

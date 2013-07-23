@@ -110,6 +110,11 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 	public Object getComponentID() {
 		return duType.getID();
 	}
+	
+	@Override
+	public boolean hasChildInstance(String string) {
+		return true;
+	}
 
 	@Override
 	public StateRunnable getChildInstance(String string) throws ContentError {

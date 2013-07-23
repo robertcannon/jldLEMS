@@ -88,7 +88,7 @@ public class PathDerivedVariable {
         // NB can only eval a path derived varaible on state instances, note compiled ones
         StateInstance sin = (StateInstance)rsin;
         StateRunnable tgt = null;
-        try {
+       
             if (simple) {
                 tgt = sin.getPathStateInstance(path);
                 if (tgt == null) {
@@ -98,7 +98,7 @@ public class PathDerivedVariable {
                 		// anything else is an error
                 	} else {
                 		if (!required &&  mode == PROD) {
-                			ret = 1;
+                			ret = 1; 
                 	
                 		} else {
                 			throw new ContentError("Not a sum and no variable at path " + path + " in " + sin + " seeking " + tgtvar + " mode=" + mode);
@@ -123,9 +123,11 @@ public class PathDerivedVariable {
                     }
                 }
             }
-        } catch (RuntimeError rte) {
-            throw new RuntimeError("Error at PathDerivedVariable eval(): tgt: " + tgt + "; sin: " + sin + "; tgtvar: " + tgtvar + "; path: " + path, rte);
+       
+        if (Double.isNaN(ret) || Double.isInfinite(ret)) {
+        	 throw new RuntimeError("NaN in " + this + " on " + sin + "  target=" + tgt + " path=" + path);
         }
+         
         return ret;
     }
 
@@ -154,8 +156,17 @@ public class PathDerivedVariable {
         StateRunnable wkinst = uin;
         String[] bits = path.split("/");
         for (int i = 0; i < bits.length - 1; i++) {
-        	StateRunnable sr = wkinst.getChildInstance(bits[i]);
-        	wkinst = wkinst.getChildInstance(bits[i]);
+        	if (wkinst.hasChildInstance(bits[i])) {
+        		StateRunnable sr = wkinst.getChildInstance(bits[i]);
+        		wkinst = wkinst.getChildInstance(bits[i]);
+        	} else {
+        		// this may be OK if this is an optional path
+        		if (isRequired()) {
+        			throw new ContentError("No such child instance: " + bits[i] + " in " + wkinst);
+        		} 
+        		wkinst = null;
+        		break;
+        	}
         }
         ret = wkinst;
         return ret;

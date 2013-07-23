@@ -310,11 +310,16 @@ public class StateType implements RuntimeType {
 	public void initialize(StateInstance uin, StateRunnable parent, boolean includeDerivedVariables) throws RuntimeError, ContentError {
  		HashMap<String, DoublePointer> varHM = uin.getVarHM();
 
-        try {
+      
 		if (indeps != null) {
 			for (String s : indeps) {
-                //E.info("-- Got val of "+parent.getVariable(s)+" for "+s+" in parent "+parent.getID()+" of "+getComponentID());
-				varHM.get(s).set(parent.getVariable(s));
+				double val = parent.getVariable(s);
+				if (Double.isNaN(val) || Double.isInfinite(val)) {
+					throw new RuntimeError("NaN returned for parent.getVarialble() on " + s + " in " + uin);
+					
+				} else {
+					varHM.get(s).set(val);
+				}
 			}
 		}
 
@@ -324,15 +329,18 @@ public class StateType implements RuntimeType {
             	if (!varHM.containsKey(pdv.varname)) {
             		throw new ContentError("No such pd variable " + pdv.varname + " in variables map: " + varHM);
             	}
-                varHM.get(pdv.varname).set(pdv.eval(uin));
+            	double val = pdv.eval(uin);
+            	checkNaN(val, pdv.toString(), null);
+            	varHM.get(pdv.varname).set(val);
             }
 
             for (ExpressionDerivedVariable edv : exderiveds) {
             	if (!varHM.containsKey(edv.varname)) {
             		throw new ContentError("No such ed variable " + edv.varname + " in variables map: " + varHM);
             	}
-            	
-                varHM.get(edv.varname).set(edv.evalptr(varHM));
+            	double val = edv.evalptr(varHM);
+            	checkNaN(val, edv.toString(), varHM);
+                varHM.get(edv.varname).set(val);
             }
         }
 
@@ -346,6 +354,7 @@ public class StateType implements RuntimeType {
         synchronizeExposures(uin);
 		uin.doneInit();
 
+		/*
         } catch (Exception e) {
             String err = "Error when initialising " + this + " " + e;
             E.report(err, e);
@@ -358,26 +367,38 @@ public class StateType implements RuntimeType {
            
             throw new RuntimeError(err, e);
         }
+        */
 
 	}
 	
-	
+ 
+	private void checkNaN(double x, String src, HashMap<String, DoublePointer> vhm) throws RuntimeError {
+		if (Double.isNaN(x) || Double.isInfinite(x)) {
+			String err = "NaN during StateInstance initialization for " + src;
+			if (vhm != null) {
+					err += "\n";
+				for (String s : vhm.keySet()) {
+					err += "variable " + s + "=" + vhm.get(s).get() + "\n";
+				}
+			}
+			throw new RuntimeError(err);
+		}
+	}
 	
 	
 	public void applyPathDerived(StateInstance uin) throws ContentError {
 		for (PathDerivedVariable pdv : pathderiveds) {
 			if (pdv.isSimple()) {
-				try {
+				 
 					StateRunnable si = pdv.getTargetState(uin);
-					uin.addPathStateInstance(pdv.getPath(), si);
-				} catch (ContentError ce) {
-					if (pdv.isRequired()) {
-						E.info("Rethrowing ce...");
-						throw ce;
+					if (si != null) {
+						uin.addPathStateInstance(pdv.getPath(), si);
 					} else {
-						E.info("Optional path variable is absent " + pdv);
+						if (pdv.isRequired()) {
+							throw new ContentError("Required path variable is missing: " + pdv);
+						}
 					}
-				}
+			 
 				
 			} else {
 				uin.addPathStateArray(pdv.getPath(), pdv.getTargetArray(uin));
@@ -584,6 +605,8 @@ public class StateType implements RuntimeType {
 	
 
 	
+	
+	// TODO move this to StateInstance and make exp and var private there
     private void synchronizeExposures(StateInstance uin) throws ContentError {
  		HashMap<String, DoublePointer> varHM = uin.getVarHM();
 		HashMap<String, DoublePointer> expHM = uin.getExpHM();
