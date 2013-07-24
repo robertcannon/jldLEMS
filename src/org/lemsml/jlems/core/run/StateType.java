@@ -75,8 +75,10 @@ public class StateType implements RuntimeType {
 	RunConfig runConfig = null;
 	
 	ArrayList<Builder> builders;
-	
 	boolean hasBuilds = false;
+	
+	SubstitutionBuilder substitutionBuilder = null;
+	
 	
 	ArrayList<String> isets;
 	
@@ -140,6 +142,12 @@ public class StateType implements RuntimeType {
 		return timeCounter;
 	}
 	
+	public void setSubstitutionBuilder(SubstitutionBuilder sb) {
+		substitutionBuilder = sb;
+	}
+	
+	
+	
     public ArrayList<VariableROC> getRates() {
         return rates;
     }
@@ -196,7 +204,19 @@ public class StateType implements RuntimeType {
     
     
 	public StateInstance newInstance() throws ContentError, ConnectionError, RuntimeError {
-	 
+		StateInstance ret = null;
+		//
+		if (substitutionBuilder != null) {
+			ret = substitutionBuilder.buildSubstitute(this);
+			
+		} else {
+			ret = ownNewInstance();
+		}
+		return ret;
+	}
+		
+    private StateInstance ownNewInstance() throws ContentError, ConnectionError, RuntimeError {
+					
 		StateInstance uin = new StateInstance(this);
 		// E.info("Creating new state instance of " + cptid + " " + typeName);
 		
@@ -795,11 +815,18 @@ public class StateType implements RuntimeType {
 	}
 
 	public void addBuilder(Builder b) {
-		if (builders == null) {
-			builders = new ArrayList<Builder>();
+		
+		if (b.isSubstitutionBuilder()) {
+			substitutionBuilder = b.getSubstitutionBuilder();
+			E.info("***Added Sub Builder");
+			
+		} else {
+			if (builders == null) {
+				builders = new ArrayList<Builder>();
+			}
+			builders.add(b);
+			hasBuilds = true;
 		}
-		builders.add(b);
-		hasBuilds = true;
 	}
 
  

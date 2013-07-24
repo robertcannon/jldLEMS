@@ -7,7 +7,7 @@ import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.BuilderElement;
 import org.lemsml.jlems.core.run.DoublePointer;
-import org.lemsml.jlems.core.run.LocalizedInstanceBuilder;
+import org.lemsml.jlems.core.run.SubstitutionBuilder;
 import org.lemsml.jlems.core.run.RuntimeType;
 import org.lemsml.jlems.core.run.SingleChildBuilder;
 import org.lemsml.jlems.core.run.StateType;
@@ -62,11 +62,8 @@ public class Instance extends BuildElement {
             
             HashMap<String, DoublePointer> lpvals = cpt.getLocalValuesMap(localParameters);
             
-            
-            LocalizedInstanceBuilder sb = new LocalizedInstanceBuilder(cb, lpvals);
-	
-	 
-		
+            E.info("Making a sub builder....");
+            SubstitutionBuilder sb = new SubstitutionBuilder(cb, lpvals);	
 		return sb;
 	}
 	
