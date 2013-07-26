@@ -818,8 +818,7 @@ public class StateType implements RuntimeType {
 		
 		if (b.isSubstitutionBuilder()) {
 			substitutionBuilder = b.getSubstitutionBuilder();
-			E.info("***Added Sub Builder");
-			
+ 			
 		} else {
 			if (builders == null) {
 				builders = new ArrayList<Builder>();

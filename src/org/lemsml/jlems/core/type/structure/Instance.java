@@ -55,14 +55,12 @@ public class Instance extends BuildElement {
                 } else {
                     c = cpt.getChild(component);
                 }
-                E.info("Making instance builder with cpt arg=" + cpt + " proto=" + c);
                 cb = c.getRuntimeType();
                 
             }  
             
             HashMap<String, DoublePointer> lpvals = cpt.getLocalValuesMap(localParameters);
             
-            E.info("Making a sub builder....");
             SubstitutionBuilder sb = new SubstitutionBuilder(cb, lpvals);	
 		return sb;
 	}
