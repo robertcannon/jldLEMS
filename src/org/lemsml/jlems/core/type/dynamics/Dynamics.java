@@ -422,8 +422,12 @@ public class Dynamics  {
 			 varHS.remove(sv);
 			 
 			 ParseTree pt = sd.getParseTree();
-			 DoubleEvaluator db = pt.makeFloatFixedEvaluator(fixedHM);
-			 ret.addRate(sv.getName(), db);
+			 // TODO - if no instances, can uise fixed evaluator. With instances, need general one
+			 DoubleEvaluator dbfx = pt.makeFloatFixedEvaluator(fixedHM);
+
+			 E.info("Using general purpose evaluator for " + cpt);
+			 DoubleEvaluator dor = pt.makeFloatEvaluator();
+			 ret.addRate(sv.getName(), dor);
 		 }
 		 
 		 for (OnStart os : onStarts) {

@@ -7,6 +7,7 @@ import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.BuilderElement;
 import org.lemsml.jlems.core.run.DoublePointer;
+import org.lemsml.jlems.core.run.LocalValues;
 import org.lemsml.jlems.core.run.SubstitutionBuilder;
 import org.lemsml.jlems.core.run.RuntimeType;
 import org.lemsml.jlems.core.run.SingleChildBuilder;
@@ -59,9 +60,10 @@ public class Instance extends BuildElement {
                 
             }  
             
-            HashMap<String, DoublePointer> lpvals = cpt.getLocalValuesMap(localParameters);
+            LocalValues lvs = cpt.getLocalValues(localParameters);
+           
             
-            SubstitutionBuilder sb = new SubstitutionBuilder(cb, lpvals);	
+            SubstitutionBuilder sb = new SubstitutionBuilder(cb, lvs);	
 		return sb;
 	}
 	

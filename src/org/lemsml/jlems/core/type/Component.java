@@ -8,6 +8,7 @@ import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.DoublePointer;
+import org.lemsml.jlems.core.run.LocalValues;
 import org.lemsml.jlems.core.run.RuntimeType;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -1055,7 +1056,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return components;
 	}
 
-	public ArrayList<LocalParameterValue> getLocalValues(String snm) {
+	public ArrayList<LocalParameterValue> getLocalParameterValues(String snm) {
 		ArrayList<LocalParameterValue> ret = null;
 		if (localValues.containsKey(snm)) {
 			ret = localValues.get(snm);
@@ -1064,12 +1065,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 
 	
-	public HashMap<String, DoublePointer> getLocalValuesMap(String snm) {
- 		ArrayList<LocalParameterValue> lpa = getLocalValues(snm);
-		HashMap<String, DoublePointer> ret = new HashMap<String, DoublePointer>();
-	 
+	public LocalValues getLocalValues(String snm) {
+ 		ArrayList<LocalParameterValue> lpa = getLocalParameterValues(snm);
+ 		
+ 		LocalValues ret = new LocalValues();
+ 		
+	 	 
 		for (LocalParameterValue lp : lpa) {
-			ret.put(lp.getName(), new DoublePointer(lp.getValue()));
+			ret.addValue(lp.getName(), lp.getValue());
 		}
 	 
 		return ret;

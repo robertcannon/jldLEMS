@@ -13,7 +13,7 @@ public class StateInstance implements StateRunnable {
 	StateType uclass;
 	String id;
 
-	private HashMap<String, DoublePointer> localHM;
+	// private HashMap<String, DoublePointer> localHM;
 	
 	 
 	private HashMap<String, DoublePointer> varHM;
@@ -81,7 +81,6 @@ public class StateInstance implements StateRunnable {
 		if (uct.equals("Instance")) {
 			E.trace();
 		}
-		E.info("Creaed si " + id + " - " + uct);
 	}
 
 	public String getID() {
@@ -330,13 +329,13 @@ public class StateInstance implements StateRunnable {
 		}
 	}
 
-	public void setLocalValues(HashMap<String, DoublePointer> lpvals) {
-		localHM = lpvals;
-		for (String s : localHM.keySet()) {
-			double v = localHM.get(s).getValue();
+	public void setLocalValues(LocalValues lpvals) {
+	 	for (String s : lpvals.keySet()) {
+			double v = lpvals.getValue(s);
 			if (varHM.containsKey(s)) {
 				varHM.get(s).set(v);
-			} else {
+			//	E.info("Set local " + s + " " + v);
+ 			} else {
 				varHM.put(s, new DoublePointer(v));
 				E.warning("setLocals is assigning a value for varialbe '" + s + "' that wasn't previously known.");
 			}

@@ -12,24 +12,19 @@ public class SubstitutionBuilder extends BuilderElement {
 
 	 
 	RuntimeType runtimeType;
-	HashMap<String, DoublePointer> lpvals;
+	LocalValues lpvals;
  	
-	public SubstitutionBuilder(RuntimeType cb, HashMap<String, DoublePointer> lpv) {
+	public SubstitutionBuilder(RuntimeType rt, LocalValues lv) {
 		super(); 
-		runtimeType = cb;
-		lpvals = lpv;
-	 
+		this.runtimeType = rt;
+		this.lpvals = lv;
 	}
 	
 
 	
 	public StateInstance buildSubstitute(StateType origType) throws ContentError, ConnectionError, RuntimeError {
-  		
-		E.info("Substitution instantiation for " + origType);
 		
 		StateInstance ret = null;
-		
-		//String cnm = "instance_" + par.getChildCount();
 		
 		if (runtimeType instanceof StateType) {
 			StateType stateType = (StateType)runtimeType;
@@ -37,19 +32,10 @@ public class SubstitutionBuilder extends BuilderElement {
 			// sr.setParent(par);
 			
 			sr.setLocalValues(lpvals);
-			
-			
-			E.info("Add list child " + stateType.getTypeName() + " " + sr.getID());
-			
-			// par.addListChild(stateType.getTypeName(), sr.getID(), sr);
-//			par.addChild(cnm, sr);
 			ret = sr;
 		
 		} else {
-			E.missing("Time to build from a non state type: " + runtimeType);
-			//StateRunnable sr = runtimeType.newStateRunnable();
-			//sr.setParent(parent);
-			//parent.addChild(cnm, sr);
+			E.missing("Time to build a substitute from a non state type: " + runtimeType);
 		}
 		
 		return ret;
