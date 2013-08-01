@@ -67,8 +67,9 @@ public class PointResponse {
 			 
 			 ParseTree pt = sa.getParseTree();
 			 
-			 DoubleEvaluator dase = pt.makeFloatFixedEvaluator(fixedHM); 
+			 //DoubleEvaluator dase = pt.makeFloatFixedEvaluator(fixedHM); 
 			 
+			 DoubleEvaluator dase = pt.makeFloatEvaluator(); 
 			 ret.addAssignment(sa.getStateVariable().getName(), dase);
 		 } 
 		 for (EventOut eout : eventOuts) {

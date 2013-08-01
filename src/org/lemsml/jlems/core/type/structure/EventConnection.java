@@ -1,4 +1,4 @@
-package org.lemsml.jlems.core.type.dynamics;
+package org.lemsml.jlems.core.type.structure;
 
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
@@ -12,8 +12,6 @@ import org.lemsml.jlems.core.type.Dimension;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.LemsCollection;
 import org.lemsml.jlems.core.type.ParamValue;
-import org.lemsml.jlems.core.type.structure.Assign;
-import org.lemsml.jlems.core.type.structure.BuildElement;
 
 public class EventConnection extends BuildElement {
 

@@ -387,8 +387,9 @@ public class Dynamics  {
 		 
 		 for (DerivedVariable dv : derivedVariables) {
 			 if (dv.hasExpression()) {
-		 			 
-				 DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
+				 
+				 DoubleEvaluator db = dv.getParseTree().makeFloatEvaluator();
+				 //DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
 				 
 				 ret.addExpressionDerived(dv.getName(), db);
              	 
@@ -405,8 +406,8 @@ public class Dynamics  {
 		 
 		 
 		 for (ConditionalDerivedVariable cdv : conditionalDerivedVariables) {
-			 DoubleEvaluator db = cdv.makeFloatFixedEvaluator(fixedHM);
-				 
+			 // DoubleEvaluator db = cdv.makeFloatFixedEvaluator(fixedHM);
+			 DoubleEvaluator db = cdv.makeFloatEvaluator();
 			 ret.addExpressionDerived(cdv.getName(), db);
              	 
 			 
@@ -556,18 +557,21 @@ public class Dynamics  {
 	  
 		
 		for (DerivedVariable dv : derivedVariables) {
-			try {
-				dimHM.put(dv.getName(), dv.getDimensionality(dimHM));
-			} catch (ContentError ce) {
-				E.error("checking " + dv + " in " + r_type + " " + ce.getMessage());
+			
+			HashMap<String, Dimensional> wkHM = dimHM;
+			if (dv.over != null) {
+				wkHM = new HashMap<String, Dimensional>();
+				wkHM.putAll(dimHM);
+				
+				ComponentType wkType = r_type.getScopeType(dv.over);
+				wkHM.putAll(wkType.getExposedDimensions());
 			}
+			
+			dimHM.put(dv.getName(), dv.getDimensionality(wkHM));
 		}
-		for (ConditionalDerivedVariable dv : conditionalDerivedVariables) {
-			try {
-				dimHM.put(dv.getName(), dv.getDimensionality(dimHM));
-			} catch (ContentError ce) {
-				E.error("checking " + dv + " in " + r_type + " " + ce.getMessage());
-			}
+		
+		for (ConditionalDerivedVariable dv : conditionalDerivedVariables) { 
+			dimHM.put(dv.getName(), dv.getDimensionality(dimHM));
 		}
 		
 		for (TimeDerivative td : timeDerivatives) {

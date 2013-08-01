@@ -1,23 +1,15 @@
 package org.lemsml.jlems.core.type.structure;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.BuilderElement;
-import org.lemsml.jlems.core.run.DoublePointer;
 import org.lemsml.jlems.core.run.LocalValues;
-import org.lemsml.jlems.core.run.SubstitutionBuilder;
 import org.lemsml.jlems.core.run.RuntimeType;
-import org.lemsml.jlems.core.run.SingleChildBuilder;
-import org.lemsml.jlems.core.run.StateType;
+import org.lemsml.jlems.core.run.SubstitutionBuilder;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.LemsCollection;
-import org.lemsml.jlems.core.type.LocalParameterValue;
 import org.lemsml.jlems.core.type.LocalParameters;
 
 public class Instance extends BuildElement {
@@ -26,8 +18,8 @@ public class Instance extends BuildElement {
 	public String localParameters;
 	public LocalParameters r_localParameters;
 	
-	public String component;
-	public Component r_component;
+	public String componentReference;
+	public Component r_componentReference;
 	 
 	
 	public LemsCollection<Assign> assigns = new LemsCollection<Assign>();
@@ -48,13 +40,13 @@ public class Instance extends BuildElement {
             RuntimeType cb = null;
             
             
-            if (component != null) {
+            if (componentReference != null) {
                 Component c = null;
-                if (component.startsWith("../")) {
-                    String newPath = component.substring(3);
+                if (componentReference.startsWith("../")) {
+                    String newPath = componentReference.substring(3);
                     c = cpt.getParent().getChild(newPath);
                 } else {
-                    c = cpt.getChild(component);
+                    c = cpt.getChild(componentReference);
                 }
                 cb = c.getRuntimeType();
                 

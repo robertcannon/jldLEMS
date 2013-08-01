@@ -160,13 +160,9 @@ public class Lems {
 
         HashMap<String, Dimensional> cdimHM = getConstantDimHM();
         for (ComponentType t : componentTypes) {
-            try {
-                t.checkEquations(cdimHM);
-            } catch (ContentError ce) {
-                throw new ParseError("Error checking equations of ComponentType: " + t
-                        + "\n(" + ce.getMessage() + ")", ce);
-
-            }
+          
+        	t.checkEquations(cdimHM);
+           
         }
         resolved = true;
     }

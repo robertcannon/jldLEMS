@@ -18,6 +18,7 @@ import org.lemsml.jlems.core.type.Dimension;
 import org.lemsml.jlems.core.type.EventPort;
 import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.Fixed;
+import org.lemsml.jlems.core.type.IndexParameter;
 import org.lemsml.jlems.core.type.Insertion;
 import org.lemsml.jlems.core.type.LocalParameters;
  
@@ -41,7 +42,6 @@ import org.lemsml.jlems.core.type.dynamics.DerivedScalarField;
 import org.lemsml.jlems.core.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.Equilibrium;
-import org.lemsml.jlems.core.type.dynamics.EventConnection;
 import org.lemsml.jlems.core.type.dynamics.EventOut;
 import org.lemsml.jlems.core.type.dynamics.KineticScheme;
 import org.lemsml.jlems.core.type.dynamics.OnCondition;
@@ -75,12 +75,14 @@ import org.lemsml.jlems.core.type.structure.Assign;
 import org.lemsml.jlems.core.type.structure.ChildInstance;
 import org.lemsml.jlems.core.type.structure.Choose;
 import org.lemsml.jlems.core.type.structure.CoInstantiate;
+import org.lemsml.jlems.core.type.structure.EventConnection;
 import org.lemsml.jlems.core.type.structure.ForEach;
 import org.lemsml.jlems.core.type.structure.Gather;
 import org.lemsml.jlems.core.type.structure.GatherPairs;
 import org.lemsml.jlems.core.type.structure.If;
 import org.lemsml.jlems.core.type.structure.IncludePair;
 import org.lemsml.jlems.core.type.structure.Instance;
+import org.lemsml.jlems.core.type.structure.Tunnel;
  
 import org.lemsml.jlems.core.type.structure.MultiInstantiate;
 import org.lemsml.jlems.core.type.structure.PairFilter;
@@ -191,6 +193,7 @@ public final class LemsClasses {
 	 	ret.add(new LemsClass(ChildInstance.class, section));	
 	 	ret.add(new LemsClass(ForEach.class, section));
 	 	ret.add(new LemsClass(EventConnection.class, section));
+	 	ret.add(new LemsClass(Tunnel.class, section));
 		ret.add(new LemsClass(PairsEventConnection.class, section));
 		ret.add(new LemsClass(PairFilter.class, section));
 		ret.add(new LemsClass(IncludePair.class, section));
@@ -229,6 +232,7 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Attachments.class, section));
  		ret.add(new LemsClass(Insertion.class, section));
 		ret.add(new LemsClass(IntegerParameter.class, section));
+		ret.add(new LemsClass(IndexParameter.class, section));
 		ret.add(new LemsClass(About.class, section));
 		ret.add(new LemsClass(Meta.class, section));
 		 

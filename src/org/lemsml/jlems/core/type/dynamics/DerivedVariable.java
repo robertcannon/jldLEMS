@@ -28,6 +28,16 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	@ModelProperty(info="")
 	public String select;
 	 	
+	
+	@ModelProperty(info="Optional path to a list or instance relative to which this variable should be " +
+			"evaluated. If a list is specified, then the 'reduce' attribute must also be set. The path or " +
+			"expression is evaluated for each instance in the 'over' path. The final result is either the sum " +
+			"or the product of these values according to the reduce settings. Note that there is some overlap " +
+			"between paths containing wildcards and the 'over' attribute. the over attribute is somewhat more " +
+			"flexible since it allows an expression to be evaluated on each target instance.")
+	public String over;
+	
+	
 	@ModelProperty(info="")
 	public String dimension;
 	public Dimension r_dimension;

@@ -2,6 +2,7 @@ package org.lemsml.jlems.core.type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.annotation.ModelProperty;
@@ -989,6 +990,35 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public String getLocalParametersName() {
 		LocalParameters lp0 = localParameterss.get(0);
 		String ret = lp0.getName();
+		return ret;
+	}
+
+	public Map<String, Dimensional> getExposedDimensions() {
+		HashMap<String, Dimensional> ret = new HashMap<String, Dimensional>();
+		for (Exposure e : exposures) {
+			ret.put(e.getName(), e.getDimension());
+		}
+		for (Requirement r : getRequirements()) {
+			ret.put(r.getName(),  r.getDimension());
+		}
+		return ret;
+	}
+
+	
+	public ComponentType getScopeType(String over) throws ContentError {
+		ComponentType ret = null;
+		if (childrens.hasName(over)) {
+			ret = childrens.getByName(over).getComponentType();
+			
+		} else if (childs.hasName(over)) {
+			ret = childs.getByName(over).getComponentType();
+
+		} else if (attachmentses.hasName(over)) {
+			ret = attachmentses.getByName(over).getComponentType();
+			
+		} else {
+			throw new ContentError("Not such element '" + over + "' in " + this);
+		}
 		return ret;
 	}
 	

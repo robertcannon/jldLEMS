@@ -41,14 +41,20 @@
     <Parameter name="leakReversal" dimension="voltage"/>
     <Parameter name="deltaV" dimension="voltage"/>
 
-	<Parameter name="unused" dimension="none"/>
+	<Attachments name="gapJunctions" type="GapJunction"/>
+
 
     <EventPort name="spikes-in" direction="in"/>
     <Exposure name="v" dimension="voltage"/>
+    
+    
 
     <Dynamics>
        <StateVariable name="v" exposure="v" dimension="voltage"/>
-       <TimeDerivative variable="v" value="leakConductance * (leakReversal - v) / capacitance"/>
+       
+       <DerivedVariable name="Igj" over="gapJunctions" value="g * (peer.v - v)" reduce="add"/>
+       
+       <TimeDerivative variable="v" value="leakConductance * (leakReversal - v) / capacitance + Igj / capictance"/>
              
        <OnEvent port="spikes-in">
             <StateAssignment variable="v" value="v + deltaV"/>
@@ -95,6 +101,8 @@
     <Children name="populations" type="Population"/>
     <Children name="instancePopulations" type="InstancePopulation"/>
     <Children name="connectivities" type="EventConnectivity"/>
+	<Children name="excon" type="ExplicitConnectivity"/>
+	<Children name="eleccon" type="ElectricalConnections"/>
 </ComponentType>
 
 
@@ -127,17 +135,36 @@
  
 
 
+<ComponentType name="ExplicitConnectivity">
+    <ComponentReference name="source" type="Population" local="true"/>
+    <ComponentReference name="target" type="Population" local="true"/>
+    <Children name="Connections" type="SingleEventConnection"/>
+</ComponentType>
+
+
+<ComponentType name="SingleEventConnection">
+	<IndexParameter name="sourceIndex"/>
+	<IndexParameter name="targetIndex"/>
+	<Structure>
+		<With list="../source" index="sourceIndex" as="a"/>
+		<With list="../target" index="targetIndex" as="b"/>
+		<EventConnection from="a" to="b"/>
+	</Structure>
+</ComponentType>
+
+
+
+
+
+<ComponentType name="ConnectionPattern"/>
+
 
 <ComponentType name="EventConnectivity">
     <ComponentReference name="source" type="Population" local="true"/>
     <ComponentReference name="target" type="Population" local="true"/>
     <Child name="Connections" type="ConnectionPattern"/>
 </ComponentType>
-
-<ComponentType name="ConnectionPattern"/>
-
-
-
+ 
 <ComponentType name="AllAll" extends="ConnectionPattern">
    	<Structure>
             <ForEach instances="../source" as="a">
@@ -149,6 +176,36 @@
        
 </ComponentType>
   
+
+
+
+<ComponentType name="ElectricalConnections">
+    <ComponentReference name="source" type="Population" local="true"/>
+    <ComponentReference name="target" type="Population" local="true"/>
+    <Children name="connections" type="GapJunction"/>
+</ComponentType>
+
+
+
+<ComponentType name="GapJunction">
+	<Parameter name="g" dimension="conductance" exposure="g"/>
+	<IndexParameter name="sourceIndex"/>
+	<IndexParameter name="targetIndex"/>
+	<Exposure name="g" dimension="conductance"/>
+	<Requirement name="v" dimension="voltage"/>
+	<Structure>
+		<With list="../source" index="sourceIndex" as="a"/>
+		<With list="../target" index="targetIndex" as="b"/>
+		<Tunnel name="peer" from="a" to="b" expose="v"/>
+	</Structure>
+	
+
+</ComponentType>
+
+
+
+
+
 
 <Component id="celltype_c" type="iaf3" leakConductance="3 pS" refractoryPeriod="3 ms" threshold="45 mV"
 leakReversal="-50 mV" deltaV="5mV" capacitance="1uF"/>
@@ -166,25 +223,23 @@ refractoryPeriod="4ms" capacitance="1pF"/>
 
 <Network id="net1">
     <Population id="p1" component="gen1" size="1"/>
-    <Population id="p2" component="gen2" size="1"/>
     <InstancePopulation id="p3">
     	<Instance of="iaf3cpt" leakConductance="14 pS"  deltaV = "10mV"/>
-    	<Instance of="iaf3cpt" leakConductance="25 pS"  deltaV = "15mV"/>
-    	<Instance of="iaf3cpt" leakConductance="36 pS"  deltaV = "20mV"/>
-    	<Instance of="iaf3cpt" leakConductance="47 pS"  deltaV = "25mV"/>
+    	<Instance of="iaf3cpt" leakConductance="14 pS"  deltaV = "10mV"/>
     </InstancePopulation>
      
-     
-     <InstancePopulation id="p4" component="iaf3cpt">
-    	<Instance leakConductance="8 pS"  deltaV = "10mV"/>
-    	<Instance leakConductance="9 pS"  deltaV = "10mV"/>
-    </InstancePopulation>
-    	
-    	
-    <EventConnectivity id="p1-p3" source="p1" target="p3">
-        <Connections type="AllAll"/>
-    </EventConnectivity>
+      
+     	
+    <ExplicitConnectivity id="p1-p3" source="p1" target="p3">
+        <SingleEventConnection sourceIndex="0" targetIndex="0"/>
+    </ExplicitConnectivity>
+    
+    <ElectricalConnections source="p3" target="p3">
+    	<GapJunction sourceIndex="0" targetIndex="0" g="4pS"/>
+    </ElectricalConnections>
+    
 </Network>
+
 
 <Include file="MultiRunSimulation.xml"/>
 
