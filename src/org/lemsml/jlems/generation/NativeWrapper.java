@@ -29,8 +29,7 @@ public class NativeWrapper implements StateRunnable {
 		nativeType = nt;
 	}
 
-	
-	
+
 
 	@Override
 	public void advance(StateRunnable parent, double t, double dt) throws RuntimeError, ContentError {
@@ -303,6 +302,31 @@ public class NativeWrapper implements StateRunnable {
 	public MultiInstance getSingleMI() {
 		E.missing("Native wrapper");
 		return null;
+	}
+
+
+
+
+	@Override
+	public void setList(String childrenName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public String getChildSummary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public boolean isBuilt() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

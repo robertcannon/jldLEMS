@@ -10,6 +10,7 @@ import org.lemsml.jlems.core.type.Children;
 import org.lemsml.jlems.core.type.Collection;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentReference;
+import org.lemsml.jlems.core.type.ComponentRequirement;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.ComponentTypeReference;
 import org.lemsml.jlems.core.type.Constant;
@@ -20,6 +21,7 @@ import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.Fixed;
 import org.lemsml.jlems.core.type.IndexParameter;
 import org.lemsml.jlems.core.type.Insertion;
+import org.lemsml.jlems.core.type.InstanceRequirement;
 import org.lemsml.jlems.core.type.LocalParameters;
  
 import org.lemsml.jlems.core.type.IntegerParameter;
@@ -82,6 +84,7 @@ import org.lemsml.jlems.core.type.structure.GatherPairs;
 import org.lemsml.jlems.core.type.structure.If;
 import org.lemsml.jlems.core.type.structure.IncludePair;
 import org.lemsml.jlems.core.type.structure.Instance;
+import org.lemsml.jlems.core.type.structure.MultiInstance;
 import org.lemsml.jlems.core.type.structure.Tunnel;
  
 import org.lemsml.jlems.core.type.structure.MultiInstantiate;
@@ -188,6 +191,7 @@ public final class LemsClasses {
 		ret.add(new LemsClass(MultiInstantiate.class, section));
 		ret.add(new LemsClass(CoInstantiate.class, section));
 		ret.add(new LemsClass(Instance.class, section));
+		ret.add(new LemsClass(MultiInstance.class, section));
 		ret.add(new LemsClass(Assign.class, section));
 		ret.add(new LemsClass(Choose.class, section));
 	 	ret.add(new LemsClass(ChildInstance.class, section));	
@@ -219,6 +223,8 @@ public final class LemsClasses {
 		ret.add(new LemsClass(DerivedParameter.class, section));
 		ret.add(new LemsClass(Fixed.class, section));
 		ret.add(new LemsClass(Requirement.class, section));
+		ret.add(new LemsClass(ComponentRequirement.class, section));
+		ret.add(new LemsClass(InstanceRequirement.class, section));	
 		ret.add(new LemsClass(Exposure.class, section));
 		ret.add(new LemsClass(Child.class, section));
 		ret.add(new LemsClass(Children.class, section));

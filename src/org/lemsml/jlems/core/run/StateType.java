@@ -358,6 +358,7 @@ public class StateType implements RuntimeType {
             	if (!varHM.containsKey(edv.varname)) {
             		throw new ContentError("No such ed variable " + edv.varname + " in variables map: " + varHM);
             	}
+           
             	double val = edv.evalptr(varHM);
             	checkNaN(val, edv.toString(), varHM);
                 varHM.get(edv.varname).set(val);

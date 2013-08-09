@@ -36,14 +36,15 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
   		StateRunnable sf = sihm.get(from);
 		StateRunnable st = sihm.get(to);
 		
-	
+		E.info("ec pb " + from + " " + to + " " + sf + " to " + st);  
+		
+		
 		if (sf == null) {
 			sf = base.getChild(from);
 		}
 		if (st == null) {
 			st = base.getChild(to);
 		}
-		
 		
 		if (sf == null) {
 			throw new ConnectionError("The source state instance is null when getting " + from + " on " + base);
@@ -57,98 +58,54 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
 	 	
 		HashMap<String, DoublePointer> baseHM = base.getVariables();
 
-		if (receiverCB != null) {
-			StateInstance rsi = (StateInstance)(receiverCB.newInstance());
-
-            for (ExpressionDerivedVariable edv: edvAL) {
-			    //   E.info("Evaluating " + edv + " using "+ baseHM);
-            		try {
-					double d = edv.evalptr(baseHM);
-					
-					String vnm = edv.getVariableName();
-					rsi.setNewVariable(vnm, d);
-					//E.info("Set new var " + vnm + " " + d);
-            		} catch (RuntimeError re) {
-            			throw new ConnectionError(re);
-            		}
-			}
-
-			InPort inPort = null;
-            if (targetPortId!=null) {
-                inPort = rsi.getInPort(targetPortId);
-            } else {
-                inPort = rsi.getFirstInPort();
-            }
-			if (inPort == null) {
-				E.error("No input port ("+targetPortId+") on " + rsi);
-			}
-
-            OutPort op = null;
-            if (sourcePortId!=null) {
-                op = sf.getOutPort(sourcePortId);
-            } else {
-                op = sf.getFirstOutPort();
-            }
-			if (inPort == null) {
-				E.error("No input port ("+sourcePortId+") on " + st);
-			}
-
-			op.connectTo(inPort, delay, EventManager.getInstance());
-			st.addAttachment(destAttachments, rsi);
-			
-		} else {
-			InPort inPort = null;
-            if (targetPortId != null) {
-                inPort = st.getInPort(targetPortId);
-            }
-            else {
-                inPort = st.getFirstInPort();
-            }
-			if (inPort == null) {
-				E.error("No input port ("+targetPortId+") on " + st);
-			}
-
-            OutPort op = null;
-            if (sourcePortId != null) {
-                op = sf.getOutPort(sourcePortId);
-            } else {
-                op = sf.getFirstOutPort();
-            }
-			if (inPort == null) {
-				E.error("No input port ("+sourcePortId+") on " + st);
-			}
-
-			
-			for (ExpressionDerivedVariable edv: edvAL) {
-				//   E.info("Evaluating " + edv + " using "+ baseHM);
-				try {
-					double d = edv.evalptr(baseHM);
-					String vnm = edv.getVariableName();
-					st.setNewVariable(vnm, d);
-					//E.info("Set new var " + vnm + " " + d);
-				} catch (RuntimeError re) {
-					throw new ConnectionError(re);
-				}
-			}
 		
-			if (op == null) {
-				E.error("Event connection: no connection made from " + from + " to " + to + 
-						" (" + sourcePortId + ", " + targetPortId + ")");
-			} else {
-				op.connectTo(inPort, delay, EventManager.getInstance());
-			}
+		StateRunnable tgtInstance = st;
+	 
+		if (receiverCB != null) {
+			StateInstance tgtsi = (StateInstance)(receiverCB.newInstance());
+			st.addAttachment(destAttachments, tgtsi);
+			tgtInstance = tgtsi;
 		}
+			
+        for (ExpressionDerivedVariable edv: edvAL) {
+			    //   E.info("Evaluating " + edv + " using "+ baseHM);
+        	try {
+        		double d = edv.evalptr(baseHM);
+					
+        		String vnm = edv.getVariableName();
+				tgtInstance.setNewVariable(vnm, d);
+					//E.info("Set new var " + vnm + " " + d);
+        	} catch (RuntimeError re) {
+        		throw new ConnectionError(re);
+        	}
+		}
+
+        InPort inPort = null;
+        if (targetPortId != null) {
+        	inPort = tgtInstance.getInPort(targetPortId);
+        } else {
+        	inPort = tgtInstance.getFirstInPort();
+        }
+       
+
+        OutPort op = null;
+        if (sourcePortId != null) {
+        	op = sf.getOutPort(sourcePortId);
+        } else {
+        	op = sf.getFirstOutPort();
+        }
+        op.connectTo(inPort, delay, EventManager.getInstance());
 	}
 
 	 
-	public void setSourcePortID(String sourcePort) {
-		this.sourcePortId = sourcePort;
+	public void setSourcePortID(String sp) {
+		this.sourcePortId = sp;
 		
 	}
 
 
-	public void setTargetPortID(String targetPort) {
-		this.targetPortId = targetPort;
+	public void setTargetPortID(String tp) {
+		this.targetPortId = tp;
 		
 	}
 

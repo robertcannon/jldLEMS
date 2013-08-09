@@ -30,7 +30,10 @@ public class Builder {
 	
  
 
-	public void add(BuilderElement be) {
+	public void add(BuilderElement be) throws ContentError {
+		if (be == null) {
+			throw new ContentError("Adding a null builder");
+		}
 		builderElements.add(be);
 	}
  

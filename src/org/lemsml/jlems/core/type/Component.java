@@ -878,6 +878,26 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return ret;
 	}
 	
+	
+	public boolean hasStringValue(String sn) {
+		boolean ret = false;
+		if (refHM.containsKey(sn)) {
+			ret = true;
+		} else if (childHM.containsKey(sn)) {
+			ret = true;
+		} else {
+			try {
+				if(attributes.hasName(sn)) {
+					ret = true;
+				}
+			} catch (ContentError ce) {
+				// shouldn't throw error from hasName 
+			}
+		}
+		return ret;
+	}
+	
+	
 	public String getStringValue(String sn) throws ContentError {
 		String ret = null;
 
@@ -894,7 +914,6 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			ret = attributes.getByName(sn).getValue();
 
 		} else {
-			(new Exception()).printStackTrace();
 			throw new ContentError("No such field '"
                     + sn + "' in " + this + "\n" + details(""));
 		}
@@ -904,7 +923,8 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		if (att != null && att.getValue().equals(ret)) {
 			// all well
 		} else {
-			throw new ContentError("Get string value ("+sn+") mismatch on component ref "+this);
+			throw new ContentError("Mismatched attribute '" + sn + "' got '" + ret
+					+ "' but value is '" + att.getValue() + "'"); 
 		}
 		return ret;
 	}

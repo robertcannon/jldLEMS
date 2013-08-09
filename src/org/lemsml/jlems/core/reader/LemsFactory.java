@@ -55,6 +55,10 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildFixed(xel);
         } else if (tag.equals("Requirement")) {
             ret = buildRequirement(xel);
+        } else if (tag.equals("ComponentRequirement")) {
+            ret = buildComponentRequirement(xel);
+        } else if (tag.equals("InstanceRequirement")) {
+            ret = buildInstanceRequirement(xel);
         } else if (tag.equals("Exposure")) {
             ret = buildExposure(xel);
         } else if (tag.equals("Child")) {
@@ -135,6 +139,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildCoInstantiate(xel);
         } else if (tag.equals("Instance")) {
             ret = buildInstance(xel);
+        } else if (tag.equals("MultiInstance")) {
+            ret = buildMultiInstance(xel);
         } else if (tag.equals("Assign")) {
             ret = buildAssign(xel);
         } else if (tag.equals("Choose")) {
@@ -470,6 +476,8 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Parameter) {
                 ret.parameters.add((Parameter)obj);
+            } else if (obj instanceof IndexParameter) {
+                ret.indexParameters.add((IndexParameter)obj);
             } else if (obj instanceof DerivedParameter) {
                 ret.derivedParameters.add((DerivedParameter)obj);
             } else if (obj instanceof PathParameter) {
@@ -478,6 +486,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.localParameterss.add((LocalParameters)obj);
             } else if (obj instanceof Requirement) {
                 ret.requirements.add((Requirement)obj);
+            } else if (obj instanceof ComponentRequirement) {
+                ret.componentRequirements.add((ComponentRequirement)obj);
             } else if (obj instanceof Exposure) {
                 ret.exposures.add((Exposure)obj);
             } else if (obj instanceof Child) {
@@ -677,6 +687,48 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else if (xn.equals("dimension")) {
                 ret.dimension = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private ComponentRequirement buildComponentRequirement(XMLElement xel) {
+        ComponentRequirement ret = new ComponentRequirement();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private InstanceRequirement buildInstanceRequirement(XMLElement xel) {
+        InstanceRequirement ret = new InstanceRequirement();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {
@@ -1776,6 +1828,38 @@ public class LemsFactory extends AbstractLemsFactory {
         return ret;
     }
 
+    private MultiInstance buildMultiInstance(XMLElement xel) {
+        MultiInstance ret = new MultiInstance();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("children")) {
+                ret.children = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof BuildElement) {
+                ret.buildElements.add((BuildElement)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
     private Assign buildAssign(XMLElement xel) {
         Assign ret = new Assign();
 
@@ -1953,20 +2037,16 @@ public class LemsFactory extends AbstractLemsFactory {
             String xv = xa.getValue();
 
             if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
             } else if (xn.equals("from")) {
                 ret.from = parseString(xv);
             } else if (xn.equals("to")) {
                 ret.to = parseString(xv);
-            } else if (xn.equals("delay")) {
-                ret.delay = parseString(xv);
-            } else if (xn.equals("receiver")) {
-                ret.receiver = parseString(xv);
-            } else if (xn.equals("receiverContainer")) {
-                ret.receiverContainer = parseString(xv);
-            } else if (xn.equals("sourcePort")) {
-                ret.sourcePort = parseString(xv);
-            } else if (xn.equals("targetPort")) {
-                ret.targetPort = parseString(xv);
+            } else if (xn.equals("expose")) {
+                ret.expose = parseString(xv);
+            } else if (xn.equals("as")) {
+                ret.as = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }
@@ -1978,8 +2058,6 @@ public class LemsFactory extends AbstractLemsFactory {
 
             Object obj = instantiateFromXMLElement(cel);
             if (xn.equals("UNUSED")) {
-            } else if (obj instanceof Assign) {
-                ret.assigns.add((Assign)obj);
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
             } else {
@@ -2105,6 +2183,10 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (xn.equals("instance")) {
                 ret.instance = parseString(xv);
+            } else if (xn.equals("list")) {
+                ret.list = parseString(xv);
+            } else if (xn.equals("index")) {
+                ret.index = parseString(xv);
             } else if (xn.equals("as")) {
                 ret.as = parseString(xv);
             } else {

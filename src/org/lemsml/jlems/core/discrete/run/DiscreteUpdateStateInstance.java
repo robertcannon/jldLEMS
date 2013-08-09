@@ -239,4 +239,22 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 		return null;
 	}
 
+	@Override
+	public void setList(String childrenName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getChildSummary() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isBuilt() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }

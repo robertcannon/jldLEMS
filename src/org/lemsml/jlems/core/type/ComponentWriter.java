@@ -25,7 +25,7 @@ public final class ComponentWriter {
 			for (ParamValue pv : paramValues) {
 				String si = "SI ";
 				if (pv.getDimensionName() == null) {
-					si = "???";
+					si = "(unknown dimensionality)";
 				} else if (pv.getDimensionName().equals(Dimension.NO_DIMENSION)) {
 					si = "";
 				}
@@ -53,7 +53,7 @@ public final class ComponentWriter {
 			for (ParamValue pv : paramValues) {
 				String si = "SI ";
 				if (pv.getDimensionName() == null) {
-					si = "???";
+					si = "unknown dimensionality";
 				} else if (pv.getDimensionName().equals(Dimension.NO_DIMENSION)) {
 					si = "";
 				}
@@ -106,7 +106,7 @@ public final class ComponentWriter {
         }
 
 
-		sb.append(indent+"---------------------------------------------");
+		sb.append(indent+"---");
 
 		return sb.toString();
 	}

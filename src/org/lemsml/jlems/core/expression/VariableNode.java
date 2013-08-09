@@ -62,13 +62,23 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
 		return ret;
 	}
 
-	 
+	
+	private String renderMap(HashMap<String, Dimensional> dimHM) {
+		String ret = "\n";
+		for (String s : dimHM.keySet()) {
+			ret += s + ": " + dimHM.get(s) + "\n";
+		}
+		return ret;
+	}
+	
+	
 	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError {
 		Dimensional ret = null;
 		if (dimHM.containsKey(svar)) {
 			ret = dimHM.get(svar);
 		} else {
-			throw new ContentError("No such variable in map: " + svar);
+			throw new ContentError("No such variable '" + svar + 
+					"' when getting dimensionality for " + this + renderMap(dimHM));
 		}
 		return ret;
 	}

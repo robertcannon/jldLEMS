@@ -197,8 +197,10 @@ public class LemsFactoryGenerator {
  		
 		File f = new File("src/org/lemsml/jlems/core/reader/LemsFactory.java");
 	 
-			FileUtil.writeStringToFile(txt, f);
-			E.info("Written " + f.getAbsolutePath());
+		// E.info("About to write " + f.getAbsolutePath() + " local "+ (new File("")).getAbsolutePath());
+		
+		FileUtil.writeStringToFile(txt, f);
+		E.info("Written " + f.getAbsolutePath());
 		 
 	}
 

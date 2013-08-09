@@ -55,7 +55,7 @@ public class EventConnection extends BuildElement {
 		}
 		//System.out.println("cpt: "+cpt+", atr: "+cpt.attributes);
               
-		if (receiver != null && cpt.getRelativeComponent(receiver)!=null) {
+		if (receiver != null) {
 			Component receiverComponent = cpt.getRelativeComponent(receiver);
             //E.info("EventConnection, receiver: ["+receiver+"] resolved to: ["+receiverComponent+"]");
 			ret.setReceiverStateType(receiverComponent.getStateType());
