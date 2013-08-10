@@ -329,4 +329,13 @@ public class NativeWrapper implements StateRunnable {
 		return true;
 	}
 
+
+
+	@Override
+	public void addAttachment(StateInstance rsi) throws ConnectionError,
+			ContentError, RuntimeError {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

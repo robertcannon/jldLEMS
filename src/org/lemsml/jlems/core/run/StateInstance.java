@@ -70,6 +70,8 @@ public class StateInstance implements StateRunnable {
 	String listName;
 	
 	
+	private String rcName = null;
+	
 	// EventManager eventManager;
 	
 	
@@ -234,6 +236,7 @@ public class StateInstance implements StateRunnable {
 		
 		currentTime = t;
 
+		
 		if (!initialized) {
 			this.initialize(parent);
 		}
@@ -566,6 +569,8 @@ public class StateInstance implements StateRunnable {
 			if (!hasChildren) {
 				hasChildren = true;
 				childA = new ArrayList<StateRunnable>();
+			}
+			if (childHM == null) {
 				childHM = new HashMap<String, StateRunnable>();
 			}
 			childA.add(newInstance);
@@ -573,6 +578,14 @@ public class StateInstance implements StateRunnable {
 		}
 	}
 	
+	
+	public void addRefChild(String s, StateRunnable sr) {
+		rcName = s;
+		if (childHM == null) {
+			childHM = new HashMap<String, StateRunnable>();
+		}
+		childHM.put(s, sr);
+	}
 	
 	
 	// TODO - not sure we need type name tnm here?
@@ -844,7 +857,11 @@ public class StateInstance implements StateRunnable {
 		addMultiInstance(inas);
 
 	}
-
+	
+	public void addAttachment(StateInstance inst) throws ConnectionError, ContentError, RuntimeError {
+		addAttachment(null, inst);
+	}
+		
 	public void addAttachment(String s, StateInstance inst) throws ConnectionError, ContentError, RuntimeError {
 		String snm = s;
 		MultiInstance mi = null;

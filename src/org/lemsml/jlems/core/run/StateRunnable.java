@@ -81,6 +81,8 @@ public interface StateRunnable {
 
 	void addAttachment(String destAttachments, StateInstance rsi) throws ConnectionError, ContentError, RuntimeError;
 
+	void addAttachment(StateInstance rsi) throws ConnectionError, ContentError, RuntimeError;
+
 	MultiInstance getSingleMI();
 
 	void setList(String childrenName);

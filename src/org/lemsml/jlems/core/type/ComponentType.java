@@ -52,7 +52,8 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<ComponentRequirement> componentRequirements = new LemsCollection<ComponentRequirement>();
 
-	
+	public LemsCollection<InstanceRequirement> instanceRequirements = new LemsCollection<InstanceRequirement>();
+
 	
 	public LemsCollection<Exposure> exposures = new LemsCollection<Exposure>();
 

@@ -213,24 +213,21 @@
 
 
 <ComponentType name="GapJunctionConnection">
-	<Parameter name="g" dimension="conductance" exposure="g"/>
 	<IndexParameter name="sourceIndex"/>
 	<IndexParameter name="targetIndex"/>
 	
 	<ComponentRequirement name="sourceList"/>
 	<ComponentRequirement name="targetList"/>
 	
+	<ComponentReference name="connector" type="GapJunction"/>
+	
 	<Structure>
 		<With list="sourceList" index="sourceIndex" as="a"/>
 		<With list="targetList" index="targetIndex" as="b"/>
-		<Tunnel from="a" to="b" component="GapJunction"/>
+		<Tunnel name="peer" from="a" to="b" component="connector"/>
 	</Structure>
-	
-	 
+		 
 </ComponentType>
-
-
-
 
 
 
@@ -246,7 +243,7 @@ leakReversal="-50 mV" deltaV="5mV" capacitance="1uF"/>
 <Component id="iaf3cpt" type="iaf3" leakReversal="-50mV" deltaV="50mV" threshold="-30mV" leakConductance="50pS"
 refractoryPeriod="4ms" capacitance="1pF"/>
 
- 
+<GapJunction id="gj1" g="40pS"/>
 
 <Network id="net1">
     <Population id="p1" component="gen1" size="1"/>
@@ -264,7 +261,8 @@ refractoryPeriod="4ms" capacitance="1pF"/>
     </ExplicitConnectivity>
     
     <ElectricalConnections sourceList="p3" targetList="p3">
-    	<GapJunctionConnection sourceIndex="0" targetIndex="0" g="4pS"/>
+    	<GapJunctionConnection sourceIndex="0" targetIndex="1"
+    		connector="gj1"/>
     </ElectricalConnections>
     
 </Network>

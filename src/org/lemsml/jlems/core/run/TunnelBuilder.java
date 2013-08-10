@@ -11,15 +11,17 @@ public class TunnelBuilder extends AbstractPostBuilder {
 
 	String from;
 	String to;
-	String expose;
-	String as;
+	 
+	String tunnelName;
 	
-	public TunnelBuilder(String sf, String st, String exp, String a) {
+	StateType endStateType;
+	
+	public TunnelBuilder(String tnm, String sf, String st, StateType est) {
 		super();
+		tunnelName = tnm;
 		from = sf;
 		to = st;
-		expose = exp;
-		as = a;
+		endStateType = est;
 	}
 
 	 
@@ -27,7 +29,6 @@ public class TunnelBuilder extends AbstractPostBuilder {
   		StateRunnable sf = sihm.get(from);
 		StateRunnable st = sihm.get(to);
 		
-		E.missing(" time to build a tunnel:\n  " + sf + ";\n " + st + ";\n " + bc + ";\n " + base);
 	
 		if (sf == null) {
 			sf = base.getChild(from);
@@ -44,13 +45,28 @@ public class TunnelBuilder extends AbstractPostBuilder {
 			throw new ConnectionError("The target state instance is null when getting " + to + " on " + base);
 		}
 		
-        //E.info("postBuild for "+base+". from: "+from+" ("+sourcePortId+"), to: "+to+" ("+targetPortId+")");
-        //E.info("sihm: "+sihm);
-	 	
-		 
-		//	st.addAttachment(destAttachments, rsi);
-			
-	 
+		
+		StateInstance saf = endStateType.newInstance();
+		StateInstance sat = endStateType.newInstance();
+		
+		
+		StateInstance sab = (StateInstance)base;
+		// TODO - method in StateRunnable?
+		//((StateInstance)sf).addListChild(tunnelName, "", saf);
+		//((StateInstance)st).addListChild(tunnelName, "", sat);
+		
+		sf.addAttachment(saf);
+		st.addAttachment(sat);
+		
+		saf.checkBuilt();
+		sat.checkBuilt();
+		
+		sat.addRefChild(tunnelName, saf);
+		saf.addRefChild(tunnelName, sat);
+
+		E.info(" Built a tunnel  " + tunnelName + " " + sf + ", " + st + ", " + base +
+					" " + sf.hashCode() + " " +st.hashCode());
+		
 	}
 
   
@@ -62,4 +78,5 @@ public class TunnelBuilder extends AbstractPostBuilder {
 		 
 	}
 
+ 
 }

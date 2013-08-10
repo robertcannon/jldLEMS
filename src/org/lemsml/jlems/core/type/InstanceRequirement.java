@@ -13,6 +13,7 @@ public class InstanceRequirement implements Named {
     @ModelProperty(info = "name")
     public String name;
     
+    public String type;
     
     public String description;
  

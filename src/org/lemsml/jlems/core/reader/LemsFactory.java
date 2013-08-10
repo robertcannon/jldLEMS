@@ -488,6 +488,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.requirements.add((Requirement)obj);
             } else if (obj instanceof ComponentRequirement) {
                 ret.componentRequirements.add((ComponentRequirement)obj);
+            } else if (obj instanceof InstanceRequirement) {
+                ret.instanceRequirements.add((InstanceRequirement)obj);
             } else if (obj instanceof Exposure) {
                 ret.exposures.add((Exposure)obj);
             } else if (obj instanceof Child) {
@@ -729,6 +731,8 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
+            } else if (xn.equals("type")) {
+                ret.type = parseString(xv);
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {
@@ -2047,6 +2051,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.expose = parseString(xv);
             } else if (xn.equals("as")) {
                 ret.as = parseString(xv);
+            } else if (xn.equals("component")) {
+                ret.component = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }
