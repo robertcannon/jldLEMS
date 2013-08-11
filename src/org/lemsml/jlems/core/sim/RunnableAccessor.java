@@ -133,7 +133,7 @@ public class RunnableAccessor {
 		ArrayList<StateRunnable> ret = null;
 		
 		
-		E.info("Seeking path " + path + " rel to " + base);
+		//E.info("Seeking path " + path + " rel to " + base);
 		
 		String[] bits = path.split("/");
 		
@@ -144,7 +144,7 @@ public class RunnableAccessor {
 			int nup = 0;
 			while (true && nup < 10) {
 				wk = wk.getParent();
-				E.info("Seeking child " + b0 + " in " + wk + " built=" + wk.isBuilt());
+				//E.info("Seeking child " + b0 + " in " + wk + " built=" + wk.isBuilt());
 				nup += 1;
 				if (wk == null) {
 					break;
@@ -166,8 +166,6 @@ public class RunnableAccessor {
 				break;
 			}
 		}
-		E.info("got wk " + wk);
-		
 		
 		if (wk == null) {
 			throw new ConnectionError("cant find instances at " + path);
@@ -176,10 +174,10 @@ public class RunnableAccessor {
 			
 			StateInstance si = (StateInstance)wk;
 			if (si.isList()) {
-				E.info("IS a LIST " + si);
+				//E.info("IS a LIST " + si);
 				ret = si.getListItems();
 			} else {
-				E.info("NOT a list "  + si);
+				//E.info("NOT a list "  + si);
 				ret = new ArrayList<StateRunnable>();
 				ret.add((StateInstance)wk);
 			}

@@ -34,10 +34,7 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
 	 
 	public void postBuild(StateRunnable base, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
   		StateRunnable sf = sihm.get(from);
-		StateRunnable st = sihm.get(to);
-		
-		E.info("ec pb " + from + " " + to + " " + sf + " to " + st);  
-		
+		StateRunnable st = sihm.get(to);		
 		
 		if (sf == null) {
 			sf = base.getChild(from);

@@ -32,8 +32,6 @@ public class WithListItemBuilder extends AbstractPostBuilder {
        
         ArrayList<StateRunnable> srs = ra.getRelativeStateInstances(base.getParent(), listPath);
          
-        E.info("WLIB: " + listPath + " for var " +var +  " " + srs);
-        
         if (srs.size() > idx) {
         	sr = srs.get(idx);
         } else {
@@ -41,10 +39,7 @@ public class WithListItemBuilder extends AbstractPostBuilder {
         			" elements but With refers to item " + idx);
         }
         
-        //E.info("WithBuilder path "+path+" ( = "+var+") resolved to: "+sr);
-
-        E.info("wlib building list=" + srs + "  item=" + sr);
-        
+        //E.info("WithBuilder path "+path+" ( = "+var+") resolved to: "+sr);        
         siHM.put(var, (StateInstance) sr);
     }
 

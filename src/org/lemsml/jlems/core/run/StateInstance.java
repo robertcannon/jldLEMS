@@ -11,7 +11,7 @@ import org.lemsml.jlems.core.sim.ContentError;
 
 public class StateInstance implements StateRunnable {
 
-	StateType uclass;
+	StateType stateType;
 	String id;
 
 	// private HashMap<String, DoublePointer> localHM;
@@ -21,10 +21,10 @@ public class StateInstance implements StateRunnable {
 	private HashMap<String, DoublePointer> expHM;
 
 	// TODO only use these if there is more than one;
-	HashMap<String, InPort> inPortHM = new HashMap<String, InPort>();
-	HashMap<String, OutPort> outPortHM = new HashMap<String, OutPort>();
-	OutPort firstOut;
+	HashMap<String, InPort> inPortHM = null; 
+	HashMap<String, OutPort> outPortHM = null;
 	InPort firstIn;
+	OutPort firstOut;
 	boolean hasChildren = false;
 
 	ArrayList<StateRunnable> childA;
@@ -81,7 +81,7 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public StateInstance(StateType uc) {
-		uclass = uc;
+		stateType = uc;
 		id = uc.getComponentID();
 		String uct = uc.getTypeName();
 		if (uct.equals("Instance")) {
@@ -108,10 +108,10 @@ public class StateInstance implements StateRunnable {
 	@Override
 	public String toString() {
 		String ret = "";
-		if (uclass == null) {
+		if (stateType == null) {
 			ret = "Dumy state instance " + getID();
 		} else {
-			ret = uclass.getID() + "[" + uclass.getTypeName() + "]";
+			ret = stateType.getID() + "[" + stateType.getTypeName() + "]";
 		}
 		return ret;
 	}
@@ -119,7 +119,6 @@ public class StateInstance implements StateRunnable {
 	public void setList(String s) {
 		bList = true;
 		listName = s;
-		E.info("Set as list " + s + " " + this);
 		if (multiHM.containsKey(s)) {
 			E.info("Already has multi.");
 		} else {
@@ -139,7 +138,7 @@ public class StateInstance implements StateRunnable {
 	 
 	public void initialize(StateRunnable parent) throws RuntimeError, ContentError {
 		currentTime = 0;
-		uclass.initialize(this, parent, false);
+		stateType.initialize(this, parent, false);
 		if (debug) {
 			E.info("Post init " + this + " has vars: " + this.varHM + " and exps " + this.expHM);
 		}
@@ -161,7 +160,7 @@ public class StateInstance implements StateRunnable {
 			}
 		}
 
-		uclass.initialize(this, parent, true);
+		stateType.initialize(this, parent, true);
 		if (debug) {
 			E.info("Post CHILDREN init " + this + " has vars: " + this.varHM + " and exps " + this.expHM + "\n");
 		}
@@ -184,7 +183,7 @@ public class StateInstance implements StateRunnable {
 			}
 		}
 
-		uclass.initialize(this, parent, true);
+		stateType.initialize(this, parent, true);
 		if (debug) {
 			E.info("Post CHILDREN init " + this + " has vars: " + this.varHM + " and exps " + this.expHM + "\n");
 		}
@@ -216,7 +215,10 @@ public class StateInstance implements StateRunnable {
 				ksi.evaluate(this);
 			}
 		}
-		uclass.evaluate(this,  parent);
+		
+		
+		
+		stateType.evaluate(this,  parent);
 
 		if (hasRegimes) {
 			activeRegime.evaluate(this);
@@ -241,8 +243,8 @@ public class StateInstance implements StateRunnable {
 			this.initialize(parent);
 		}
 		
-		if (uclass.trackTime) {
-			uclass.startClock();
+		if (stateType.trackTime) {
+			stateType.startClock();
 		}
 
 		if (hasChildren) {
@@ -264,10 +266,10 @@ public class StateInstance implements StateRunnable {
 
 		if (RUN.method == RUN.RK4 || RUN.method == RUN.EULER) {
 
-			if (uclass.flattened && RUN.method == RUN.RK4) {
-				uclass.rk4Advance(this, parent, t, dt);
+			if (stateType.flattened && RUN.method == RUN.RK4) {
+				stateType.rk4Advance(this, parent, t, dt);
 			} else {
-				uclass.eulerAdvance(this, parent, t, dt);
+				stateType.eulerAdvance(this, parent, t, dt);
 			}
 		}
 
@@ -275,8 +277,8 @@ public class StateInstance implements StateRunnable {
 			activeRegime.advance(this, t, dt);
 		}
 		
-		if (uclass.trackTime) {
-			uclass.stopClock();
+		if (stateType.trackTime) {
+			stateType.stopClock();
 		}
 	}
 	
@@ -360,12 +362,16 @@ public class StateInstance implements StateRunnable {
 		InPort inp = new InPort(this, s, actionBlock);
 		if (firstIn == null) {
 			firstIn = inp;
+		}  
+		if (inPortHM == null) {
+			inPortHM = new HashMap<String, InPort>();
 		}
-		inPortHM.put(s, inp);
+		inPortHM.put(s, inp); 
 	}
 
+	
 	public void checkAddInputPort(String s) {
-		if (inPortHM.containsKey(s)) {
+		if (inPortHM != null && inPortHM.containsKey(s)) {
 			// fine - there's an action block for it already
 		} else {
 			// no action block, but we still need the port: presumably for an
@@ -379,6 +385,9 @@ public class StateInstance implements StateRunnable {
 		if (firstOut == null) {
 			firstOut = op;
 		}
+		if (outPortHM == null) {
+			outPortHM = new HashMap<String, OutPort>();
+		}
 		outPortHM.put(s, op);
 	}
 
@@ -387,7 +396,7 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public OutPort getOrMakeOutputPort(String s) {
-		if (outPortHM.containsKey(s)) {
+		if (outPortHM != null && outPortHM.containsKey(s)) {
 			// nothing more to do. This is called by regimes to connect to the
 			// main state instance ports
 		} else {
@@ -405,7 +414,7 @@ public class StateInstance implements StateRunnable {
 
 	public InPort getInPort(String portId) throws ConnectionError {
 		InPort ret = null;
-		if (inPortHM.containsKey(portId)) {
+		if (inPortHM != null && inPortHM.containsKey(portId)) {
 			ret = inPortHM.get(portId);
 		} else {
 			throw new ConnectionError("No such port '" + portId + "' on " + this);
@@ -523,11 +532,7 @@ public class StateInstance implements StateRunnable {
 		}
 	}
 
-	
-	public void printChildren() {
-		
-	}
-	
+	 
 	
 	
 	public String getChildSummary() {
@@ -595,9 +600,7 @@ public class StateInstance implements StateRunnable {
 		}
 		newInstance.setParent(this);
 		stateListChildren.add(new StateListChild(sid, newInstance));
-		
-		E.info("adding list child  " + tnm + " " + sid + " " + listName + " " + newInstance + " to " + this);
- 		
+		 		
 		if (!hasMulti) {		 
 			hasMulti = true;
 			multiA = new ArrayList<MultiInstance>();
@@ -636,7 +639,7 @@ public class StateInstance implements StateRunnable {
 		}
 	}
 	
-	// TODO - can delete?
+ 
 	private void addMultiInstance(MultiInstance mi) {
 //		String msg = ("adding mi " + mi + " to " + this);
 		
@@ -649,13 +652,7 @@ public class StateInstance implements StateRunnable {
 		multiHM.put(mi.getKnownAs(), mi);
 		mi.setParent(this);
 
-		if (onlyAMI == null) {
-			onlyAMI = mi;
-			singleAMI = true;
-		} else {
-			// no longer just one multi instance
-			singleAMI = false;
-		}
+		countMIs();
 	}
 
 	public StateRunnable getChildInstance(String snm) throws ContentError {
@@ -683,15 +680,6 @@ public class StateInstance implements StateRunnable {
 		if (!built) {
 			E.error("seeking child instance " + snm + " before state instance is built: " + this);
 		}
-		/*
-		try {
-			checkBuilt();
-		} catch (RuntimeError er) {
-			throw new ContentError("Can't build " + this, er);
-		} catch (ConnectionError er) {
-			throw new ContentError("Can't build " + this, er);
-		}
-			*/
 			
 		if (childHM != null && childHM.containsKey(snm)) {	
 			ret = true;
@@ -739,7 +727,7 @@ public class StateInstance implements StateRunnable {
 
 	public StateRunnable getPathStateInstance(String pth) throws ContentError {
 		if (!resolvedPaths) {
-			uclass.applyPathDerived(this);
+			stateType.applyPathDerived(this);
 		}
 		return pathSIHM.get(pth);
 	}
@@ -806,10 +794,10 @@ public class StateInstance implements StateRunnable {
 	        
 	        if (wkinst != null) {
 	        	if (lbit.equals("name")) {
-	        		ret = uclass.getComponentID();
+	        		ret = stateType.getComponentID();
 	        		
 	        	} else if (lbit.equals("id")) {
-	        		ret = uclass.getComponentID();
+	        		ret = stateType.getComponentID();
 	        		
 	        	} else {
 	        		ret= "" + Out.formatDouble(fac * wkinst.getVariable(lbit) - off);
@@ -842,7 +830,7 @@ public class StateInstance implements StateRunnable {
 	public ArrayList<StateRunnable> getPathStateArray(String pth) throws ContentError {
 		if (!resolvedPaths) {
 			// E.info("resolving psas in getPSA");
-			uclass.applyPathDerived(this);
+			stateType.applyPathDerived(this);
 		}
 
 		return pathAHM.get(pth);
@@ -929,7 +917,7 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public StateType getStateType() {
-		return uclass;
+		return stateType;
 	}
     
 	public OutPort getFirstOutPort() throws ConnectionError {
@@ -1024,7 +1012,7 @@ public class StateInstance implements StateRunnable {
 	public void checkBuilt() throws ConnectionError, ContentError, RuntimeError {
 		// E.info("building " + this);
  		if (!built) {
- 			uclass.build(this);
+ 			stateType.build(this);
 		}
 
 		if (childA != null) {
@@ -1209,11 +1197,11 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public String getTypeParam(String satt) throws ContentError {
-		return uclass.getPropertyStringValue(satt);
+		return stateType.getPropertyStringValue(satt);
 	}
 
 	public boolean hasTypeParam(String satt) {
-		return uclass.hasPropertyString(satt);
+		return stateType.hasPropertyString(satt);
 	}
 
 	public HashMap<String, MultiInstance> getMultiHM() {
@@ -1222,7 +1210,7 @@ public class StateInstance implements StateRunnable {
 
 	@Override
 	public Object getComponentID() {
-		return uclass.getComponentID();
+		return stateType.getComponentID();
 	}
 
 	
