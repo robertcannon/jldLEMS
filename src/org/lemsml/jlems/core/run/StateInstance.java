@@ -119,11 +119,6 @@ public class StateInstance implements StateRunnable {
 	public void setList(String s) {
 		bList = true;
 		listName = s;
-		if (multiHM.containsKey(s)) {
-			E.info("Already has multi.");
-		} else {
-			E.info("no such list");
-		}
 	}
 	
 	public boolean isList() {

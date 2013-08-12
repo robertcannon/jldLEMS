@@ -40,9 +40,7 @@
     <Parameter name="leakConductance" dimension="conductance"/>
     <Parameter name="leakReversal" dimension="voltage"/>
     <Parameter name="deltaV" dimension="voltage"/>
-
-	<Parameter name="unused" dimension="none"/>
-
+ 
     <EventPort name="spikes-in" direction="in"/>
     <Exposure name="v" dimension="voltage"/>
 

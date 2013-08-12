@@ -335,17 +335,23 @@ public class Dynamics  {
 	}
 	 
 
-	public StateType makeStateType(Component cpt, HashMap<String, Double> fixedHM) throws ContentError, ParseError {
+	public StateType makeStateType(Component cpt, HashMap<String, Double> fxdHM) throws ContentError, ParseError {
  		
          StateType ret = new StateType(cpt.getID(), cpt.getComponentType().getName());
 		 
          ret.setSimultaneous(simultaneous);
          
+         HashMap<String, Double> fixedHM = new HashMap<String, Double>();
+         fixedHM.putAll(fxdHM);
+         // fixedHM should just contain global constants, we don't want 
+         // the parameter values in there as these can still be overridden.
+         
+         // 
 		 for (ParamValue pv : cpt.getParamValues()) {
 			 String qn = pv.getName();
 			 double qv = pv.getDoubleValue();
 			 ret.addFixed(qn, qv);
-			 fixedHM.put(qn, qv);
+//			 fxdHM.put(qn, qv);
 		 }
 		 
 		 for (RequiredVar rv : p_requiredVars) {
@@ -388,8 +394,8 @@ public class Dynamics  {
 		 for (DerivedVariable dv : derivedVariables) {
 			 if (dv.hasExpression()) {
 				 
-				 DoubleEvaluator db = dv.getParseTree().makeFloatEvaluator();
-				 //DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
+				// DoubleEvaluator db = dv.getParseTree().makeFloatEvaluator();
+				DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
 				 
 				 ret.addExpressionDerived(dv.getName(), db);
              	 
@@ -406,8 +412,9 @@ public class Dynamics  {
 		 
 		 
 		 for (ConditionalDerivedVariable cdv : conditionalDerivedVariables) {
-			 // DoubleEvaluator db = cdv.makeFloatFixedEvaluator(fixedHM);
-			 DoubleEvaluator db = cdv.makeFloatEvaluator();
+			  
+			DoubleEvaluator db = cdv.makeFloatFixedEvaluator(fixedHM);
+			// DoubleEvaluator db = cdv.makeFloatEvaluator();
 			 ret.addExpressionDerived(cdv.getName(), db);
              	 
 			 
@@ -424,11 +431,12 @@ public class Dynamics  {
 			 
 			 ParseTree pt = sd.getParseTree();
 			 // TODO - if no instances, can uise fixed evaluator. With instances, need general one
-			 DoubleEvaluator dbfx = pt.makeFloatFixedEvaluator(fixedHM);
-
-			 E.info("Using general purpose evaluator for " + cpt);
-			 DoubleEvaluator dor = pt.makeFloatEvaluator();
-			 ret.addRate(sv.getName(), dor);
+			 DoubleEvaluator dev;
+			  dev = pt.makeFloatFixedEvaluator(fixedHM);
+			 //E.info("Using general purpose evaluator for " + cpt);
+			 //dev = pt.makeFloatEvaluator();
+			 
+			 ret.addRate(sv.getName(), dev);
 		 }
 		 
 		 for (OnStart os : onStarts) {

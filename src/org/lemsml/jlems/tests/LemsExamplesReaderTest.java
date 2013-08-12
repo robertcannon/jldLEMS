@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.Result;
@@ -32,7 +33,11 @@ public class LemsExamplesReaderTest {
 			ContentError, XMLException, IOException, ParseError, ConnectionError, RuntimeError {
 
 		File fdir = new File("examples");
-		for (File fx : fdir.listFiles()) {
+		File[] fa = fdir.listFiles();
+		Arrays.sort(fa);
+	
+		for (File fx : fa) {
+			E.info("Reading " + fx);
 			
 			if (fx.getName().startsWith("example")) {
  				FileInclusionReader fir = new FileInclusionReader(fx);
@@ -82,8 +87,14 @@ public class LemsExamplesReaderTest {
 	public static void main(String[] args) {
 		DefaultLogger.initialize();
 		LemsExamplesReaderTest ct = new LemsExamplesReaderTest();
-		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
-		MainTest.checkResults(r);
+		try {
+			ct.testReadFromString();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+			
+		//Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
+		//MainTest.checkResults(r);
 
 	}
 

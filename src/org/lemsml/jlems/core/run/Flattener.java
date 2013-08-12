@@ -13,6 +13,7 @@ import org.lemsml.jlems.core.logging.E;
 
 public class Flattener {
 
+	ArrayList<FixedQuantity> fixedA = new ArrayList<FixedQuantity>();
 	ArrayList<String> indepsA = new ArrayList<String>();
 	ArrayList<PathDerivedVariable> pdvA = new ArrayList<PathDerivedVariable>();
 	ArrayList<ExpressionDerivedVariable> edvA = new ArrayList<ExpressionDerivedVariable>();
@@ -68,6 +69,9 @@ public class Flattener {
 			known.add(vr.getVariableName());
 		}
 			
+		for (FixedQuantity fq : fixedA) {
+			known.add(fq.getName());
+		}
 		
 		ArrayList<ExpressionDerivedVariable> wksrc = new ArrayList<ExpressionDerivedVariable>();
 		wksrc.addAll(edvA);
@@ -260,6 +264,10 @@ public class Flattener {
 
 	public void exportTo(StateType ret) {
 
+		for (FixedQuantity fq : fixedA) {
+			ret.addFixed(fq);
+		}
+		
 		for (String s : indepsA) {
 			ret.addIndependentVariable(s);
 		}
@@ -288,6 +296,11 @@ public class Flattener {
 			ret.addInitialization(ab);
 		}
 		
+	}
+
+
+	public void addFixed(FixedQuantity fqf) {
+		 fixedA.add(fqf);
 	}
 
 

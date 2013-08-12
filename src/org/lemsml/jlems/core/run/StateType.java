@@ -667,10 +667,14 @@ public class StateType implements RuntimeType {
 		fixeds.add(new FixedQuantity(snm, d));
 	}
 	
+	public void addFixed(FixedQuantity fq) {
+		fixeds.add(fq);
+	}
+	
 	
 	public void addIndependentVariable(String vnm) {
 		if (indeps.contains(vnm)) {
-			E.warning("Added the an independent variable again? " + vnm + " " + this);
+			E.warning("Added an independent variable again? " + vnm + " " + this);
 		} else {
 			indeps.add(vnm);
 		}
@@ -1047,6 +1051,13 @@ public class StateType implements RuntimeType {
 			
 		HashSet<String> indHS = new HashSet<String>();
 		indHS.addAll(indeps);
+		
+		for (FixedQuantity fq : fixeds) {
+			FixedQuantity fqf = 
+			 new FixedQuantity(fullpfx + fq.getName(), fq.getValue());
+			fl.addFixed(fqf);
+		}
+		
 		
 		for (String s : indeps) {
 			fl.addIndependentVariable(s);

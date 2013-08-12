@@ -87,6 +87,8 @@ public class ComponentReference implements Named  {
 		ComponentReference ret = new ComponentReference();
 		ret.name = name;
 		ret.type = type;
+		ret.local = local;
+		ret.required = required;
 		ret.r_type = r_type;
 		if (defaultComponent != null) {
 			ret.defaultComponent= defaultComponent;

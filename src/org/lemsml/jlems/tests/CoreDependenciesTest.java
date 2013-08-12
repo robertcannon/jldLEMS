@@ -20,7 +20,7 @@ public class CoreDependenciesTest {
  
     @Test
     public void testCoreDependencies() throws IOException, DependencyException {
-    	File fsrc = new File("src/org/lemsml/jlems");
+    	File fsrc = new File("src/org/lemsml/jlems/core");
     	int nfiles = checkDirectory(fsrc);
     	E.info("Checked dependencies in " + nfiles + " source files");
     }
