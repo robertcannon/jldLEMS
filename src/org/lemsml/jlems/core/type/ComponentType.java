@@ -39,6 +39,8 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<Parameter> parameters = new LemsCollection<Parameter>();
 
+	public LemsCollection<IndexParameter> indexParameters = new LemsCollection<IndexParameter>();
+
 	public LemsCollection<DerivedParameter> derivedParameters = new LemsCollection<DerivedParameter>();
 
 	public LemsCollection<PathParameter> pathParameters = new LemsCollection<PathParameter>();
@@ -48,6 +50,11 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	
 	public LemsCollection<Requirement> requirements = new LemsCollection<Requirement>();
 
+	public LemsCollection<ComponentRequirement> componentRequirements = new LemsCollection<ComponentRequirement>();
+
+	public LemsCollection<InstanceRequirement> instanceRequirements = new LemsCollection<InstanceRequirement>();
+
+	
 	public LemsCollection<Exposure> exposures = new LemsCollection<Exposure>();
 
 	public LemsCollection<Child> childs = new LemsCollection<Child>();
@@ -236,9 +243,6 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	}
 
 	public void resolve(Lems lems, ExpressionParser p) throws ContentError, ParseError {
-
-		 
-		
 		
 		for (Parameter dp : parameters) {
 			dp.resolve(lems.getDimensions());
@@ -1021,11 +1025,10 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		}
 		return ret;
 	}
-	
-	
 
- 
-
+	public IndexParameter getIndexParameter(String nm) throws ContentError {
+		return indexParameters.getByName(nm);
+	}
  
 	
 }

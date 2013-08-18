@@ -11,6 +11,8 @@ import org.lemsml.jlems.core.type.geometry.*;
 
 import org.lemsml.jlems.core.type.visualization.*;
 
+import org.lemsml.jlems.core.numerics.*;
+
 import org.lemsml.jlems.core.xml.XMLElement;
 import org.lemsml.jlems.core.xml.XMLAttribute;
 import org.lemsml.jlems.core.logging.E;
@@ -55,6 +57,10 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildFixed(xel);
         } else if (tag.equals("Requirement")) {
             ret = buildRequirement(xel);
+        } else if (tag.equals("ComponentRequirement")) {
+            ret = buildComponentRequirement(xel);
+        } else if (tag.equals("InstanceRequirement")) {
+            ret = buildInstanceRequirement(xel);
         } else if (tag.equals("Exposure")) {
             ret = buildExposure(xel);
         } else if (tag.equals("Child")) {
@@ -135,6 +141,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildCoInstantiate(xel);
         } else if (tag.equals("Instance")) {
             ret = buildInstance(xel);
+        } else if (tag.equals("MultiInstance")) {
+            ret = buildMultiInstance(xel);
         } else if (tag.equals("Assign")) {
             ret = buildAssign(xel);
         } else if (tag.equals("Choose")) {
@@ -145,8 +153,6 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildForEach(xel);
         } else if (tag.equals("EventConnection")) {
             ret = buildEventConnection(xel);
-        } else if (tag.equals("Tunnel")) {
-            ret = buildTunnel(xel);
         } else if (tag.equals("PairsEventConnection")) {
             ret = buildPairsEventConnection(xel);
         } else if (tag.equals("PairFilter")) {
@@ -209,6 +215,20 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildPolyFill(xel);
         } else if (tag.equals("PolyLine")) {
             ret = buildPolyLine(xel);
+        } else if (tag.equals("IntegrationScheme")) {
+            ret = buildIntegrationScheme(xel);
+        } else if (tag.equals("IntegrationStep")) {
+            ret = buildIntegrationStep(xel);
+        } else if (tag.equals("GradientStateIncrement")) {
+            ret = buildGradientStateIncrement(xel);
+        } else if (tag.equals("Gradient")) {
+            ret = buildGradient(xel);
+        } else if (tag.equals("MeanGradient")) {
+            ret = buildMeanGradient(xel);
+        } else if (tag.equals("MeanGradientComponent")) {
+            ret = buildMeanGradientComponent(xel);
+        } else if (tag.equals("WorkState")) {
+            ret = buildWorkState(xel);
         } else {
             E.error("Unrecognized name " + tag);
         }
@@ -251,6 +271,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.components.add((Component)obj);
             } else if (obj instanceof Target) {
                 ret.targets.add((Target)obj);
+            } else if (obj instanceof IntegrationScheme) {
+                ret.integrationSchemes.add((IntegrationScheme)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -470,6 +492,8 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Parameter) {
                 ret.parameters.add((Parameter)obj);
+            } else if (obj instanceof IndexParameter) {
+                ret.indexParameters.add((IndexParameter)obj);
             } else if (obj instanceof DerivedParameter) {
                 ret.derivedParameters.add((DerivedParameter)obj);
             } else if (obj instanceof PathParameter) {
@@ -478,6 +502,10 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.localParameterss.add((LocalParameters)obj);
             } else if (obj instanceof Requirement) {
                 ret.requirements.add((Requirement)obj);
+            } else if (obj instanceof ComponentRequirement) {
+                ret.componentRequirements.add((ComponentRequirement)obj);
+            } else if (obj instanceof InstanceRequirement) {
+                ret.instanceRequirements.add((InstanceRequirement)obj);
             } else if (obj instanceof Exposure) {
                 ret.exposures.add((Exposure)obj);
             } else if (obj instanceof Child) {
@@ -677,6 +705,50 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else if (xn.equals("dimension")) {
                 ret.dimension = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private ComponentRequirement buildComponentRequirement(XMLElement xel) {
+        ComponentRequirement ret = new ComponentRequirement();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private InstanceRequirement buildInstanceRequirement(XMLElement xel) {
+        InstanceRequirement ret = new InstanceRequirement();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else if (xn.equals("type")) {
+                ret.type = parseString(xv);
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {
@@ -1776,6 +1848,38 @@ public class LemsFactory extends AbstractLemsFactory {
         return ret;
     }
 
+    private MultiInstance buildMultiInstance(XMLElement xel) {
+        MultiInstance ret = new MultiInstance();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("children")) {
+                ret.children = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof BuildElement) {
+                ret.buildElements.add((BuildElement)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
     private Assign buildAssign(XMLElement xel) {
         Assign ret = new Assign();
 
@@ -1945,52 +2049,6 @@ public class LemsFactory extends AbstractLemsFactory {
         return ret;
     }
 
-    private OldTunnel buildTunnel(XMLElement xel) {
-        OldTunnel ret = new OldTunnel();
-
-        for (XMLAttribute xa : xel.getAttributes()) {
-            String xn = internalFieldName(xa.getName());
-            String xv = xa.getValue();
-
-            if (xn.equals("UNUSED")) {
-            } else if (xn.equals("from")) {
-                ret.from = parseString(xv);
-            } else if (xn.equals("to")) {
-                ret.to = parseString(xv);
-            } else if (xn.equals("delay")) {
-                ret.delay = parseString(xv);
-            } else if (xn.equals("receiver")) {
-                ret.receiver = parseString(xv);
-            } else if (xn.equals("receiverContainer")) {
-                ret.receiverContainer = parseString(xv);
-            } else if (xn.equals("sourcePort")) {
-                ret.sourcePort = parseString(xv);
-            } else if (xn.equals("targetPort")) {
-                ret.targetPort = parseString(xv);
-            } else {
-                E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else if (obj instanceof Assign) {
-                ret.assigns.add((Assign)obj);
-            } else if (obj instanceof BuildElement) {
-                ret.buildElements.add((BuildElement)obj);
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
-        return ret;
-    }
-
     private PairsEventConnection buildPairsEventConnection(XMLElement xel) {
         PairsEventConnection ret = new PairsEventConnection();
 
@@ -2105,6 +2163,10 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (xn.equals("instance")) {
                 ret.instance = parseString(xv);
+            } else if (xn.equals("list")) {
+                ret.list = parseString(xv);
+            } else if (xn.equals("index")) {
+                ret.index = parseString(xv);
             } else if (xn.equals("as")) {
                 ret.as = parseString(xv);
             } else {
@@ -2917,6 +2979,189 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.fillColor = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private IntegrationScheme buildIntegrationScheme(XMLElement xel) {
+        IntegrationScheme ret = new IntegrationScheme();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof WorkState) {
+                ret.workStates.add((WorkState)obj);
+            } else if (obj instanceof IntegrationStep) {
+                ret.integrationSteps.add((IntegrationStep)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private IntegrationStep buildIntegrationStep(XMLElement xel) {
+        IntegrationStep ret = new IntegrationStep();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof GradientStateIncrement) {
+                ret.gradientStateIncrements.add((GradientStateIncrement)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private GradientStateIncrement buildGradientStateIncrement(XMLElement xel) {
+        GradientStateIncrement ret = new GradientStateIncrement();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Gradient buildGradient(XMLElement xel) {
+        Gradient ret = new Gradient();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("at")) {
+                ret.at = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private MeanGradient buildMeanGradient(XMLElement xel) {
+        MeanGradient ret = new MeanGradient();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof MeanGradientComponent) {
+                ret.meanGradientComponents.add((MeanGradientComponent)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private MeanGradientComponent buildMeanGradientComponent(XMLElement xel) {
+        MeanGradientComponent ret = new MeanGradientComponent();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("weight")) {
+                ret.weight = parseDouble(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private WorkState buildWorkState(XMLElement xel) {
+        WorkState ret = new WorkState();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else if (xn.equals("timeFactor")) {
+                ret.timeFactor = parseDouble(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof GradientStateIncrement) {
+                ret.gradientStateIncrements.add((GradientStateIncrement)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
             }
         }
 

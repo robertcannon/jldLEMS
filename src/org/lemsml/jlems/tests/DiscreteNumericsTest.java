@@ -9,6 +9,7 @@ import org.lemsml.jlems.core.discrete.DiscreteUpdateModel;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.numerics.IntegrationScheme;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateType;
@@ -19,6 +20,7 @@ import org.lemsml.jlems.core.type.BuildException;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
+import org.lemsml.jlems.core.type.LemsCollection;
 import org.lemsml.jlems.core.xml.XMLElement;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
@@ -26,28 +28,31 @@ import org.lemsml.jlems.io.reader.FileInclusionReader;
  
 
 
-public class DiscreteUpdateTest {
+public class DiscreteNumericsTest {
 
 	
 	 
     public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException {
     	DefaultLogger.initialize();
        
-    	DiscreteUpdateTest dut = new DiscreteUpdateTest();
+    	DiscreteNumericsTest dut = new DiscreteNumericsTest();
     	dut.runExample1(); 
     }
     
     @Test
     public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
+    	
+    	File fnum = new File("devexamples/numerics.xml");
+    	
     	File f1 = new File("examples/example1.xml");
- 		String s = generateDiscreteUpdateModel(f1, "na");
+ 		String s = generateDiscreteUpdateModel(f1, "na", fnum);
  		E.info("Generated XML: \n" + s);
     }
     
     
     
     
-    public String generateDiscreteUpdateModel(File f, String tgtid) throws ContentError,
+    public String generateDiscreteUpdateModel(File f, String tgtid, File fnum) throws ContentError,
     		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
     		BuildException, XMLException {
     	E.info("Loading LEMS file from: " + f.getAbsolutePath());
@@ -78,10 +83,23 @@ public class DiscreteUpdateTest {
 		lems.resolve(ct);
 		lems.resolve(cp);
 	 
-		
 		StateType st = cp.getStateType();
-		E.missing();
-		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, null);
+	
+		// now get the numerics specification
+		
+		 FileInclusionReader firnum = new FileInclusionReader(fnum);
+		 Sim simnum = new Sim(firnum.read());
+
+		 simnum.readModel();
+	     
+		 Lems lemsnum = simnum.getLems();
+		 
+		 LemsCollection<IntegrationScheme> schemes = lemsnum.getIntegrationSchemes();
+		 
+		 IntegrationScheme euler = schemes.getByName("forwardEuler");
+		 
+		
+		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, euler);
 		
 		DiscreteUpdateModel dum = dug.buildDiscreteUpdateModel();
 		

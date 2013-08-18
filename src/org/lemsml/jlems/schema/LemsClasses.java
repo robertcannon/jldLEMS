@@ -2,6 +2,13 @@ package org.lemsml.jlems.schema;
 
 import java.util.ArrayList;
 
+import org.lemsml.jlems.core.numerics.Gradient;
+import org.lemsml.jlems.core.numerics.GradientStateIncrement;
+import org.lemsml.jlems.core.numerics.IntegrationScheme;
+import org.lemsml.jlems.core.numerics.IntegrationStep;
+import org.lemsml.jlems.core.numerics.MeanGradient;
+import org.lemsml.jlems.core.numerics.MeanGradientComponent;
+import org.lemsml.jlems.core.numerics.WorkState;
 import org.lemsml.jlems.core.type.About;
 import org.lemsml.jlems.core.type.Assertion;
 import org.lemsml.jlems.core.type.Attachments;
@@ -10,6 +17,7 @@ import org.lemsml.jlems.core.type.Children;
 import org.lemsml.jlems.core.type.Collection;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentReference;
+import org.lemsml.jlems.core.type.ComponentRequirement;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.ComponentTypeReference;
 import org.lemsml.jlems.core.type.Constant;
@@ -20,6 +28,7 @@ import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.Fixed;
 import org.lemsml.jlems.core.type.IndexParameter;
 import org.lemsml.jlems.core.type.Insertion;
+import org.lemsml.jlems.core.type.InstanceRequirement;
 import org.lemsml.jlems.core.type.LocalParameters;
  
 import org.lemsml.jlems.core.type.IntegerParameter;
@@ -82,7 +91,9 @@ import org.lemsml.jlems.core.type.structure.GatherPairs;
 import org.lemsml.jlems.core.type.structure.If;
 import org.lemsml.jlems.core.type.structure.IncludePair;
 import org.lemsml.jlems.core.type.structure.Instance;
-import org.lemsml.jlems.core.type.structure.OldTunnel;
+ 
+import org.lemsml.jlems.core.type.structure.MultiInstance;
+import org.lemsml.jlems.core.type.structure.Tunnel;
  
 import org.lemsml.jlems.core.type.structure.MultiInstantiate;
 import org.lemsml.jlems.core.type.structure.PairFilter;
@@ -128,6 +139,7 @@ public final class LemsClasses {
 		classList.addAll(getProcedureClasses());
 		classList.addAll(getGeometryClasses());
 		classList.addAll(getVisualizationClasses());
+		classList.addAll(getNumericsClasses());
 	}
 
 	public ArrayList<LemsClass> getClasses() {
@@ -188,13 +200,13 @@ public final class LemsClasses {
 		ret.add(new LemsClass(MultiInstantiate.class, section));
 		ret.add(new LemsClass(CoInstantiate.class, section));
 		ret.add(new LemsClass(Instance.class, section));
+		ret.add(new LemsClass(MultiInstance.class, section));
 		ret.add(new LemsClass(Assign.class, section));
 		ret.add(new LemsClass(Choose.class, section));
 	 	ret.add(new LemsClass(ChildInstance.class, section));	
 	 	ret.add(new LemsClass(ForEach.class, section));
 	 	ret.add(new LemsClass(EventConnection.class, section));
-	 	ret.add(new LemsClass(OldTunnel.class, section));
-		ret.add(new LemsClass(PairsEventConnection.class, section));
+ 		ret.add(new LemsClass(PairsEventConnection.class, section));
 		ret.add(new LemsClass(PairFilter.class, section));
 		ret.add(new LemsClass(IncludePair.class, section));
 	 	ret.add(new LemsClass(With.class, section));
@@ -219,6 +231,8 @@ public final class LemsClasses {
 		ret.add(new LemsClass(DerivedParameter.class, section));
 		ret.add(new LemsClass(Fixed.class, section));
 		ret.add(new LemsClass(Requirement.class, section));
+		ret.add(new LemsClass(ComponentRequirement.class, section));
+		ret.add(new LemsClass(InstanceRequirement.class, section));	
 		ret.add(new LemsClass(Exposure.class, section));
 		ret.add(new LemsClass(Child.class, section));
 		ret.add(new LemsClass(Children.class, section));
@@ -297,5 +311,17 @@ public final class LemsClasses {
 		return ret;
 	}
 		
-	
+	private ArrayList<LemsClass> getNumericsClasses() {
+		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
+		String section = "numerics";
+		ret.add(new LemsClass(IntegrationScheme.class, section));
+		ret.add(new LemsClass(IntegrationStep.class, section));
+		ret.add(new LemsClass(GradientStateIncrement.class, section));
+		ret.add(new LemsClass(Gradient.class, section));
+		ret.add(new LemsClass(MeanGradient.class, section));
+		ret.add(new LemsClass(MeanGradientComponent.class, section));
+		ret.add(new LemsClass(WorkState.class, section));
+		 
+		return ret;
+	}
 }

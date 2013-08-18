@@ -29,6 +29,7 @@ public class LemsFactoryGenerator {
 		sb.append("import org.lemsml.jlems.core.type.procedure.*;\n\n");
 		sb.append("import org.lemsml.jlems.core.type.geometry.*;\n\n");
 		sb.append("import org.lemsml.jlems.core.type.visualization.*;\n\n");
+		sb.append("import org.lemsml.jlems.core.numerics.*;\n\n");
 		
 		sb.append("import org.lemsml.jlems.core.xml.XMLElement;\n");
 		sb.append("import org.lemsml.jlems.core.xml.XMLAttribute;\n");
@@ -197,8 +198,10 @@ public class LemsFactoryGenerator {
  		
 		File f = new File("src/org/lemsml/jlems/core/reader/LemsFactory.java");
 	 
-			FileUtil.writeStringToFile(txt, f);
-			E.info("Written " + f.getAbsolutePath());
+		// E.info("About to write " + f.getAbsolutePath() + " local "+ (new File("")).getAbsolutePath());
+		
+		FileUtil.writeStringToFile(txt, f);
+		E.info("Written " + f.getAbsolutePath());
 		 
 	}
 

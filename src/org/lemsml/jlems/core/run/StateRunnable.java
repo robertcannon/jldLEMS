@@ -63,7 +63,7 @@ public interface StateRunnable {
 
 	StateRunnable getPathStateInstance(String path) throws ContentError;
 
-	OutPort getFirstOutPort();
+	OutPort getFirstOutPort() throws ConnectionError;
 
 	StateRunnable getParent();
 
@@ -81,7 +81,15 @@ public interface StateRunnable {
 
 	void addAttachment(String destAttachments, StateInstance rsi) throws ConnectionError, ContentError, RuntimeError;
 
+	void addAttachment(StateInstance rsi) throws ConnectionError, ContentError, RuntimeError;
+
 	MultiInstance getSingleMI();
+
+	void setList(String childrenName);
+
+	String getChildSummary();
+
+	boolean isBuilt();
 
  
 }

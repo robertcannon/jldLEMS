@@ -52,9 +52,9 @@
     <Dynamics>
        <StateVariable name="v" exposure="v" dimension="voltage"/>
        
-       <DerivedVariable name="Igj" over="gapJunctions" value="g * (peer.v - v)" reduce="add"/>
+       <DerivedVariable name="Igj" dimension="current" select="gapJunctions[*]/current" reduce="add"/>
        
-       <TimeDerivative variable="v" value="leakConductance * (leakReversal - v) / capacitance + Igj / capictance"/>
+       <TimeDerivative variable="v" value="leakConductance * (leakReversal - v) / capacitance + Igj / capacitance"/>
              
        <OnEvent port="spikes-in">
             <StateAssignment variable="v" value="v + deltaV"/>
@@ -131,13 +131,16 @@
 <ComponentType name="InstancePopulation">
     <ComponentReference name="component" type="Component" required="false"/>
 	<Children name="instances" type = "Instance"/>
+	<Structure>
+		<MultiInstance children="instances"/>
+	</Structure>
 </ComponentType>
  
 
 
 <ComponentType name="ExplicitConnectivity">
-    <ComponentReference name="source" type="Population" local="true"/>
-    <ComponentReference name="target" type="Population" local="true"/>
+    <ComponentReference name="sourceList" type="Population" local="true"/>
+    <ComponentReference name="targetList" type="Population" local="true"/>
     <Children name="Connections" type="SingleEventConnection"/>
 </ComponentType>
 
@@ -145,9 +148,13 @@
 <ComponentType name="SingleEventConnection">
 	<IndexParameter name="sourceIndex"/>
 	<IndexParameter name="targetIndex"/>
+	
+	<ComponentRequirement name="sourceList"/>
+	<ComponentRequirement name="targetList"/>
+
 	<Structure>
-		<With list="../source" index="sourceIndex" as="a"/>
-		<With list="../target" index="targetIndex" as="b"/>
+		<With list="sourceList" index="sourceIndex" as="a"/>
+		<With list="targetList" index="targetIndex" as="b"/>
 		<EventConnection from="a" to="b"/>
 	</Structure>
 </ComponentType>
@@ -180,30 +187,47 @@
 
 
 <ComponentType name="ElectricalConnections">
-    <ComponentReference name="source" type="Population" local="true"/>
-    <ComponentReference name="target" type="Population" local="true"/>
-    <Children name="connections" type="GapJunction"/>
+    <ComponentReference name="sourceList" type="Population" local="true"/>
+    <ComponentReference name="targetList" type="Population" local="true"/>
+    <Children name="connections" type="GapJunctionConnection"/>
 </ComponentType>
 
 
 
 <ComponentType name="GapJunction">
-	<Parameter name="g" dimension="conductance" exposure="g"/>
-	<IndexParameter name="sourceIndex"/>
-	<IndexParameter name="targetIndex"/>
-	<Exposure name="g" dimension="conductance"/>
+ 	<Parameter name="g" dimension="conductance" exposure="g"/>
 	<Requirement name="v" dimension="voltage"/>
-	<Structure>
-		<With list="../source" index="sourceIndex" as="a"/>
-		<With list="../target" index="targetIndex" as="b"/>
-		<Tunnel name="peer" from="a" to="b" expose="v"/>
-	</Structure>
-	
-
+	 	
+	<Exposure name="current" dimension="current"/>
+ 	 
+ 	<InstanceRequirement name="peer" type="GapJunction"/>
+ 	
+	<Dynamics>
+	    <DerivedVariable name="vpeer" dimension="voltage" select="peer/v"/>
+		<DerivedVariable name="current" exposure="current" 
+				value="g * (vpeer - v)"/>
+	</Dynamics>
 </ComponentType>
 
 
 
+
+<ComponentType name="GapJunctionConnection">
+	<IndexParameter name="sourceIndex"/>
+	<IndexParameter name="targetIndex"/>
+	
+	<ComponentRequirement name="sourceList"/>
+	<ComponentRequirement name="targetList"/>
+	
+	<ComponentReference name="connector" type="GapJunction"/>
+	
+	<Structure>
+		<With list="sourceList" index="sourceIndex" as="a"/>
+		<With list="targetList" index="targetIndex" as="b"/>
+		<Tunnel name="peer" from="a" to="b" component="connector"/>
+	</Structure>
+		 
+</ComponentType>
 
 
 
@@ -219,23 +243,26 @@ leakReversal="-50 mV" deltaV="5mV" capacitance="1uF"/>
 <Component id="iaf3cpt" type="iaf3" leakReversal="-50mV" deltaV="50mV" threshold="-30mV" leakConductance="50pS"
 refractoryPeriod="4ms" capacitance="1pF"/>
 
- 
+<GapJunction id="gj1" g="40pS"/>
 
 <Network id="net1">
     <Population id="p1" component="gen1" size="1"/>
     <InstancePopulation id="p3">
     	<Instance of="iaf3cpt" leakConductance="14 pS"  deltaV = "10mV"/>
-    	<Instance of="iaf3cpt" leakConductance="14 pS"  deltaV = "10mV"/>
+    	<Instance of="iaf3cpt" leakConductance="11 pS"  deltaV = "10mV"/>
+    	<Instance of="iaf3cpt" leakConductance="4 pS"  deltaV = "10mV"/>
+    	<Instance of="iaf3cpt" leakConductance="40 pS"  deltaV = "10mV"/>
     </InstancePopulation>
      
       
      	
-    <ExplicitConnectivity id="p1-p3" source="p1" target="p3">
+    <ExplicitConnectivity id="p1-p3" sourceList="p1" targetList="p3">
         <SingleEventConnection sourceIndex="0" targetIndex="0"/>
     </ExplicitConnectivity>
     
-    <ElectricalConnections source="p3" target="p3">
-    	<GapJunction sourceIndex="0" targetIndex="0" g="4pS"/>
+    <ElectricalConnections sourceList="p3" targetList="p3">
+    	<GapJunctionConnection sourceIndex="0" targetIndex="1"
+    		connector="gj1"/>
     </ElectricalConnections>
     
 </Network>
@@ -254,9 +281,7 @@ refractoryPeriod="4ms" capacitance="1pF"/>
         	<Line id="p3v1" quantity="p3[1]/v" scale="1mV" timeScale="1ms" color="#00f000"/>
         	<Line id="p3v2" quantity="p3[2]/v" scale="1mV" timeScale="1ms" color="#f000f0"/>
         	<Line id="p3v3" quantity="p3[3]/v" scale="1mV" timeScale="1ms" color="#00f0f0"/>
-        	<Line id="pvv0" quantity="p4[0]/v" scale="1mV" timeScale="1ms" color="#f0f0f0"/>
-        	<Line id="p4v1" quantity="p4[1]/v" scale="1mV" timeScale="1ms" color="#f0f000"/>
-    	</DisplayList>
+        	</DisplayList>
 	</Simulation>
 </SimulationSet>
 

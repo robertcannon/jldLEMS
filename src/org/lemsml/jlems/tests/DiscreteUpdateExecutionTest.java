@@ -80,7 +80,8 @@ public class DiscreteUpdateExecutionTest {
 	  
 		
 		StateType st = cp.getStateType();
-		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st);
+		E.missing();
+		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, null);
 		DiscreteUpdateModel dum = dug.buildDiscreteUpdateModel();
         
         DiscreteUpdateStateType dui = new DiscreteUpdateStateType(dum);

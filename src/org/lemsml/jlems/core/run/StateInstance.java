@@ -8,9 +8,10 @@ import org.lemsml.jlems.core.display.LineDisplay;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
+
 public class StateInstance implements StateRunnable {
 
-	StateType uclass;
+	StateType stateType;
 	String id;
 
 	// private HashMap<String, DoublePointer> localHM;
@@ -20,15 +21,14 @@ public class StateInstance implements StateRunnable {
 	private HashMap<String, DoublePointer> expHM;
 
 	// TODO only use these if there is more than one;
-	HashMap<String, InPort> inPortHM = new HashMap<String, InPort>();
-	HashMap<String, OutPort> outPortHM = new HashMap<String, OutPort>();
-	OutPort firstOut;
+	HashMap<String, InPort> inPortHM = null; 
+	HashMap<String, OutPort> outPortHM = null;
 	InPort firstIn;
+	OutPort firstOut;
 	boolean hasChildren = false;
 
 	ArrayList<StateRunnable> childA;
 	HashMap<String, StateRunnable> childHM;
-	
 	
 	ArrayList<StateListChild> stateListChildren;
 	
@@ -66,6 +66,12 @@ public class StateInstance implements StateRunnable {
 
 	boolean debug = false;
 
+	boolean bList;
+	String listName;
+	
+	
+	private String rcName = null;
+	
 	// EventManager eventManager;
 	
 	
@@ -75,7 +81,7 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public StateInstance(StateType uc) {
-		uclass = uc;
+		stateType = uc;
 		id = uc.getComponentID();
 		String uct = uc.getTypeName();
 		if (uct.equals("Instance")) {
@@ -94,48 +100,40 @@ public class StateInstance implements StateRunnable {
 	public StateRunnable getParent() {
 		return parent;
 	}
+	
+	public boolean isBuilt() {
+		return built;
+	}
 
 	@Override
 	public String toString() {
 		String ret = "";
-		if (uclass == null) {
+		if (stateType == null) {
 			ret = "Dumy state instance " + getID();
 		} else {
-			ret = uclass.getID() + "[" + uclass.getTypeName() + "]";
+			ret = stateType.getID() + "[" + stateType.getTypeName() + "]";
 		}
 		return ret;
 	}
 
+	public void setList(String s) {
+		bList = true;
+		listName = s;
+	}
 	
-	
+	public boolean isList() {
+		return bList;
+	}
+		
+		
 	public double getCurrentTime() {
 		return currentTime;
 	}
 	
-	/*
-	public void setEventManager(EventManager em) {
-		eventManager = em;
-	}
-	
-	
-	public EventManager getEventManager() throws ConnectionError {
-		EventManager ret = null;
-		if (eventManager != null) {
-			ret = eventManager;
-		} else if (parent != null) {
-			ret = parent.getEventManager();
-		}
-		if (ret == null) {
-			throw new ConnectionError("Can't get event manager ?" + this);
-		}
-		return ret;
-	}
-	*/
-	
-
+	 
 	public void initialize(StateRunnable parent) throws RuntimeError, ContentError {
 		currentTime = 0;
-		uclass.initialize(this, parent, false);
+		stateType.initialize(this, parent, false);
 		if (debug) {
 			E.info("Post init " + this + " has vars: " + this.varHM + " and exps " + this.expHM);
 		}
@@ -157,7 +155,7 @@ public class StateInstance implements StateRunnable {
 			}
 		}
 
-		uclass.initialize(this, parent, true);
+		stateType.initialize(this, parent, true);
 		if (debug) {
 			E.info("Post CHILDREN init " + this + " has vars: " + this.varHM + " and exps " + this.expHM + "\n");
 		}
@@ -180,7 +178,7 @@ public class StateInstance implements StateRunnable {
 			}
 		}
 
-		uclass.initialize(this, parent, true);
+		stateType.initialize(this, parent, true);
 		if (debug) {
 			E.info("Post CHILDREN init " + this + " has vars: " + this.varHM + " and exps " + this.expHM + "\n");
 		}
@@ -212,7 +210,10 @@ public class StateInstance implements StateRunnable {
 				ksi.evaluate(this);
 			}
 		}
-		uclass.evaluate(this,  parent);
+		
+		
+		
+		stateType.evaluate(this,  parent);
 
 		if (hasRegimes) {
 			activeRegime.evaluate(this);
@@ -232,12 +233,13 @@ public class StateInstance implements StateRunnable {
 		
 		currentTime = t;
 
+		
 		if (!initialized) {
 			this.initialize(parent);
 		}
 		
-		if (uclass.trackTime) {
-			uclass.startClock();
+		if (stateType.trackTime) {
+			stateType.startClock();
 		}
 
 		if (hasChildren) {
@@ -259,10 +261,10 @@ public class StateInstance implements StateRunnable {
 
 		if (RUN.method == RUN.RK4 || RUN.method == RUN.EULER) {
 
-			if (uclass.flattened && RUN.method == RUN.RK4) {
-				uclass.rk4Advance(this, parent, t, dt);
+			if (stateType.flattened && RUN.method == RUN.RK4) {
+				stateType.rk4Advance(this, parent, t, dt);
 			} else {
-				uclass.eulerAdvance(this, parent, t, dt);
+				stateType.eulerAdvance(this, parent, t, dt);
 			}
 		}
 
@@ -270,8 +272,8 @@ public class StateInstance implements StateRunnable {
 			activeRegime.advance(this, t, dt);
 		}
 		
-		if (uclass.trackTime) {
-			uclass.stopClock();
+		if (stateType.trackTime) {
+			stateType.stopClock();
 		}
 	}
 	
@@ -355,12 +357,16 @@ public class StateInstance implements StateRunnable {
 		InPort inp = new InPort(this, s, actionBlock);
 		if (firstIn == null) {
 			firstIn = inp;
+		}  
+		if (inPortHM == null) {
+			inPortHM = new HashMap<String, InPort>();
 		}
-		inPortHM.put(s, inp);
+		inPortHM.put(s, inp); 
 	}
 
+	
 	public void checkAddInputPort(String s) {
-		if (inPortHM.containsKey(s)) {
+		if (inPortHM != null && inPortHM.containsKey(s)) {
 			// fine - there's an action block for it already
 		} else {
 			// no action block, but we still need the port: presumably for an
@@ -374,6 +380,9 @@ public class StateInstance implements StateRunnable {
 		if (firstOut == null) {
 			firstOut = op;
 		}
+		if (outPortHM == null) {
+			outPortHM = new HashMap<String, OutPort>();
+		}
 		outPortHM.put(s, op);
 	}
 
@@ -382,7 +391,7 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public OutPort getOrMakeOutputPort(String s) {
-		if (outPortHM.containsKey(s)) {
+		if (outPortHM != null && outPortHM.containsKey(s)) {
 			// nothing more to do. This is called by regimes to connect to the
 			// main state instance ports
 		} else {
@@ -399,7 +408,13 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public InPort getInPort(String portId) throws ConnectionError {
-		return inPortHM.get(portId);
+		InPort ret = null;
+		if (inPortHM != null && inPortHM.containsKey(portId)) {
+			ret = inPortHM.get(portId);
+		} else {
+			throw new ConnectionError("No such port '" + portId + "' on " + this);
+		}
+		return ret;
 	}
 
 	public String stateString() {
@@ -501,27 +516,41 @@ public class StateInstance implements StateRunnable {
 	
 	private void checkReturn(double ret, String varname)  throws RuntimeError {
 		if (Double.isNaN(ret) || Double.isInfinite(ret)) {
-			StringBuilder err = new StringBuilder("" + varname + " is NaN in: " + this + "\n" + 
-					"Exposed: " + expHM + "\n" + "Variables: " + varHM + "\n");
-			if (childA != null) {
-				for (StateRunnable si : childA) {
-					err.append("Child: " + si + ", vars: " + si.getVariables() + "\n");
-				}
-			} else {
-				err.append("childA is null\n");
-			}
-			if (childHM != null) {
-				for (String k : childHM.keySet()) {
-					StateRunnable si = childHM.get(k);
-					err.append("Child " + k + ": " + si + ", vars: " + si.getVariables() + "\n");
-				}
-			} else {
-				err.append("childHM is null\n");
-			}
+			StringBuilder err = new StringBuilder();
+			err.append("" + varname + " is NaN in: " + this + "\n"); 
+			err.append("Exposed: " + expHM + "\n");
+			err.append("Variables: " + varHM + "\n");
+			
+			err.append(getChildSummary());
+			
 			throw new RuntimeError(err.toString());
 		}
 	}
 
+	 
+	
+	
+	public String getChildSummary() {
+		StringBuilder err = new StringBuilder();
+		if (childA != null) {
+			for (StateRunnable si : childA) {
+				err.append("Child: " + si + ", vars: " + si.getVariables() + "\n");
+			}
+		} else {
+			err.append("childA is null\n");
+		}
+		if (childHM != null) {
+			for (String k : childHM.keySet()) {
+				StateRunnable si = childHM.get(k);
+				err.append("Child " + k + ": " + si + ", vars: " + si.getVariables() + "\n");
+			}
+		} else {
+			err.append("childHM is null\n");
+		}
+		return err.toString();
+	}
+	
+	
 	public int getChildCount() {
 		int ret= 0;
 		if (childA != null) {
@@ -540,6 +569,8 @@ public class StateInstance implements StateRunnable {
 			if (!hasChildren) {
 				hasChildren = true;
 				childA = new ArrayList<StateRunnable>();
+			}
+			if (childHM == null) {
 				childHM = new HashMap<String, StateRunnable>();
 			}
 			childA.add(newInstance);
@@ -547,6 +578,14 @@ public class StateInstance implements StateRunnable {
 		}
 	}
 	
+	
+	public void addRefChild(String s, StateRunnable sr) {
+		rcName = s;
+		if (childHM == null) {
+			childHM = new HashMap<String, StateRunnable>();
+		}
+		childHM.put(s, sr);
+	}
 	
 	
 	// TODO - not sure we need type name tnm here?
@@ -556,7 +595,7 @@ public class StateInstance implements StateRunnable {
 		}
 		newInstance.setParent(this);
 		stateListChildren.add(new StateListChild(sid, newInstance));
- 		
+		 		
 		if (!hasMulti) {		 
 			hasMulti = true;
 			multiA = new ArrayList<MultiInstance>();
@@ -571,6 +610,18 @@ public class StateInstance implements StateRunnable {
 			multiA.add(mi);
 			multiHM.put(sid,  mi);
 		}
+		
+		
+		// TODO - in child map or idSIHM?
+		String cid = newInstance.getID();
+		if (cid != null) {
+			if (childHM == null) {
+				childHM = new HashMap<String, StateRunnable>();
+			}
+			
+			childHM.put(cid,  newInstance);
+		}
+		
 		countMIs();
 	}
 	
@@ -583,7 +634,7 @@ public class StateInstance implements StateRunnable {
 		}
 	}
 	
-	// TODO - can delete?
+ 
 	private void addMultiInstance(MultiInstance mi) {
 //		String msg = ("adding mi " + mi + " to " + this);
 		
@@ -596,13 +647,7 @@ public class StateInstance implements StateRunnable {
 		multiHM.put(mi.getKnownAs(), mi);
 		mi.setParent(this);
 
-		if (onlyAMI == null) {
-			onlyAMI = mi;
-			singleAMI = true;
-		} else {
-			// no longer just one multi instance
-			singleAMI = false;
-		}
+		countMIs();
 	}
 
 	public StateRunnable getChildInstance(String snm) throws ContentError {
@@ -613,6 +658,7 @@ public class StateInstance implements StateRunnable {
 		 
 		StateRunnable ret = null;
 	 
+		 
 		if (hasChildInstance(snm)) {
 			ret = childHM.get(snm);
 		
@@ -625,12 +671,9 @@ public class StateInstance implements StateRunnable {
 	
 	public boolean hasChildInstance(String snm) throws ContentError {
 		boolean ret = false;
-		try {
-			checkBuilt();
-		} catch (RuntimeError er) {
-			throw new ContentError("Can't build " + this, er);
-		} catch (ConnectionError er) {
-			throw new ContentError("Can't build " + this, er);
+		
+		if (!built) {
+			E.error("seeking child instance " + snm + " before state instance is built: " + this);
 		}
 			
 		if (childHM != null && childHM.containsKey(snm)) {	
@@ -639,6 +682,23 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
+	
+	public boolean hasIDInstance(String s) {
+		if (idSIHM == null) {
+			makeIDSIHM();
+		}
+		boolean ret = false;
+		if (idSIHM.containsKey(id)) {
+			ret = true;
+		}
+		return ret;
+	}
+
+	public StateRunnable getIDInstance(String s) {
+		return idSIHM.get(s);
+	}
+	
+	
 	
 	public boolean hasMultiInstance(String snm) {
 		boolean ret=  false;
@@ -662,11 +722,21 @@ public class StateInstance implements StateRunnable {
 
 	public StateRunnable getPathStateInstance(String pth) throws ContentError {
 		if (!resolvedPaths) {
-			uclass.applyPathDerived(this);
+			stateType.applyPathDerived(this);
 		}
 		return pathSIHM.get(pth);
 	}
 
+	
+	public ArrayList<StateRunnable> getListItems() {
+		ArrayList<StateRunnable> ret = null;
+		if (multiA.size() == 1) {
+			ret = multiA.get(0).getInstances();
+		}
+		return ret;
+	}
+	
+	
 	public StateRunnable getScopeInstance(String id) {
 		StateRunnable ret = null;
 
@@ -719,10 +789,10 @@ public class StateInstance implements StateRunnable {
 	        
 	        if (wkinst != null) {
 	        	if (lbit.equals("name")) {
-	        		ret = uclass.getComponentID();
+	        		ret = stateType.getComponentID();
 	        		
 	        	} else if (lbit.equals("id")) {
-	        		ret = uclass.getComponentID();
+	        		ret = stateType.getComponentID();
 	        		
 	        	} else {
 	        		ret= "" + Out.formatDouble(fac * wkinst.getVariable(lbit) - off);
@@ -755,7 +825,7 @@ public class StateInstance implements StateRunnable {
 	public ArrayList<StateRunnable> getPathStateArray(String pth) throws ContentError {
 		if (!resolvedPaths) {
 			// E.info("resolving psas in getPSA");
-			uclass.applyPathDerived(this);
+			stateType.applyPathDerived(this);
 		}
 
 		return pathAHM.get(pth);
@@ -770,7 +840,11 @@ public class StateInstance implements StateRunnable {
 		addMultiInstance(inas);
 
 	}
-
+	
+	public void addAttachment(StateInstance inst) throws ConnectionError, ContentError, RuntimeError {
+		addAttachment(null, inst);
+	}
+		
 	public void addAttachment(String s, StateInstance inst) throws ConnectionError, ContentError, RuntimeError {
 		String snm = s;
 		MultiInstance mi = null;
@@ -838,10 +912,13 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public StateType getStateType() {
-		return uclass;
+		return stateType;
 	}
     
-	public OutPort getFirstOutPort() {
+	public OutPort getFirstOutPort() throws ConnectionError {
+		if (firstOut == null) {
+			throw new ConnectionError("No output port on " + this);
+		}
 		return firstOut;
 	}
 
@@ -930,7 +1007,7 @@ public class StateInstance implements StateRunnable {
 	public void checkBuilt() throws ConnectionError, ContentError, RuntimeError {
 		// E.info("building " + this);
  		if (!built) {
- 			uclass.build(this);
+ 			stateType.build(this);
 		}
 
 		if (childA != null) {
@@ -1115,11 +1192,11 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public String getTypeParam(String satt) throws ContentError {
-		return uclass.getPropertyStringValue(satt);
+		return stateType.getPropertyStringValue(satt);
 	}
 
 	public boolean hasTypeParam(String satt) {
-		return uclass.hasPropertyString(satt);
+		return stateType.hasPropertyString(satt);
 	}
 
 	public HashMap<String, MultiInstance> getMultiHM() {
@@ -1128,7 +1205,7 @@ public class StateInstance implements StateRunnable {
 
 	@Override
 	public Object getComponentID() {
-		return uclass.getComponentID();
+		return stateType.getComponentID();
 	}
 
 	

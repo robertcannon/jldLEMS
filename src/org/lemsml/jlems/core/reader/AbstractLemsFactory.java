@@ -15,6 +15,7 @@ import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.Meta;
 import org.lemsml.jlems.core.type.Target;
 import org.lemsml.jlems.core.type.Unit;
+import org.lemsml.jlems.core.numerics.IntegrationScheme;
 import org.lemsml.jlems.core.xml.XMLAttribute;
 import org.lemsml.jlems.core.xml.XMLElement;
 
@@ -50,6 +51,8 @@ public abstract class AbstractLemsFactory {
 				ret.targets.add((Target)instantiateFromXMLElement(xel));
 			} else if (xel.isTag("ComponentType")) {
 				ret.componentTypes.add((ComponentType)instantiateFromXMLElement(xel));
+			} else if (xel.isTag("IntegrationScheme")) {
+				ret.integrationSchemes.add((IntegrationScheme)instantiateFromXMLElement(xel));
 			} else {
  				ret.components.add(readComponentFromXMLElement(xel));
 			}

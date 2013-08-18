@@ -108,7 +108,7 @@
 
 
 	<ComponentType name="PointBasedPopulation" extends="Population">
-		<Link type="Group" name="points" />
+		<ComponentReference local="true" type="Group" name="points" />
 
 		<Structure>
 			<CoInstantiate at="points" component="component" />
@@ -124,8 +124,8 @@
 
 	<ComponentType name="FromToConnections">
 		<Children name="selectors" type="PairSelector" />
-		<Link name="from" type="Population" />
-		<Link name="to" type="Population" />
+		<ComponentReference local="true" name="from" type="Population" />
+		<ComponentReference local="true" name="to" type="Population" />
 		<Structure>
 				<Apply components="selectors">
 					<PairsEventConnection pairs="pairs" />

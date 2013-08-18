@@ -67,7 +67,7 @@ refractoryPeriod="4ms" capacitance="1pF"/>
     <Parameter name="length" dimension="time"/>
     <Parameter name="step" dimension="time"/>
     <ComponentReference name="target" type="Component"/>
-    <Link name="display" type="Display"/>
+    <ComponentReference local="true" name="display" type="Display"/>
     <Children name="outputs" type="DisplayList"/>
     <Dynamics>
         <StateVariable name="t" dimension="time"/>
