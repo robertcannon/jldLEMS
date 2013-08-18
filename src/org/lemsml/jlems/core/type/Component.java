@@ -95,6 +95,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	
 	
+	public Component() {
+		super();
+		E.info("Created a component");
+		E.trace();
+	}
+	
+	
+	
 	public void setID(String s) {
 		id = s;
 	}

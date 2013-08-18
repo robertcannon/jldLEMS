@@ -2,6 +2,13 @@ package org.lemsml.jlems.schema;
 
 import java.util.ArrayList;
 
+import org.lemsml.jlems.core.numerics.Gradient;
+import org.lemsml.jlems.core.numerics.GradientStateIncrement;
+import org.lemsml.jlems.core.numerics.IntegrationScheme;
+import org.lemsml.jlems.core.numerics.IntegrationStep;
+import org.lemsml.jlems.core.numerics.MeanGradient;
+import org.lemsml.jlems.core.numerics.MeanGradientComponent;
+import org.lemsml.jlems.core.numerics.WorkState;
 import org.lemsml.jlems.core.type.About;
 import org.lemsml.jlems.core.type.Assertion;
 import org.lemsml.jlems.core.type.Attachments;
@@ -131,6 +138,7 @@ public final class LemsClasses {
 		classList.addAll(getProcedureClasses());
 		classList.addAll(getGeometryClasses());
 		classList.addAll(getVisualizationClasses());
+		classList.addAll(getNumericsClasses());
 	}
 
 	public ArrayList<LemsClass> getClasses() {
@@ -303,5 +311,17 @@ public final class LemsClasses {
 		return ret;
 	}
 		
-	
+	private ArrayList<LemsClass> getNumericsClasses() {
+		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
+		String section = "numerics";
+		ret.add(new LemsClass(IntegrationScheme.class, section));
+		ret.add(new LemsClass(IntegrationStep.class, section));
+		ret.add(new LemsClass(GradientStateIncrement.class, section));
+		ret.add(new LemsClass(Gradient.class, section));
+		ret.add(new LemsClass(MeanGradient.class, section));
+		ret.add(new LemsClass(MeanGradientComponent.class, section));
+		ret.add(new LemsClass(WorkState.class, section));
+		 
+		return ret;
+	}
 }

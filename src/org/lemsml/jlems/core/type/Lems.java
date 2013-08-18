@@ -10,6 +10,7 @@ import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.numerics.IntegrationScheme;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.Constants;
 import org.lemsml.jlems.core.run.EventManager;
@@ -47,6 +48,8 @@ public class Lems {
 
  
 	public LemsCollection<Target> targets = new LemsCollection<Target>();
+	
+	public LemsCollection<IntegrationScheme> integrationSchemes = new LemsCollection<IntegrationScheme>();
  
     ExpressionParser expressionParser;
 
@@ -151,7 +154,7 @@ public class Lems {
 
         for (Component inst : components) {
             // as above for components
-            inst.checkResolve(this, null);
+        	E.info("Resolving " +inst);
         }
 
         for (Target dr : targets) {
@@ -435,6 +438,11 @@ public class Lems {
 		}
 		
 		return ret;
+	}
+
+
+	public LemsCollection<IntegrationScheme> getIntegrationSchemes() {
+		return integrationSchemes;
 	}
  
 
