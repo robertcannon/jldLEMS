@@ -1945,8 +1945,8 @@ public class LemsFactory extends AbstractLemsFactory {
         return ret;
     }
 
-    private Tunnel buildTunnel(XMLElement xel) {
-        Tunnel ret = new Tunnel();
+    private OldTunnel buildTunnel(XMLElement xel) {
+        OldTunnel ret = new OldTunnel();
 
         for (XMLAttribute xa : xel.getAttributes()) {
             String xn = internalFieldName(xa.getName());

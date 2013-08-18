@@ -82,7 +82,7 @@ import org.lemsml.jlems.core.type.structure.GatherPairs;
 import org.lemsml.jlems.core.type.structure.If;
 import org.lemsml.jlems.core.type.structure.IncludePair;
 import org.lemsml.jlems.core.type.structure.Instance;
-import org.lemsml.jlems.core.type.structure.Tunnel;
+import org.lemsml.jlems.core.type.structure.OldTunnel;
  
 import org.lemsml.jlems.core.type.structure.MultiInstantiate;
 import org.lemsml.jlems.core.type.structure.PairFilter;
@@ -193,7 +193,7 @@ public final class LemsClasses {
 	 	ret.add(new LemsClass(ChildInstance.class, section));	
 	 	ret.add(new LemsClass(ForEach.class, section));
 	 	ret.add(new LemsClass(EventConnection.class, section));
-	 	ret.add(new LemsClass(Tunnel.class, section));
+	 	ret.add(new LemsClass(OldTunnel.class, section));
 		ret.add(new LemsClass(PairsEventConnection.class, section));
 		ret.add(new LemsClass(PairFilter.class, section));
 		ret.add(new LemsClass(IncludePair.class, section));
