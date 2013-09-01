@@ -42,7 +42,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	private LemsCollection<Attribute> attributes = new LemsCollection<Attribute>();
 
-	private LemsCollection<ParamValue> paramValues;
+	private LemsCollection<ParamValue> paramValues = new LemsCollection<ParamValue>();
 
 	public LemsCollection<Insertion> insertions = new LemsCollection<Insertion>();
 		
@@ -97,8 +97,8 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	public Component() {
 		super();
-		E.info("Created a component");
-		E.trace();
+	//	E.info("Created a component");
+	//	E.trace();
 	}
 	
 	

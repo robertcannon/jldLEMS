@@ -1,0 +1,72 @@
+<Lems>
+
+	<IntegrationScheme name="forwardEuler">
+		<IntegrationStep>
+			<GradientStateIncrement>
+				<Gradient at="stepStart"/>
+			</GradientStateIncrement>
+		</IntegrationStep>
+	</IntegrationScheme>
+
+
+	<IntegrationScheme name="backwardEuler">
+		<!-- at this stage we just specify the rule and 
+			don't say how you calculate the gradient at stepEnd -->
+		<IntegrationStep>
+			<GradientStateIncrement>
+				<Gradient at="stepEnd"/>
+			</GradientStateIncrement>
+		</IntegrationStep>
+	</IntegrationScheme>
+
+
+	<IntegrationScheme name="rk4">
+	
+		<WorkState name="p2" timeFactor="0.5">
+			<GradientStateIncrement>
+				<Gradient at="stepStart"/>
+			</GradientStateIncrement>	
+		</WorkState>
+		
+		<WorkState name="p3" timeFactor="0.5">
+			<GradientStateIncrement>
+				<Gradient at="p2"/>
+			</GradientStateIncrement>	
+		</WorkState>
+		
+		<WorkState name="p4">
+			<GradientStateIncrement>
+				<Gradient at="p3"/>
+			</GradientStateIncrement>	
+		</WorkState>
+		
+		
+		<IntegrationStep>
+			<GradientStateIncrement>
+					<!-- using a Mean rather than a plain 
+					sum of products so we capture the extra info that the 
+					sum of weights is 1 -->
+				<MeanGradient>
+					<MeanGradientComponent weight="1">
+						<Gradient at="stepStart"/>
+					</MeanGradientComponent>
+					<MeanGradientComponent weight="2">
+						<Gradient at="p2"/>
+					</MeanGradientComponent>
+					<MeanGradientComponent weight="2">
+						<Gradient at="p3"/>
+					</MeanGradientComponent>
+					 <MeanGradientComponent weight="1">
+						<Gradient at="p4"/>
+					</MeanGradientComponent>
+				</MeanGradient>
+			</GradientStateIncrement>	
+		
+		</IntegrationStep>	
+	
+	
+	</IntegrationScheme>
+	
+
+
+</Lems>
