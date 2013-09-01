@@ -63,7 +63,7 @@ public class DiscreteUpdateModel {
 		}
 		for (FloatAssignment fa : floatAssignments) {
 			XMLElement efa = ret.addElement("Assign");
-			efa.addAttribute("varible", fa.getVariableName());
+			efa.addAttribute("variable", fa.getVariableName());
 			efa.addAttribute("value", fa.getExpression());
 			String rp = fa.getReversePolishExpression();
 			if (rp != null) {

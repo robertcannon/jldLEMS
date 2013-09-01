@@ -57,7 +57,7 @@ public class DiscreteUpdateGenerator {
 		
 		for (VariableROC vroc : stateType.getRates()) {
 			String rnm = makeRateVar(vroc.getVariableName());
-			ret.addIfNewStateVariable(rnm);
+			// ret.addIfNewStateVariable(rnm);
 		}
 		
 		

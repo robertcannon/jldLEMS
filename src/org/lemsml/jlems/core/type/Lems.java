@@ -155,6 +155,7 @@ public class Lems {
         for (Component inst : components) {
             // as above for components
         	E.info("Resolving " +inst);
+        	inst.checkResolve(this, null);
         }
 
         for (Target dr : targets) {
