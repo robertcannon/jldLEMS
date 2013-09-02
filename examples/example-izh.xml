@@ -1,0 +1,114 @@
+<Lems>
+  
+<Target component="sim1"/> 
+ 
+<Dimension name="voltage" m="1" l="2" t="-3" i="-1"/>
+<Dimension name="time" t="1"/>
+<Dimension name="per_time" t="-1"/>
+<Dimension name="conductance" m="-1" l="-2" t="3" i="2"/>
+<Dimension name="capacitance" m="-1" l="-2" t="4" i="2"/>
+<Dimension name="current" i="1"/>
+ 
+ <Unit name="millisecond" symbol="ms" dimension="time" power="-3"/>
+ <Unit name="millivolt" symbol="mV" dimension="voltage" power="-3"/>
+ <Unit name="volt" symbol="V" dimension="voltage" power="0"/>
+ 
+ 
+ <Constant name="1millisecond" symbol="MSEC" dimension="time" value="0.001"/>
+ <Constant name="1millivolt" symbol="MVOLT" dimension="voltage" value="0.001"/>
+ 
+ 
+ 
+ <ComponentType name="izhikevichCell"
+        description="Cell based on the model of Izhikevich, see http://izhikevich.org/publications/spikes.htm">
+
+        <Parameter name="v0" dimension="voltage"/>  <!--TEMP: needs to be removed... -->
+        <Parameter name="a" dimension="none"/>
+        <Parameter name="b" dimension="none"/>
+        <Parameter name="c" dimension="none"/>
+        <Parameter name="d" dimension="none"/>
+        <Parameter name="thresh" dimension="voltage"/>
+        
+        <Parameter name="isyn" dimension="none"/>
+      
+        <EventPort name="spike" direction="out" description="Spike event"/>
+	    <Exposure name="v" dimension="voltage" description="Membrane potential"/>
+
+    <!-- These are needed to ensure a, b, c, d, U & I remain dimensionless... -->
+    
+
+        <Exposure name="U" dimension="none"/>
+
+        <Dynamics>
+
+            <StateVariable name="v" dimension="voltage" exposure="v"/>
+            <StateVariable name="U" dimension="none" exposure="U"/>
+
+            <DerivedVariable name="ISyn" dimension="none" select="isyn"/>
+
+            <TimeDerivative variable="v" value="(0.04 * v^2 / MVOLT + 5 * v + (140.0 - U + ISyn) * MVOLT)/MSEC"/>
+            <TimeDerivative variable="U" value="a * (b * v / MVOLT - U) / MSEC"/>
+
+
+            <OnStart>
+                <StateAssignment variable="v" value="v0"/>
+                <StateAssignment variable="U" value="v0 * b / MVOLT"/>
+            </OnStart>
+
+            <OnCondition test="v .gt. thresh">
+                <StateAssignment variable="v" value="c * MVOLT"/>
+                <StateAssignment variable="U" value="U + d"/>
+                <EventOut port="spike"/>
+            </OnCondition>
+
+        </Dynamics>
+
+    </ComponentType>
+ 
+ 
+ 
+
+<izhikevichCell id="izBurst" v0 = "-70mV" thresh = "30mV" a ="0.02" b = "0.2" c = "-50" d = "2" isyn="10"/>
+ 
+<izhikevichCell id="izTonic" v0 = "-70mV" thresh = "30mV" a ="0.02" b = "0.2" c = "-65" d = "6" isyn="4"/>
+ 
+<izhikevichCell id="izMixed" v0 = "-70mV" thresh = "30mV" a ="0.02" b = "0.2" c = "-55" d = "4" isyn="5"/>
+ 
+<izhikevichCell id="izClass1" v0 = "-60mV" thresh = "30mV" a ="0.02" b = "-0.1" c = "-55" d = "6" isyn="10"/>
+ 
+<Include file="SimpleNetwork.xml"/>
+
+<Network id="net1">
+    <Population id="izpopBurst" component="izBurst" size="1"/>
+    <Population id="izpopTonic" component="izTonic" size="1"/>
+    <Population id="izpopMixed" component="izMixed" size="1"/>
+    <Population id="izpopClass1" component="izClass1" size="1"/>
+ 
+</Network>
+
+ 
+<Include file="SingleSimulation.xml"/>
+
+<Simulation id="sim1" length="200ms" step="0.005ms" target="net1">
+
+    <Display id="d1" title="Ex2: Bursting Izhikevich cell in LEMS" timeScale="1ms" xmin="0" xmax="200" ymin="-90" ymax="50">
+        <Line id ="iz1" quantity="izpopBurst[0]/v" scale="1mV"  color="#ee40FF" timeScale="1ms"/>
+        <Line id ="iz2" quantity="izpopBurst[0]/U" scale="1"  color="#BBA0AA" timeScale="1ms"/>
+       </Display>
+
+    <Display id="d2" title="Ex2: Tonic spiking Izhikevich cell in LEMS" timeScale="1ms" xmin="0" xmax="200" ymin="-90" ymax="50">
+        <Line id ="iz1" quantity="izpopTonic[0]/v" scale="1mV"  color="#ee40FF" timeScale="1ms"/>
+        <Line id ="iz2" quantity="izpopTonic[0]/U" scale="1V"  color="#BBA0AA" timeScale="1ms"/>
+     </Display>
+
+    <Display id="d3" title="Ex2: Mixed mode Izhikevich cell in LEMS" timeScale="1ms" xmin="0" xmax="200" ymin="-90" ymax="50">
+        <Line id ="iz1" quantity="izpopMixed[0]/v" scale="1mV"  color="#ee40FF" timeScale="1ms"/>
+        <Line id ="iz2" quantity="izpopMixed[0]/U" scale="1V"  color="#BBA0AA" timeScale="1ms"/>
+     </Display>
+    
+    <!-- See other examples for saving of data traces -->
+    
+</Simulation>
+
+
+</Lems>

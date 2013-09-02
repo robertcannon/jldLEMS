@@ -8,6 +8,7 @@ import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ActionBlock;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.LemsCollection;
@@ -66,10 +67,12 @@ public class PointResponse {
 		 for (StateAssignment sa : stateAssignments) {
 			 
 			 ParseTree pt = sa.getParseTree();
+
+			 E.warning("Using fxed evaluator: won't work for instance models");
+			 // TODO NEXT - back to float, not fixed
+			 DoubleEvaluator dase = pt.makeFloatFixedEvaluator(fixedHM); 
+			 // DoubleEvaluator dase = pt.makeFloatEvaluator(); 
 			 
-			 //DoubleEvaluator dase = pt.makeFloatFixedEvaluator(fixedHM); 
-			 
-			 DoubleEvaluator dase = pt.makeFloatEvaluator(); 
 			 ret.addAssignment(sa.getStateVariable().getName(), dase);
 		 } 
 		 for (EventOut eout : eventOuts) {

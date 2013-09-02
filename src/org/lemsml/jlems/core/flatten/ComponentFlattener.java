@@ -6,8 +6,10 @@ import java.util.HashMap;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.expression.ExpressionParser;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.type.Attribute;
 import org.lemsml.jlems.core.type.Child;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentBuilder;
@@ -140,8 +142,14 @@ public class ComponentFlattener {
 		for (ParamValue pv : cpt.getParamValues()) {
 	 		String fname = flatName(pv.getName(), prefix);
 			// TODO
-			String val = cpt.getAttributes().getByName(pv.getName()).getValue();
-			cbuilder.addParameter(fname, val);
+	 		String pvn = pv.getName();
+	 		if (cpt.hasAttribute(pvn)) {
+	 			Attribute att = cpt.getAttributes().getByName(pvn);
+	 			String val = att.getValue();
+	 			cbuilder.addParameter(fname, val);
+	 		} else {
+	 			E.warning("No attribute '" + pvn + "' set in component: " + cpt);
+	 		}
 		}
 
 		
