@@ -21,11 +21,7 @@ public class Meta {
 	
 	public ArrayList<MetaItem> items = new ArrayList<MetaItem>();
 
-	
-	
-	public Meta() {
-		
-	}
+	 
 	
 	public void setSource(XMLElement xe) {
 		p_sourceXML = xe;

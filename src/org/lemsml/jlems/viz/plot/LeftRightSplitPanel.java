@@ -1,7 +1,5 @@
 package org.lemsml.jlems.viz.plot;
 
-import java.awt.GridLayout;
-
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
 

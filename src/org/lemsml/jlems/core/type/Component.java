@@ -7,7 +7,7 @@ import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.run.DoublePointer;
+ 
 import org.lemsml.jlems.core.run.LocalValues;
 import org.lemsml.jlems.core.run.RuntimeType;
 import org.lemsml.jlems.core.run.StateType;
@@ -93,14 +93,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	// RuntimeType can be a NativeType for code generated components
 	private RuntimeType runtimeType;
 	
-	
-	
-	public Component() {
-		super();
-	//	E.info("Created a component");
-	//	E.trace();
-	}
-	
+	 
 	
 	
 	public void setID(String s) {

@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.RuntimeError;
-import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateRunnable;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Lems;

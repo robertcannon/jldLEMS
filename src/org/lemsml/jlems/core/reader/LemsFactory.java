@@ -75,8 +75,10 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildCollection(xel);
         } else if (tag.equals("PairCollection")) {
             ret = buildPairCollection(xel);
-        } else if (tag.equals("EventPort")) {
-            ret = buildEventPort(xel);
+        } else if (tag.equals("SendPort")) {
+            ret = buildSendPort(xel);
+        } else if (tag.equals("ReceivePort")) {
+            ret = buildReceivePort(xel);
         } else if (tag.equals("Text")) {
             ret = buildText(xel);
         } else if (tag.equals("Path")) {
@@ -540,8 +542,10 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.constants.add((Constant)obj);
             } else if (obj instanceof Attachments) {
                 ret.attachmentses.add((Attachments)obj);
-            } else if (obj instanceof EventPort) {
-                ret.eventPorts.add((EventPort)obj);
+            } else if (obj instanceof ReceivePort) {
+                ret.receivePorts.add((ReceivePort)obj);
+            } else if (obj instanceof SendPort) {
+                ret.sendPorts.add((SendPort)obj);
             } else if (obj instanceof Path) {
                 ret.paths.add((Path)obj);
             } else if (obj instanceof Text) {
@@ -915,8 +919,8 @@ public class LemsFactory extends AbstractLemsFactory {
         return ret;
     }
 
-    private EventPort buildEventPort(XMLElement xel) {
-        EventPort ret = new EventPort();
+    private SendPort buildSendPort(XMLElement xel) {
+        SendPort ret = new SendPort();
 
         for (XMLAttribute xa : xel.getAttributes()) {
             String xn = internalFieldName(xa.getName());
@@ -925,8 +929,27 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
-            } else if (xn.equals("direction")) {
-                ret.direction = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private ReceivePort buildReceivePort(XMLElement xel) {
+        ReceivePort ret = new ReceivePort();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {

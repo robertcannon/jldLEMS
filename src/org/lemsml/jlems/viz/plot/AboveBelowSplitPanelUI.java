@@ -1,6 +1,5 @@
 package org.lemsml.jlems.viz.plot;
-
-import java.awt.Graphics;
+ 
 
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;

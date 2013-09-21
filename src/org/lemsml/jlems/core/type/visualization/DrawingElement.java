@@ -13,4 +13,7 @@ public abstract class DrawingElement {
 
 	public String lineColor;
 	public String fillColor;
+	
+	 
+	
 }

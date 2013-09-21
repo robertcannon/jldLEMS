@@ -2,7 +2,7 @@ package org.lemsml.jlems.core.discrete.run;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.core.eval.DoubleEvaluator;
+
 import org.lemsml.jlems.core.run.DoublePointer;
 import org.lemsml.jlems.core.run.RuntimeError;
 

@@ -1,7 +1,6 @@
 package org.lemsml.jlems.io.out;
 
-import org.lemsml.jlems.core.display.DataViewer;
-import org.lemsml.jlems.core.display.DataViewerFactory;
+ 
 import org.lemsml.jlems.core.out.ResultWriter;
 import org.lemsml.jlems.core.out.ResultWriterFactory;
 import org.lemsml.jlems.core.run.RuntimeOutput;

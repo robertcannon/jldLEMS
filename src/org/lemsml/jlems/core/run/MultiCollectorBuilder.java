@@ -1,12 +1,7 @@
 package org.lemsml.jlems.core.run;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.core.eval.DBase;
-import org.lemsml.jlems.core.eval.DoubleEvaluator;
-import org.lemsml.jlems.core.expression.DoubleParseTreeNode;
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
 public class MultiCollectorBuilder extends AbstractPostBuilder {

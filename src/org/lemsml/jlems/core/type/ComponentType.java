@@ -14,7 +14,7 @@ import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.Constants;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
-import org.lemsml.jlems.core.type.dynamics.DerivedVariable;
+ 
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.Equilibrium;
 import org.lemsml.jlems.core.type.geometry.Geometry;
@@ -91,8 +91,12 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<Attachments> attachmentses = new LemsCollection<Attachments>();
 
-	public LemsCollection<EventPort> eventPorts = new LemsCollection<EventPort>();
 
+	public LemsCollection<ReceivePort> receivePorts = new LemsCollection<ReceivePort>();
+
+	public LemsCollection<SendPort> sendPorts = new LemsCollection<SendPort>();
+
+	
 	public LemsCollection<Path> paths = new LemsCollection<Path>();
 
 	public LemsCollection<Text> texts = new LemsCollection<Text>();
@@ -325,10 +329,14 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			for (FinalParam fp : r_extends.getFinalParams()) {
 				finalParams.addIfNew(fp.makeCopy());
 			}
-			for (EventPort ep : r_extends.getEventPorts()) {
-				eventPorts.addIfNew(ep.makeCopy());
+			for (ReceivePort ep : r_extends.getReceivePorts()) {
+				receivePorts.addIfNew(ep.makeCopy());
 			}
-
+			for (SendPort ep : r_extends.getSendPorts()) {
+				sendPorts.addIfNew(ep.makeCopy());
+			}
+			
+			
 			for (ComponentReference cr : r_extends.getComponentRefs()) {
 				componentReferences.addIfNew(cr.makeCopy());
 			}
@@ -374,9 +382,13 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			finalParams.add(fp);
 		}
 
-		for (EventPort ep : eventPorts) {
+		for (ReceivePort ep : receivePorts) {
 			ep.resolve(lems.getDimensions());
 		}
+		for (SendPort ep : sendPorts) {
+			ep.resolve(lems.getDimensions());
+		}
+		
 
 		for (Dynamics b : dynamicses) {
 			b.setComponentType(this);
@@ -421,9 +433,14 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	
 	
 	
-	public LemsCollection<EventPort> getEventPorts() {
-		return eventPorts;
+	public LemsCollection<SendPort> getSendPorts() {
+		return sendPorts;
 	}
+	
+	public LemsCollection<ReceivePort> getReceivePorts() {
+		return receivePorts;
+	}
+	
 
 	public LemsCollection<FinalParam> getFinalParams() {
 		return finalParams;
@@ -461,15 +478,11 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return sp.getValue();
 	}
 
-	public EventPort getInEventPort(String port) throws ContentError {
-		EventPort ret = null;
-		if (eventPorts.hasName(port)) {
-			EventPort ep = eventPorts.getByName(port);
-			if (ep.isDirectionIn()) {
-				ret = ep;
-			} else {
-				E.error("input port needed for " + port + " but got output port");
-			}
+	public ReceivePort getReceivePort(String port) throws ContentError {
+		ReceivePort ret = null;
+		if (receivePorts.hasName(port)) {
+			ReceivePort ep = receivePorts.getByName(port);
+		 
 		}
 		if (ret == null) {
 			E.error("No such port: " + port+" on "+this);
@@ -477,15 +490,11 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return ret;
 	}
 
-	public EventPort getOutEventPort(String port) throws ContentError {
-		EventPort ret = null;
-		if (eventPorts.hasName(port)) {
-			EventPort ep = eventPorts.getByName(port);
-			if (ep.isDirectionOut()) {
-				ret = ep;
-			} else {
-				E.error("output port needed for " + port + " but got input port");
-			}
+	public SendPort getSendPort(String port) throws ContentError {
+		SendPort ret = null;
+		if (sendPorts.hasName(port)) {
+			SendPort ep = sendPorts.getByName(port);
+			 
 		}
 		if (ret == null) {
 			E.error("No such port: " + port + " on " + this);
@@ -793,8 +802,13 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		 boolean ret = false;
 		 if (obj instanceof Exposure && exposures.hasName(((Exposure)obj).getName())) {
 			 ret = true;
-		 } else if (obj instanceof EventPort && eventPorts.hasName(((EventPort)obj).getName())) {
+		 
+		 } else if (obj instanceof SendPort && sendPorts.hasName(((SendPort)obj).getName())) {
 			 ret = true;
+		
+		 } else if (obj instanceof ReceivePort && receivePorts.hasName(((ReceivePort)obj).getName())) {
+			 ret = true;
+		 
 		 } else if (obj instanceof Requirement && requirements.hasName(((Requirement)obj).getName())) {
 			 ret = true;
 		 }
@@ -834,11 +848,14 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return ret;
 	}
 
-	public void addEventPort(EventPort ep) {
-		eventPorts.add(ep);
-		
+	public void addSendPort(SendPort ep) {
+		sendPorts.add(ep);
 	}
 
+	public void addReceivePort(ReceivePort ep) {
+		receivePorts.add(ep);
+	}
+	
 	public void addBehavior(Dynamics b) {
 		dynamicses.add(b);
 	}

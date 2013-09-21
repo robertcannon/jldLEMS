@@ -4,7 +4,6 @@ import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.run.BuilderElement;
 import org.lemsml.jlems.core.run.RuntimeType;
 import org.lemsml.jlems.core.run.SingleChildBuilder;
-import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;

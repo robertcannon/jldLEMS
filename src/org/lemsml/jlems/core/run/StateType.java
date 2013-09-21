@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import org.lemsml.jlems.core.eval.DoubleEvaluator;
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.out.ResultWriter;
+ 
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.StateTypeVisitor;
 import org.lemsml.jlems.core.type.Component;

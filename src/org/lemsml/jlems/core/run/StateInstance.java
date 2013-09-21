@@ -68,10 +68,7 @@ public class StateInstance implements StateRunnable {
 
 	boolean bList;
 	String listName;
-	
-	
-	private String rcName = null;
-	
+	 
 	// EventManager eventManager;
 	
 	
@@ -580,7 +577,7 @@ public class StateInstance implements StateRunnable {
 	
 	
 	public void addRefChild(String s, StateRunnable sr) {
-		rcName = s;
+		// rcName = s;
 		if (childHM == null) {
 			childHM = new HashMap<String, StateRunnable>();
 		}

@@ -1,19 +1,10 @@
 package org.lemsml.jlems.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-
-import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.jlems.core.expression.AndNode;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.MathMLWriter;
-import org.lemsml.jlems.core.expression.OrNode;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.io.logging.DefaultLogger;

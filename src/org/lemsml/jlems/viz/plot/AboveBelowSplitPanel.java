@@ -2,13 +2,11 @@ package org.lemsml.jlems.viz.plot;
 
 
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 
 public class AboveBelowSplitPanel extends JSplitPane implements ComponentListener {

@@ -2,23 +2,23 @@ package org.lemsml.jlems.core.type.dynamics;
 
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.ComponentType;
-import org.lemsml.jlems.core.type.EventPort;
+import org.lemsml.jlems.core.type.SendPort;
 
 public class EventOut {
 
 	public String port;
 	
-	public EventPort r_eventPort;
+	public SendPort r_sendPort;
 
 	
 	public void resolve(ComponentType base) throws ContentError {
-		r_eventPort = base.getOutEventPort(port);
+		r_sendPort = base.getSendPort(port);
 		
 	}
 
 
 	public String getPortName() {
-		return r_eventPort.getName();
+		return r_sendPort.getName();
 	}
 
 

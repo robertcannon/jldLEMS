@@ -1,15 +1,7 @@
 package org.lemsml.jlems.core.discrete;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.core.codger.metaclass.Constructor;
-import org.lemsml.jlems.core.codger.metaclass.MetaClass;
-import org.lemsml.jlems.core.codger.metaclass.MetaInterface;
-import org.lemsml.jlems.core.codger.metaclass.Method;
-import org.lemsml.jlems.core.codger.metaclass.MethodCall;
-import org.lemsml.jlems.core.codger.metaclass.Product;
-import org.lemsml.jlems.core.codger.metaclass.VarType;
 import org.lemsml.jlems.core.dimensionless.FloatAssignment;
 import org.lemsml.jlems.core.eval.DVar;
 import org.lemsml.jlems.core.eval.Plus;
@@ -25,7 +17,6 @@ import org.lemsml.jlems.core.run.MultiStateType;
 import org.lemsml.jlems.core.run.PathDerivedVariable;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.run.VariableROC;
-import org.lemsml.jlems.core.type.Component;
  
 
 public class DiscreteUpdateGenerator {
@@ -113,9 +104,11 @@ public class DiscreteUpdateGenerator {
 		for (VariableROC vroc : stateType.getRates()) {
 			String vnm = vroc.getVariableName();
 			String rnm = makeRateVar(vnm);
-		 
-			ret.addFloatAssignment(rnm, vroc.getTextExpression());
-		}
+			
+			FloatAssignment fa = new FloatAssignment(rnm, vroc.getTextExpression());
+			fa.setReversePolishExpression(vroc.getReversePolishExpressionString());
+			ret.addFloatAssignment(fa);
+ 		}
 		
 		  
 		
@@ -128,7 +121,11 @@ public class DiscreteUpdateGenerator {
 			Times t = new Times(new DVar(r), new DVar("dt"));
 			Plus p = new Plus(new DVar(vnm), t);
 			String expr = p.toExpression();			 
-			ret.addUpdateFloatAssignment(vnm, expr);
+		
+			FloatAssignment fa = new FloatAssignment(vnm, expr);
+			fa.setReversePolishExpression(vnm + " " + r + " dt * +");
+			ret.addUpdateFloatAssignment(fa);
+		
 		}
 	}
 	
@@ -152,7 +149,7 @@ public class DiscreteUpdateGenerator {
 		if (gsi.gradient != null) {
 			
 			Gradient grad = gsi.gradient;
-			if (grad.at == "stepStart") {
+			if (grad.at.equals("stepStart")) {
 		
 			// TODO - get suffix for vars according to at, work state should have been eval'd.
 				
@@ -161,7 +158,10 @@ public class DiscreteUpdateGenerator {
 				String vnm = vroc.getVariableName();
 				String rnm = makeRateVar(vnm);
 			 
-				ret.addFloatAssignment(rnm, vroc.getTextExpression());
+				FloatAssignment fa = new FloatAssignment(rnm, vroc.getTextExpression());
+				fa.setReversePolishExpression(vroc.getReversePolishExpressionString());
+				ret.addFloatAssignment(fa);
+				
 			}
 			
 			  
@@ -175,7 +175,9 @@ public class DiscreteUpdateGenerator {
 				Times t = new Times(new DVar(r), new DVar("dt"));
 				Plus p = new Plus(new DVar(vnm), t);
 				String expr = p.toExpression();			 
-				ret.addUpdateFloatAssignment(vnm, expr);
+				FloatAssignment fa = new FloatAssignment(vnm, expr);
+				fa.setReversePolishExpression(vnm + " " + r + " dt * +");
+				ret.addUpdateFloatAssignment(fa);
 			}
 			
 			} else {

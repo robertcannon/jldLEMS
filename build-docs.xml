@@ -10,7 +10,13 @@
 	     
 		<import file="build.xml"/>
 		
-		
+	     <path id="generation.classpath">
+			<pathelement location="bun/junit-4.8.1.jar"/>
+			<pathelement location="lib/commons-compiler.jar"/>
+			<pathelement location="lib/commons-compiler-jdk.jar"/>
+		</path>
+	
+	
 	    <target name="clean" description="Cleaning up">
 	        <delete failonerror="false">
 	            <fileset dir="build/site" includes="**/*"/>

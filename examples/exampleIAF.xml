@@ -42,7 +42,9 @@
     <Parameter name="deltaV" dimension="voltage"/>
 
     <EventPort name="spikes-in" direction="in"/>
+    <EventPort name="spikes-out" direction="out"/>
     <Exposure name="v" dimension="voltage"/>
+    
 
     <Dynamics>
        <StateVariable name="v" exposure="v" dimension="voltage"/>
@@ -51,6 +53,11 @@
        <OnEvent port="spikes-in">
             <StateAssignment variable="v" value="v + deltaV"/>
        </OnEvent>      
+	
+		<OnCondition test="v .gt. threshold">
+			<EventOut port="spikes-out"/>
+		</OnCondition>
+
     </Dynamics>
 
 </ComponentType>

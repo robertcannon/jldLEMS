@@ -3,7 +3,6 @@ package org.lemsml.jlems.core.template;
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateRunnable;
  
 

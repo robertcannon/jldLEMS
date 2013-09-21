@@ -6,7 +6,6 @@ import java.util.HashMap;
 import org.lemsml.jlems.core.expression.Node;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
-import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateRunnable;
 import org.lemsml.jlems.core.sim.ContentError;
 

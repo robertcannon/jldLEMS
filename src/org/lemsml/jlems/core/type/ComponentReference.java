@@ -32,14 +32,7 @@ public class ComponentReference implements Named  {
 	
 	private boolean inResolve = false;
 
-	
-	
-	public ComponentReference() {
-		// maybe only one constructor?
-	}
-	
-	
-	
+	 
 	
 	public void resolve(Lems lems, ExpressionParser p) throws ContentError, ParseError {
 		inResolve = true;

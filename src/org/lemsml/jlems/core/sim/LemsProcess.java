@@ -1,6 +1,5 @@
 package org.lemsml.jlems.core.sim;
-  
-import java.util.ArrayList;
+   
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.expression.ParseError;

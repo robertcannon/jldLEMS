@@ -3,10 +3,8 @@ package org.lemsml.jlems.core.run;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.RunnableAccessor;
-import org.lemsml.jlems.core.type.Component;
 
 public class WithListItemBuilder extends AbstractPostBuilder {
 

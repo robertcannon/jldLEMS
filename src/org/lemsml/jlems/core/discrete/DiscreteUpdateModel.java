@@ -122,6 +122,10 @@ public class DiscreteUpdateModel {
 		
 	}
 
+	public void addUpdateFloatAssignment(FloatAssignment fa) {
+		updateAssignments.add(fa);
+	}
+	
 	
 	public ArrayList<IndependentVariable> getIndependentVariables() {
 			return independentVariables;

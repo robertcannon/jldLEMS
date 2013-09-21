@@ -93,10 +93,13 @@ public class ComponentTypeBuilder {
 	}
 
 
-	public void addEventPort(EventPort ep) {
-		 target.addEventPort(ep);
+	public void addSendPort(SendPort ep) {
+		 target.addSendPort(ep);
 	}
-
+	
+	public void addReceivePort(ReceivePort ep) {
+		 target.addReceivePort(ep);
+	}
  
 
 	public void addDerivedVariable(String newDvName, Dimension dimension, String val) {

@@ -23,7 +23,6 @@ import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
-import org.lemsml.jlems.core.type.EventPort;
 import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.FinalParam;
 import org.lemsml.jlems.core.type.InstanceProperty;
@@ -32,6 +31,7 @@ import org.lemsml.jlems.core.type.LemsCollection;
 import org.lemsml.jlems.core.type.Named;
 import org.lemsml.jlems.core.type.ParamValue;
 import org.lemsml.jlems.core.type.Property;
+import org.lemsml.jlems.core.type.ReceivePort;
 import org.lemsml.jlems.core.type.Requirement;
 
 
@@ -454,14 +454,12 @@ public class Dynamics  {
 			 ret.addEventResponse(er);
 		 }
 		 if (regimes.size() > 0) {
-			 for (EventPort p :  r_type.getEventPorts()) {
-				 if (p.isDirectionIn()) {
-					 if (onEvents.hasName(p.getName())) {
+			 for (ReceivePort p :  r_type.getReceivePorts()) {
+				 if (onEvents.hasName(p.getName())) {
 						 // OK, the existing action will also send the event on to the active regime
-					 } else {
- 						 EventAction er = new EventAction(p.getName());
-	                     ret.addEventResponse(er);
-					 }
+				 } else {
+					 EventAction er = new EventAction(p.getName());
+					 ret.addEventResponse(er);
 				 }
 			 }
 		 }
@@ -488,10 +486,8 @@ public class Dynamics  {
 			 ret.addKScheme(scheme);
 		 }
 	 
-		 for (EventPort p : r_type.getEventPorts()) {
-			 if (p.isDirectionIn()) {
-				 ret.addInputPort(p.getName());
-			 }
+		 for (ReceivePort p : r_type.getReceivePorts()) {
+			 ret.addInputPort(p.getName());
 			 // TODO - also need output ports done the same way, in case send action is in a sub-regime
 		 }
 		  	

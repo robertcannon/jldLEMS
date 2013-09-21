@@ -2,12 +2,9 @@ package org.lemsml.jlems.tests;
 
 import java.io.File;
 import java.io.IOException;
- 
 
-import org.codehaus.commons.compiler.jdk.JavaSourceClassLoader;
 import org.lemsml.jlems.core.codger.CodeGenerationException;
 import org.lemsml.jlems.core.codger.CompilationException;
-import org.lemsml.jlems.core.codger.StateTypeGenerator;
 import org.lemsml.jlems.core.discrete.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.discrete.DiscreteUpdateModel;
 import org.lemsml.jlems.core.discrete.run.DiscreteUpdateStateType;
@@ -15,7 +12,6 @@ import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
-import org.lemsml.jlems.core.run.GeneratedInstance;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -26,8 +22,6 @@ import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.xml.XMLException;
-import org.lemsml.jlems.generation.JavaGenerator;
-import org.lemsml.jlems.generation.NativeType;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
 import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;

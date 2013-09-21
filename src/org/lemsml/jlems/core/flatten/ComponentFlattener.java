@@ -16,12 +16,13 @@ import org.lemsml.jlems.core.type.ComponentBuilder;
 import org.lemsml.jlems.core.type.ComponentReference;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.ComponentTypeBuilder;
-import org.lemsml.jlems.core.type.EventPort;
 import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.FinalParam;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.ParamValue;
+import org.lemsml.jlems.core.type.ReceivePort;
 import org.lemsml.jlems.core.type.Requirement;
+import org.lemsml.jlems.core.type.SendPort;
 import org.lemsml.jlems.core.type.Text;
 import org.lemsml.jlems.core.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
@@ -131,10 +132,14 @@ public class ComponentFlattener {
 			typeB.addOnEvent(oe.makeCopy());
 		}
 
-		for (EventPort ep : typ.getEventPorts()) {
-			typeB.addEventPort(ep.makeCopy());
+		for (ReceivePort ep : typ.getReceivePorts()) {
+			typeB.addReceivePort(ep.makeCopy());
 		}
-
+		
+		for (SendPort ep : typ.getSendPorts()) {
+			typeB.addSendPort(ep.makeCopy());
+		}
+		
 		for (OnCondition oc : dyn.getOnConditions()) {
 			typeB.addOnCondition(oc.makeCopy());
 		}

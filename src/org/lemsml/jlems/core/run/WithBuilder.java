@@ -4,8 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.RunnableAccessor;
-import org.lemsml.jlems.core.type.Component;
-
+ 
 public class WithBuilder extends AbstractPostBuilder {
 
 	String path;
