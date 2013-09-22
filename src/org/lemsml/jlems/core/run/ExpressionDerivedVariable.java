@@ -102,6 +102,18 @@ public class ExpressionDerivedVariable {
 		return ret;
 	}
 
+	public boolean isTrivial() {
+		boolean ret = false;
+		if (rateexp.isTrivial()) {
+			ret = true;
+		}
+		return ret;
+	}
+
+	public String getSimpleValueName() {
+		return rateexp.getSimpleValueName();
+	}
+
 
  
 }

@@ -87,6 +87,13 @@ public class DBase implements DoubleEvaluator {
 		return root.variablesIn(known);
 	}
 
-	
+	public boolean isTrivial() {
+		return root.isTrivial();
+	}
+
+	@Override
+	public String getSimpleValueName() {
+		 return root.getSimpleValueName();
+	}
 	
 }

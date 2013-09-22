@@ -24,6 +24,10 @@ public interface DoubleEvaluator {
 	String getExpressionString();
 
 	String getReversePolishExpressionString();
+
+	boolean isTrivial();
+
+	String getSimpleValueName();
 	
 	
 }

@@ -125,6 +125,12 @@ public class DVar extends AbstractDVal {
           return ret;
 	 }
 		
-	 
-	
+	 public boolean isTrivial() {
+		 return true;
+	 }
+
+	 public String getSimpleValueName() {
+		 return varname;
+	 }
+		 
 }

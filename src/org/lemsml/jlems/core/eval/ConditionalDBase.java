@@ -109,4 +109,14 @@ public class ConditionalDBase implements DoubleEvaluator {
 		return null;
 	}
 	
+	public boolean isTrivial() {
+		return false;
+	}
+
+
+	@Override
+	public String getSimpleValueName() {
+		E.error("Shouldnt look for simple value on a condition");
+		return null;
+	}
 }

@@ -21,4 +21,10 @@ public abstract class AbstractDVal {
 
 	public abstract String toReversePolishExpression();
 
+	public abstract boolean isTrivial();
+
+	public String getSimpleValueName() {
+		return null;
+	}
+	 
 }

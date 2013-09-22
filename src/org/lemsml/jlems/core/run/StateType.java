@@ -1328,6 +1328,49 @@ public class StateType implements RuntimeType {
 	}
 	
 	
+	public void removeRedundantExpressions() {
+		// flattening can produce expressions of the form 
+		// a = (...)
+		// b = a
+		// c = (... b ...)
+		// here we identify expressions of the form b = a, remove them from the 
+		// list and substitute a for b in the rest
+		
+		int norig = exderiveds.size();
+		
+	 	HashMap<String, String> subs = new HashMap<String, String>();
+		ArrayList<ExpressionDerivedVariable> toKeep = new ArrayList<ExpressionDerivedVariable>();
+		for (ExpressionDerivedVariable edv : exderiveds) {
+			if (edv.isTrivial()) {
+				String sv = edv.getVariableName();
+				String ss = edv.getSimpleValueName();
+				subs.put(sv, ss);
+				E.info("Removing " + sv + " and just using " + ss);
+			} else {
+				toKeep.add(edv);
+			}
+		}
+		for (ExpressionDerivedVariable edv : toKeep) {
+			for (String s: subs.keySet()) {
+				edv.substituteVariableWith(s, subs.get(s));
+			}
+		}
+		
+		for (VariableROC vroc : rates) {
+			for (String s: subs.keySet()) {
+				vroc.substituteVariableWith(s, subs.get(s));
+			}
+		}
+		
+		int nkept = toKeep.size();
+		if (norig == nkept) {
+			E.info("No redundant expressions removed");
+		} else {
+			E.info("" + (norig - nkept) + " redundant expressions removed. " + nkept + " expressions remaining");
+		}
+		exderiveds = toKeep;
+		
+	}
 	
 	
 	

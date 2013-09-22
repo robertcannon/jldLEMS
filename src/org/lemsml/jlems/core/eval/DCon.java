@@ -60,6 +60,13 @@ public class DCon extends AbstractDVal {
 		return true;
 	}
 
+	public boolean isTrivial() {
+		return true;
+	}
 
-	
+
+	public String getSimpleValueName() {
+		return toExpression();
+	}
+	 
 }

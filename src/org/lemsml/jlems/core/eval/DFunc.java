@@ -87,4 +87,7 @@ public class DFunc extends AbstractDVal {
 		return arg.variablesIn(known);
 	}
  
+	public boolean isTrivial() {
+		return false;
+	}
 }

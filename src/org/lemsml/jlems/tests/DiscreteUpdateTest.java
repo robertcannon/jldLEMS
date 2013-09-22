@@ -38,7 +38,7 @@ public class DiscreteUpdateTest {
     	DefaultLogger.initialize();
        
     	DiscreteUpdateTest dut = new DiscreteUpdateTest();
-    	//dut.runExampleIaF(); 
+    	dut.runExampleIaF(); 
     	dut.runExampleHH(); 
     }
     
@@ -97,6 +97,8 @@ public class DiscreteUpdateTest {
 	 
 		
 		StateType st = cp.getStateType();
+		
+		st.removeRedundantExpressions();
 		st.sortExpressions();
 		
 		String numcontents = JUtil.getRelativeResource(new NumericsRoot(), "defaultNumerics.xml");
