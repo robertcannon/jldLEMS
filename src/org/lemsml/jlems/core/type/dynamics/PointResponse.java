@@ -41,6 +41,7 @@ public class PointResponse {
 		StateAssignment sa = new StateAssignment();
 		sa.setVariable(vnm);
 		sa.setValue(val);
+		stateAssignments.add(sa);
 	}
 	
 	
@@ -61,9 +62,21 @@ public class PointResponse {
     	transitions.add(t);
     }
 
+	private void addEventOut(EventOut eo) {
+		eventOuts.add(eo);
+	}
+
+	private void addStateAssignment(StateAssignment sa) {
+		stateAssignments.add(sa);
+	}
+	
+	
 	
 	public ActionBlock makeEventAction(HashMap<String, Double> fixedHM) throws ContentError {
 		 ActionBlock ret = new ActionBlock();
+		 
+		 
+		 
 		 for (StateAssignment sa : stateAssignments) {
 			 
 			 ParseTree pt = sa.getParseTree();
@@ -107,11 +120,4 @@ public class PointResponse {
 	}
 
 	
-	private void addEventOut(EventOut eo) {
-		eventOuts.add(eo);
-	}
-
-	private void addStateAssignment(StateAssignment sa) {
-		stateAssignments.add(sa);
-	}
 }

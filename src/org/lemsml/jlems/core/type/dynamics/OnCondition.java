@@ -40,14 +40,6 @@ public class OnCondition extends PointResponse   {
 	}
 
 	
-	public void addStateAssignment(StateAssignment sa) {
-		 stateAssignments.add(sa);
-	}
-
-	
-	public void addEventOut(EventOut eo) {
-		eventOuts.add(eo);
-	}
 
 	public OnCondition makeCopy() {
 		OnCondition ret = new OnCondition();

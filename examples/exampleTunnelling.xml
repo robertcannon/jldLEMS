@@ -44,7 +44,7 @@
 	<Attachments name="gapJunctions" type="GapJunction"/>
 
 
-    <EventPort name="spikes-in" direction="in"/>
+    <ReceivePort name="spikes-in"/>
     <Exposure name="v" dimension="voltage"/>
     
     
@@ -67,7 +67,7 @@
 
 <ComponentType name="spikeGenerator">
     <Parameter name="period" dimension="time"/>
-    <EventPort name="a" direction="out"/>
+    <SendPort name="a"/>
     <Exposure name="tsince" dimension="time"/>
     <Dynamics>
         <StateVariable name="tsince" exposure="tsince" dimension="time"/>

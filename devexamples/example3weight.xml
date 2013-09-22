@@ -24,7 +24,7 @@ refractoryPeriod="4ms" capacitance="1pF"/>
         <Parameter name="deltaG" dimension="conductance"/>
         <Parameter name="erev" dimension="voltage"/>
         <Parameter name="tfall" dimension="time"/>
-        <EventPort name="in" direction="in"/>
+        <ReceivePort name="in"/>
         <Requirement name="v" dimension="voltage"/>
         <Exposure name="current" dimension="current"/>
     

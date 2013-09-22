@@ -99,8 +99,8 @@
 	
 	
 	<ComponentType name="Cell">
-	      <EventPort name="spikes-in" direction="in"/>
-          <EventPort name="spikes-out" direction="out"/>
+	      <ReceivePort name="spikes-in"/>
+          <SendPort name="spikes-out"/>
  
 	       <Behavior>
               <StateVariable name="n" dimension="none"/>

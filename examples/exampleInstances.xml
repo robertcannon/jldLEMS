@@ -41,7 +41,7 @@
     <Parameter name="leakReversal" dimension="voltage"/>
     <Parameter name="deltaV" dimension="voltage"/>
  
-    <EventPort name="spikes-in" direction="in"/>
+    <ReceivePort name="spikes-in"/>
     <Exposure name="v" dimension="voltage"/>
 
     <Dynamics>
@@ -59,7 +59,7 @@
 
 <ComponentType name="spikeGenerator">
     <Parameter name="period" dimension="time"/>
-    <EventPort name="a" direction="out"/>
+    <SendPort name="a"/>
     <Exposure name="tsince" dimension="time"/>
     <Dynamics>
         <StateVariable name="tsince" exposure="tsince" dimension="time"/>

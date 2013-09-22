@@ -15,6 +15,9 @@ public class NEQComp extends AbstractBComp {
 		return (left.eval() != right.eval());
 	}
 	
-	
+	@Override
+	public String toExpression() {
+		return "("+left.toExpression() +" != "+ right.toExpression() +")";
+    }
 	
 }

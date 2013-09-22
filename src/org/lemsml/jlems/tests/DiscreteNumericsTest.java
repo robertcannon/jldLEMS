@@ -43,14 +43,22 @@ public class DiscreteNumericsTest {
     public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
     	
     	File fnum = new File("devexamples/numerics.xml");
-    	
+ 
     	File f1 = new File("examples/example1.xml");
  		String s = generateDiscreteUpdateModel(f1, "na", fnum);
  		E.info("Generated XML: \n" + s);
     }
     
     
-    
+    @Test
+    public void runExampleIaF() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
+    	
+    	File fnum = new File("devexamples/numerics.xml");
+    	
+    	File f1 = new File("examples/example1.xml");
+ 		String s = generateDiscreteUpdateModel(f1, "na", fnum);
+ 		E.info("Generated XML: \n" + s);
+    }
     
     public String generateDiscreteUpdateModel(File f, String tgtid, File fnum) throws ContentError,
     		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 

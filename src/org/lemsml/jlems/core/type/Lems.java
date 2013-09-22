@@ -154,7 +154,6 @@ public class Lems {
 
         for (Component inst : components) {
             // as above for components
-        	E.info("Resolving " +inst);
         	inst.checkResolve(this, null);
         }
 
@@ -172,14 +171,12 @@ public class Lems {
     }
 
     public void addComponent(Component c) {
-    	E.info("Added cpt " + c.getID());
-         components.add(c);
+          components.add(c);
     }
 
     
     public void addComponentType(ComponentType ct) {
-        E.info("Adding component type: " + ct);
-        componentTypes.add(ct);
+          componentTypes.add(ct);
     }
 
     public void evaluateStatic() throws ContentError, ParseError {

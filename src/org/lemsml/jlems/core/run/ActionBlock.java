@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.eval.DoubleEvaluator;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
 public class ActionBlock {
@@ -17,13 +18,17 @@ public class ActionBlock {
 	public String transitionTo;
 	
 	
+	public ActionBlock() {
+	}
+	
+	
 	public void addAssignment(String name, DoubleEvaluator das) {	
-		assignments.add(new VariableAssignment(name, das));	
+ 		assignments.add(new VariableAssignment(name, das));	
 	}
 
 	
 	public void addVariableAssignment(VariableAssignment va) {
-		assignments.add(va);
+ 		assignments.add(va);
 	}
 	
 	public void addEventOut(String portName) {
@@ -104,6 +109,11 @@ public class ActionBlock {
 		}
 		return ret;
 		
+	}
+
+
+	public ArrayList<String> getOutEvents() {
+		return outPorts;
 	}
 	
 }

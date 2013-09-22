@@ -11,7 +11,7 @@
 
     <ComponentType name="spikeGenerator">
         <Parameter name="period" dimension="time"/>
-        <EventPort name="a" direction="out"/>
+        <SendPort name="a"/>
         <Exposure name="tsince" dimension="time"/>
         <Behavior>
             <StateVariable name="tsince" exposure="tsince" dimension="time"/>
@@ -24,8 +24,8 @@
     </ComponentType>
 
     <ComponentType name="Cell">
-        <EventPort name="spikes-in" direction="in" />
-        <EventPort name="spikes-out" direction="out" />
+        <ReceivePort name="spikes-in"/>
+        <SendPort name="spikes-out"/>
 
         <Exposure name="n" dimension="none" />
 

@@ -21,7 +21,7 @@
         <Parameter name="tau" dimension="time"/>
         <Parameter name="refract" dimension="time"/>
         
-        <EventPort name="spike" direction="out" description="Spike event"/>
+        <SendPort name="spike" description="Spike event"/>
 
         <Exposure name="v" dimension="voltage" description="Membrane potential"/>
 

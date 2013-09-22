@@ -5,8 +5,8 @@
 
 	<ComponentType name="delay">
 		<Parameter name="delay" dimension="time"/>
-		<EventPort name="in" direction="in"/>
-		<EventPort name="out" direction="out"/>
+		<ReceivePort name="in"/>
+		<SendPort name="out"/>
 		<Behavior>
 			<StateVariable name="td" dimension="time"/>
 			<OnEvent port="in">
@@ -21,8 +21,8 @@
 
 
 	<ComponentType name="STDPSynapse">
-    	 <EventPort name="pre_cell" direction="in"/>
-		<EventPort name="post_cell" direction="in"/>
+    	 <ReceivePort name="pre_cell"/>
+		<ReceivePort name="post_cell"/>
 		
 		<Paramater name="predelay" dimension="time"/>
 		<Parameter name="postdelay" dimension="time"/>

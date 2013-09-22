@@ -14,6 +14,7 @@
 	<Parameter name="threshold" dimension="voltage"/>
 	<Parameter name="refractoryPeriod" dimension="time"/>
 	<Parameter name="capacitance" dimension="capacitance"/>
+	<Parameter name="reset" dimension="voltage"/>
 </ComponentType>
 
 
@@ -26,23 +27,15 @@
 <Unit symbol="pF" dimension="capacitance" power="-12"/>
 <Unit symbol="per_ms" dimension="per_time" power="3"/>
 <Unit symbol="pA" dimension="current" power="-12"/>
-
-<iaf1 id="celltype_a" threshold="-30 mV" refractoryPeriod="2 ms" capacitance="3uF"/> 
-<!--  or -->
-<Component id="ctb" type="iaf1" threshold="-30 mV" refractoryPeriod="2 ms" capacitance="1uF"/>
  
- 
-<ComponentType name="iaf2" extends="iaf1">
-	<Fixed parameter="threshold" value="-45mV"/>
-</ComponentType>
-
+  
 <ComponentType name="iaf3" extends="iaf1">
     <Parameter name="leakConductance" dimension="conductance"/>
     <Parameter name="leakReversal" dimension="voltage"/>
     <Parameter name="deltaV" dimension="voltage"/>
 
-    <EventPort name="spikes-in" direction="in"/>
-    <EventPort name="spikes-out" direction="out"/>
+    <ReceivePort name="spikes-in"/>
+    <SendPort name="spikes-out"/>
     <Exposure name="v" dimension="voltage"/>
     
 
@@ -56,6 +49,7 @@
 	
 		<OnCondition test="v .gt. threshold">
 			<EventOut port="spikes-out"/>
+			 <StateAssignment variable="v" value="reset"/>
 		</OnCondition>
 
     </Dynamics>
@@ -66,7 +60,7 @@
 
 <ComponentType name="spikeGenerator">
     <Parameter name="period" dimension="time"/>
-    <EventPort name="a" direction="out"/>
+    <SendPort name="a"/>
     <Exposure name="tsince" dimension="time"/>
     <Dynamics>
         <StateVariable name="tsince" exposure="tsince" dimension="time"/>
@@ -99,17 +93,20 @@
 
   
 
-<Component id="celltype_c" type="iaf3" leakConductance="3 pS" refractoryPeriod="3 ms" threshold="45 mV"
-leakReversal="-50 mV" deltaV="5mV" capacitance="1uF"/>
+<Component id="celltype_c" type="iaf3" leakConductance="3 pS" 
+	refractoryPeriod="3 ms" threshold="45 mV"
+	leakReversal="-50 mV" deltaV="5mV" capacitance="1uF" reset="-70mV"/>
+ 
  
 <Component id="celltype_d" extends="celltype_c" leakConductance="5 pS"/>
 
-<Component id="gen1" type="spikeGenerator1" period="30ms"/>
+<Component id="gen1" type="spikeGenerator1" period="5ms"/>
 
 <Component id="gen2" type="spikeGenerator2" period="32ms"/>
 
-<Component id="iaf3cpt" type="iaf3" leakReversal="-50mV" deltaV="50mV" threshold="-30mV" leakConductance="50pS"
-refractoryPeriod="4ms" capacitance="1pF"/>
+<Component id="iaf3cpt" type="iaf3" leakReversal="-60mV" deltaV="5mV" 
+	threshold="-30mV" leakConductance="5pS"
+	refractoryPeriod="4ms" capacitance="1pF" reset="-70mV"/>
 
 
 <Include file="SimpleNetwork.xml"/>
@@ -117,7 +114,6 @@ refractoryPeriod="4ms" capacitance="1pF"/>
 
 <Network id="net1">
     <Population id="p1" component="gen1" size="1"/>
-    <Population id="p2" component="gen2" size="1"/>
     <Population id="p3" component="iaf3cpt" size="1"/>
     
     <EventConnectivity id="p1-p3" source="p1" target="p3">

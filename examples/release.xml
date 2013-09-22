@@ -4,7 +4,7 @@
 <ComponentType name="ReleaseProbability">
 	<Parameter name="pRest" dimension="none"/>
 	<Exposure name="p" dimension="none"/>
-	<EventPort name="in" direction="IN"/>
+	<ReceivePort name="in"/>
 	<Parameter name="decayRate" dimension="time"/>
 	<Behavior>
 		<StateVariable name="p" dimension="none" exposure="p"/>
@@ -22,7 +22,7 @@
 <ComponentType name="VesiclePool">
 	<Child type="ReleaseProbability" name="releaseProbability"/>
 	<Exposure name="nReleased" dimension="none"/>
-	<EventPort name="in" direction="IN"/>
+	<ReceivePort name="in"/>
 </ComponentType>
 
 
@@ -126,7 +126,7 @@
 	<Child name="pool" type="VesiclePool"/>
 	<Parameter name="conductanceDecayRate" dimension="per_time"/>
 	<Exposure name="conductance" dimension="none"/>
-	<EventPort name="in" direction="in"/>
+	<ReceivePort name="in"/>
 	
 	<Behavior>
 		<StateVariable name="conductance" dimension="none" exposure="conductance"/>
@@ -165,8 +165,8 @@
 
 <ComponentType name="StimSequence">
 	<Children name="trains" type="StimTrain"/>
-	<EventPort direction="IN" name="advancePort"/>
-	<EventPort direction="OUT" name="stims"/>
+	<ReceivePort name="advancePort"/>
+	<SendPort name="stims"/>
 	
 	<Behavior>
 		<SingleActiveInstance name="train"/>

@@ -24,8 +24,8 @@
     <Parameter name="deltaV" dimension="voltage"/>
     <Parameter name="v0" dimension="voltage"/>
        
-    <EventPort name="out" direction="out"/>
-    <EventPort name="in" direction="in"/>
+    <SendPort name="out"/>
+    <ReceivePort name="in"/>
     
     <Exposure name="v" dimension="voltage"/>
   

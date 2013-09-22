@@ -15,5 +15,10 @@ public class OnEntry extends PointResponse {
 	}
 
 
+	public OnEntry makeCopy() {
+		OnEntry ret = new OnEntry();
+		super.copyInto(ret);
+		return ret;
+	}
 
 }

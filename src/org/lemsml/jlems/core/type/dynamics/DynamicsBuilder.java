@@ -18,8 +18,7 @@ public class DynamicsBuilder {
 	}
 
 	public void addStateVariable(String nm, Dimension dim) {
-		// TODO Auto-generated method stub
-		
+ 		
 		StateVariable sv = new StateVariable();
 		sv.setName(nm);
 		sv.setDimension(dim.getName());

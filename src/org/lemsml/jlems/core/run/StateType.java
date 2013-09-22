@@ -37,7 +37,7 @@ public class StateType implements RuntimeType {
 	
 	ArrayList<ActionBlock> initBlocks = new ArrayList<ActionBlock>();
 	
-	ArrayList<ConditionAction> conditionResponses = new ArrayList<ConditionAction>();
+	ArrayList<ConditionAction> conditionActions = new ArrayList<ConditionAction>();
 	
 	ArrayList<String> outPorts = new ArrayList<String>();
 
@@ -468,7 +468,7 @@ public class StateType implements RuntimeType {
 			varHM.get(vroc.varname).set(varHM.get(vroc.varname).get() + dt * vroc.work);
 		}
 	 
-		for (ConditionAction ca : conditionResponses) {
+		for (ConditionAction ca : conditionActions) {
 			Boolean b = ca.evalptr(varHM);
 			if (b) {
 				ca.getAction().run(uin);
@@ -579,7 +579,7 @@ public class StateType implements RuntimeType {
 	    
 	    
 		
-		for (ConditionAction ca : conditionResponses) {
+		for (ConditionAction ca : conditionActions) {
 			Boolean b = ca.evalptr(varHM);
 			if (b) {
 				ca.getAction().run(uin);
@@ -693,15 +693,35 @@ public class StateType implements RuntimeType {
 	}
 	 
 	
+	public ArrayList<EventAction> getEventActions() {
+		ArrayList<EventAction> ret = new ArrayList<EventAction>();
+		for (String s : eventHM.keySet()) {
+			ActionBlock ab = eventHM.get(s);
+			if (ab != null) {
+				EventAction ea = new EventAction(s, ab);
+				ret.add(ea);
+			}
+		}
+		return ret;
+	}
+	
+	
+	
 	public void addConditionResponse(ConditionAction cr) {
-		conditionResponses.add(cr);
-	 	
+		conditionActions.add(cr);	 	
 	}
 
+	
+	public ArrayList<ConditionAction> getConditionActions() {
+		return conditionActions;
+	}
+	
+	
 	public void addInitialization(ActionBlock ab) {
 		initBlocks.add(ab);
 	}
 
+	
 	public ArrayList<ActionBlock> getInitBlocks() {
 		return initBlocks;
      }
@@ -747,7 +767,7 @@ public class StateType implements RuntimeType {
 				ea.addPortsTo(outPorts);
 			}  
 		}
-		for (ConditionAction cr : conditionResponses) {
+		for (ConditionAction cr : conditionActions) {
 			ActionBlock ea = cr.getAction();
 			ea.addVarsTo(vars);
 			ea.addPortsTo(outPorts);
@@ -1208,7 +1228,7 @@ public class StateType implements RuntimeType {
 		
 		ret.addInPorts(inPorts);
 		
-		for (ConditionAction ca : conditionResponses) {
+		for (ConditionAction ca : conditionActions) {
 			ret.addConditionResponse(ca.makeCopy());
 		}
 		
@@ -1306,4 +1326,68 @@ public class StateType implements RuntimeType {
 		
 		 return allReq;
 	}
+	
+	
+	
+	
+	
+	public void sortExpressions() {
+		ArrayList<ExpressionDerivedVariable> orderedEDVs= new ArrayList<ExpressionDerivedVariable>();
+		HashSet<String> known = new HashSet<String>();
+
+		known.addAll(indeps);
+		known.addAll(vars);
+		
+		
+		for (VariableROC vr : rates) {
+			known.add(vr.getVariableName());
+		}
+			
+		for (FixedQuantity fq : fixeds) {
+			known.add(fq.getName());
+		}
+		
+		ArrayList<ExpressionDerivedVariable> wksrc = new ArrayList<ExpressionDerivedVariable>();
+		wksrc.addAll(exderiveds);
+		
+		int nadded = 1;
+		while (nadded > 0) {
+			nadded = 0;
+			
+			ArrayList<ExpressionDerivedVariable> justAdded = new ArrayList<ExpressionDerivedVariable>();
+			for (ExpressionDerivedVariable edv : wksrc) {
+				if (edv.onlyDependsOn(known)) {
+					justAdded.add(edv);
+					orderedEDVs.add(edv);
+					known.add(edv.getVariableName());
+					nadded += 1;
+				}
+			}
+			// E.info("sort cycle nadded=" + nadded);
+			wksrc.removeAll(justAdded);
+		}
+		
+		if (orderedEDVs.size() == exderiveds.size()) {
+			// OK - added them all;
+		} else {
+			E.error("Not added all expressions while sorting? " +
+					"total=" + exderiveds.size() + " added=" + orderedEDVs.size());
+			E.info("Known are " + known);
+			for (ExpressionDerivedVariable edv : wksrc) {
+				E.info("   not added " + edv.getExpressionString());
+			}
+		}
+		exderiveds = orderedEDVs;	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

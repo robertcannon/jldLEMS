@@ -41,7 +41,7 @@
     <Parameter name="leakReversal" dimension="voltage"/>
     <Parameter name="deltaV" dimension="voltage"/>
 
-    <EventPort name="spikes-in" direction="in"/>
+    <ReceivePort name="spikes-in"/>
     <Exposure name="v" dimension="voltage"/>
 
     <Dynamics>
@@ -59,7 +59,7 @@
 
 <ComponentType name="spikeGenerator">
     <Parameter name="period" dimension="time"/>
-    <EventPort name="a" direction="out"/>
+    <SendPort name="a"/>
     <Exposure name="tsince" dimension="time"/>
     <Dynamics>
         <StateVariable name="tsince" exposure="tsince" dimension="time"/>
@@ -236,8 +236,8 @@
 
 
 <HHCell id="hhcell_1" capacitance="1pF" injection="4pA" v0="-60mV">
-    <ChannelPopulation channel="na" number="6000" erev="50mV"/>
-    <ChannelPopulation channel="k" number="1800" erev="-77mV"/>
+    <ChannelPopulation id="popna" channel="na" number="6000" erev="50mV"/>
+    <ChannelPopulation id="popk" channel="k" number="1800" erev="-77mV"/>
 </HHCell>
 
 

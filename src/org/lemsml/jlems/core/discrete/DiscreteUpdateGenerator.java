@@ -3,6 +3,9 @@ package org.lemsml.jlems.core.discrete;
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.dimensionless.FloatAssignment;
+import org.lemsml.jlems.core.dimensionless.OnEvent;
+import org.lemsml.jlems.core.dimensionless.OnState;
+import org.lemsml.jlems.core.eval.BooleanEvaluator;
 import org.lemsml.jlems.core.eval.DVar;
 import org.lemsml.jlems.core.eval.Plus;
 import org.lemsml.jlems.core.eval.Times;
@@ -12,10 +15,14 @@ import org.lemsml.jlems.core.numerics.GradientStateIncrement;
 import org.lemsml.jlems.core.numerics.IntegrationScheme;
 import org.lemsml.jlems.core.numerics.IntegrationStep;
 import org.lemsml.jlems.core.numerics.WorkState;
+import org.lemsml.jlems.core.run.ActionBlock;
+import org.lemsml.jlems.core.run.ConditionAction;
+import org.lemsml.jlems.core.run.EventAction;
 import org.lemsml.jlems.core.run.ExpressionDerivedVariable;
 import org.lemsml.jlems.core.run.MultiStateType;
 import org.lemsml.jlems.core.run.PathDerivedVariable;
 import org.lemsml.jlems.core.run.StateType;
+import org.lemsml.jlems.core.run.VariableAssignment;
 import org.lemsml.jlems.core.run.VariableROC;
  
 
@@ -33,11 +40,13 @@ public class DiscreteUpdateGenerator {
 	public DiscreteUpdateModel buildDiscreteUpdateModel() {
 		DiscreteUpdateModel ret = new DiscreteUpdateModel(stateType.getID());
 		
-		
-		
+		 
 		for (String s : stateType.getStateVariables()) {
 			ret.addStateVariable(s);
 		}
+		
+	
+		
 		
 		for (PathDerivedVariable pdv : stateType.getPathderiveds()) {
 			E.error("Discrete update generator can't handle path derivd variables - should all be " +
@@ -92,12 +101,47 @@ public class DiscreteUpdateGenerator {
 		}
 		
 		
+		for (EventAction ea : stateType.getEventActions()) {
+			addEventAction(ret, ea);
+		}
+		
+		for (ConditionAction ca : stateType.getConditionActions()) {
+			addConditionAction(ret, ca);
+		}
+		
 		return ret;
 	}
 		
 	
+	private void addEventAction(DiscreteUpdateModel ret, EventAction ea) {
+	 
+		OnEvent oe = ret.addOnEvent(ea.getPortName());
+		
+		ActionBlock ab = ea.getAction();
+	 	
+		for (VariableAssignment ve : ab.getAssignments()) {
+			FloatAssignment fa = new FloatAssignment(ve.getVarName(), ve.getValexp().getExpressionString());
+			oe.addFloatAssignment(fa);
+		}
+	}
 	
 	
+	private void addConditionAction(DiscreteUpdateModel ret, ConditionAction ca) {
+		 
+		BooleanEvaluator be = ca.getCondition();
+		OnState os = ret.addOnState(be.getExpressionString());
+		ActionBlock ab = ca.getAction();
+		
+ 		
+		for (VariableAssignment ve : ab.getAssignments()) {
+ 			FloatAssignment fa = new FloatAssignment(ve.getVarName(), ve.getValexp().getExpressionString());
+			os.addFloatAssignment(fa);
+		}
+		
+		for (String s : ab.getOutEvents()) {
+			os.addSend(s);
+		}
+	}
 	
 	
 	private void addEulerUpdate(DiscreteUpdateModel ret) {

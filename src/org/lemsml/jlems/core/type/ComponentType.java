@@ -139,24 +139,24 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return name;
 	}
 
-	@Override
+ 
 	public String toString() {
-		return "ComponentType, name=" + summary();
+		return "ComponentType, name=" + name;
 	}
 
 	public String summary() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(name);
 		if (description != null) {
-			sb.append(" (" + description + ")");
+			sb.append(" (" + description + ")\n");
 		}
 		if (r_extends != null) {
-			sb.append(" extends " + r_extends.getName() + " ");
+			sb.append(" extends " + r_extends.getName() + "\n");
 		}
 		for (FinalParam fp : finalParams) {
 			String sv = fp.getSValue();
-			sb.append("\n         " + fp.getName() + " (" + fp.getDimension().getName() + ") "
-					+ (sv != null ? " = " + sv : ""));
+			sb.append(fp.getName() + " (" + fp.getDimension().getName() + ") "
+					+ (sv != null ? " = " + sv : "") + "\n");
 		}
 
 		return sb.toString();
@@ -481,7 +481,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public ReceivePort getReceivePort(String port) throws ContentError {
 		ReceivePort ret = null;
 		if (receivePorts.hasName(port)) {
-			ReceivePort ep = receivePorts.getByName(port);
+			ret = receivePorts.getByName(port);
 		 
 		}
 		if (ret == null) {
@@ -493,7 +493,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public SendPort getSendPort(String port) throws ContentError {
 		SendPort ret = null;
 		if (sendPorts.hasName(port)) {
-			SendPort ep = sendPorts.getByName(port);
+			ret = sendPorts.getByName(port);
 			 
 		}
 		if (ret == null) {

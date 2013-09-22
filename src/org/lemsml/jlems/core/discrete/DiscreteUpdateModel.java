@@ -2,11 +2,15 @@ package org.lemsml.jlems.core.discrete;
 
 import java.util.ArrayList;
  
+import org.lemsml.jlems.core.dimensionless.Emit;
 import org.lemsml.jlems.core.dimensionless.FloatAssignment;
 import org.lemsml.jlems.core.dimensionless.IndependentVariable;
+import org.lemsml.jlems.core.dimensionless.OnEvent;
+import org.lemsml.jlems.core.dimensionless.OnState;
 import org.lemsml.jlems.core.dimensionless.StateVariable;
 import org.lemsml.jlems.core.dimensionless.VariableExposure;
 import org.lemsml.jlems.core.dimensionless.AbstractVariable;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.xml.XMLElement;
 
 public class DiscreteUpdateModel {
@@ -21,6 +25,14 @@ public class DiscreteUpdateModel {
 	ArrayList<FloatAssignment> floatAssignments = new ArrayList<FloatAssignment>();
 
 	ArrayList<FloatAssignment> updateAssignments = new ArrayList<FloatAssignment>(); 
+	
+	ArrayList<OnEvent> onEvents = new ArrayList<OnEvent>();
+
+	ArrayList<OnState> onStates = new ArrayList<OnState>();
+	
+	
+	boolean includeRP = false;
+	
 	
 	public DiscreteUpdateModel(String id) {
 		this.id = id;
@@ -65,21 +77,40 @@ public class DiscreteUpdateModel {
 			XMLElement efa = ret.addElement("Assign");
 			efa.addAttribute("variable", fa.getVariableName());
 			efa.addAttribute("value", fa.getExpression());
-			String rp = fa.getReversePolishExpression();
-			if (rp != null) {
-				efa.addAttribute("rpValue", rp);
+			
+			if (includeRP) {
+				String rp = fa.getReversePolishExpression();
+				if (rp != null) {
+					efa.addAttribute("rpValue", rp);
+				}
 			}
 		}
 		
 		for (FloatAssignment fa : updateAssignments) {
-			XMLElement efa = ret.addElement("Assign");
-			efa.addAttribute("variable", fa.getVariableName());
-			efa.addAttribute("value", fa.getExpression());
-			String rp = fa.getReversePolishExpression();
-			if (rp != null) {
-				efa.addAttribute("rpValue", rp);
+			addAssign(ret, fa);
+		
+		}
+		
+		for (OnEvent oe : onEvents) {
+			XMLElement xoe = ret.addElement("OnEvent");
+			xoe.addAttribute("port", oe.getPortName());
+			for (FloatAssignment fa : oe.getFloatAssignments()) {
+				addAssign(xoe, fa);
 			}
 		}
+		
+		for (OnState os : onStates) {
+			XMLElement xos = ret.addElement("OnState");
+			xos.addAttribute("condition", os.getCondition());
+			for (FloatAssignment fa : os.getFloatAssignments()) {
+				addAssign(xos, fa);
+			}
+			for (Emit ee : os.getEmits()) {
+				XMLElement xee = xos.addElement("Emit");
+				xee.addAttribute("port",  ee.getPort());
+			}
+		}
+		
 		
 		for (VariableExposure ve : variableExposures) {
 			XMLElement eve = ret.addElement("Expose");
@@ -95,6 +126,24 @@ public class DiscreteUpdateModel {
 		return ret;
 	}
 
+	
+	
+	
+	
+	private void addAssign(XMLElement ret, FloatAssignment fa) {
+		XMLElement efa = ret.addElement("Assign");
+		efa.addAttribute("variable", fa.getVariableName());
+		efa.addAttribute("value", fa.getExpression());
+	
+		if (includeRP) {
+			String rp = fa.getReversePolishExpression();
+			if (rp != null) {
+				efa.addAttribute("rpValue", rp);
+			}
+		}
+	}
+	
+	
 	
 	public void addFloatExposure(String var, String as) {
 		variableExposures.add(new VariableExposure(var, as));
@@ -145,6 +194,20 @@ public class DiscreteUpdateModel {
 
 	public ArrayList<FloatAssignment> getUpdateAssignments() {
 		return updateAssignments; 
+	}
+
+
+	public OnEvent addOnEvent(String portName) {
+	 	 OnEvent oe = new OnEvent(portName);
+	 	 onEvents.add(oe);
+	 	 return oe;
+	}
+
+
+	public OnState addOnState(String estr) {
+		 OnState os = new OnState(estr);
+		 onStates.add(os);
+		 return os;
 	}
 
 	

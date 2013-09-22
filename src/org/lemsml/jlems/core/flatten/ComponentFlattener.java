@@ -82,7 +82,7 @@ public class ComponentFlattener {
 		cbuilder.setID(srcComponent.getID() + "_flat");
 		cbuilder.setType(typeName);
 		
-		importFlattened(srcComponent, "");
+		importFlattened(srcComponent, "", true);
 	}
 	
  
@@ -90,7 +90,7 @@ public class ComponentFlattener {
 	
 	
 	
-	private void importFlattened(Component cpt, String prefix) throws ContentError, ParseError, ConnectionError {
+	private void importFlattened(Component cpt, String prefix, boolean withExposures) throws ContentError, ParseError, ConnectionError {
 
 		HashMap<String, String> varHM = new HashMap<String, String>();
 
@@ -107,9 +107,14 @@ public class ComponentFlattener {
 			typeB.addParameter(fname, p.getDimension());
 		}
 
+	
 		for (Exposure ex : typ.getExposures()) {
 			String fname = flatName(ex.getName(), prefix);
-			typeB.addExposure(fname, ex.getDimension());
+			if (withExposures) {
+				typeB.addExposure(fname, ex.getDimension());
+			} else {
+				E.info("Leaving out exposure " + fname + " from flattened version of " + srcComponent.getID());
+			}
 		}
 
 		for (Requirement req : typ.getRequirements()) {
@@ -172,7 +177,8 @@ public class ComponentFlattener {
 			}
 		
 			String childPrefix = flatName(cid, prefix);
-			importFlattened(child, childPrefix);
+			// false here as we don't want the exposures from the children
+			importFlattened(child, childPrefix, false);
 		}
 
 		
@@ -234,7 +240,7 @@ public class ComponentFlattener {
 			}
 			 
 
-			if (dv.exposure != null) {
+			if (withExposures && dv.exposure != null) {
 				String enm = flatName(dv.exposure, prefix);
 				typeB.setDerivedVariableExposure(fname, enm);
 			}

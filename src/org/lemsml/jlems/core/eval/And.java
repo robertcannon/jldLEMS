@@ -17,13 +17,14 @@ public class And extends AbstractBOp {
 		return left.eval() && right.eval();
 	}
 
-        @Override
-        public String toString() {
-                return "("+left +" AND "+ right +")";
-        }
-
-        public String toString(String prefix, ArrayList<String> ignore) {
-                return "("+left.toString() +" AND "+ right.toString() +")";
-        }
-	
+	@Override
+	public String toString() {
+		return "("+left +" AND "+ right +")";
+    }
+ 
+	@Override
+	public String toExpression() {
+		return "("+left.toExpression() +" && "+ right.toExpression() +")";
+	}
+        
 }
