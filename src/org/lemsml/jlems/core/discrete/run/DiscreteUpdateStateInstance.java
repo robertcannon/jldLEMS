@@ -57,11 +57,22 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
  		return null;
 	}
 
+	
 	@Override
-	public StateWrapper getWrapper(String string) {
- 		return null;
+	public StateWrapper getWrapper(String str) {
+		StateWrapper ret = null;
+		if (duType.hasStateVariable(str)) {
+			ret = new DiscreteUpdateStateInstanceWrapper(this, str);
+		}
+		return ret;
 	}
 
+	
+	public double getValue(String s) {
+		return variables.get(s).getValue();
+	}
+	
+	
 	@Override
 	public HashMap<String, DoublePointer> getVariables() {
 		return variables;

@@ -6,16 +6,24 @@ import java.io.IOException;
 import org.junit.Test;
 import org.lemsml.jlems.core.discrete.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.discrete.DiscreteUpdateModel;
+import org.lemsml.jlems.core.discrete.DiscreteUpdateModelReader;
+import org.lemsml.jlems.core.discrete.DiscreteUpdateModelWriter;
 import org.lemsml.jlems.core.discrete.NumericsRoot;
+import org.lemsml.jlems.core.discrete.run.DiscreteUpdateStateType;
+import org.lemsml.jlems.core.display.DataViewer;
+import org.lemsml.jlems.core.display.DataViewerFactory;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.numerics.IntegrationScheme;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
+import org.lemsml.jlems.core.run.RuntimeRecorder;
+import org.lemsml.jlems.core.run.StateRunnable;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.ParseException;
+import org.lemsml.jlems.core.sim.RunnableAccessor;
 import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.core.type.BuildException;
 import org.lemsml.jlems.core.type.Component;
@@ -27,6 +35,7 @@ import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
 import org.lemsml.jlems.io.util.JUtil;
+import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
  
 
 
@@ -35,10 +44,14 @@ public class DiscreteUpdateTest {
 	
 	 
     public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException {
+    
+    	SwingDataViewerFactory.initialize();
+		DefaultLogger.initialize();
+    	
     	DefaultLogger.initialize();
        
     	DiscreteUpdateTest dut = new DiscreteUpdateTest();
-    	dut.runExampleIaF(); 
+    //	dut.runExampleIaF(); 
     	dut.runExampleHH(); 
     }
     
@@ -116,10 +129,49 @@ public class DiscreteUpdateTest {
 		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, euler);
 		
 		DiscreteUpdateModel dum = dug.buildDiscreteUpdateModel();
-		
-		XMLElement xel = dum.toXML(); 
+		DiscreteUpdateModelWriter dumw = new DiscreteUpdateModelWriter(dum);
+		XMLElement xel = dumw.toXML(); 
 		
 		String ret = xel.serialize();
+		
+		DiscreteUpdateModelReader dur = new DiscreteUpdateModelReader();
+		DiscreteUpdateModel dum2 = dur.read(xel);
+		
+		DiscreteUpdateModelWriter dumw2 = new DiscreteUpdateModelWriter(dum2);
+		XMLElement xel2 = dumw2.toXML();
+		
+		String ser2 = xel2.serialize();
+		if (ret.equals(ser2)) {
+			E.info("OK: model after reread is same as orignial");
+		} else {
+			E.error("Reread error - models differ. Original: \n " + ret + "\n\nreread:\n" + ser2);
+		} 
+		
+		
+		
+		DiscreteUpdateStateType dust = new DiscreteUpdateStateType(dum);
+		dust.resolve();
+		StateRunnable sr = dust.newStateRunnable();
+		
+		DataViewer dv = DataViewerFactory.getFactory().newDataViewer("du-model");
+		
+	
+		
+		RunnableAccessor ra = new RunnableAccessor(sr);
+		
+		RuntimeRecorder rr = new RuntimeRecorder("v");
+		rr.connectRunnable(ra, dv);
+		
+		
+		double dt = 5e-5;
+		double t = 0.;
+		for (int i = 0; i < 1000; i++) {
+			sr.advance(null,  t, dt);
+			t += dt;
+			
+			rr.appendState(t);
+		}
+		
 		
 		return ret;
     }

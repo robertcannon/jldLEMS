@@ -2,6 +2,8 @@ package org.lemsml.jlems.core.dimensionless;
 
 import java.util.ArrayList;
 
+import org.lemsml.jlems.core.logging.E;
+
 public class OnEvent {
 
 	public String port;
@@ -26,5 +28,17 @@ public class OnEvent {
 	public String getPortName() {
  		return port;
 	}
+
+
+	public void addEmit(String attribute) {
+		 E.missing();
+	}
+
+
+	public void addUpdateAssignment(FloatAssignment fa) {
+		floatAssignments.add(fa);
+	}
+	
+	
 	
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.junit.Test;
 import org.lemsml.jlems.core.discrete.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.discrete.DiscreteUpdateModel;
+import org.lemsml.jlems.core.discrete.DiscreteUpdateModelWriter;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
 import org.lemsml.jlems.core.logging.E;
@@ -110,9 +111,10 @@ public class DiscreteNumericsTest {
 		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, euler);
 		
 		DiscreteUpdateModel dum = dug.buildDiscreteUpdateModel();
-		
-		XMLElement xel = dum.toXML(); 
-		
+	
+		DiscreteUpdateModelWriter dumw = new DiscreteUpdateModelWriter(dum);
+		XMLElement xel = dumw.toXML();
+	 		
 		String ret = xel.serialize();
 		
 		return ret;

@@ -1,24 +1,34 @@
 package org.lemsml.jlems.core.discrete;
 
 import java.util.ArrayList;
- 
-import org.lemsml.jlems.core.dimensionless.Emit;
+
+import org.lemsml.jlems.core.dimensionless.AccumulatingInputVariable;
 import org.lemsml.jlems.core.dimensionless.FloatAssignment;
-import org.lemsml.jlems.core.dimensionless.IndependentVariable;
+import org.lemsml.jlems.core.dimensionless.InputEventPort;
+import org.lemsml.jlems.core.dimensionless.InputVariable;
 import org.lemsml.jlems.core.dimensionless.OnEvent;
 import org.lemsml.jlems.core.dimensionless.OnState;
+import org.lemsml.jlems.core.dimensionless.OutputEventPort;
+import org.lemsml.jlems.core.dimensionless.Parameter;
 import org.lemsml.jlems.core.dimensionless.StateVariable;
 import org.lemsml.jlems.core.dimensionless.VariableExposure;
-import org.lemsml.jlems.core.dimensionless.AbstractVariable;
-import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.xml.XMLElement;
 
 public class DiscreteUpdateModel {
 
 	String id;
 	
-	ArrayList<IndependentVariable> independentVariables = new ArrayList<IndependentVariable>();
+	ArrayList<Parameter> parameters = new ArrayList<Parameter>();
+	
+	ArrayList<InputEventPort> inputEventPorts = new ArrayList<InputEventPort>();
+	ArrayList<OutputEventPort> outputEventPorts = new ArrayList<OutputEventPort>();
+	
+	ArrayList<AccumulatingInputVariable> accumulatingInputVariables = new ArrayList<AccumulatingInputVariable>();
+	
+	ArrayList<InputVariable> inputVariables = new ArrayList<InputVariable>();
+		 
 	ArrayList<StateVariable> stateVariables = new ArrayList<StateVariable>();
+	
+	
 	
 	ArrayList<VariableExposure> variableExposures = new ArrayList<VariableExposure>();
 	
@@ -62,87 +72,7 @@ public class DiscreteUpdateModel {
  	}
 	
 
-	public XMLElement toXML() {
-		XMLElement ret = new XMLElement("DiscreteUpdateComponent");
-		
-		for (IndependentVariable iv : independentVariables) {
-			XMLElement xiv = ret.addElement("IndependentVariable");
-			xiv.addAttribute("name", iv.getName());
-		}
-		for (StateVariable sv : stateVariables) {
-			XMLElement siv = ret.addElement("StateVariable");
-			siv.addAttribute("name", sv.getName());
-		}
-		for (FloatAssignment fa : floatAssignments) {
-			XMLElement efa = ret.addElement("Assign");
-			efa.addAttribute("variable", fa.getVariableName());
-			efa.addAttribute("value", fa.getExpression());
-			
-			if (includeRP) {
-				String rp = fa.getReversePolishExpression();
-				if (rp != null) {
-					efa.addAttribute("rpValue", rp);
-				}
-			}
-		}
-		
-		for (FloatAssignment fa : updateAssignments) {
-			addAssign(ret, fa);
-		
-		}
-		
-		for (OnEvent oe : onEvents) {
-			XMLElement xoe = ret.addElement("OnEvent");
-			xoe.addAttribute("port", oe.getPortName());
-			for (FloatAssignment fa : oe.getFloatAssignments()) {
-				addAssign(xoe, fa);
-			}
-		}
-		
-		for (OnState os : onStates) {
-			XMLElement xos = ret.addElement("OnState");
-			xos.addAttribute("condition", os.getCondition());
-			for (FloatAssignment fa : os.getFloatAssignments()) {
-				addAssign(xos, fa);
-			}
-			for (Emit ee : os.getEmits()) {
-				XMLElement xee = xos.addElement("Emit");
-				xee.addAttribute("port",  ee.getPort());
-			}
-		}
-		
-		
-		for (VariableExposure ve : variableExposures) {
-			XMLElement eve = ret.addElement("Expose");
-			String lnm = ve.getLocalName();
-			String enm = ve.getExposedName();
-			eve.addAttribute("variable", lnm);
-			if (enm == null || enm.equals(lnm)) {
-				// no name change on exposure
-			} else {
-				eve.addAttribute("as", enm);
-			}
-		}
-		return ret;
-	}
 
-	
-	
-	
-	
-	private void addAssign(XMLElement ret, FloatAssignment fa) {
-		XMLElement efa = ret.addElement("Assign");
-		efa.addAttribute("variable", fa.getVariableName());
-		efa.addAttribute("value", fa.getExpression());
-	
-		if (includeRP) {
-			String rp = fa.getReversePolishExpression();
-			if (rp != null) {
-				efa.addAttribute("rpValue", rp);
-			}
-		}
-	}
-	
 	
 	
 	public void addFloatExposure(String var, String as) {
@@ -151,7 +81,7 @@ public class DiscreteUpdateModel {
 
 	
 	public void addIndependentVariagble(String s) {
-		independentVariables.add(new IndependentVariable(s));
+		inputVariables.add(new InputVariable(s));
 	}
 
 	public void addFloatAssignment(String variableName, String expressionString) {
@@ -175,11 +105,7 @@ public class DiscreteUpdateModel {
 		updateAssignments.add(fa);
 	}
 	
-	
-	public ArrayList<IndependentVariable> getIndependentVariables() {
-			return independentVariables;
-	}
-
+	 
 	public ArrayList<StateVariable> getStateVariables() { 
 		return stateVariables;
 	}
@@ -203,6 +129,12 @@ public class DiscreteUpdateModel {
 	 	 return oe;
 	}
 
+	public void addOnEvent(OnEvent oe) {
+		onEvents.add(oe);
+	}
+
+
+
 
 	public OnState addOnState(String estr) {
 		 OnState os = new OnState(estr);
@@ -210,6 +142,28 @@ public class DiscreteUpdateModel {
 		 return os;
 	}
 
+	public void addOnState(OnState os) {
+		onStates.add(os);
+	}
+	
+
+	public ArrayList<InputVariable> getInputVariables() {
+		return inputVariables;
+	}
+
+
+	public boolean hasStateVariable(String str) {
+		boolean ret = false;
+		for (StateVariable sv : stateVariables) {
+			if (str.equals(sv.getName())) {
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+
+ 
 	
 	
 	

@@ -5,6 +5,7 @@ import java.util.HashMap;
  
 import org.lemsml.jlems.core.dimensionless.FloatAssignment;
 import org.lemsml.jlems.core.dimensionless.IndependentVariable;
+import org.lemsml.jlems.core.dimensionless.InputVariable;
 import org.lemsml.jlems.core.dimensionless.StateVariable;
 import org.lemsml.jlems.core.dimensionless.VariableExposure;
 import org.lemsml.jlems.core.discrete.DiscreteUpdateModel;
@@ -57,7 +58,7 @@ public class DiscreteUpdateStateType implements RuntimeType {
 		
 		ExpressionParser expressionParser = new ExpressionParser();
 	
-		for (IndependentVariable iv : duModel.getIndependentVariables()) {
+		for (InputVariable iv : duModel.getInputVariables()) {
 			Fetch f = new Fetch(iv.getName());
 			fetches.add(f);
 		}
@@ -100,7 +101,7 @@ public class DiscreteUpdateStateType implements RuntimeType {
 		
 		
 		HashMap<String, DoublePointer> variables = new HashMap<String, DoublePointer>();
-		for (IndependentVariable iv : duModel.getIndependentVariables()) {
+		for (InputVariable iv : duModel.getInputVariables()) {
 			variables.put(iv.getName(), new DoublePointer(0.));
 		}
 		
@@ -141,6 +142,15 @@ public class DiscreteUpdateStateType implements RuntimeType {
 			c.exec(variables);
 		}
 		
+	}
+
+
+	public boolean hasStateVariable(String str) {
+		boolean ret = false;
+		if (duModel.hasStateVariable(str)) {
+			ret = true;
+		}
+		return ret;
 	}
 	
 	

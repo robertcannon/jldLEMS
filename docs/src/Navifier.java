@@ -161,7 +161,7 @@ public class Navifier {
 	 while (stok.hasMoreTokens()) {
 	    String fnm = stok.nextToken();
 	    if (hm.containsKey(fnm)) {
-	       afr[nout++] = (hm.get(fnm));
+	       afr[nout++] = hm.get(fnm);
 	       hm.remove(fnm);
 	    }
 	 }

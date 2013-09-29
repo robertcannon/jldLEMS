@@ -16,6 +16,8 @@ public class XMLElement {
 	HashMap<String, ArrayList<XMLElement>> childTypeHM = new HashMap<String, ArrayList<XMLElement>>();
 	HashMap<String, XMLAttribute> attHM = new HashMap<String, XMLAttribute>();
 	
+	int postSpacing = 0;
+	
 	public XMLElement(String st) {
 		type = st;
 	}
@@ -98,6 +100,11 @@ public class XMLElement {
 			}
 			sb.append((sameLine ? "" : indent) + "</" + type + ">\n");
 		}
+		if (postSpacing > 0) {
+			for (int i = 0; i < postSpacing; i++) {
+				sb.append("\n");
+			}
+		}
 		
 		return sb.toString();
 	}
@@ -146,6 +153,14 @@ public class XMLElement {
 		return ret;
 	}
 
+	public String getAttribute(String str, String dflt) {
+		String ret = dflt;
+		if (attHM.containsKey(str)) {
+			ret = attHM.get(str).getValue();
+		}
+		return ret;
+	}
+	
 	 
 	
 	public boolean hasAttribute(String n) {
@@ -180,7 +195,13 @@ public class XMLElement {
 	}
 
 	public ArrayList<XMLElement> getElements(String str) {
-		 return childTypeHM.get(str);
+		ArrayList<XMLElement> ret = null;
+		if (childTypeHM.containsKey(str)) {
+			ret = childTypeHM.get(str);
+		} else {
+			ret = new ArrayList<XMLElement>();
+		}
+		return ret;
 	}
 	
 	public ArrayList<XMLElement> getXMLElements() {
@@ -225,6 +246,10 @@ public class XMLElement {
 
 	public void appendBodyText(String stxt) {
 		addToBody(stxt);
+	}
+
+	public void setPostSpacing(int n) {
+		postSpacing = n;
 	}
 	
 }

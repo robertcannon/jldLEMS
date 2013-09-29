@@ -263,6 +263,9 @@ public class ComponentFlattener {
 				typeB.addOnStart(vnm, val);
 			}
 		}
+		
+		typeB.removeStateRequirements();
+		
 	}
 	
 	

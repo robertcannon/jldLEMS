@@ -316,4 +316,23 @@ public class LemsCollection<T> implements Iterable<T> {
 		return contents.get(i);
 	}
 
+
+	public boolean containsName(String name) throws ContentError {
+		checkCreateNameHM();
+		boolean ret = false;
+		if (nameHM.containsKey(name)) {
+			ret = true;
+		}
+		return ret;
+	}
+
+
+	public void remove(String rnm) throws ContentError {
+		checkCreateNameHM();
+		if (nameHM.containsKey(rnm)) {
+			T t = nameHM.get(rnm);
+			contents.remove(t);
+		}
+	}
+
 }

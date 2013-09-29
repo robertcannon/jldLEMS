@@ -23,6 +23,16 @@ public class RuntimeRecorder {
 	  double yscale;
 	  
 
+	  public RuntimeRecorder(String q) {
+		  this(q, q);
+	  }
+	  
+	  public RuntimeRecorder(String id, String q) {
+		  this(id, q, 1., 1., "#ff0000", "");
+	  }
+	  
+	  
+	  // TODO too many args
 	public RuntimeRecorder(String aid, String q, double tsc, double ysc, String col, String d) {
 		 id = aid;
 		 quantity = q;

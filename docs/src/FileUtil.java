@@ -22,7 +22,7 @@ import java.util.jar.Manifest;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public abstract class FileUtil {
+public static class FileUtil {
 
 
 
@@ -71,7 +71,7 @@ public abstract class FileUtil {
       String sdat = "null";
       if (f != null) {
          try {
-            boolean dogz = (f.getName().endsWith(".gz"));
+            boolean dogz = f.getName().endsWith(".gz");
             InputStream ins = new FileInputStream(f);
             if (dogz) {
                ins = new GZIPInputStream(ins);
@@ -101,7 +101,7 @@ public abstract class FileUtil {
       String fnm = f.getName();
       boolean ok = false;
       if (f != null) {
-         boolean dogz = (fnm.endsWith(".gz"));
+         boolean dogz = fnm.endsWith(".gz");
          try {
             OutputStream fos = new FileOutputStream(f);
             if (dogz) {
@@ -388,7 +388,7 @@ public abstract class FileUtil {
 
 
 	public static String absoluteRoot(File rootFile) {
-		 return (new File(rootFile.getParentFile(), getRootName(rootFile)).getAbsolutePath());
+		 return new File(rootFile.getParentFile(), getRootName(rootFile)).getAbsolutePath();
 	}
 
 

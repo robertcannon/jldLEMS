@@ -39,7 +39,21 @@ public class OnState {
 	public ArrayList<Emit> getEmits() {
 		return emits;
 	}
+
+
+	public void setCondition(String c) {
+		condition = c;
+	}
 	
 	 
+	public void addUpdateAssignment(FloatAssignment fa) {
+		floatAssignments.add(fa);
+	}
+
+
+	public void addEmit(String p) {
+		Emit e = new Emit(p);
+		emits.add(e);
+	}
 	
 }

@@ -12,8 +12,12 @@ public class StateWrapper {
 	StateInstance unitInstance = null;
 	RegimeStateInstance regimeInstance = null;
 	
-	String varname;
+	protected String varname;
 
+	
+	public StateWrapper(String snm) {
+		varname = snm;
+	}
 	
 	
 	public StateWrapper(StateInstance ui, String snm) {

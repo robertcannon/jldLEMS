@@ -54,12 +54,12 @@ public class DiscreteUpdateGenerator {
 	 		}
  
 		
-		
+		/*
 		for (VariableROC vroc : stateType.getRates()) {
 			String rnm = makeRateVar(vroc.getVariableName());
-			// ret.addIfNewStateVariable(rnm);
+			ret.addIfNewStateVariable(rnm);
 		}
-		
+		*/
 		
 		HashMap<String, StateType> chm = stateType.getChildHM();
 		for (String s : chm.keySet()) {
@@ -176,7 +176,7 @@ public class DiscreteUpdateGenerator {
 	
 	private void addSchemeUpdate(DiscreteUpdateModel ret) {
 		for (WorkState ws : scheme.getWorkStates()) {
-			E.missing();
+			E.missing("Scheme update: " + ws);
 		}
 		
 		for (IntegrationStep istep : scheme.getIntegrationSteps()) {

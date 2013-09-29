@@ -44,6 +44,9 @@ public class RunnableAccessor {
 		}
 		
 		if (wk != null) {
+			String lastbit = bits[bits.length - 1];
+			E.info("Seeking " + lastbit + " in " + wk);
+			
 			ret = wk.getWrapper(bits[bits.length-1]);
 		}
 		if (ret == null) {
