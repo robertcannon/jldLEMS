@@ -19,6 +19,7 @@ import org.lemsml.jlems.core.numerics.IntegrationScheme;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.RuntimeRecorder;
+import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateRunnable;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -111,6 +112,9 @@ public class DiscreteUpdateTest {
 		
 		StateType st = cp.getStateType();
 		
+		StateInstance storig = st.newInstance();
+		st.build(storig);
+		
 		st.removeRedundantExpressions();
 		st.sortExpressions();
 		
@@ -156,6 +160,11 @@ public class DiscreteUpdateTest {
 		DataViewer dv = DataViewerFactory.getFactory().newDataViewer("du-model");
 		
 	
+		RunnableAccessor raorig = new RunnableAccessor(storig);
+		RuntimeRecorder rrorig = new RuntimeRecorder("v-orig", "v");
+		rrorig.setColor("#00d000");
+		rrorig.connectRunnable(raorig, dv);
+		
 		
 		RunnableAccessor ra = new RunnableAccessor(sr);
 		
@@ -167,9 +176,13 @@ public class DiscreteUpdateTest {
 		double t = 0.;
 		for (int i = 0; i < 1000; i++) {
 			sr.advance(null,  t, dt);
+			
+			storig.advance(null, t, dt);
+			
 			t += dt;
 			
 			rr.appendState(t);
+			rrorig.appendState(t);
 		}
 		
 		

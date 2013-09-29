@@ -97,4 +97,9 @@ public class RuntimeRecorder {
         	resultWriter.addPoint(id, x, y);
         }
     }
+
+    
+	public void setColor(String c) {
+		color = c;
+	}
 }

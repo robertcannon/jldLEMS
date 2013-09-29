@@ -235,7 +235,7 @@
 
 
 
-<HHCell id="hhcell_1" capacitance="1pF" injection="4pA" v0="-60mV">
+<HHCell id="hhcell_1" capacitance="1pF" injection="4pA" v0="-0mV">
     <ChannelPopulation id="popna" channel="na" number="6000" erev="50mV"/>
     <ChannelPopulation id="popk" channel="k" number="1800" erev="-77mV"/>
 </HHCell>
