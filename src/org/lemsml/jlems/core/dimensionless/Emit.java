@@ -9,6 +9,9 @@ public class Emit {
 		port = s;
 	}
 	
+	public Emit() {
+	}
+
 	public String getPort() {
 		return port;
 	}

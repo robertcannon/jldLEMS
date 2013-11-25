@@ -13,10 +13,13 @@ import org.lemsml.jlems.core.lite.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
 import org.lemsml.jlems.core.lite.DiscreteUpdateComponentReader;
 import org.lemsml.jlems.core.lite.DiscreteUpdateComponentWriter;
+import org.lemsml.jlems.core.lite.LemsLiteSimulation;
 import org.lemsml.jlems.core.lite.NumericsRoot;
+import org.lemsml.jlems.core.lite.model.LemsLite;
 import org.lemsml.jlems.core.lite.run.DiscreteUpdateStateType;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.numerics.IntegrationScheme;
+import org.lemsml.jlems.core.reader.LemsLiteFactory;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.RuntimeRecorder;
@@ -33,15 +36,18 @@ import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.LemsCollection;
 import org.lemsml.jlems.core.xml.XMLElement;
+import org.lemsml.jlems.core.xml.XMLElementReader;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
+import org.lemsml.jlems.io.util.FileUtil;
 import org.lemsml.jlems.io.util.JUtil;
+import org.lemsml.jlems.io.xmlio.XMLSerializer;
 import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
  
 
 
-public class DiscreteUpdateTest {
+public class LEMSLiteNetworkTest {
 
 	
 	 
@@ -49,36 +55,51 @@ public class DiscreteUpdateTest {
     
     	SwingDataViewerFactory.initialize();
 		DefaultLogger.initialize();
-    	
-    	DefaultLogger.initialize();
-       
-    	DiscreteUpdateTest dut = new DiscreteUpdateTest();
+    
+    	LEMSLiteNetworkTest dut = new LEMSLiteNetworkTest();
     //	dut.runExampleIaF(); 
-    	dut.runExampleHH(); 
+    	dut.runExampleHandwriting(); 
     }
+     
+     
     
     @Test
-    public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
-    	File f1 = new File("examples/example1.xml");
- 		String s = generateDiscreteUpdateComponent(f1, "na");
- 		E.info("Generated XML: \n" + s);
-    }
-    
-    @Test
-    public void runExampleIaF() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
-    	File f1 = new File("examples/exampleIAF.xml");
- 		String s = generateDiscreteUpdateComponent(f1, "iaf3cpt");
- 		E.info("Generated XML: \n" + s);
-    }
-    
-    @Test
-    public void runExampleHH() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
-    	File f1 = new File("examples/example1.xml");
- 		String s = generateDiscreteUpdateComponent(f1, "hhcell_1");
- 		E.info("Generated XML: \n" + s);
+    public void runExampleHandwriting() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
+    	File f1 = new File("examples/mh_handwriting.xml");
+    	
+    	runDiscreteUpdateComponent(f1);
+    	
     }
     
     
+    private void runDiscreteUpdateComponent(File f1) throws ContentError, IOException, ParseError, ConnectionError, RuntimeError {
+    	DiscreteUpdateComponentReader dur = new DiscreteUpdateComponentReader();
+	
+    	String stxt = FileUtil.readStringFromFile(f1);
+     
+    	XMLElementReader exmlr = new XMLElementReader(stxt + "    ");
+
+		XMLElement xel = exmlr.getRootElement();
+  		
+		LemsLiteFactory lf = new LemsLiteFactory();
+		LemsLite lemsLite = lf.buildLemsFromXMLElement(xel);
+		
+		E.info("Read lemsLits " + lemsLite.getSummary());
+	
+		XMLSerializer xs = new XMLSerializer();
+		String sx = xs.serialize(lemsLite);
+	 
+		File fdir = f1.getParentFile();
+		LemsLiteSimulation lls = new LemsLiteSimulation(lemsLite);
+		
+		lls.run(fdir);
+		
+    }
+    
+	
+    
+    
+	
     public String generateDiscreteUpdateComponent(File f, String tgtid) throws ContentError,
     		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
     		BuildException, XMLException {

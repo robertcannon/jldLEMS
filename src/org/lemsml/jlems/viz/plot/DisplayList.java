@@ -53,4 +53,38 @@ public class DisplayList {
 		lineHM = new HashMap<String, DisplayLine>();
 	}
 
+	
+	public String getStringData() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("x");
+		for (DisplayLine dl : lines) {
+			sb.append(", " + dl.getName());
+		}
+		sb.append("\n");
+		if (lines.size() > 0) {
+			DisplayLine dl = lines.get(0);
+	
+			int n = dl.getNpts();
+			double[] xpts = dl.getXpts();
+			
+			double dx = 1;
+			if (n > 0) {
+				dx = xpts[1] - xpts[0];
+			}
+			double rdx = 1. / dx;
+			
+			for (int i = 0; i < n; i++) {
+				sb.append("" + xpts[i]);
+				
+				for (DisplayLine adl : lines) {
+					sb.append(", " + adl.getIfAt(i, xpts[i], rdx) + "");
+				}
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
+		
+	}
+	
+	
 }

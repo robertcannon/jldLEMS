@@ -2,11 +2,25 @@ package org.lemsml.jlems.core.dimensionless;
 
 public class OutputVariable {
 
-	String name;
 	
-	
-	public String getName() {
+	public String name;
+ 	
+	 
+
+
+	public OutputVariable() {
+		 
+	}
+
+
+	public OutputVariable(String as) {
+		name = as;
+	}
+
+
+	public String getExposedName() {
 		return name;
 	}
+	 
 	
 }

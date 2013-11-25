@@ -47,7 +47,7 @@ public class RunnableAccessor {
 			String lastbit = bits[bits.length - 1];
 			E.info("Seeking " + lastbit + " in " + wk);
 			
-			ret = wk.getWrapper(bits[bits.length-1]);
+			ret = wk.getWrapper(lastbit);
 		}
 		if (ret == null) {
 			E.info("starting from " + root);

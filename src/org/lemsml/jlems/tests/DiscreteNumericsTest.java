@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.lemsml.jlems.core.discrete.DiscreteUpdateGenerator;
-import org.lemsml.jlems.core.discrete.DiscreteUpdateModel;
-import org.lemsml.jlems.core.discrete.DiscreteUpdateModelWriter;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
+import org.lemsml.jlems.core.lite.DiscreteUpdateGenerator;
+import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
+import org.lemsml.jlems.core.lite.DiscreteUpdateComponentWriter;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.numerics.IntegrationScheme;
 import org.lemsml.jlems.core.run.ConnectionError;
@@ -46,7 +46,7 @@ public class DiscreteNumericsTest {
     	File fnum = new File("devexamples/numerics.xml");
  
     	File f1 = new File("examples/example1.xml");
- 		String s = generateDiscreteUpdateModel(f1, "na", fnum);
+ 		String s = generateDiscreteUpdateComponent(f1, "na", fnum);
  		E.info("Generated XML: \n" + s);
     }
     
@@ -57,11 +57,11 @@ public class DiscreteNumericsTest {
     	File fnum = new File("devexamples/numerics.xml");
     	
     	File f1 = new File("examples/example1.xml");
- 		String s = generateDiscreteUpdateModel(f1, "na", fnum);
+ 		String s = generateDiscreteUpdateComponent(f1, "na", fnum);
  		E.info("Generated XML: \n" + s);
     }
     
-    public String generateDiscreteUpdateModel(File f, String tgtid, File fnum) throws ContentError,
+    public String generateDiscreteUpdateComponent(File f, String tgtid, File fnum) throws ContentError,
     		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
     		BuildException, XMLException {
     	E.info("Loading LEMS file from: " + f.getAbsolutePath());
@@ -110,9 +110,9 @@ public class DiscreteNumericsTest {
 		
 		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, euler);
 		
-		DiscreteUpdateModel dum = dug.buildDiscreteUpdateModel();
+		DiscreteUpdateComponent dum = dug.buildDiscreteUpdateComponent();
 	
-		DiscreteUpdateModelWriter dumw = new DiscreteUpdateModelWriter(dum);
+		DiscreteUpdateComponentWriter dumw = new DiscreteUpdateComponentWriter(dum);
 		XMLElement xel = dumw.toXML();
 	 		
 		String ret = xel.serialize();

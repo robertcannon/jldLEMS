@@ -3,6 +3,7 @@ package org.lemsml.jlems.viz.datadisplay;
 import java.io.File;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class SwingDialogs {
 
@@ -34,6 +35,31 @@ public class SwingDialogs {
 			ret=  fileChooser.getSelectedFile();
 		}
 		return ret;
+	}
+
+
+
+
+	public File getFileToWrite() {
+		if (fileChooser == null) {
+			fileChooser = new JFileChooser();
+			fileChooser.setCurrentDirectory(new File("."));
+		}
+		
+		int retval = fileChooser.showDialog(null, "Save");
+		File ret = null;
+		if (retval == JFileChooser.APPROVE_OPTION) {
+			ret=  fileChooser.getSelectedFile();
+		}
+		return ret;
+	}
+
+
+
+
+	public void showMessage(String str) {
+		 	JOptionPane.showMessageDialog(null, str);
+		
 	}
 	
 	

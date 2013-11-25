@@ -72,6 +72,18 @@ public class DisplayLine {
 		ypts[npts] = y;
 		npts += 1;
 	}
+
+	public double getIfAt(int i, double xtgt, double rdxbase) {
+		double ret = 0;
+		if (i < npts) {
+			double dx = (xpts[i] - xtgt);
+			if (rdxbase * dx < 0.001) {
+				ret = ypts[i];
+			}
+		}
+		return ret;
+		
+	}
 	
 	
 }

@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -67,13 +68,13 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	 
 		JMenuBar jmb = new JMenuBar();
 		JMenu jm = new JMenu("File");
-		String[] actions = {"Open", "Save", "Import", "Clear", "Exit"};
+		String[] actions = {"Save", "Import", "Clear", "Exit"};
 		addToMenu(actions, jm);
 		jmb.add(jm);
 		
 		
 		JMenu jmview = new JMenu("View");
-		String[] va = {"Frame", "Legend"};
+		String[] va = {"Frame"};
 		addToMenu(va, jmview);
 		jmb.add(jmview);
 		
@@ -201,13 +202,7 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		dataDisplay.frameData();
 	}
 
-	public void legend() {
-
-		String lgnd = buildHTMLLegend();
-		
-		JOptionPane.showMessageDialog(frame, lgnd);
-	}
-
+	 
 	private void setData(DisplayList dl) {
 		DisplayListPainter dlp = new DisplayListPainter(dl);
 		dlp.setRepaintable(dataDisplay);
@@ -230,9 +225,9 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		} else if (sev.equals("frame")) {
 			frameData();
 
-		} else if (sev.equals("legend")) {
-			legend();
-
+		} else if (sev.equals("save")) {
+			saveData();
+			
 		} else if (sev.equals("pan")) {
 			dataDisplay.setMode("mouse", WorldCanvas.PAN);
 			setPref("mouseMode", WorldCanvas.PAN);
@@ -296,15 +291,7 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	}
 
 	
-	
-	public String buildHTMLLegend() {
-		StringBuilder sb = new StringBuilder("<html><b>Traces present:</b><br/>");
-		for (DisplayLine dl : displayList.getLines()) {
-			sb.append("&nbsp;&nbsp;<font color=\"" + dl.getColor() + "\">----- " + dl.getName() + "</font><br/>");
-		}		
-		return sb.toString();
-	}
-	
+	 
 	
 	
 	@Override
@@ -327,6 +314,19 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 				displayList.addLine(cols[0], cols[i], "#00ff00");
 			}
 			dataDisplay.repaint();
+		}
+	}
+	
+	
+	public void saveData() {
+		File f = SwingDialogs.getInstance().getFileToWrite();
+		if (f != null) {
+			String s = displayList.getStringData();
+			try {
+				FileUtil.writeStringToFile(s, f);
+			} catch (IOException ex) {
+				SwingDialogs.getInstance().showMessage("Can't write " + f.getAbsolutePath() + ", " + ex);
+			}
 		}
 	}
 	

@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.lemsml.jlems.core.discrete.DiscreteUpdateGenerator;
-import org.lemsml.jlems.core.discrete.DiscreteUpdateModel;
-import org.lemsml.jlems.core.discrete.DiscreteUpdateModelWriter;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
+import org.lemsml.jlems.core.lite.DiscreteUpdateGenerator;
+import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
+import org.lemsml.jlems.core.lite.DiscreteUpdateComponentWriter;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
@@ -41,14 +41,14 @@ public class DiscreteUpdateEventsTest {
     @Test
     public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
     	File f1 = new File("examples/example1.xml");
- 		String s = generateDiscreteUpdateModel(f1, "na");
+ 		String s = generateDiscreteUpdateComponent(f1, "na");
  		E.info("Generated XML: \n" + s);
     }
     
     
     
     
-    public String generateDiscreteUpdateModel(File f, String tgtid) throws ContentError,
+    public String generateDiscreteUpdateComponent(File f, String tgtid) throws ContentError,
     		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
     		BuildException, XMLException {
     	E.info("Loading LEMS file from: " + f.getAbsolutePath());
@@ -84,8 +84,8 @@ public class DiscreteUpdateEventsTest {
 		E.missing();
 		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, null);
 		
-		DiscreteUpdateModel dum = dug.buildDiscreteUpdateModel();
-		DiscreteUpdateModelWriter dumw = new DiscreteUpdateModelWriter(dum);
+		DiscreteUpdateComponent dum = dug.buildDiscreteUpdateComponent();
+		DiscreteUpdateComponentWriter dumw = new DiscreteUpdateComponentWriter(dum);
 		XMLElement xel = dumw.toXML(); 
 		
 		String ret = xel.serialize();

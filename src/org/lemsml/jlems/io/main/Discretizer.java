@@ -3,12 +3,12 @@ package org.lemsml.jlems.io.main;
 import java.io.File;
 import java.io.IOException;
 
-import org.lemsml.jlems.core.discrete.DiscreteUpdateGenerator;
-import org.lemsml.jlems.core.discrete.DiscreteUpdateModel;
-import org.lemsml.jlems.core.discrete.DiscreteUpdateModelWriter;
-import org.lemsml.jlems.core.discrete.NumericsRoot;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
+import org.lemsml.jlems.core.lite.DiscreteUpdateGenerator;
+import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
+import org.lemsml.jlems.core.lite.DiscreteUpdateComponentWriter;
+import org.lemsml.jlems.core.lite.NumericsRoot;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.numerics.IntegrationScheme;
 import org.lemsml.jlems.core.run.ConnectionError;
@@ -118,9 +118,9 @@ public class Discretizer {
 
 			DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, euler);
 
-			DiscreteUpdateModel dum = dug.buildDiscreteUpdateModel();
+			DiscreteUpdateComponent dum = dug.buildDiscreteUpdateComponent();
 
-			DiscreteUpdateModelWriter dumw = new DiscreteUpdateModelWriter(dum);
+			DiscreteUpdateComponentWriter dumw = new DiscreteUpdateComponentWriter(dum);
 			XMLElement xel = dumw.toXML();
 
 			String ret = xel.serialize();

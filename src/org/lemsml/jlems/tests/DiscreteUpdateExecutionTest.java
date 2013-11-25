@@ -5,11 +5,11 @@ import java.io.IOException;
 
 import org.lemsml.jlems.core.codger.CodeGenerationException;
 import org.lemsml.jlems.core.codger.CompilationException;
-import org.lemsml.jlems.core.discrete.DiscreteUpdateGenerator;
-import org.lemsml.jlems.core.discrete.DiscreteUpdateModel;
-import org.lemsml.jlems.core.discrete.run.DiscreteUpdateStateType;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
+import org.lemsml.jlems.core.lite.DiscreteUpdateGenerator;
+import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
+import org.lemsml.jlems.core.lite.run.DiscreteUpdateStateType;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
@@ -76,7 +76,7 @@ public class DiscreteUpdateExecutionTest {
 		StateType st = cp.getStateType();
 		E.missing();
 		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, null);
-		DiscreteUpdateModel dum = dug.buildDiscreteUpdateModel();
+		DiscreteUpdateComponent dum = dug.buildDiscreteUpdateComponent();
         
         DiscreteUpdateStateType dui = new DiscreteUpdateStateType(dum);
         dui.resolve();

@@ -1,0 +1,14 @@
+Compartmental Models
+
+ - Use standard component types to define everything
+ - New element, ExternalDynamics that declares the application that will 
+   handle the dynamics. This should provide an implementation of a new 
+   dynamics interface that handles creating state types and state instances 
+   (also with new interfaces?)
+ - ext dynamics implementation needs hooks back to normal dynamics to 
+   crete subomponents that use standard jlems.
+   
+   not clear how much the intefaces will need major refactorings elsewhere? 
+   Would be nice to make the existing implementation more modular.
+   
+   

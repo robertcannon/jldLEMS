@@ -91,7 +91,11 @@ public class FormattedDataUtil {
 
         while (br.ready()) {
            String line = br.readLine();
-           if (line.trim().length() > 0) {
+           if (line.indexOf("#") == 0) {
+        	   // ignore it 
+        	   // could have column headings
+        	   
+           } else if (line.trim().length() > 0) {
               StringTokenizer st = new StringTokenizer(line, " ,;\t");
               if (ncol == 0) {
                  ncol = st.countTokens();

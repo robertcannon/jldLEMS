@@ -31,17 +31,28 @@
 	</target>
 
 	
-	<target name="buildfactory">
+	<target name="build-lems-factory">
 		<java fork="true" dir="." classname="org.lemsml.jlems.schema.LemsFactoryGenerator">
 			<classpath>
 				<pathelement location="bin"/>
  			</classpath>
 		</java>
 		<echo message="refreshing reader resources"/>
-	<!--
+		<!-- better to set eclipse to monitor source tree and refresh automatically -->
+		<!--
 		<eclipse.refreshLocal resource="src/org/lemsml/jlems/core/reader" depth="infinite"/>
 	-->
 	</target>
+	
+	
+	<target name="build-lems-lite-factory">
+			<java fork="true" dir="." classname="org.lemsml.jlems.schema.LemsLiteFactoryGenerator">
+				<classpath>
+					<pathelement location="bin"/>
+	 			</classpath>
+			</java>
+	 </target>
+	
 
 	<target name="compile" depends="initdirs" description="Compile src to /build">
 		<echo>Compiling to /build</echo>
