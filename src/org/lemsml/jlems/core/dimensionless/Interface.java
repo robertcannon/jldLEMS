@@ -35,6 +35,14 @@ public class Interface {
 	public LemsCollection<InputVariable> getInputVariables() {
 		return inputVariables;
 	}
+
+	public LemsCollection<Parameter> getParameters() {
+		 return parameters;
+	}
+
+	public LemsCollection<Constant> getConstants() {
+		 return constants;
+	}
 	
 	
 }

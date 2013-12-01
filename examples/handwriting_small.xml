@@ -1,0 +1,159 @@
+ 
+
+<LEMSLite>
+
+    <!-- Components -->
+    <DiscreteUpdateComponent name="lif_neuron">
+        <Interface>
+            <Parameter name="bias"/>
+            <Parameter name="gain"/>
+            <Parameter name="constInput"/>
+            
+            <InputEventPort name="spike-in">
+                <Parameter name="weight"/>
+            </InputEventPort>
+            
+            <OutputEventPort name="spike-out"/>            
+
+            <Constant name="one_over_rc_float" value="0.15429"/>
+    
+            <OutputVariable name="v"/>
+        </Interface>
+
+        <State>
+            <StateVariable name="v"/>
+            <StateVariable name="inp"/>
+            <StateVariable name="ref"/>
+        </State>
+
+        <Step>
+            <!-- The original code ensures that "v > 0", but I thin kthis should be OK! -->
+            <Var name="total" value="(gain * (inp + constInput)) + bias"/>
+            <!-- Recieve event here -->
+            <Var name="dv" value="(total-v) * one_over_rc_float"/>
+            <Update variable="v" value="v + dv*dt"/>
+            <Update variable="inp" value="inp * (1-one_over_rc_float)"/>
+
+
+            <!-- event_handling -->
+            <ConditionCheck/>
+
+            
+            <Output variable="v" value="v"/>
+        </Step>
+
+
+        <OnEvent port="spike-in" >
+            <Update variable="inp" value="inp + weight * one_over_rc_float"/>
+        </OnEvent>
+
+        
+
+        <!-- Is there a spike? -->
+        <OnCondition if="v .gt. 1.0">
+            <Update variable="v" value="0"/>
+            <Update variable="ref" value="2"/>
+            <Emit port="spike-out"/>
+        </OnCondition>
+        
+        <!-- Are are in a refactory period -->
+        <OnCondition if="ref .gt. 0">
+            <Update variable="v" value="0"/>
+            <Update variable="ref" value="ref-1"/>
+        </OnCondition>
+        
+    </DiscreteUpdateComponent>
+
+ 
+
+
+    <ComponentArray name="level0" component="lif_neuron" size="10">
+        <Let parameter="constInput" value="5"/>
+        <Let parameter="bias" value="5"/>
+        <Let parameter="gain" value="5"/>
+
+        <Initialize stateVariable="inp" value="0" />
+    </ComponentArray>
+
+
+    <ComponentArray name="level1" component="lif_neuron" size="10">
+        <Let parameter="constInput" value="2"/>
+        <Let parameter="bias" value="2"/>
+        <Let parameter="gain" value="4"/>
+
+        <Initialize stateVariable="inp" value="2" />
+    </ComponentArray>
+
+
+  <DataSources>
+  		<Array name="conn01_pre" integer="true">
+  			<IntegerListArraySource values="0,0,0,1,1,2,2,2,3,4,5,6,7,8,9"/>
+  		</Array>
+  		
+  		<Array name="conn01_post" integer="true">
+  			<IntegerListArraySource values="1,2,3,1,2,7,8,6,5,6,7,8,9,9,9"/>
+  		</Array>
+  </DataSources>
+  
+  
+
+    <!-- Connect Pop0 to Pop1 -->
+    <EventConnections name="pop0_to_pop1" from="level0" to="level1">
+        <EventSource port="spike-out"/>
+        <EventTarget port="spike-in"/>
+
+        <SourceTargetConnector> 
+        	<FromArrayConnector pre="conn01_pre" post="conn01_post"/> 
+        </SourceTargetConnector>
+
+        <ConnectionProperties>
+            <Property name="weight" value="50"/>
+            <Delay value="0.03"/>
+        </ConnectionProperties>
+
+        <EventArguments>
+            <Arg name="weight" value="connection.weight"/>
+        </EventArguments>
+        
+    </EventConnections>
+
+ 
+
+
+    
+    <Simulation name="handwriting_simulation" dt="1.0e-3" endTime="1.0">
+        <OutputFiles>
+            <File id="f_out1_hdf" name="f_out_i.hdf" format="hdf5"></File>
+            <File id="f_out2_csv" name="f_out_i.csv" format="csv"></File>
+            <File id="f_out3_csv" name="f_out_spikes.csv" format="csv"></File>
+        </OutputFiles>
+
+
+        <Recording startTime="0" endTime="1" interval="0.1">
+            <VariableRecording file="f_out1_hdf" componentArray="level0" indices="1,2,3, -4:-1" variable="v"/>
+
+            <VariableRecording file="f_out2_csv" componentArray="level1" variable="v"/>
+         
+            <InputEventRecording file="f_out3_flat" componentArray="level0" indices="0,1,2,3" port="spike_in"/>
+            <OutputEventRecording file="f_out3_flat" componentArray="level1" indices="0,1,2,3" port="spike_out"/>
+        </Recording>
+    
+    
+    	  <Display interval="0.1" id="d1">
+	            <VariableDisplay componentArray="level0" indices="1,2,3" variable="v" color="#ffff00"/>
+                <VariableDisplay componentArray="level1" indices="1" variable="v" color="#00ff00"/>
+                <VariableDisplay componentArray="level1" indices="2" variable="v" color="#0000ff"/>
+                <VariableDisplay componentArray="level1" indices="3" variable="v" color="#e000e0"/>
+                <VariableDisplay componentArray="level1" indices="4,5" variable="v" color="#008040"/>
+           </Display>
+    
+    
+    </Simulation>
+
+</LEMSLite>
+
+
+
+
+
+ 

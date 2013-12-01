@@ -15,11 +15,7 @@ public class ConnectionTable {
 	
 	
 	public void addConnection(Connection conn) {
-			
-		int srcArrayIndex = conn.getSourceListIndex();
-	 		
-		caConnections[srcArrayIndex].addConnection(conn);
-		
+			 
 		E.missing();
 		
 	}

@@ -58,7 +58,10 @@ public class LEMSLiteNetworkTest {
     
     	LEMSLiteNetworkTest dut = new LEMSLiteNetworkTest();
     //	dut.runExampleIaF(); 
-    	dut.runExampleHandwriting(); 
+    //	dut.runExampleHandwriting(); 
+    	
+    	dut.runExampleHandwritingSmall();
+    	
     }
      
      
@@ -70,6 +73,14 @@ public class LEMSLiteNetworkTest {
     	runDiscreteUpdateComponent(f1);
     	
     }
+    
+    public void runExampleHandwritingSmall() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
+    	File f1 = new File("examples/handwriting_small.xml");
+    	
+    	runDiscreteUpdateComponent(f1);
+    	
+    }
+    
     
     
     private void runDiscreteUpdateComponent(File f1) throws ContentError, IOException, ParseError, ConnectionError, RuntimeError {
@@ -84,142 +95,20 @@ public class LEMSLiteNetworkTest {
 		LemsLiteFactory lf = new LemsLiteFactory();
 		LemsLite lemsLite = lf.buildLemsFromXMLElement(xel);
 		
-		E.info("Read lemsLits " + lemsLite.getSummary());
+		E.info("lemsLite model read: " + lemsLite.getSummary());
 	
 		XMLSerializer xs = new XMLSerializer();
 		String sx = xs.serialize(lemsLite);
 	 
 		File fdir = f1.getParentFile();
+	
 		LemsLiteSimulation lls = new LemsLiteSimulation(lemsLite);
-		
+
 		lls.run(fdir);
 		
     }
     
 	
     
-    
-	
-    public String generateDiscreteUpdateComponent(File f, String tgtid) throws ContentError,
-    		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
-    		BuildException, XMLException {
-    	E.info("Loading LEMS file from: " + f.getAbsolutePath());
-
-        FileInclusionReader fir = new FileInclusionReader(f);
-        Sim sim = new Sim(fir.read());
-
-        sim.readModel();
-        sim.build();
-
-        Lems lems = sim.getLems();
-        Component cpt = lems.getComponent(tgtid);
-
-        ComponentFlattener cf = new ComponentFlattener(lems, cpt);
-
-        ComponentType ct = cf.getFlatType();
-        Component cp = cf.getFlatComponent();
-        
-        // String typeOut = XMLSerializer.serialize(ct);
-        // String cptOut = XMLSerializer.serialize(cp);
-      
-        // E.info("Flat type: \n" + typeOut);
-        // E.info("Flat cpt: \n" + cptOut);
-        
-		lems.addComponentType(ct);
-		lems.addComponent(cp);
-	
-		lems.resolve(ct);
-		lems.resolve(cp);
-	 
-		
-		StateType st = cp.getStateType();
-		
-		StateInstance storig = st.newInstance();
-		st.build(storig);
-		
-		st.removeRedundantExpressions();
-		st.sortExpressions();
-		
-		String numcontents = JUtil.getRelativeResource(new NumericsRoot(), "defaultNumerics.xml");
-	 		
-		Sim simnum = new Sim(numcontents);
-
-		simnum.readModel();
-
-		Lems lemsnum = simnum.getLems();
-
-		LemsCollection<IntegrationScheme> schemes = lemsnum.getIntegrationSchemes();
-
-		IntegrationScheme euler = schemes.getByName("forwardEuler");
-
-		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, euler);
-		
-		DiscreteUpdateComponent dum = dug.buildDiscreteUpdateComponent();
-		DiscreteUpdateComponentWriter dumw = new DiscreteUpdateComponentWriter(dum);
-		XMLElement xel = dumw.toXML(); 
-		
-		String ret = xel.serialize();
-		
-		DiscreteUpdateComponentReader dur = new DiscreteUpdateComponentReader();
-		DiscreteUpdateComponent dum2 = dur.read(xel);
-		
-		DiscreteUpdateComponentWriter dumw2 = new DiscreteUpdateComponentWriter(dum2);
-		XMLElement xel2 = dumw2.toXML();
-		
-		String ser2 = xel2.serialize();
-		if (ret.equals(ser2)) {
-			E.info("OK: model after reread is same as orignial");
-		} else {
-			E.error("Reread error - models differ. Original: \n " + ret + "\n\nreread:\n" + ser2);
-		} 
-		
-		
-		
-		DiscreteUpdateStateType dust = new DiscreteUpdateStateType(dum);
-		dust.resolve();
-		StateRunnable sr = dust.newStateRunnable();
-		
-		DataViewer dv = DataViewerFactory.getFactory().newDataViewer("du-model");
-		
-	
-		RunnableAccessor raorig = new RunnableAccessor(storig);
-		RuntimeRecorder rrorig = new RuntimeRecorder("v-orig", "v");
-		rrorig.setColor("#00d000");
-		rrorig.connectRunnable(raorig, dv);
-		
-		
-		RunnableAccessor ra = new RunnableAccessor(sr);
-		
-		ArrayList<RuntimeRecorder> arr = new ArrayList<RuntimeRecorder>();
-		RuntimeRecorder rr = new RuntimeRecorder("v");
-		rr.connectRunnable(ra, dv);
-		arr.add(rr);
-		
-		String[] vars = {"popna_na_m_Reverse_r", "popna_na_m_Forward_x", "popna_na_m_Forward_r",
-					"popna_na_m_ex", "popna_na_m_q", "popna_na_m_fcond"};
-		for (String s : vars) {
-			RuntimeRecorder rs = new RuntimeRecorder(s);
-			rs.connectRunnable(ra,  dv);
-			arr.add(rs);
-		}
-		
-		
-		
-		double dt = 5e-5;
-		double t = 0.;
-		for (int i = 0; i < 1000; i++) {
-			sr.advance(null,  t, dt);
-			
-			storig.advance(null, t, dt);
-			
-			t += dt;
-			for (RuntimeRecorder r : arr) {
-				r.appendState(t);
-			}
-//			rrorig.appendState(t);
-		}
-		
-		
-		return ret;
-    }
+   
 }

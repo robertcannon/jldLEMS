@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.display.LineDisplay;
+import org.lemsml.jlems.core.lite.Connection;
+import org.lemsml.jlems.core.lite.EventManager;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.DoublePointer;
@@ -25,6 +27,11 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 	StateRunnable parent;
 	 
 	
+	HashMap<String, ArrayList<Connection>> connectionsHM;
+	
+	EventManager eventManager;
+	
+	
 	public DiscreteUpdateStateInstance(DiscreteUpdateStateType dut, HashMap<String, DoublePointer> vars) {
 		duType = dut;
 		variables = vars;
@@ -38,10 +45,20 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 
 	@Override
 	public void advance(StateRunnable parent, double t, double dt) throws RuntimeError, ContentError {
+		variables.get("dt").set(dt);
 		
-		duType.advance(dt, variables, parent);
+		duType.advance(dt, variables, this, parent);
 	}
 
+	
+
+	public void receiveEvent(String tgtPort) throws RuntimeError {
+		duType.handleEvent(this, tgtPort, variables);
+	}
+
+	
+	
+	
 	@Override
 	public void exportState(String pfx, double t, LineDisplay ld) {
  		E.missing();
@@ -89,14 +106,29 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 
 	@Override
 	public void setVariable(String varname, double d) {
-		E.info("set " + varname + " " + d);
 		variables.get(varname).set(d);
 	}
 
+	public void setVariableMaybeNew(String varname, double d) {
+		if (variables.containsKey(varname)) {
+			variables.get(varname).set(d);
+		} else {
+			variables.put(varname, new DoublePointer(d));
+		}
+	}
+	
 	
 	// TODO - parameter could be in state type?
-	public void setLocalParameter(String pnm, double d) {
-		variables.get(pnm).set(d);
+	public void setLocalParameter(String pnm, double d) throws ContentError {
+		if (variables.containsKey(pnm)) {
+			variables.get(pnm).set(d);
+			
+		} else if (duType.hasParameter(pnm)) {
+			variables.put(pnm, new DoublePointer(d));
+		
+		} else {
+			throw new ContentError("No such variable " + pnm + " in " + this);
+		}
 	}
 	
 	
@@ -283,6 +315,29 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 			ContentError, RuntimeError {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void setEventManager(EventManager em) {
+		eventManager = em;
+	}
+
+	
+	public void addConnection(String pfrom, Connection conn) {
+		if (connectionsHM == null) {
+			connectionsHM = new HashMap<String, ArrayList<Connection>>();
+		}
+		if (!connectionsHM.containsKey(pfrom)) {
+			connectionsHM.put(pfrom,  new ArrayList<Connection>());
+		}
+		connectionsHM.get(pfrom).add(conn);
+	}
+
+	public void sendEvent(String port) throws RuntimeError {
+		if (connectionsHM != null && connectionsHM.containsKey(port)) {
+			eventManager.addEvents(connectionsHM.get(port));
+		} else {
+			E.warning("No connections from port " + port + " on " + this);
+		}
 	}
 
 }

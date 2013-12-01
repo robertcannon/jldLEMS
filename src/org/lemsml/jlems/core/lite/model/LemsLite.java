@@ -14,6 +14,9 @@ public class LemsLite {
 	
 	public LemsCollection<EventConnections> eventConnectionss = new LemsCollection<EventConnections>();
 
+	public LemsCollection<Simulation> simulations = new LemsCollection<Simulation>();
+	
+	
 	public String getSummary() {
 		// TODO Auto-generated method stub
 		String ret= "(components=" + discreteUpdateComponents.size() +
@@ -44,5 +47,13 @@ public class LemsLite {
 
 	public LemsCollection<EventConnections> getEventConnectionss() {
 		return eventConnectionss;
+	}
+
+	public Simulation getSimulation() {
+		 Simulation ret = null;
+		 if (simulations.size() > 0) {
+			 ret = simulations.get(0);
+		 }
+		 return ret;
 	}
 }

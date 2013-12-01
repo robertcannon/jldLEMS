@@ -4,13 +4,14 @@ public class Update {
 
 	
 	 
-	public String variableName;
-	public String expression;
+	public String variable;
+	public String value;
+	 
 	public String rpExpression;
 	
 	public Update(String vnm, String expr) {
-		variableName = vnm;
-		expression = expr;
+		variable = vnm;
+		value = expr;
 	}
 	
 	
@@ -22,11 +23,11 @@ public class Update {
 
 
 	public String getVariableName() {
-		return variableName;
+		return variable;
 	}
 	
 	public String getExpression() {
-		return expression;
+		return value;
 	}
 	
 	public void setReversePolishExpression(String s) {

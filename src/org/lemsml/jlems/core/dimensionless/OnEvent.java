@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.lemsml.jlems.core.logging.E;
 
-public class OnEvent {
+public class OnEvent extends OnAbstract {
 
 	public String port;
 	
@@ -20,30 +20,11 @@ public class OnEvent {
 	 
 	}
 
-
-	public void addFloatAssignment(FloatAssignment fa) {
-		floatAssignments.add(fa);
-	}
-
-
-	public ArrayList<FloatAssignment> getFloatAssignments() {
-		return floatAssignments;
-	}
-	
+ 
 	public String getPortName() {
  		return port;
 	}
 
 
-	public void addEmit(String attribute) {
-		 E.missing();
-	}
-
-
-	public void addUpdateAssignment(FloatAssignment fa) {
-		floatAssignments.add(fa);
-	}
-	
-	
 	
 }

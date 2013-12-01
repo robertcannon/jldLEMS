@@ -5,5 +5,10 @@ import org.lemsml.jlems.core.type.LemsCollection;
 public class EventArguments {
 
 	public LemsCollection<Arg> args = new LemsCollection<Arg>();
+
+	public LemsCollection<Arg> getArgs() {
+		return args; 
+	}
+ 	
 	
 }

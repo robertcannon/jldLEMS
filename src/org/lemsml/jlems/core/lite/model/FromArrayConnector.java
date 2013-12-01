@@ -9,11 +9,7 @@ public class FromArrayConnector {
 
 	public String post;
 
-	
-	double delay;
-	
-	double weight;
-	
+	 
 	
 	
 	public String getPre() {
@@ -24,19 +20,6 @@ public class FromArrayConnector {
 		return post;
 	}
 
-	public void setDelay(double d) {
-		 delay = d;
-	}
-	
-	public void setWeight(double d) {
-		weight = d;
-	}
-
-	public void setCustomProperty(String name, double value) {
-		
-		E.missing();
-		
-	}
 	
 	
 }

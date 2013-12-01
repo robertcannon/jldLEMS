@@ -1,5 +1,6 @@
 package org.lemsml.jlems.core.lite;
 
+import org.lemsml.jlems.core.display.DataViewer;
 import org.lemsml.jlems.core.lite.run.DiscreteUpdateStateInstance;
 import org.lemsml.jlems.core.lite.run.DiscreteUpdateStateType;
 import org.lemsml.jlems.core.logging.E;
@@ -42,6 +43,16 @@ public class InstanceArray {
 		}
 	}
 	
+	
+
+	public void setParameter(String p, double d) throws ContentError {
+		for (int i = 0; i < elements.length; i++) {
+			elements[i].setLocalParameter(p, d);
+		}
+	}
+	
+	
+	
 	public void setVariable(String p, double[] ds) throws ContentError {
 		if (ds.length < elements.length) {
 			throw new ContentError("Array too short for setting parameter: got " + ds.length + " need " + elements.length);
@@ -61,8 +72,42 @@ public class InstanceArray {
 	}
 
 	public void connectEventManager(EventManager em) {
-		E.missing();
+		for (int i = 0; i < elements.length; i++) {
+			elements[i].setEventManager(em);
+		}
+	}
+
+	public DiscreteUpdateStateInstance getElement(int ind) {
+		 return elements[ind];
 	}
 	
+	
+	public void advance(double t, double dt) throws RuntimeError, ContentError {
+		for (DiscreteUpdateStateInstance dusi : elements) {
+			dusi.advance(null,  t,  dt);
+		}
+	}
+
+	public int size() {
+		 return elements.length;
+	}
+
+	public String getElementValues(String varname, int[] indices) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < indices.length; i++) {
+			double v = elements[indices[i]].getValue(varname);
+			sb.append("" + v + " ");
+		}
+		return sb.toString();
+	}
+
+	public void display(DataViewer dv, String varname, int[] indices, double t, String col) {
+		for (int i = 0; i < indices.length; i++) {
+			int ind = indices[i];
+			double v = elements[ind].getValue(varname);
+			dv.addPoint(name + "[" + ind + "]." + varname, t, v, col);
+		}
+	}
+
 
 }

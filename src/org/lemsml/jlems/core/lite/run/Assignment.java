@@ -18,13 +18,20 @@ public class Assignment {
 		evaluator = de;
 	}
 
+	public String getVariableName() {
+		return varName;
+	}
+	
 
 	public void exec(HashMap<String, DoublePointer> variables) throws RuntimeError {
 		double d = evaluator.evalptr(variables);
 		variables.get(varName).set(d);
 	}
-	
-	
-	
+
+	public double evaluate(HashMap<String, DoublePointer> vars) throws RuntimeError {
+		double d = evaluator.evalptr(vars);
+		return d;
+	}
+	 
 
 }

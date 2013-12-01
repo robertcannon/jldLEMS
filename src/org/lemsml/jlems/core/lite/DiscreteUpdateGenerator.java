@@ -3,8 +3,9 @@ package org.lemsml.jlems.core.lite;
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.dimensionless.FloatAssignment;
-import org.lemsml.jlems.core.dimensionless.OnCondition;
+import org.lemsml.jlems.core.dimensionless.OnAbstract;
 import org.lemsml.jlems.core.dimensionless.OnEvent;
+import org.lemsml.jlems.core.dimensionless.Var;
  
 import org.lemsml.jlems.core.eval.BooleanEvaluator;
 import org.lemsml.jlems.core.eval.DVar;
@@ -122,8 +123,8 @@ public class DiscreteUpdateGenerator {
 		ActionBlock ab = ea.getAction();
 	 	
 		for (VariableAssignment ve : ab.getAssignments()) {
-			FloatAssignment fa = new FloatAssignment(ve.getVarName(), ve.getValexp().getExpressionString());
-			oe.addFloatAssignment(fa);
+			Var fa = new Var(ve.getVarName(), ve.getValexp().getExpressionString());
+			oe.addVar(fa);
 		}
 	}
 	
@@ -131,13 +132,13 @@ public class DiscreteUpdateGenerator {
 	private void addConditionAction(DiscreteUpdateComponent ret, ConditionAction ca) {
 		 
 		BooleanEvaluator be = ca.getCondition();
-		OnCondition os = ret.addOnCondition(be.getExpressionString());
+		OnAbstract os = ret.addOnCondition(be.getExpressionString());
 		ActionBlock ab = ca.getAction();
 		
  		
 		for (VariableAssignment ve : ab.getAssignments()) {
- 			FloatAssignment fa = new FloatAssignment(ve.getVarName(), ve.getValexp().getExpressionString());
-			os.addFloatAssignment(fa);
+ 			Var fa = new Var(ve.getVarName(), ve.getValexp().getExpressionString());
+			os.addVar(fa);
 		}
 		
 		for (String s : ab.getOutEvents()) {
@@ -151,9 +152,9 @@ public class DiscreteUpdateGenerator {
 			String vnm = vroc.getVariableName();
 			String rnm = makeRateVar(vnm);
 			
-			FloatAssignment fa = new FloatAssignment(rnm, vroc.getTextExpression());
+			Var fa = new Var(rnm, vroc.getTextExpression());
 			fa.setReversePolishExpression(vroc.getReversePolishExpressionString());
-			ret.addFloatAssignment(fa);
+			ret.addVar(fa);
  		}
 		
 		  

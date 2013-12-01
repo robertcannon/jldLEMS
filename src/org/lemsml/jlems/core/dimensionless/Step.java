@@ -5,11 +5,14 @@ import org.lemsml.jlems.core.type.LemsCollection;
 public class Step {
 
 	
-	LemsCollection<Update> updates = new LemsCollection<Update>();
+	public LemsCollection<Update> updates = new LemsCollection<Update>();
 	
-	LemsCollection<Var> vars = new LemsCollection<Var>();
+	public LemsCollection<Var> vars = new LemsCollection<Var>();
 	
-	LemsCollection<Output> outputs = new LemsCollection<Output>();
+	public LemsCollection<Output> outputs = new LemsCollection<Output>();
+	
+	public LemsCollection<ConditionCheck> conditionChecks = new LemsCollection<ConditionCheck>();
+	
 	
 	public void addUpdateAssignment(FloatAssignment fa) {
 		// TODO Auto-generated method stub
@@ -32,6 +35,10 @@ public class Step {
 
 	public LemsCollection<Output> getOutputs() {
 		return outputs;
+	}
+
+	public void addVar(Var fa) {
+		vars.add(fa);
 	}
 
 }

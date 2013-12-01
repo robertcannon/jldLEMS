@@ -25,6 +25,7 @@ import org.lemsml.jlems.core.lite.model.ConnectionProperties;
 import org.lemsml.jlems.core.lite.model.DataSources;
 import org.lemsml.jlems.core.lite.model.Delay;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
+import org.lemsml.jlems.core.lite.model.Display;
 import org.lemsml.jlems.core.lite.model.EventArguments;
 import org.lemsml.jlems.core.lite.model.EventConnections;
 import org.lemsml.jlems.core.lite.model.EventSource;
@@ -33,10 +34,18 @@ import org.lemsml.jlems.core.lite.model.File;
 import org.lemsml.jlems.core.lite.model.FileSource;
 import org.lemsml.jlems.core.lite.model.FromArrayConnector;
 import org.lemsml.jlems.core.lite.model.Initialize;
+import org.lemsml.jlems.core.lite.model.InputEventRecording;
+import org.lemsml.jlems.core.lite.model.IntegerListArraySource;
 import org.lemsml.jlems.core.lite.model.LemsLite;
 import org.lemsml.jlems.core.lite.model.Let;
+import org.lemsml.jlems.core.lite.model.OutputEventRecording;
+import org.lemsml.jlems.core.lite.model.OutputFiles;
 import org.lemsml.jlems.core.lite.model.Property;
+import org.lemsml.jlems.core.lite.model.Recording;
+import org.lemsml.jlems.core.lite.model.Simulation;
 import org.lemsml.jlems.core.lite.model.SourceTargetConnector;
+import org.lemsml.jlems.core.lite.model.VariableDisplay;
+import org.lemsml.jlems.core.lite.model.VariableRecording;
  
 
 public final class LemsLiteClasses {
@@ -64,6 +73,7 @@ public final class LemsLiteClasses {
 		classList.addAll(getLemsLiteClasses());
 		classList.addAll(getDiscreteUpdateComponentClasses());
 		classList.addAll(getNetworkClasses());
+		classList.addAll(getSimulationClasses());
 	 
 	}
 
@@ -112,7 +122,6 @@ public final class LemsLiteClasses {
 	private ArrayList<LemsClass> getNetworkClasses() {
 		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
 		String section = "network";
-		ret.add(new LemsClass(DataSources.class, section));
 		ret.add(new LemsClass(ComponentArray.class, section));
 		ret.add(new LemsClass(EventConnections.class, section));
 		ret.add(new LemsClass(Let.class, section));
@@ -130,11 +139,31 @@ public final class LemsLiteClasses {
 		ret.add(new LemsClass(EventArguments.class, section));
 		ret.add(new LemsClass(Arg.class, section));
 		
-		ret.add(new LemsClass(File.class, section));
-		ret.add(new LemsClass(Array.class, section));
-		ret.add(new LemsClass(FileSource.class, section));
+	
 		return ret;
 	}
 
+	
+
+	private ArrayList<LemsClass> getSimulationClasses() {
+		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
+		String section = "simulation";
+		ret.add(new LemsClass(DataSources.class, section));
+		ret.add(new LemsClass(IntegerListArraySource.class, section));
+		ret.add(new LemsClass(File.class, section));
+		ret.add(new LemsClass(Array.class, section));
+		ret.add(new LemsClass(FileSource.class, section));
+		
+		ret.add(new LemsClass(Simulation.class, section));
+		ret.add(new LemsClass(OutputFiles.class, section));
+		ret.add(new LemsClass(Recording.class, section));
+		ret.add(new LemsClass(VariableRecording.class, section));
+		ret.add(new LemsClass(InputEventRecording.class, section));
+		ret.add(new LemsClass(OutputEventRecording.class, section));
+		ret.add(new LemsClass(Display.class, section));
+		ret.add(new LemsClass(VariableDisplay.class, section));
+		return ret;
+	}
+	
  
 }

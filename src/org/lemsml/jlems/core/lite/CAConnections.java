@@ -1,5 +1,7 @@
 package org.lemsml.jlems.core.lite;
 
+import org.lemsml.jlems.core.logging.E;
+
 public class CAConnections {
 
 	CellConnections[] cellConnections = new CellConnections[50];
@@ -7,8 +9,8 @@ public class CAConnections {
 	
 	public void addConnection(Connection conn) {
 
-		
-		int srcCellIndex = conn.getSourceCellIndex();
+		E.missing();
+		int srcCellIndex = 0; // conn.getSourceCellIndex();
 		
 		if (srcCellIndex > cellConnections.length) {
 			int nn = (3 * srcCellIndex) / 2;

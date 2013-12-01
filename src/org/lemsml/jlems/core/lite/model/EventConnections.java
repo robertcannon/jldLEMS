@@ -64,5 +64,11 @@ public class EventConnections {
 		return ret;
 	}
  	
-	
+	public EventArguments getEventArguments() {
+		EventArguments ret = null;
+		if (eventArgumentss.size() > 0) {
+			ret = eventArgumentss.get(0);
+		}
+		return ret;
+	}
 }

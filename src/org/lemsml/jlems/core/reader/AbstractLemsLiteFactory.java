@@ -7,6 +7,7 @@ import org.lemsml.jlems.core.lite.model.DataSources;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
 import org.lemsml.jlems.core.lite.model.EventConnections;
 import org.lemsml.jlems.core.lite.model.LemsLite;
+import org.lemsml.jlems.core.lite.model.Simulation;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.About;
@@ -44,11 +45,12 @@ public abstract class AbstractLemsLiteFactory {
 
 			} else if (xel.isTag("EventConnections")) {
 				ret.eventConnectionss.add((EventConnections)instantiateFromXMLElement(xel));
+		
+			} else if (xel.isTag("Simulation")) {
+				ret.simulations.add((Simulation)instantiateFromXMLElement(xel));
+				
 			} else {
-				
-				
-			
-				E.error("Unrecognized tag " + xel);
+				throw new ContentError("Unrecognized tag " + xel);
  				 
 			}
 		}

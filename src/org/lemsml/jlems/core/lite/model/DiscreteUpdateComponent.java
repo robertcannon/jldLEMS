@@ -8,6 +8,8 @@ import org.lemsml.jlems.core.dimensionless.Interface;
 import org.lemsml.jlems.core.dimensionless.OnCondition;
 import org.lemsml.jlems.core.dimensionless.OnEvent;
  
+import org.lemsml.jlems.core.dimensionless.Constant;
+import org.lemsml.jlems.core.dimensionless.OnAbstract;
 import org.lemsml.jlems.core.dimensionless.Output;
 import org.lemsml.jlems.core.dimensionless.OutputEventPort;
 import org.lemsml.jlems.core.dimensionless.Parameter;
@@ -31,7 +33,6 @@ public class DiscreteUpdateComponent {
 	
 	public LemsCollection<Step> steps = new LemsCollection<Step>();
 	
-	 
 	public LemsCollection<OnEvent> onEvents = new LemsCollection<OnEvent>();
 
 	public LemsCollection<OnCondition> onConditions = new LemsCollection<OnCondition>();
@@ -100,6 +101,10 @@ public class DiscreteUpdateComponent {
 		getStep().addOutput(as, var);
 	}
 
+	public void addVar(Var fa) {
+		getStep().addVar(fa);
+	}
+
 	
 	public void addIndependentVariagble(String s) {
 		getInterface().addInputVariable(new InputVariable(s));
@@ -159,7 +164,7 @@ public class DiscreteUpdateComponent {
 
 
 
-	public OnCondition addOnCondition(String estr) {
+	public OnAbstract addOnCondition(String estr) {
 		 OnCondition os = new OnCondition(estr);
 		 onConditions.add(os);
 		 return os;
@@ -172,6 +177,14 @@ public class DiscreteUpdateComponent {
 
 	public LemsCollection<InputVariable> getInputVariables() {
 		return getInterface().getInputVariables();
+	}
+	
+	public LemsCollection<Parameter> getParameters() {
+		return getInterface().getParameters();
+	}
+
+	public LemsCollection<Constant> getConstants() {
+		return getInterface().getConstants();
 	}
 
 
@@ -190,6 +203,17 @@ public class DiscreteUpdateComponent {
 	public String getName() {
 		return name;
 	}
+
+
+	public LemsCollection<OnCondition> getOnConditions() {
+		return onConditions;
+	}
+
+
+	public LemsCollection<OnEvent> getOnEvents() {
+		return onEvents;
+	}
+
 
 
 
