@@ -5,12 +5,12 @@ import java.io.IOException;
 
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
-import org.lemsml.jlems.core.lite.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
-import org.lemsml.jlems.core.lite.DiscreteUpdateComponentWriter;
-import org.lemsml.jlems.core.lite.NumericsRoot;
+ 
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.numerics.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.numerics.IntegrationScheme;
+import org.lemsml.jlems.core.numerics.NumericsRoot;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -26,6 +26,7 @@ import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
 import org.lemsml.jlems.io.util.FileUtil;
 import org.lemsml.jlems.io.util.JUtil;
+import org.lemsml.jlems.io.xmlio.XMLSerializer;
 
 public class Discretizer {
 
@@ -120,10 +121,8 @@ public class Discretizer {
 
 			DiscreteUpdateComponent dum = dug.buildDiscreteUpdateComponent();
 
-			DiscreteUpdateComponentWriter dumw = new DiscreteUpdateComponentWriter(dum);
-			XMLElement xel = dumw.toXML();
-
-			String ret = xel.serialize();
+		 
+			String ret = XMLSerializer.serialize(dum);
 
 			if (outPath == null) {
 				E.info("discrete model:\n" + ret);

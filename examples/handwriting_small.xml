@@ -108,7 +108,7 @@
 
         <ConnectionProperties>
             <Property name="weight" value="50"/>
-            <Delay value="0.03"/>
+            <Delay value="0.0"/>
         </ConnectionProperties>
 
         <EventArguments>

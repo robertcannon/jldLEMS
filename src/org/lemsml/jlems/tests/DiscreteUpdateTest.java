@@ -9,14 +9,16 @@ import org.lemsml.jlems.core.display.DataViewer;
 import org.lemsml.jlems.core.display.DataViewerFactory;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
-import org.lemsml.jlems.core.lite.DiscreteUpdateGenerator;
+import org.lemsml.jlems.core.lite.convert.DUComponentToDUStateType;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
-import org.lemsml.jlems.core.lite.DiscreteUpdateComponentReader;
-import org.lemsml.jlems.core.lite.DiscreteUpdateComponentWriter;
-import org.lemsml.jlems.core.lite.NumericsRoot;
-import org.lemsml.jlems.core.lite.run.DiscreteUpdateStateType;
+import org.lemsml.jlems.core.lite.run.component.DiscreteUpdateStateType;
+ 
+ 
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.numerics.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.numerics.IntegrationScheme;
+import org.lemsml.jlems.core.numerics.NumericsRoot;
+import org.lemsml.jlems.core.reader.LemsLiteFactory;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.RuntimeRecorder;
@@ -33,10 +35,12 @@ import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.LemsCollection;
 import org.lemsml.jlems.core.xml.XMLElement;
+import org.lemsml.jlems.core.xml.XMLElementReader;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
 import org.lemsml.jlems.io.util.JUtil;
+import org.lemsml.jlems.io.xmlio.XMLSerializer;
 import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
  
 
@@ -134,18 +138,18 @@ public class DiscreteUpdateTest {
 		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, euler);
 		
 		DiscreteUpdateComponent dum = dug.buildDiscreteUpdateComponent();
-		DiscreteUpdateComponentWriter dumw = new DiscreteUpdateComponentWriter(dum);
-		XMLElement xel = dumw.toXML(); 
 		
-		String ret = xel.serialize();
+		String ret = XMLSerializer.serialize(dum);
 		
-		DiscreteUpdateComponentReader dur = new DiscreteUpdateComponentReader();
-		DiscreteUpdateComponent dum2 = dur.read(xel);
+	 	
+		LemsLiteFactory llf = new LemsLiteFactory();
+		 
+		XMLElementReader exmlr = new XMLElementReader(ret + "    ");
+		XMLElement xel = exmlr.getRootElement();
+  		
+		DiscreteUpdateComponent dum2 = llf.readDiscreteUpdateComponent(xel);
 		
-		DiscreteUpdateComponentWriter dumw2 = new DiscreteUpdateComponentWriter(dum2);
-		XMLElement xel2 = dumw2.toXML();
-		
-		String ser2 = xel2.serialize();
+		String ser2 = XMLSerializer.serialize(dum2);
 		if (ret.equals(ser2)) {
 			E.info("OK: model after reread is same as orignial");
 		} else {
@@ -153,9 +157,9 @@ public class DiscreteUpdateTest {
 		} 
 		
 		
-		
-		DiscreteUpdateStateType dust = new DiscreteUpdateStateType(dum);
-		dust.resolve();
+		DUComponentToDUStateType cdustg = new DUComponentToDUStateType(dum);
+		DiscreteUpdateStateType dust = cdustg.makeDiscretUpdateStateType();
+
 		StateRunnable sr = dust.newStateRunnable();
 		
 		DataViewer dv = DataViewerFactory.getFactory().newDataViewer("du-model");

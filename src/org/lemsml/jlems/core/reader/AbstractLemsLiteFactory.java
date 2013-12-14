@@ -59,7 +59,11 @@ public abstract class AbstractLemsLiteFactory {
 	 
 	
 	  
-
+	public DiscreteUpdateComponent readDiscreteUpdateComponent(XMLElement xel) throws ContentError {
+		Object obj = instantiateFromXMLElement(xel);
+		DiscreteUpdateComponent ret = (DiscreteUpdateComponent)obj;
+		return ret;
+	}
 	 
 
 	

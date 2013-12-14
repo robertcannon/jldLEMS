@@ -7,10 +7,10 @@ import org.lemsml.jlems.core.codger.CodeGenerationException;
 import org.lemsml.jlems.core.codger.CompilationException;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
-import org.lemsml.jlems.core.lite.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
-import org.lemsml.jlems.core.lite.run.DiscreteUpdateStateType;
+import org.lemsml.jlems.core.lite.run.component.DiscreteUpdateStateType;
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.numerics.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateType;
@@ -76,11 +76,11 @@ public class DiscreteUpdateExecutionTest {
 		StateType st = cp.getStateType();
 		E.missing();
 		DiscreteUpdateGenerator dug = new DiscreteUpdateGenerator(st, null);
-		DiscreteUpdateComponent dum = dug.buildDiscreteUpdateComponent();
+	
+		DiscreteUpdateStateType dui = dug.buildDiscreteUpdateStateType();
         
-        DiscreteUpdateStateType dui = new DiscreteUpdateStateType(dum);
-        dui.resolve();
-		
+       //  DiscreteUpdateStateType dui = new DiscreteUpdateStateType(dum);
+    	
         E.info("Substitting DU type " + dui);
         sim.addSubstitutionType(tgtid, dui);
 //        sim.addSubstitutionType(ntk);

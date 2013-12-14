@@ -1,24 +1,9 @@
 package org.lemsml.jlems.core.lite.model;
 
-import org.lemsml.jlems.core.dimensionless.AccumulatingInputVariable;
-import org.lemsml.jlems.core.dimensionless.FloatAssignment;
-import org.lemsml.jlems.core.dimensionless.InputEventPort;
-import org.lemsml.jlems.core.dimensionless.InputVariable;
-import org.lemsml.jlems.core.dimensionless.Interface;
-import org.lemsml.jlems.core.dimensionless.OnCondition;
-import org.lemsml.jlems.core.dimensionless.OnEvent;
+import java.util.HashMap;
+
+import org.lemsml.jlems.core.lite.run.component.FloatAssignment;
  
-import org.lemsml.jlems.core.dimensionless.Constant;
-import org.lemsml.jlems.core.dimensionless.OnAbstract;
-import org.lemsml.jlems.core.dimensionless.Output;
-import org.lemsml.jlems.core.dimensionless.OutputEventPort;
-import org.lemsml.jlems.core.dimensionless.Parameter;
-import org.lemsml.jlems.core.dimensionless.State;
-import org.lemsml.jlems.core.dimensionless.StateVariable;
-import org.lemsml.jlems.core.dimensionless.Step;
-import org.lemsml.jlems.core.dimensionless.OutputVariable;
-import org.lemsml.jlems.core.dimensionless.Update;
-import org.lemsml.jlems.core.dimensionless.Var;
 import org.lemsml.jlems.core.type.LemsCollection;
 
 
@@ -213,6 +198,8 @@ public class DiscreteUpdateComponent {
 	public LemsCollection<OnEvent> getOnEvents() {
 		return onEvents;
 	}
+
+ 
 
 
 

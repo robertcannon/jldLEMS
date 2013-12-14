@@ -1,6 +1,5 @@
 package org.lemsml.jlems.core.reader;
 
-import org.lemsml.jlems.core.dimensionless.*;
 import org.lemsml.jlems.core.lite.model.*;
 import org.lemsml.jlems.core.xml.XMLElement;
 import org.lemsml.jlems.core.xml.XMLAttribute;
