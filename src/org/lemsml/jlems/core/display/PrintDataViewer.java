@@ -32,4 +32,11 @@ public class PrintDataViewer implements DataViewer {
 		
 	}
 
+
+	@Override
+	public void setRegion(double[] box) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

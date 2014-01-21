@@ -131,11 +131,12 @@ public class StateType implements RuntimeType {
 	}
 	
 	public void startClock() {
-		wkTime = System.nanoTime();
+		// not GWT compatible
+		// wkTime = System.nanoTime();
 	}
 	
 	public void stopClock() {
-		timeCounter += (System.nanoTime() - wkTime);
+		// timeCounter += (System.nanoTime() - wkTime);
 	}
 	
 	public long getTotalTime() {

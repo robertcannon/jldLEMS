@@ -80,9 +80,7 @@ public class Sim extends LemsProcess {
 	    for (RuntimeDisplay ro : runtimeDisplays) {
 	    	DataViewer dv = DataViewerFactory.getFactory().newDataViewer(ro.getTitle());
 	    	dvHM.put(ro.getID(), dv);
-	    	if (dv instanceof DataViewPort) {
-	    		((DataViewPort)dv).setRegion(ro.getBox());
- 	    	}
+	    	dv.setRegion(ro.getBox());
 	    }
 	     
 	 
@@ -198,9 +196,7 @@ public class Sim extends LemsProcess {
         double dt = rc.getTimestep();
         int nstep = (int) Math.round(rc.getRuntime() / dt);
 
- 
-        long start = System.currentTimeMillis();
-  
+   
         double t = 0;
         
        
@@ -231,7 +227,7 @@ public class Sim extends LemsProcess {
             	long realTimeNow = System.currentTimeMillis();
             	long dtReal = realTimeNow - realTimeStart;
             	if (dtReal > maxExecutionTime) {
-            		E.info("Stopped execution at t=" + t + " (exceeded maxExecutionTime) " + (dtReal));
+            		E.info("Stopped execution at t=" + t + " (exceeded maxExecutionTime) " + dtReal);
             		break;
             	}
             }
@@ -271,8 +267,8 @@ public class Sim extends LemsProcess {
 		
 	}
 
-	public void setMaxExecutionTime(int i) {
-		maxExecutionTime = i;
+	public void setMaxExecutionTime(int nms) {
+		maxExecutionTime = nms;
 	}
 	
 	

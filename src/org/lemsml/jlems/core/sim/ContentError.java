@@ -1,14 +1,17 @@
 package org.lemsml.jlems.core.sim;
 
-public class ContentError extends Exception {
+import java.io.Serializable;
+
+public class ContentError extends Exception implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 
+	public ContentError() {
+		super();
+	}
+	
 	public ContentError(String msg) {
 		super(msg);
 	}
-	public ContentError(String msg, Throwable t) {
-		super(msg, t);
-	}
-	
+	 
 }

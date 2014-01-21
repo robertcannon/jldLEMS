@@ -3,27 +3,7 @@ package org.lemsml.jlems.core.lite.run.component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
- 
 
-
-import org.lemsml.jlems.core.expression.ExpressionParser;
-import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.lite.model.Constant;
-import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
-import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
-import org.lemsml.jlems.core.lite.model.Emit;
-import org.lemsml.jlems.core.lite.model.IndependentVariable;
-import org.lemsml.jlems.core.lite.model.InputVariable;
-import org.lemsml.jlems.core.lite.model.OnAbstract;
-import org.lemsml.jlems.core.lite.model.OnCondition;
-import org.lemsml.jlems.core.lite.model.OnEvent;
-import org.lemsml.jlems.core.lite.model.Output;
-import org.lemsml.jlems.core.lite.model.OutputVariable;
-import org.lemsml.jlems.core.lite.model.Parameter;
-import org.lemsml.jlems.core.lite.model.StateVariable;
-import org.lemsml.jlems.core.lite.model.Update;
-import org.lemsml.jlems.core.lite.model.Var;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.DoublePointer;

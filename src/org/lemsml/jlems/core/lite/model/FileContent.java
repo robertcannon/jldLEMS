@@ -1,14 +1,12 @@
 package org.lemsml.jlems.core.lite.model;
 
-import java.io.File;
 
-import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.lite.simulation.DataSource;
 import org.lemsml.jlems.core.sim.ContentError;
-import org.lemsml.jlems.io.data.FormattedDataUtil;
 
 public class FileContent {
 	
-	File rootDir;
+	DataSource dsource;
 	
 	String id;
 	
@@ -21,9 +19,9 @@ public class FileContent {
 	double[][] rows = null;
 	
 	
-	public FileContent(String aid, File rd) {
+	public FileContent(String aid, DataSource ds) {
 		id = aid;
-		rootDir = rd;
+		dsource = ds;
 	}
 
 
@@ -65,8 +63,7 @@ public class FileContent {
 
 	// TODO IO dependencies elsewhere
 	private void readData() {
-		File fdat=  new File(rootDir, fileName);
-		rows = FormattedDataUtil.readDataArray(fdat);
+		rows = dsource.readDataArray(fileName);
 	}
 	
 	

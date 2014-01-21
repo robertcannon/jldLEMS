@@ -2,7 +2,6 @@ package org.lemsml.jlems.core.lite.simulation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.StringTokenizer;
 
 import org.lemsml.jlems.core.display.DataViewer;
 import org.lemsml.jlems.core.display.DataViewerFactory;
@@ -41,6 +40,7 @@ import org.lemsml.jlems.core.lite.run.network.EventManager;
 import org.lemsml.jlems.core.lite.run.network.InstanceArray;
 import org.lemsml.jlems.core.lite.run.network.MultiConnectionProperty;
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.out.RecWriterFactory;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -78,10 +78,10 @@ public class LemsLiteSimulation {
 	}
 	
 	
-	public void run(java.io.File rootDir) throws ContentError, ParseError, ConnectionError, RuntimeError {
+	public void run(DataSource dsource) throws ContentError, ParseError, ConnectionError, RuntimeError {
 		
 		E.info("Building arrays...");
-		buildArrays(rootDir);
+		buildArrays(dsource);
 		
 		E.info("Instantiating component arrays...");
 		buildInstanceArrays();
@@ -182,7 +182,7 @@ public class LemsLiteSimulation {
 		for (File f :  simulation.getFiles()) {
 			String cid = f.getID();
 			if (cid != null && cid.equals(fid)) {
-				ret = new RecWriter(fid, f.getName(), f.getFormat());
+				ret = RecWriterFactory.getFactory().newRecWriter(fid, f.getName(), f.getFormat());
 			}
 		}
 		if (ret == null) {
@@ -282,10 +282,16 @@ public class LemsLiteSimulation {
 		} else {
 		ArrayList<Integer> wk = new ArrayList<Integer>();
 		
-		StringTokenizer st = new StringTokenizer(str, ", ");
-		while (st.hasMoreTokens()) {
-			String tok = st.nextToken();
-			
+		String[] bits;
+		if (str.indexOf(",") > 0) {
+			bits = str.split(",");
+		} else {
+			bits = str.split(" ");
+		}
+		
+		for (int i = 0; i < bits.length; i++) {
+			String tok = bits[i].trim();
+			if (tok.length() > 0) {
 			try {
 				if (tok.indexOf(":") >= 0) {
 					wk.addAll(makeRange(tok, nel));
@@ -297,6 +303,7 @@ public class LemsLiteSimulation {
 			
 			} catch (NumberFormatException ex) {
 				E.error("Can't parse indicex " + str);
+			}
 			}
 		}
 		
@@ -618,7 +625,7 @@ public class LemsLiteSimulation {
 	
 	
 	
-	private void buildArrays(java.io.File rootDir) throws ContentError {
+	private void buildArrays(DataSource dsource) throws ContentError {
 		arrayHM = new HashMap<String, double[]>();
 		intArrayHM = new HashMap<String, int[]>();
 		
@@ -627,7 +634,7 @@ public class LemsLiteSimulation {
 			
 			HashMap<String, FileContent> fileHM = new HashMap<String, FileContent>();
 			for (File f : dss.getFiles()) {	
-				FileContent fc = new FileContent(f.id, rootDir);
+				FileContent fc = new FileContent(f.id, dsource);
 				fc.setFileName(f.getName());
 				fc.setFormat(f.getFormat());
 				fc.setShape(f.getShape());

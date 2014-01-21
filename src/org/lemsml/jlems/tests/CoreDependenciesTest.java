@@ -41,13 +41,18 @@ public class CoreDependenciesTest {
     private void checkFile(File f) throws IOException, DependencyException {
     	String src = FileUtil.readStringFromFile(f);
     	String[] lines = src.split("\n");
+    	
+    	String fnm = f.getName();
+    	boolean isFactory = (fnm.equals("LemsFactory.java") || fnm.equals("LemsLiteFactory.java"));
+    	
     	for (String s : lines) {
     		if (s.indexOf("import") == 0) {
     			if (s.indexOf(".reflect") >= 0 ||
     				s.indexOf(".jlemsio.") >= 0 ||	
-    				s.indexOf(".File") >= 0 || 
+    				s.indexOf(".jlems.io.") >= 0 ||	
+    				s.indexOf("io.File") >= 0 || 
     				s.indexOf("StreamTokenizer") >= 0 ||
-    				(s.indexOf("*") >= 0 && !f.getName().equals("LemsFactory.java")) || 
+    				(s.indexOf("*") >= 0 && !isFactory) || 
     				s.indexOf("Date") >= 0) {
     					E.info("Illegal import " + s);
     					throw new DependencyException("Illegal import " + s + " in " + f.getName() + " - " + f.getAbsolutePath());

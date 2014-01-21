@@ -118,7 +118,8 @@ public class FileInclusionReader extends AbstractInclusionReader {
             return FileUtil.readStringFromFile(rootFile);
         }
         catch (IOException ex) {
-            throw new ContentError("Problem reading from file: " + rootFile.getAbsolutePath(), ex);
+            throw new ContentError("Problem reading from file: " + rootFile.getAbsolutePath() + 
+            			" " + ex.getMessage());
         }
     }
 

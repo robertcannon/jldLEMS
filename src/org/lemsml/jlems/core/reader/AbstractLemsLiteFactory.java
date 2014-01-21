@@ -1,6 +1,5 @@
 package org.lemsml.jlems.core.reader;
-
-import java.util.Locale;
+ 
 
 import org.lemsml.jlems.core.lite.model.ComponentArray;
 import org.lemsml.jlems.core.lite.model.DataSources;
@@ -10,8 +9,6 @@ import org.lemsml.jlems.core.lite.model.LemsLite;
 import org.lemsml.jlems.core.lite.model.Simulation;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
-import org.lemsml.jlems.core.type.About;
-import org.lemsml.jlems.core.xml.XMLAttribute;
 import org.lemsml.jlems.core.xml.XMLElement;
 
 public abstract class AbstractLemsLiteFactory {
@@ -110,7 +107,7 @@ public abstract class AbstractLemsLiteFactory {
 	protected boolean parseBoolean(String s) {
 		boolean ret = false;
 		if (s.length() > 0) {
-			String sl = s.toLowerCase(Locale.ENGLISH);
+			String sl = s.toLowerCase();
 			if (sl.equals("0") || sl.equals("false")) {
 				ret = false;
 			} else if (sl.equals("1") || s.equals("true")) {
