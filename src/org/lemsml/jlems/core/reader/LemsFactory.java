@@ -95,6 +95,12 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildAbout(xel);
         } else if (tag.equals("Meta")) {
             ret = buildMeta(xel);
+        } else if (tag.equals("SimulatorShortcut")) {
+            ret = buildSimulatorShortcut(xel);
+        } else if (tag.equals("CableCell")) {
+            ret = buildCableCell(xel);
+        } else if (tag.equals("InputSource")) {
+            ret = buildInputSource(xel);
         } else if (tag.equals("Dynamics")) {
             ret = buildDynamics(xel);
         } else if (tag.equals("StateVariable")) {
@@ -554,6 +560,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.collections.add((Collection)obj);
             } else if (obj instanceof PairCollection) {
                 ret.pairCollections.add((PairCollection)obj);
+            } else if (obj instanceof SimulatorShortcut) {
+                ret.simulatorShortcuts.add((SimulatorShortcut)obj);
             } else if (obj instanceof About) {
                 ret.abouts.add((About)obj);
             } else if (obj instanceof Meta) {
@@ -1118,6 +1126,97 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (xn.equals("context")) {
                 ret.context = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private SimulatorShortcut buildSimulatorShortcut(XMLElement xel) {
+        SimulatorShortcut ret = new SimulatorShortcut();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("x_for")) {
+                ret.x_for = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof CableCell) {
+                ret.cableCells.add((CableCell)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private CableCell buildCableCell(XMLElement xel) {
+        CableCell ret = new CableCell();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("conductivityField")) {
+                ret.conductivityField = parseString(xv);
+            } else if (xn.equals("capacitanceField")) {
+                ret.capacitanceField = parseString(xv);
+            } else if (xn.equals("morphologyField")) {
+                ret.morphologyField = parseString(xv);
+            } else if (xn.equals("morphologyFormat")) {
+                ret.morphologyFormat = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof InputSource) {
+                ret.inputSources.add((InputSource)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private InputSource buildInputSource(XMLElement xel) {
+        InputSource ret = new InputSource();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("field")) {
+                ret.field = parseString(xv);
+            } else if (xn.equals("format")) {
+                ret.format = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }

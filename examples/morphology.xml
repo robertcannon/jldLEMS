@@ -6,7 +6,7 @@
 <Dimension name="voltage" m="1" l="2" t="-3" i="-1"/>
 <Dimension name="conductance" m="-1" l="-2" t="3" i="2"/>
 <Dimension name="conductivity" m="-1" l="-3" t="3" i="2"/>
-    
+<Dimension name="conductance_l2" m="-1" l="0" t="3" i="2"/>
     
 <Dimension name="distance" l="1"/>  
 
@@ -18,6 +18,7 @@ the interpreter is indifferent to the distinction -->
 <Dimension name="capacitance" m="-1" l="-2" t="4" i="2"/>
 <Dimension name="capacitance_per_distance" m="-1" l="-3" t="4" i="2"/>
 <Dimension name="capacitance_per_area" m="-1" l="-4" t="4" i="2"/>
+<Dimension name="capacitance_per_length" m="-1" l="-3" t="4" i="2"/>
  
 <Assertion dimension="capacitance_per_distance" matches="capacitance / distance"/>
  	
@@ -96,6 +97,10 @@ fall back to using the distal point of the parent segment -->
 </ComponentType>  
   
 
+<ComponentType name="ChannelDistribution">
+
+</ComponentType>
+
 
 
 <!--  the active cell combines a morphology with some inputs and a capacitance  -->
@@ -128,9 +133,10 @@ fall back to using the distal point of the parent segment -->
 			<ScalarField name="p" dimension="length" value="pathLength()"/>
 		</Skeleton>
 		
-		
+		<!-- 
 		<Distribution of="channelDistributions" density="..."
 		     set="gbase" from=".."/>		
+		 -->
 		
 	</Geometry>
 	
@@ -141,7 +147,7 @@ fall back to using the distal point of the parent segment -->
 	
 		<!--  more scalar fields over the skeleton. These don't in fact change over
 		the course of a simulation, so the interpreter should be smart enough to realize this -->
-		<DerivedScalarField name="c" dimension="c_per_l" region="skel" 
+		<DerivedScalarField name="c" dimension="capacitance_per_length" region="skel" 
 				value="2 * PI * r * cmem"/>
 		<DerivedScalarField name="g" dimension="conductance_l2" region="skel"
 			value="PI * r^2 * gax"/>
@@ -153,9 +159,9 @@ fall back to using the distal point of the parent segment -->
 		<DerivedPunctateField name="e_in" region="skel" select="inputs/e"/>
 			
 		<!--  need area terms in these somewhere -->	
-		<DerivedScalarField name="g_in_cont" region="skel" select="inputs/g"/>
-		<DerivedScalarField name="ge_in_cont" region="skel" select="inputs/ge"/>
-		<DerivedScalarField name="e_in_cont" region="skel" value="ge_in_cont / g_in_cont"/>
+		<DerivedScalarField name="g_in_cont" dimension="cunductance_per_area" region="skel" select="inputs/g"/>
+		<DerivedScalarField name="ge_in_cont" dimension="current_per_area" region="skel" select="inputs/ge"/>
+		<DerivedScalarField name="e_in_cont" dimension="voltage" region="skel" value="ge_in_cont / g_in_cont"/>
 			
 			
 		<!--  need dv/dt = sum(g_i(e_i - v)) over channel sources  
