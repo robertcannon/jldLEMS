@@ -12,6 +12,7 @@ import org.lemsml.jlems.core.numerics.WorkState;
 import org.lemsml.jlems.core.type.About;
 import org.lemsml.jlems.core.type.Assertion;
 import org.lemsml.jlems.core.type.Attachments;
+import org.lemsml.jlems.core.type.CableCell;
 import org.lemsml.jlems.core.type.Child;
 import org.lemsml.jlems.core.type.Children;
 import org.lemsml.jlems.core.type.Collection;
@@ -26,11 +27,13 @@ import org.lemsml.jlems.core.type.Dimension;
 import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.Fixed;
 import org.lemsml.jlems.core.type.IndexParameter;
+import org.lemsml.jlems.core.type.InputSource;
 import org.lemsml.jlems.core.type.Insertion;
 import org.lemsml.jlems.core.type.InstanceRequirement;
 import org.lemsml.jlems.core.type.LocalParameters;
 import org.lemsml.jlems.core.type.ReceivePort;
 import org.lemsml.jlems.core.type.SendPort;
+import org.lemsml.jlems.core.type.SimulatorShortcut;
  
 import org.lemsml.jlems.core.type.IntegerParameter;
 import org.lemsml.jlems.core.type.Lems;
@@ -134,6 +137,8 @@ public final class LemsClasses {
 	
 		classList.addAll(getLemsClasses());
 		classList.addAll(getComponentTypeClasses());
+		classList.addAll(getExtensionClasses());
+		
 		classList.addAll(getDynamicsClasses());
 		classList.addAll(getStructureClasses());
 		classList.addAll(getSimulationClasses());
@@ -218,7 +223,17 @@ public final class LemsClasses {
 		return ret;
 	}
 
-
+	private ArrayList<LemsClass> getExtensionClasses() {
+		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
+		
+		String section = "extensions";
+		ret.add(new LemsClass(SimulatorShortcut.class, section));
+		ret.add(new LemsClass(CableCell.class, section));
+		ret.add(new LemsClass(InputSource.class, section));
+		return ret;
+	}
+	
+	
 	private ArrayList<LemsClass> getComponentTypeClasses() {
 		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
 		

@@ -105,6 +105,10 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<PairCollection> pairCollections = new LemsCollection<PairCollection>();
 
+	public LemsCollection<SimulatorShortcut> simulatorShortcuts = new LemsCollection<SimulatorShortcut>();
+	
+	
+	
 	 	
 	private final LemsCollection<Component> cpts = new LemsCollection<Component>();
 
@@ -113,6 +117,9 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	private final LemsCollection<InstanceProperty> instancePropertys = new LemsCollection<InstanceProperty>();
 
 	private final LemsCollection<FinalExposed> finalExposeds = new LemsCollection<FinalExposed>();
+	
+	
+	
 	
 	
 	@ModelProperty(info="Metadata about a component type can be included anywhere by wrapping it in an About element, though this " +
