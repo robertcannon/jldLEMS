@@ -212,6 +212,7 @@ public final class LemsClasses {
 	 	ret.add(new LemsClass(ChildInstance.class, section));	
 	 	ret.add(new LemsClass(ForEach.class, section));
 	 	ret.add(new LemsClass(EventConnection.class, section));
+	 	ret.add(new LemsClass(Tunnel.class, section));
  		ret.add(new LemsClass(PairsEventConnection.class, section));
 		ret.add(new LemsClass(PairFilter.class, section));
 		ret.add(new LemsClass(IncludePair.class, section));

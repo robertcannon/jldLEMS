@@ -161,6 +161,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildForEach(xel);
         } else if (tag.equals("EventConnection")) {
             ret = buildEventConnection(xel);
+        } else if (tag.equals("Tunnel")) {
+            ret = buildTunnel(xel);
         } else if (tag.equals("PairsEventConnection")) {
             ret = buildPairsEventConnection(xel);
         } else if (tag.equals("PairFilter")) {
@@ -243,6 +245,7 @@ public class LemsFactory extends AbstractLemsFactory {
         return ret;
     }
 
+    
 
     private Lems buildLems(XMLElement xel) {
         Lems ret = new Lems();
@@ -2160,6 +2163,48 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Assign) {
                 ret.assigns.add((Assign)obj);
+            } else if (obj instanceof BuildElement) {
+                ret.buildElements.add((BuildElement)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Tunnel buildTunnel(XMLElement xel) {
+        Tunnel ret = new Tunnel();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else if (xn.equals("from")) {
+                ret.from = parseString(xv);
+            } else if (xn.equals("to")) {
+                ret.to = parseString(xv);
+            } else if (xn.equals("expose")) {
+                ret.expose = parseString(xv);
+            } else if (xn.equals("as")) {
+                ret.as = parseString(xv);
+            } else if (xn.equals("component")) {
+                ret.component = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
             } else {
