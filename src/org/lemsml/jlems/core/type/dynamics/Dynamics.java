@@ -394,8 +394,9 @@ public class Dynamics  {
 		 for (DerivedVariable dv : derivedVariables) {
 			 if (dv.hasExpression()) {
 				 
-				// DoubleEvaluator db = dv.getParseTree().makeFloatEvaluator();
-				DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
+				// TODO NEXT - where is fixed float eval needed? 
+				 DoubleEvaluator db = dv.getParseTree().makeFloatEvaluator();
+				// DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
 				 
 				 ret.addExpressionDerived(dv.getName(), db);
              	 
