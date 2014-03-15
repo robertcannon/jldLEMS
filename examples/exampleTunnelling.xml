@@ -99,7 +99,6 @@
 
 <ComponentType name="Network">
     <Children name="populations" type="Population"/>
-    <Children name="instancePopulations" type="InstancePopulation"/>
     <Children name="connectivities" type="EventConnectivity"/>
 	<Children name="excon" type="ExplicitConnectivity"/>
 	<Children name="eleccon" type="ElectricalConnections"/>
@@ -116,25 +115,6 @@
 
  
  
-<ComponentType name="Instance">
-	<ComponentReference name="of" type="Component" defaultComponent="../component"/>
-	<LocalParameters name="locals"/>
-	
-	<Structure>
-		<Instance componentReference="of" localParameters="locals"/>		
-	</Structure>
-</ComponentType>
- 
-
-
-
-<ComponentType name="InstancePopulation">
-    <ComponentReference name="component" type="Component" required="false"/>
-	<Children name="instances" type = "Instance"/>
-	<Structure>
-		<MultiInstance children="instances"/>
-	</Structure>
-</ComponentType>
  
 
 
@@ -243,26 +223,20 @@ leakReversal="-50 mV" deltaV="5mV" capacitance="1uF"/>
 <Component id="iaf3cpt" type="iaf3" leakReversal="-50mV" deltaV="50mV" threshold="-30mV" leakConductance="50pS"
 refractoryPeriod="4ms" capacitance="1pF"/>
 
-<GapJunction id="gj1" g="40pS"/>
+<GapJunction id="gj1" g="20pS"/>
 
 <Network id="net1">
     <Population id="p1" component="gen1" size="1"/>
-    <InstancePopulation id="p3">
-    	<Instance of="iaf3cpt" leakConductance="14 pS"  deltaV = "10mV"/>
-    	<Instance of="iaf3cpt" leakConductance="11 pS"  deltaV = "10mV"/>
-    	<Instance of="iaf3cpt" leakConductance="4 pS"  deltaV = "10mV"/>
-    	<Instance of="iaf3cpt" leakConductance="40 pS"  deltaV = "10mV"/>
-    </InstancePopulation>
+    <Population id="p3" component="iaf3cpt" size="4"/>
      
-      
      	
     <ExplicitConnectivity id="p1-p3" sourceList="p1" targetList="p3">
         <SingleEventConnection sourceIndex="0" targetIndex="0"/>
+        <SingleEventConnection sourceIndex="0" targetIndex="2"/>
     </ExplicitConnectivity>
     
     <ElectricalConnections sourceList="p3" targetList="p3">
-    	<GapJunctionConnection sourceIndex="0" targetIndex="1"
-    		connector="gj1"/>
+    	<GapJunctionConnection sourceIndex="0" targetIndex="1" connector="gj1"/>
     </ElectricalConnections>
     
 </Network>
@@ -272,14 +246,13 @@ refractoryPeriod="4ms" capacitance="1pF"/>
 
 
 <SimulationSet id="simset">
-	<Display id="disp1" title="Example1" xmin="0" xmax="80" ymin="-80" ymax="50"/>
+	<Display id="disp1" title="Example1" xmin="-10" xmax="110" ymin="-80" ymax="50"/>
  
-	<Simulation id="sim1" length="80ms" step="0.05ms" target="net1" display="disp1">
-    	<DisplayList timeScale="1ms" title="Example 1: Dimensions, Units, ComponentTypes and Components">
-        	<Line id="tsince" quantity="p1[0]/tsince" scale="1ms" timeScale="1ms" color="#00c000"/>     
+	<Simulation id="sim1" length="100ms" step="0.05ms" target="net1" display="disp1">
+    	<DisplayList timeScale="1ms" title="Example: Tunnelling">
         	<Line id="p3v0" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0"/>
         	<Line id="p3v1" quantity="p3[1]/v" scale="1mV" timeScale="1ms" color="#00f000"/>
-        	<Line id="p3v2" quantity="p3[2]/v" scale="1mV" timeScale="1ms" color="#f000f0"/>
+            <Line id="p3v2" quantity="p3[2]/v" scale="1mV" timeScale="1ms" color="#f000f0"/>
         	<Line id="p3v3" quantity="p3[3]/v" scale="1mV" timeScale="1ms" color="#00f0f0"/>
         	</DisplayList>
 	</Simulation>
