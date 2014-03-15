@@ -1,6 +1,7 @@
 package org.lemsml.jlems.tests.dev;
 
 import org.lemsml.jlems.LEMSToLite;
+import org.lemsml.jlems.core.logging.E;
 
 public class LEMSToLiteTest {
 
@@ -10,8 +11,8 @@ public class LEMSToLiteTest {
 		try {
 			LEMSToLite.main(args);
 		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+			E.report("", ex);
+ 		}
 	}
 	
 	

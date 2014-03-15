@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.eval.DoubleEvaluator;
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
 public class ActionBlock {
@@ -17,10 +16,7 @@ public class ActionBlock {
 	public boolean doesTransition = false;
 	public String transitionTo;
 	
-	
-	public ActionBlock() {
-	}
-	
+	 
 	
 	public void addAssignment(String name, DoubleEvaluator das) {	
  		assignments.add(new VariableAssignment(name, das));	

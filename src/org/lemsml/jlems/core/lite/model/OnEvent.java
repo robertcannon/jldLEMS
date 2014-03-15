@@ -2,8 +2,6 @@ package org.lemsml.jlems.core.lite.model;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.core.logging.E;
-
 public class OnEvent extends OnAbstract {
 
 	public String port;
@@ -12,12 +10,13 @@ public class OnEvent extends OnAbstract {
 	
 	
 	public OnEvent(String pn) {
+		super();
 		port = pn;
 	}
 	
 	
 	public OnEvent() {
-	 
+		super();
 	}
 
  

@@ -125,14 +125,12 @@ public class Dynamics  {
 		if (valHM == null) {
 			valHM = new HashMap<String, Valued>();
 			ComponentType extt = r_type.getExtends();
-			if (extt != null) {
-				if (extt.hasBehavior()) {
+			if (extt != null && extt.hasBehavior()) {
 					Dynamics b = extt.getDynamics();
 					HashMap<String, Valued> extHM = b.getValHM();
 					for (String s : extHM.keySet()) {
 						valHM.put(s, extHM.get(s));
 					}
-				}
 			}
 		 
 			addToMap(p_requiredVars, valHM);

@@ -454,7 +454,6 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		for (Component cpt : components) {		
 			cpt.checkResolve(lems, r_type);
 
-			String snm = cpt.getName();
 			// Called By
 			String scb = cpt.getDeclaredType();
 			

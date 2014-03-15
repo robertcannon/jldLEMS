@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.junit.runner.Result;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
@@ -90,7 +89,7 @@ public class LemsExamplesReaderTest {
 		try {
 			ct.testReadFromString();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			E.report("", ex);
 		}
 			
 		//Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());

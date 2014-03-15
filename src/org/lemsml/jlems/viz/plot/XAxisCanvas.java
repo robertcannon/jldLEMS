@@ -23,11 +23,7 @@ public class XAxisCanvas extends BaseCanvas implements RangeListener {
    final static int[] intervals = {1, 2, 5};
    int ntick = 5;
 
-
-   public XAxisCanvas() {
-      super();
-   }
-
+ 
 
    public void setLabel(String s) {
       labX = s;

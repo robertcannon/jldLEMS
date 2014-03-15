@@ -6,8 +6,6 @@ public class Fattener {
 
 
 
-   public Fattener() {
-   }
 
    public static void main(String[] argv) {
       (new Fattener()).fattenAll(argv[0], argv[1]);

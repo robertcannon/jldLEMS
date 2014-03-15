@@ -6,7 +6,6 @@ import java.io.IOException;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
- 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.numerics.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.numerics.IntegrationScheme;
@@ -21,7 +20,6 @@ import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.LemsCollection;
-import org.lemsml.jlems.core.xml.XMLElement;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
 import org.lemsml.jlems.io.util.FileUtil;

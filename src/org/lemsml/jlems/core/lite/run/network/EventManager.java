@@ -18,10 +18,7 @@ public class EventManager {
 	
 	ConnectionArray[] bins;
 	 
-	
-	public EventManager() {
 	 
-	}
 
 	
 	public void setTimestep(double dt) {

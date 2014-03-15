@@ -11,11 +11,13 @@ public class Output {
 		variable = var;
 	}
 
-	
-	
-	public Output() {
 	 
+
+
+	public Output() {
+		// called from generated factory
 	}
+
 
 
 

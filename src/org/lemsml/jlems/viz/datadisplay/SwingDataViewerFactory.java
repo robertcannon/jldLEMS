@@ -2,7 +2,6 @@ package org.lemsml.jlems.viz.datadisplay;
 
 import org.lemsml.jlems.core.display.DataViewer;
 import org.lemsml.jlems.core.display.DataViewerFactory;
-import org.lemsml.jlems.core.logging.E;
 
 public final class SwingDataViewerFactory extends DataViewerFactory {
 

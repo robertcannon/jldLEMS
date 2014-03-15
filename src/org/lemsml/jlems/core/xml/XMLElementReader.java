@@ -51,8 +51,7 @@ public class XMLElementReader {
 		try {
 			readChildren(container);
 		} catch (Exception ex) {
-			E.info("Failed to read " + ex);
-			ex.printStackTrace();
+			E.report("Failed to read " + ex, ex);
 		}
 			
 			if (container.getXMLElements().size() == 1) {

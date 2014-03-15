@@ -112,7 +112,7 @@ public class LemsFactoryGenerator {
 		
 		
 		sb.append("            } else {\n");
-		sb.append("                E.warning(\"unrecognized attribute \" + xa);\n");
+		sb.append("                E.warning(\"unrecognized attribute \" + xa + \" \" + xv);\n");
 		sb.append("            }\n");
 		sb.append("        }\n\n\n");
 		

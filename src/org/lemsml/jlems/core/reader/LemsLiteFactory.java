@@ -119,7 +119,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -159,7 +159,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -197,7 +197,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -239,7 +239,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -258,7 +258,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -277,7 +277,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -298,7 +298,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseDouble(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -317,7 +317,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -334,7 +334,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -366,7 +366,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -383,7 +383,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -425,7 +425,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("rp")) {
                 ret.rp = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -448,7 +448,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("rp")) {
                 ret.rp = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -465,7 +465,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -486,7 +486,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -505,7 +505,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("port")) {
                 ret.port = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -543,7 +543,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("if")) {
                 ret.x_if = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -579,7 +579,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("port")) {
                 ret.port = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -602,7 +602,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("size")) {
                 ret.size = parseInt(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -640,7 +640,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("to")) {
                 ret.to = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -684,7 +684,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -707,7 +707,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -726,7 +726,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("port")) {
                 ret.port = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -745,7 +745,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("port")) {
                 ret.port = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -762,7 +762,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -796,7 +796,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("post")) {
                 ret.post = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -813,7 +813,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -851,7 +851,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("array")) {
                 ret.array = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -872,7 +872,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("array")) {
                 ret.array = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -889,7 +889,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -923,7 +923,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -940,7 +940,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -974,7 +974,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("values")) {
                 ret.values = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -999,7 +999,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("shape")) {
                 ret.shape = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1020,7 +1020,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("integer")) {
                 ret.integer = parseBoolean(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1056,7 +1056,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("column")) {
                 ret.column = parseInt(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1079,7 +1079,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("endTime")) {
                 ret.endTime = parseDouble(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1113,7 +1113,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1149,7 +1149,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("interval")) {
                 ret.interval = parseDouble(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1191,7 +1191,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("indices")) {
                 ret.indices = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1216,7 +1216,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("indices")) {
                 ret.indices = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1241,7 +1241,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("indices")) {
                 ret.indices = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1262,7 +1262,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("interval")) {
                 ret.interval = parseDouble(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1300,7 +1300,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("color")) {
                 ret.color = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 

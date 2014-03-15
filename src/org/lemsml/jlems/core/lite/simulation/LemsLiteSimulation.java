@@ -60,8 +60,8 @@ public class LemsLiteSimulation {
 	
 	Simulation simulation;
 	
-	HashMap<String, RecWriter> recHM = new HashMap<String, RecWriter>();
-	ArrayList<RecWriter> recWriters = new ArrayList<RecWriter>();
+	HashMap<String, AbstractRecordingWriter> recHM = new HashMap<String, AbstractRecordingWriter>();
+	ArrayList<AbstractRecordingWriter> abstractRecordingWriters = new ArrayList<AbstractRecordingWriter>();
 
 	
 	ArrayList<RecDisplay> recDisplays = new ArrayList<RecDisplay>();
@@ -78,7 +78,7 @@ public class LemsLiteSimulation {
 	}
 	
 	
-	public void run(DataSource dsource) throws ContentError, ParseError, ConnectionError, RuntimeError {
+	public void run(AbstractDataSource dsource) throws ContentError, ParseError, ConnectionError, RuntimeError {
 		
 		E.info("Building arrays...");
 		buildArrays(dsource);
@@ -155,7 +155,7 @@ public class LemsLiteSimulation {
 			eventManager.advance(t, dt);
 			t += dt;
 			
-			for (RecWriter rw :recWriters) {
+			for (AbstractRecordingWriter rw :abstractRecordingWriters) {
 				rw.write(t);
 			}
 			
@@ -168,7 +168,7 @@ public class LemsLiteSimulation {
 			}
 		}
 		
-		for (RecWriter rw :recWriters) {
+		for (AbstractRecordingWriter rw :abstractRecordingWriters) {
 			rw.close();
 		}
 	}
@@ -176,9 +176,9 @@ public class LemsLiteSimulation {
 	
 	
 	
-	private RecWriter getOutWriter(String fid) throws ContentError {
-		RecWriter ret = null;
-		Recording rec = simulation.getRecording();
+	private AbstractRecordingWriter getOutWriter(String fid) throws ContentError {
+		AbstractRecordingWriter ret = null;
+	
 		for (File f :  simulation.getFiles()) {
 			String cid = f.getID();
 			if (cid != null && cid.equals(fid)) {
@@ -200,13 +200,13 @@ public class LemsLiteSimulation {
 				
 				String fid = vr.getFileID();
 				
-				RecWriter rw = null;
+				AbstractRecordingWriter rw = null;
 				if (recHM.containsKey(fid)) {
 					rw = recHM.get(fid);
 				} else {
 					rw = getOutWriter(fid);
 					recHM.put(fid, rw);
-					recWriters.add(rw);
+					abstractRecordingWriters.add(rw);
 				}
 				connectWriter(vr, rw);
 			}
@@ -254,7 +254,7 @@ public class LemsLiteSimulation {
 	}
 
 
-	private void connectWriter(VariableRecording vr, RecWriter rw) throws ContentError {
+	private void connectWriter(VariableRecording vr, AbstractRecordingWriter rw) throws ContentError {
 		String caid = vr.getComponentArray();
 		if (instanceArrayHM.containsKey(caid)) {
 			InstanceArray arr = instanceArrayHM.get(caid);
@@ -625,7 +625,7 @@ public class LemsLiteSimulation {
 	
 	
 	
-	private void buildArrays(DataSource dsource) throws ContentError {
+	private void buildArrays(AbstractDataSource dsource) throws ContentError {
 		arrayHM = new HashMap<String, double[]>();
 		intArrayHM = new HashMap<String, int[]>();
 		

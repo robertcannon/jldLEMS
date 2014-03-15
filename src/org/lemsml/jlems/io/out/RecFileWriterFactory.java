@@ -1,7 +1,7 @@
 package org.lemsml.jlems.io.out;
 
  
-import org.lemsml.jlems.core.lite.simulation.RecWriter;
+import org.lemsml.jlems.core.lite.simulation.AbstractRecordingWriter;
 import org.lemsml.jlems.core.out.RecWriterFactory;
 
 public final class RecFileWriterFactory extends RecWriterFactory {
@@ -23,8 +23,8 @@ public final class RecFileWriterFactory extends RecWriterFactory {
 	
 	
 	@Override
-	public RecWriter newRecWriter(String fid, String fnm, String fmt) {
-		RecWriter ret = new RecFileWriter(fid, fnm, fmt);	
+	public AbstractRecordingWriter newRecWriter(String fid, String fnm, String fmt) {
+		AbstractRecordingWriter ret = new RecFileWriter(fid, fnm, fmt);	
 		return ret;
 	}
 

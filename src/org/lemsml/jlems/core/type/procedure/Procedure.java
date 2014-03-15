@@ -18,14 +18,14 @@ public class Procedure {
 	public ExecutableProcedure makeExecutableProcedure(Lems lems) throws ContentError {
 		ExecutableProcedure ret = new ExecutableProcedure();
 		
-		ArrayList<Statement> statements = new ArrayList<Statement>();
+		ArrayList<AbstractStatement> abstractStatements = new ArrayList<AbstractStatement>();
 		
-		statements.addAll(prints.getContents());
-		statements.addAll(equilibrates.getContents());
-		statements.addAll(forEachComponents.getContents());
+		abstractStatements.addAll(prints.getContents());
+		abstractStatements.addAll(equilibrates.getContents());
+		abstractStatements.addAll(forEachComponents.getContents());
 		
-		for (Statement statement : statements) {
-			ret.addStep(statement.makeExecutableStatement(lems));
+		for (AbstractStatement abstractStatement : abstractStatements) {
+			ret.addStep(abstractStatement.makeExecutableStatement(lems));
 		}
 		
 		return ret;

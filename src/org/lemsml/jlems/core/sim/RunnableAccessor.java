@@ -196,7 +196,6 @@ public class RunnableAccessor {
 
 	
 	public ArrayList<StateRunnable> getStateInstances(String path) throws ConnectionError, ContentError {
-		StateRunnable wk = root;
 		return getRelativeStateInstances(root, path);
 	}
 		

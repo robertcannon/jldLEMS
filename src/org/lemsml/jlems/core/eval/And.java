@@ -1,6 +1,5 @@
 package org.lemsml.jlems.core.eval;
-
-import java.util.ArrayList;
+ 
 
 public class And extends AbstractBOp {
 

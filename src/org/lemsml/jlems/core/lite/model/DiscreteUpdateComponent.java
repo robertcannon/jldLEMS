@@ -26,10 +26,14 @@ public class DiscreteUpdateComponent {
 		name = sn;
 	}
 	
-	
-	public DiscreteUpdateComponent() {
 	 
+
+
+	public DiscreteUpdateComponent() {
+		// called from generated factory
 	}
+
+
 
 
 	public String getID() {

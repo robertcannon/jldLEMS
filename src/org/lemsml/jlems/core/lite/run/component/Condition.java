@@ -3,7 +3,6 @@ package org.lemsml.jlems.core.lite.run.component;
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.eval.BooleanEvaluator;
-import org.lemsml.jlems.core.eval.DoubleEvaluator;
 import org.lemsml.jlems.core.run.DoublePointer;
 import org.lemsml.jlems.core.run.RuntimeError;
 

@@ -13,13 +13,11 @@ public class Var {
 		name = vnm;
 		value = expr;
 	}
-	
-	
-	
-	public Var() {
-		 
-	}
+	 
 
+	public Var() {
+		// TODO Auto-generated constructor stub
+	}
 
 
 	public String getVariableName() {

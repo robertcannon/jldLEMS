@@ -21,8 +21,6 @@ import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.generation.JavaGenerator;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
-import org.lemsml.jlems.io.util.FileUtil;
-
 
 // N.B. - not a test yet, just for development
 

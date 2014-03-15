@@ -7,7 +7,6 @@ import org.lemsml.jlems.core.codger.CodeGenerationException;
 import org.lemsml.jlems.core.codger.CompilationException;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
-import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
 import org.lemsml.jlems.core.lite.run.component.DiscreteUpdateStateType;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.numerics.DiscreteUpdateGenerator;
@@ -40,15 +39,14 @@ public class DiscreteUpdateExecutionTest {
 			dct.generateAndRun(f1);
 			
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			E.report("", ex); 
 		}
 	}
 	
 	
 	public void generateAndRun(File fmod) throws CodeGenerationException, CompilationException, 
 	ContentError, ConnectionError, ParseError, RuntimeError, ParseException, BuildException, XMLException {
-	 		String pkgName = "org.lemsml.dynamic";
-		
+	 		
 		String tgtid = "na";
 	 
     	FileInclusionReader fir = new FileInclusionReader(fmod);

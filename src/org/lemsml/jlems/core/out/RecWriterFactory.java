@@ -1,6 +1,6 @@
 package org.lemsml.jlems.core.out;
 
-import org.lemsml.jlems.core.lite.simulation.RecWriter;
+import org.lemsml.jlems.core.lite.simulation.AbstractRecordingWriter;
  
 
 public class RecWriterFactory {
@@ -26,8 +26,8 @@ public class RecWriterFactory {
 	}
 	
 	
-	public RecWriter newRecWriter(String fid, String fnm, String fmt) {
-		RecWriter ret = null;
+	public AbstractRecordingWriter newRecWriter(String fid, String fnm, String fmt) {
+		AbstractRecordingWriter ret = null;
 		
 		if (delegatedFactory != null) {
 			ret = delegatedFactory.newRecWriter(fid, fnm, fmt);

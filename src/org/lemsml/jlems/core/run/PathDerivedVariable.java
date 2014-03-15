@@ -158,7 +158,7 @@ public class PathDerivedVariable {
         for (int i = 0; i < bits.length - 1; i++) {
         	if (wkinst.hasChildInstance(bits[i])) {
         		StateRunnable sr = wkinst.getChildInstance(bits[i]);
-        		wkinst = wkinst.getChildInstance(bits[i]);
+        		wkinst = sr;
         	} else {
         		// this may be OK if this is an optional path
         		if (isRequired()) {

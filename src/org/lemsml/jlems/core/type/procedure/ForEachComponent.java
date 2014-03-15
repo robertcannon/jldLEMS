@@ -6,21 +6,21 @@ import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.LemsCollection;
 
-public class ForEachComponent extends Statement {
+public class ForEachComponent extends AbstractStatement {
 
 	public String select;
 	
 	public String as;
 	
 	
-	public LemsCollection<Statement> statements = new LemsCollection<Statement>();
+	public LemsCollection<AbstractStatement> abstractStatements = new LemsCollection<AbstractStatement>();
 
 
 	@Override
 	public ExecutableStatement makeExecutableStatement(Lems lems) throws ContentError {
 		ExecutableForEach ret = new ExecutableForEach(select, as);
 		
-		for (Statement s : statements) {
+		for (AbstractStatement s : abstractStatements) {
 			ret.add(s.makeExecutableStatement(lems));
 		}
 		

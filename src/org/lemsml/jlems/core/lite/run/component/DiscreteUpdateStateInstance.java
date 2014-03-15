@@ -199,7 +199,7 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 
 	@Override
 	public void checkBuilt() throws ConnectionError, ContentError, RuntimeError {
-	 
+		// anything needed?
 	}
 
 	@Override
@@ -277,7 +277,7 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 		} else {
 			throw new ContentError("no such property: " + sel + " in " + this);
 		}
-		return 0;
+		return ret;
 	}
 
 	@Override

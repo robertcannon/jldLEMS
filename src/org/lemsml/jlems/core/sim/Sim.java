@@ -2,8 +2,7 @@ package org.lemsml.jlems.core.sim;
  
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.lemsml.jlems.core.display.DataViewPort;
+ 
 import org.lemsml.jlems.core.display.DataViewer;
 import org.lemsml.jlems.core.display.DataViewerFactory;
 import org.lemsml.jlems.core.display.StateTypeWriter;
@@ -233,7 +232,6 @@ public class Sim extends LemsProcess {
             }
             nsDone = istep;
         }
-        E.info("Finished " + nsDone + " steps");
     	
         
         for (ResultWriter rw : resultWriters) {
@@ -241,6 +239,7 @@ public class Sim extends LemsProcess {
     	}
         
         long end = System.currentTimeMillis();
+        E.info("Finished " + nsDone + " steps, end time " + end);
     }
 
     
