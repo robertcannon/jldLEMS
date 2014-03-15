@@ -8,13 +8,14 @@ import org.lemsml.jlems.core.eval.DVar;
 import org.lemsml.jlems.core.eval.Plus;
 import org.lemsml.jlems.core.eval.Times;
 import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.lite.convert.DUComponentToDUStateType;
+import org.lemsml.jlems.core.lite.convert.DUStateTypeBuilder;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
 import org.lemsml.jlems.core.lite.model.OnAbstract;
 import org.lemsml.jlems.core.lite.model.OnEvent;
+import org.lemsml.jlems.core.lite.model.Output;
+import org.lemsml.jlems.core.lite.model.Update;
 import org.lemsml.jlems.core.lite.model.Var;
 import org.lemsml.jlems.core.lite.run.component.DiscreteUpdateStateType;
-import org.lemsml.jlems.core.lite.run.component.FloatAssignment;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ActionBlock;
 import org.lemsml.jlems.core.run.ConditionAction;
@@ -43,7 +44,7 @@ public class DiscreteUpdateGenerator {
 
 		DiscreteUpdateComponent duc = buildDiscreteUpdateComponent();
 
-		DUComponentToDUStateType cdustg = new DUComponentToDUStateType(duc);
+		DUStateTypeBuilder cdustg = new DUStateTypeBuilder(duc);
 		DiscreteUpdateStateType ret = cdustg.makeDiscretUpdateStateType();
 		return ret;
 	}
@@ -57,16 +58,12 @@ public class DiscreteUpdateGenerator {
 		for (String s : stateType.getStateVariables()) {
 			ret.addStateVariable(s);
 		}
-		
 	
-		
-		
 		for (PathDerivedVariable pdv : stateType.getPathderiveds()) {
 			E.error("Discrete update generator can't handle path derivd variables - should all be " +
 					"flattened first: " + pdv);
 	 		}
  
-		
 		/*
 		for (VariableROC vroc : stateType.getRates()) {
 			String rnm = makeRateVar(vroc.getVariableName());
@@ -84,8 +81,6 @@ public class DiscreteUpdateGenerator {
 			E.error("Unhandled child in state type " + s);
 		}
 		
-		  
-	 	
 		HashMap<String, String> ehm = stateType.getExposureMap();
 		for (String s : ehm.keySet()) {
 			ret.addFloatExposure(s, ehm.get(s));
@@ -100,9 +95,10 @@ public class DiscreteUpdateGenerator {
 //		cb.sortExpressions();
 		for (ExpressionDerivedVariable edv : stateType.getExderiveds()) {
 		
-			FloatAssignment fa = new FloatAssignment(edv.getVariableName(), edv.getExpressionString());
+			Var fa = new Var(edv.getVariableName(), edv.getExpressionString());
 			fa.setReversePolishExpression(edv.getReversePolishExpressionString());
-			ret.addFloatAssignment(fa);
+		
+			ret.addVar(fa);
 		}
 		
 		
@@ -122,6 +118,13 @@ public class DiscreteUpdateGenerator {
 			addConditionAction(ret, ca);
 		}
 		
+		HashMap<String, String> expHM = stateType.getExposureMap();
+		for (String s : expHM.keySet()) {
+			Output out = new Output(s);
+			out.setExpression(expHM.get(s));
+			ret.addOutput(out);
+		}
+ 		
 		return ret;
 	}
 		
@@ -179,9 +182,9 @@ public class DiscreteUpdateGenerator {
 			Plus p = new Plus(new DVar(vnm), t);
 			String expr = p.toExpression();			 
 		
-			FloatAssignment fa = new FloatAssignment(vnm, expr);
+			Update fa = new Update(vnm, expr);
 			fa.setReversePolishExpression(vnm + " " + r + " dt * +");
-			ret.addUpdateFloatAssignment(fa);
+			ret.addUpdate(fa);
 		
 		}
 	}
@@ -215,9 +218,9 @@ public class DiscreteUpdateGenerator {
 				String vnm = vroc.getVariableName();
 				String rnm = makeRateVar(vnm);
 			 
-				FloatAssignment fa = new FloatAssignment(rnm, vroc.getTextExpression());
+				Var fa = new Var(rnm, vroc.getTextExpression());
 				fa.setReversePolishExpression(vroc.getReversePolishExpressionString());
-				ret.addFloatAssignment(fa);
+				ret.addVar(fa);
 				
 			}
 			
@@ -232,9 +235,9 @@ public class DiscreteUpdateGenerator {
 				Times t = new Times(new DVar(r), new DVar("dt"));
 				Plus p = new Plus(new DVar(vnm), t);
 				String expr = p.toExpression();			 
-				FloatAssignment fa = new FloatAssignment(vnm, expr);
+				Update fa = new Update(vnm, expr);
 				fa.setReversePolishExpression(vnm + " " + r + " dt * +");
-				ret.addUpdateFloatAssignment(fa);
+				ret.addUpdate(fa);
 			}
 			
 			} else {

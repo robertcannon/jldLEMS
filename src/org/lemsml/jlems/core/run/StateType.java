@@ -647,7 +647,8 @@ public class StateType implements RuntimeType {
 		}
 	
 	}
-
+ 
+    
 
 	public void addExpressionDerived(String snm, DoubleEvaluator db) {
 		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(snm, db);
@@ -1423,6 +1424,36 @@ public class StateType implements RuntimeType {
 		}
 		exderiveds = orderedEDVs;	
 	}
+
+	public String getSummary() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("State type " + getID() + "\n");
+		sb.append("variables: " + vars.size() + " (");
+		for (String s : vars) {
+			sb.append(s + ", ");
+		}
+		sb.append(")\n");
+		
+		sb.append("indeps: " + indeps.size() + " (");
+		for (String s : indeps) {
+			sb.append(s + ", ");
+		}
+		sb.append(")\n");
+		
+		sb.append("Path derived: " + pathderiveds.size() + " (");
+		for (PathDerivedVariable pd : pathderiveds) {
+			sb.append(pd.getVariableName() + ", ");
+		}
+		sb.append(")\n");
+		
+		sb.append("Expression derived: " + exderiveds.size() + " (");
+		for (ExpressionDerivedVariable pd : exderiveds) {
+			sb.append(pd.getVariableName() + ", ");
+		}
+		sb.append(")\n");
+		return sb.toString();
+	}
+	
 	
 	
 	

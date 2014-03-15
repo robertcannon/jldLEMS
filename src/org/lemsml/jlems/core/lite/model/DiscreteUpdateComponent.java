@@ -1,9 +1,5 @@
 package org.lemsml.jlems.core.lite.model;
 
-import java.util.HashMap;
-
-import org.lemsml.jlems.core.lite.run.component.FloatAssignment;
- 
 import org.lemsml.jlems.core.type.LemsCollection;
 
 
@@ -90,33 +86,20 @@ public class DiscreteUpdateComponent {
 		getStep().addVar(fa);
 	}
 
+	public void addUpdate(Update fa) {
+		getStep().addUpdate(fa);
+	}
+
+	public void addOutput(Output out) {
+		getStep().addOutput(out);
+	}
 	
 	public void addIndependentVariagble(String s) {
 		getInterface().addInputVariable(new InputVariable(s));
 	}
-
-	public void addFloatAssignment(String variableName, String expressionString) {
-		FloatAssignment fa = new FloatAssignment(variableName, expressionString);
-		getStep().addUpdateAssignment(fa);
-		
-	}
+ 
 	
-	public void addFloatAssignment(FloatAssignment fa) {
-		getStep().addUpdateAssignment(fa);
-	}
-	
-	
-	public void addUpdateFloatAssignment(String variableName, String expressionString) {
-		FloatAssignment fa = new FloatAssignment(variableName, expressionString);
-		getStep().addUpdateAssignment(fa);
-		
-	}
-
-	public void addUpdateFloatAssignment(FloatAssignment fa) {
-		getStep().addUpdateAssignment(fa);
-	}
-	
-	 
+	  
 	public LemsCollection<StateVariable> getStateVariables() { 
 		return getState().getStateVariables();
 	}
@@ -198,6 +181,8 @@ public class DiscreteUpdateComponent {
 	public LemsCollection<OnEvent> getOnEvents() {
 		return onEvents;
 	}
+
+
 
  
 

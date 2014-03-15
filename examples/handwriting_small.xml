@@ -27,7 +27,7 @@
         </State>
 
         <Step>
-            <!-- The original code ensures that "v > 0", but I thin kthis should be OK! -->
+            <!-- The original code ensures that "v > 0", but I think this should be OK! -->
             <Var name="total" value="(gain * (inp + constInput)) + bias"/>
             <!-- Recieve event here -->
             <Var name="dv" value="(total-v) * one_over_rc_float"/>
@@ -80,7 +80,7 @@
         <Let parameter="constInput" value="2"/>
         <Let parameter="bias" value="2"/>
         <Let parameter="gain" value="4"/>
-
+ 
         <Initialize stateVariable="inp" value="2" />
     </ComponentArray>
 

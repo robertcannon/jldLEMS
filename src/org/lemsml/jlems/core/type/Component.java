@@ -752,8 +752,6 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	public StateType makeStateType() throws ContentError, ParseError {
 	
-	 
-		
 		if (madeCB) {
 			throw new ContentError("remaking a component behavior that is already made " + id + " " + r_type);
 		}

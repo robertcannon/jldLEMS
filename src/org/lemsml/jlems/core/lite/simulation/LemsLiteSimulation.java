@@ -8,7 +8,7 @@ import org.lemsml.jlems.core.display.DataViewerFactory;
 import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.lite.convert.DUComponentToDUStateType;
+import org.lemsml.jlems.core.lite.convert.DUStateTypeBuilder;
 import org.lemsml.jlems.core.lite.model.Arg;
 import org.lemsml.jlems.core.lite.model.Array;
 import org.lemsml.jlems.core.lite.model.ComponentArray;
@@ -527,7 +527,7 @@ public class LemsLiteSimulation {
 				
 				if (!dustHM.containsKey(cnm)) {
 					DiscreteUpdateComponent duc = ducHM.get(cnm);
-					DUComponentToDUStateType cdustg = new DUComponentToDUStateType(duc);
+					DUStateTypeBuilder cdustg = new DUStateTypeBuilder(duc);
 					DiscreteUpdateStateType t = cdustg.makeDiscretUpdateStateType();
 					dustHM.put(cnm, t);
 				}

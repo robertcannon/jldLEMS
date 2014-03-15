@@ -7,7 +7,7 @@ public class Update {
 	public String variable;
 	public String value;
 	 
-	public String rpExpression;
+	public String rp;
 	
 	public Update(String vnm, String expr) {
 		variable = vnm;
@@ -31,11 +31,11 @@ public class Update {
 	}
 	
 	public void setReversePolishExpression(String s) {
-		rpExpression = s;
+		rp = s;
 	}
 	
 	public String getReversePolishExpression() {
-		return rpExpression;
+		return rp;
 	}
 	
 	

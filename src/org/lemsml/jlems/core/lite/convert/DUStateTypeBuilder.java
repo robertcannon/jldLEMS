@@ -26,12 +26,12 @@ import org.lemsml.jlems.core.lite.run.component.Fetch;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
  
-public class DUComponentToDUStateType {
+public class DUStateTypeBuilder {
 
 	DiscreteUpdateComponent src;
 	
 	
-	public DUComponentToDUStateType(DiscreteUpdateComponent dum) {
+	public DUStateTypeBuilder(DiscreteUpdateComponent dum) {
 		src = dum;
 	}
 

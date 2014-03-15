@@ -9,16 +9,19 @@ public class Interface {
 	
 	
 	public LemsCollection<Parameter> parameters = new LemsCollection<Parameter>();
+
+	public LemsCollection<Constant> constants = new LemsCollection<Constant>();
 	
+	public LemsCollection<InputVariable> inputVariables = new LemsCollection<InputVariable>();
+
+	public LemsCollection<OutputVariable> outputVariables = new LemsCollection<OutputVariable>();
+
 	public LemsCollection<InputEventPort> inputEventPorts = new LemsCollection<InputEventPort>();
 
 	public LemsCollection<OutputEventPort> outputEventPorts = new LemsCollection<OutputEventPort>();
 	
-	public LemsCollection<Constant> constants = new LemsCollection<Constant>();
 	
-	public LemsCollection<OutputVariable> outputVariables = new LemsCollection<OutputVariable>();
 	
-	public LemsCollection<InputVariable> inputVariables = new LemsCollection<InputVariable>();
 
 	
 	

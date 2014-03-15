@@ -7,7 +7,7 @@ public class Var {
 	public String value;
 	
 	// public String expression;
-	public String rpExpression;
+	public String rp;
 	
 	public Var(String vnm, String expr) {
 		name = vnm;
@@ -31,11 +31,11 @@ public class Var {
 	}
 	
 	public void setReversePolishExpression(String s) {
-		rpExpression = s;
+		rp = s;
 	}
 	
 	public String getReversePolishExpression() {
-		return rpExpression;
+		return rp;
 	}
 	
 	

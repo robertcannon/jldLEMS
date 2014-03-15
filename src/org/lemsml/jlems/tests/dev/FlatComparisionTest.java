@@ -21,6 +21,7 @@ import org.lemsml.jlems.io.examples.RunFileExample;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.out.FileResultWriterFactory;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
+import org.lemsml.jlems.io.xmlio.XMLSerializer;
 import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
  
 

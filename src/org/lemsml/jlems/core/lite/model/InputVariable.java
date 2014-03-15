@@ -2,7 +2,7 @@ package org.lemsml.jlems.core.lite.model;
 
 public class InputVariable {
 
-	String name;
+	public String name;
 	
 	
 	public InputVariable(String s) {

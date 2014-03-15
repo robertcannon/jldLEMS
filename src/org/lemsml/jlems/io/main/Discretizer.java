@@ -95,6 +95,9 @@ public class Discretizer {
 
 			StateType st = cp.getStateType();
 
+			E.info("St summary: " + st.getSummary());
+			
+			
 			// now get the numerics specification
 
 			
@@ -131,6 +134,7 @@ public class Discretizer {
 			} else {
 				File fout = new File(outPath);
 				FileUtil.writeStringToFile(ret, fout);
+				E.info("Written discrete model to " + fout.getAbsolutePath());
 			}
 
 	 

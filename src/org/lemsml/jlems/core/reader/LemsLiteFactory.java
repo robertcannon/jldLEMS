@@ -209,16 +209,16 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Parameter) {
                 ret.parameters.add((Parameter)obj);
+            } else if (obj instanceof Constant) {
+                ret.constants.add((Constant)obj);
+            } else if (obj instanceof InputVariable) {
+                ret.inputVariables.add((InputVariable)obj);
+            } else if (obj instanceof OutputVariable) {
+                ret.outputVariables.add((OutputVariable)obj);
             } else if (obj instanceof InputEventPort) {
                 ret.inputEventPorts.add((InputEventPort)obj);
             } else if (obj instanceof OutputEventPort) {
                 ret.outputEventPorts.add((OutputEventPort)obj);
-            } else if (obj instanceof Constant) {
-                ret.constants.add((Constant)obj);
-            } else if (obj instanceof OutputVariable) {
-                ret.outputVariables.add((OutputVariable)obj);
-            } else if (obj instanceof InputVariable) {
-                ret.inputVariables.add((InputVariable)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -393,10 +393,10 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
 
             Object obj = instantiateFromXMLElement(cel);
             if (xn.equals("UNUSED")) {
-            } else if (obj instanceof Update) {
-                ret.updates.add((Update)obj);
             } else if (obj instanceof Var) {
                 ret.vars.add((Var)obj);
+            } else if (obj instanceof Update) {
+                ret.updates.add((Update)obj);
             } else if (obj instanceof Output) {
                 ret.outputs.add((Output)obj);
             } else if (obj instanceof ConditionCheck) {
@@ -422,8 +422,8 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
                 ret.name = parseString(xv);
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
-            } else if (xn.equals("rpExpression")) {
-                ret.rpExpression = parseString(xv);
+            } else if (xn.equals("rp")) {
+                ret.rp = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }
@@ -445,8 +445,8 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
                 ret.variable = parseString(xv);
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
-            } else if (xn.equals("rpExpression")) {
-                ret.rpExpression = parseString(xv);
+            } else if (xn.equals("rp")) {
+                ret.rp = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }
