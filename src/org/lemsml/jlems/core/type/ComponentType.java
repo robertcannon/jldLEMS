@@ -896,8 +896,12 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			fixedHM.putAll(chm);
 		}
 		
+		
+		// TODO this can contain the parm values that aren't changed by instances,
+		// but not those that are.
+		// for now, just leave them all out.
 		for (ParamValue pv : cpt.getParamValues()) {
-			fixedHM.put(pv.getName(), pv.getDoubleValue());
+		//	fixedHM.put(pv.getName(), pv.getDoubleValue());
 		}
 
 		StateType ret = null;

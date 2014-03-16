@@ -97,9 +97,9 @@ fall back to using the distal point of the parent segment -->
 </ComponentType>  
   
 
-<ComponentType name="ChannelDistribution">
+<ComponentType name="ChannelDistribution"/>
 
-</ComponentType>
+
 
 
 

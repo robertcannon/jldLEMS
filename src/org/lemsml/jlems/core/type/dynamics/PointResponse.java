@@ -77,18 +77,11 @@ public class PointResponse {
 		 
 		 
 		 for (StateAssignment sa : stateAssignments) {
-			 
 			 ParseTree pt = sa.getParseTree();
-
-			 //E.warning("Using fxed evaluator: won't work for instance models");
-			 // TODO NEXT - back to float, not fixed
-			 // DoubleEvaluator dase = pt.makeFloatFixedEvaluator(fixedHM); 
-			
-			 // Switching back  - what does this break?
-			 DoubleEvaluator dase = pt.makeFloatEvaluator(); 
-			 
+			 DoubleEvaluator dase = pt.makeFloatFixedEvaluator(fixedHM); 
 			 ret.addAssignment(sa.getStateVariable().getName(), dase);
 		 } 
+		 
 		 for (EventOut eout : eventOuts) {
 			 ret.addEventOut(eout.getPortName());
 		 }

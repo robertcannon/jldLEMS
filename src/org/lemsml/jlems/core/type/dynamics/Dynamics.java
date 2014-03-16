@@ -344,7 +344,13 @@ public class Dynamics  {
          // fixedHM should just contain global constants, we don't want 
          // the parameter values in there as these can still be overridden.
          
-         // 
+         for (String s : fixedHM.keySet()) {
+        	 E.info("FIXING Elt in fixedHM " + s + " " + fixedHM.get(s));
+          }
+         
+         
+         
+         
 		 for (ParamValue pv : cpt.getParamValues()) {
 			 String qn = pv.getName();
 			 double qv = pv.getDoubleValue();
@@ -391,10 +397,8 @@ public class Dynamics  {
 		 
 		 for (DerivedVariable dv : derivedVariables) {
 			 if (dv.hasExpression()) {
-				 
-				// TODO NEXT - where is fixed float eval needed? 
-				 DoubleEvaluator db = dv.getParseTree().makeFloatEvaluator();
-				// DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
+				
+				DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
 				 
 				 ret.addExpressionDerived(dv.getName(), db);
              	 
@@ -412,9 +416,8 @@ public class Dynamics  {
 		 
 		 for (ConditionalDerivedVariable cdv : conditionalDerivedVariables) {
 			  
-			DoubleEvaluator db = cdv.makeFloatFixedEvaluator(fixedHM);
-			// DoubleEvaluator db = cdv.makeFloatEvaluator();
-			 ret.addExpressionDerived(cdv.getName(), db);
+			 DoubleEvaluator db = cdv.makeFloatFixedEvaluator(fixedHM);
+	 		 ret.addExpressionDerived(cdv.getName(), db);
              	 
 			 
             if (cdv.hasExposure()) {
@@ -429,12 +432,8 @@ public class Dynamics  {
 			 varHS.remove(sv);
 			 
 			 ParseTree pt = sd.getParseTree();
-			 // TODO - if no instances, can uise fixed evaluator. With instances, need general one
-			 DoubleEvaluator dev;
-			  dev = pt.makeFloatFixedEvaluator(fixedHM);
-			 //E.info("Using general purpose evaluator for " + cpt);
-			 //dev = pt.makeFloatEvaluator();
-			 
+			 DoubleEvaluator dev = pt.makeFloatFixedEvaluator(fixedHM);
+		 
 			 ret.addRate(sv.getName(), dev);
 		 }
 		 

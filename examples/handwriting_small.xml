@@ -123,9 +123,9 @@
     
     <Simulation name="handwriting_simulation" dt="1.0e-3" endTime="1.0">
         <OutputFiles>
-            <File id="f_out1_hdf" name="f_out_i.hdf" format="hdf5"></File>
-            <File id="f_out2_csv" name="f_out_i.csv" format="csv"></File>
-            <File id="f_out3_csv" name="f_out_spikes.csv" format="csv"></File>
+            <File id="f_out1_hdf" name="f_out_i.hdf" format="hdf5"/>
+            <File id="f_out2_csv" name="f_out_i.csv" format="csv"/>
+            <File id="f_out3_csv" name="f_out_spikes.csv" format="csv"/>
         </OutputFiles>
 
 
