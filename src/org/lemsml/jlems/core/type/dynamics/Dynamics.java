@@ -360,11 +360,11 @@ public class Dynamics  {
 		 }
 		 
 		 for (RequiredVar rv : p_requiredVars) {
-			 ret.addIndependentVariable(rv.getName());
+			 ret.addIndependentVariable(rv.getName(), rv.getDimensionString());
 		 }
 		 
 		 for (ExposedVar ev : p_exposedVars) {
-			 ret.addExposedVariable(ev.getName());
+			 ret.addExposedVariable(ev.getName(), ev.getDimensionString());
 		 }
 		 
 		  

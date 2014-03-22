@@ -302,7 +302,7 @@ public class Flattener {
 		}
 		
 		for (String s : indepsA) {
-			ret.addIndependentVariable(s);
+			ret.addIndependentVariable(s, dimensions.get(s));
 		}
 		
 		for (String sv : svA) {

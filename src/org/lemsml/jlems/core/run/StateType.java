@@ -682,11 +682,12 @@ public class StateType implements RuntimeType {
 	}
 	
 	
-	public void addIndependentVariable(String vnm) {
+	public void addIndependentVariable(String vnm, String dim) {
 		if (indeps.contains(vnm)) {
 			E.warning("Added an independent variable again? " + vnm + " " + this);
 		} else {
 			indeps.add(vnm);
+			dimensions.put(vnm, dim);
 		}
  	}
 
@@ -886,8 +887,9 @@ public class StateType implements RuntimeType {
 	
 	 
 
-	public void addExposedVariable(String name) {
+	public void addExposedVariable(String name, String dim) {
 		exposedNames.add(name);
+		dimensions.put(name, dim);
 	}
 
 	public void addExposureMapping(String from, String to) {
@@ -1184,7 +1186,7 @@ public class StateType implements RuntimeType {
 	
 		
 		for (String s : indeps) {
- 			ret.addIndependentVariable(s);
+ 			ret.addIndependentVariable(s, dimensions.get(s));
 		}
 		
 		for (String s : childHM.keySet()) {
