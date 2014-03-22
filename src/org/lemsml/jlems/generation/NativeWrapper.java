@@ -338,4 +338,12 @@ public class NativeWrapper implements StateRunnable {
 		
 	}
 
+
+
+	@Override
+	public String getDimensionString(String lastbit) {
+		E.missing();
+		return null;
+	}
+
 }

@@ -347,4 +347,12 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 		}
 	}
 
+
+	@Override
+	public String getDimensionString(String lastbit) {
+		E.missing();
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

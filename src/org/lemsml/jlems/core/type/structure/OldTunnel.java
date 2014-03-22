@@ -65,7 +65,10 @@ public class OldTunnel extends BuildElement {
                 if (ea != null) {
                     E.warning("Expose as in EventConnection is not used");
                  }
-                ret.addAssignment(ass.getProperty(), ass.getDoubleEvaluator());
+                String dim = "unknown";
+                E.missing("Unknown dimenion in assign");
+
+                ret.addAssignment(ass.getProperty(), ass.getDoubleEvaluator(), dim);
             }
 		}
 

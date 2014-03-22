@@ -9,6 +9,7 @@ import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.logging.E;
  
 import org.lemsml.jlems.core.run.LocalValues;
+import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.RuntimeType;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -765,7 +766,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		
 	
 	
-	public StateType makeConsolidatedCoponentBehavior(String knownas) throws ContentError, ParseError {
+	public StateType makeConsolidatedCoponentBehavior(String knownas) throws ContentError, ParseError, RuntimeError {
 		StateType cb = getStateType();
 	    StateType ret = cb.makeConsolidatedStateType(knownas);
  	    return ret;
@@ -783,7 +784,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 	
 
-	public StateType getStateType() throws ContentError, ParseError {
+	public StateType getStateType() throws ContentError, ParseError  {
 		StateType ret = null;
 	
 		if (r_replacement != null) {

@@ -254,7 +254,7 @@ public class Sim extends LemsProcess {
 	}
 	
 	
-	public void printFirstConsolidated() throws ContentError, ParseError {
+	public void printFirstConsolidated() throws ContentError, ParseError, RuntimeError {
 		StateTypeWriter cbw = new StateTypeWriter();
 		if (!runConfigs.isEmpty()) {
 			RunConfig rc = runConfigs.get(0);

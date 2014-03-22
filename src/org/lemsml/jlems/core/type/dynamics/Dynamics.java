@@ -19,6 +19,7 @@ import org.lemsml.jlems.core.run.ComponentRegime;
 import org.lemsml.jlems.core.run.ConditionAction;
 import org.lemsml.jlems.core.run.EventAction;
 import org.lemsml.jlems.core.run.KScheme;
+import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
@@ -371,7 +372,7 @@ public class Dynamics  {
 		 HashSet<StateVariable> varHS = new HashSet<StateVariable>();
 		 for (StateVariable sv : stateVariables) {
 			varHS.add(sv); 
-			ret.addStateVaraible(sv.getName());
+			ret.addStateVariable(sv.getName(), sv.getDimensionString());
 			if (sv.hasExposure()) {
 				ret.addExposureMapping(sv.getName(), sv.getExposure().getName());
 			}
@@ -400,10 +401,10 @@ public class Dynamics  {
 				
 				DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
 				 
-				 ret.addExpressionDerived(dv.getName(), db);
+				 ret.addExpressionDerived(dv.getName(), db, dv.getDimensionString());
              	 
 			 } else if (dv.hasSelection()) {	 
-				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.isRequired(), dv.getReduce());
+				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.isRequired(), dv.getReduce(), dv.getDimensionString());
 				 
 			 } else {
 				 throw new ContentError("Derived variable needs as selection or an expression");
@@ -417,7 +418,7 @@ public class Dynamics  {
 		 for (ConditionalDerivedVariable cdv : conditionalDerivedVariables) {
 			  
 			 DoubleEvaluator db = cdv.makeFloatFixedEvaluator(fixedHM);
-	 		 ret.addExpressionDerived(cdv.getName(), db);
+	 		 ret.addExpressionDerived(cdv.getName(), db, cdv.getDimensionString());
              	 
 			 
             if (cdv.hasExposure()) {
@@ -434,7 +435,7 @@ public class Dynamics  {
 			 ParseTree pt = sd.getParseTree();
 			 DoubleEvaluator dev = pt.makeFloatFixedEvaluator(fixedHM);
 		 
-			 ret.addRate(sv.getName(), dev);
+			 ret.addRate(sv.getName(), dev, sd.getDimensionString());
 		 }
 		 
 		 for (OnStart os : onStarts) {

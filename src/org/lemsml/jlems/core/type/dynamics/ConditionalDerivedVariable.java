@@ -192,5 +192,10 @@ public class ConditionalDerivedVariable implements Valued {
 		}
 		return ret;
 	}
+
+	public String getDimensionString() {
+		String ret = r_dimension.getDimensionString();
+		return ret;
+	}
  
 }

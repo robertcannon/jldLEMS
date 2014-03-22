@@ -91,5 +91,7 @@ public interface StateRunnable {
 
 	boolean isBuilt();
 
+	String getDimensionString(String lastbit) throws ContentError;
+
  
 }
