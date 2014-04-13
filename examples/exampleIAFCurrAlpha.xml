@@ -55,16 +55,7 @@ class IF_curr_alpha(cells.IF_curr_alpha):
 <Dimension name="conductance" m="-1" l="-2" t="3" i="2"/>
 <Dimension name="capacitance" m="-1" l="-2" t="4" i="2"/>
 <Dimension name="current" i="1"/>
-
-
-<ComponentType name="iaf1">
-	<Parameter name="threshold" dimension="voltage"/>
-	<Parameter name="refractoryPeriod" dimension="time"/>
-	<Parameter name="capacitance" dimension="capacitance"/>
-	<Parameter name="reset" dimension="voltage"/>
-</ComponentType>
-
-
+ 
 <Unit symbol="mV" dimension="voltage" power="-3"/> 
 <Unit symbol="ms" dimension="time" power="-3"/> 
 <Unit symbol="pS" dimension="conductance" power="-12"/>
@@ -82,61 +73,54 @@ class IF_curr_alpha(cells.IF_curr_alpha):
 	  <Parameter name="timeConstant" dimension="time"/>
 	  <Parameter name="excitatoryTimeConstant" dimension="time"/>
 	  <Parameter name="inhibitoryTimeConstant" dimension="time"/>
-	  <Parameter name="reset" dimension="voltage"/>
-	  <Parameter name="rest" dimension="voltage"/>
-	  <Parameter name="offsetCurrent" dimension="current"/>
+	  <Parameter name="resetPotential" dimension="voltage"/>
+	  <Parameter name="restPotential" dimension="voltage"/>
 	  <Parameter name="injectionCurrent" dimension="current"/>
+	  <Parameter name="threshold" dimension="voltage"/>
+	  
+	  <Parameter name="synapseCurrent" dimension="current"/>
 	  
 	  <ReceivePort name="excitatory-in"/>
 	  <ReceivePort name="inhibitory-in"/>
       <SendPort name="spikes-out"/>
       <Exposure name="v" dimension="voltage"/>
-
+ 
       <Dynamics>
-       <StateVariable name="v" exposure="v" dimension="voltage"/>
-       <TimeDerivative variable="v" value="leakConductance * (leakReversal - v) / capacitance"/>
+	    <StateVariable name="v" exposure="v" dimension="voltage"/>
+		<StateVariable name="ye" dimension="none"/>
+		<StateVariable name="yi" dimension="none"/>
+        <StateVariable name="ge" dimension="current"/>
+        <StateVariable name="gi" dimension="current"/>
+
+		<TimeDerivative variable="ye" value="-1 * ye / excitatoryTimeConstant"/>
+		<TimeDerivative variable="yi" value="-1 * yi / inhibitoryTimeConstant"/>
+		<TimeDerivative variable="ge" value="(synapseCurrent * ye - ge) / excitatoryTimeConstant"/>
+		<TimeDerivative variable="gi" value="(synapseCurrent * yi - gi) / inhibitoryTimeConstant"/>
+
+		<DerivedVariable name="gtot" dimension="current" value="(ge - gi + injectionCurrent)"/>
+
+		<TimeDerivative variable="v" value="gtot / capacitance - (v - restPotential) / timeConstant"/>
+ 
              
-       <OnEvent port="spikes-in">
-            <StateAssignment variable="v" value="v + deltaV"/>
+       <OnEvent port="excitatory-in">
+            <StateAssignment variable="ye" value="ye + 1"/>
        </OnEvent>      
+	
+	   <OnEvent port="inhibitory-in">
+            <StateAssignment variable="yi" value="yi + 1"/>
+       </OnEvent> 
 	
 		<OnCondition test="v .gt. threshold">
 			<EventOut port="spikes-out"/>
-			 <StateAssignment variable="v" value="reset"/>
+			 <StateAssignment variable="v" value="resetPotential"/>
 		</OnCondition>
 
     </Dynamics>
 
 </ComponentType>  
+   
   
-  
-  
-<ComponentType name="iaf3" extends="iaf1">
-    <Parameter name="leakConductance" dimension="conductance"/>
-    <Parameter name="leakReversal" dimension="voltage"/>
-    <Parameter name="deltaV" dimension="voltage"/>
-
-    <ReceivePort name="spikes-in"/>
-    <SendPort name="spikes-out"/>
-    <Exposure name="v" dimension="voltage"/>
-    
-
-    <Dynamics>
-       <StateVariable name="v" exposure="v" dimension="voltage"/>
-       <TimeDerivative variable="v" value="leakConductance * (leakReversal - v) / capacitance"/>
-             
-       <OnEvent port="spikes-in">
-            <StateAssignment variable="v" value="v + deltaV"/>
-       </OnEvent>      
-	
-		<OnCondition test="v .gt. threshold">
-			<EventOut port="spikes-out"/>
-			 <StateAssignment variable="v" value="reset"/>
-		</OnCondition>
-
-    </Dynamics>
-
-</ComponentType>
+   
 
  
 
@@ -144,24 +128,6 @@ class IF_curr_alpha(cells.IF_curr_alpha):
     <Parameter name="period" dimension="time"/>
     <SendPort name="a"/>
     <Exposure name="tsince" dimension="time"/>
-    <Dynamics>
-        <StateVariable name="tsince" exposure="tsince" dimension="time"/>
-        <TimeDerivative variable="tsince" value="1"/>
-        <OnCondition test="tsince .gt. period">
-            <StateAssignment variable="tsince" value="0"/>
-            <EventOut port="a"/>
-        </OnCondition>
-    </Dynamics>
-</ComponentType>
-
-
-<ComponentType name="spikeGenerator1" extends="spikeGenerator">
-	<Dynamics>
-		<Super/>
-	</Dynamics>
-</ComponentType>
-
-<ComponentType name="spikeGenerator2" extends="spikeGenerator">
     <Dynamics>
         <StateVariable name="tlast" dimension="time"/>
         <DerivedVariable name="tsince" exposure="tsince" value="t - tlast"/>
@@ -174,21 +140,19 @@ class IF_curr_alpha(cells.IF_curr_alpha):
 
 
   
+ <Component id="iaf1" type="iafcondalpha" 
+ 	capacitance="100pF" timeConstant="5ms" excitatoryTimeConstant="5ms" 
+ 	inhibitoryTimeConstant="3ms" resetPotential="-60mV" restPotential="-60mV" 
+ 	injectionCurrent="0pA" threshold="-10mV" synapseCurrent="500pA"/>
+  
+	  
+   
+  
+<Component id="gen1" type="spikeGenerator" period="20ms"/>
 
-<Component id="celltype_c" type="iaf3" leakConductance="3 pS" 
-	refractoryPeriod="3 ms" threshold="45 mV"
-	leakReversal="-50 mV" deltaV="5mV" capacitance="1uF" reset="-70mV"/>
+<Component id="gen2" type="spikeGenerator" period="302ms"/>
+
  
- 
-<Component id="celltype_d" extends="celltype_c" leakConductance="5 pS"/>
-
-<Component id="gen1" type="spikeGenerator1" period="5ms"/>
-
-<Component id="gen2" type="spikeGenerator2" period="32ms"/>
-
-<Component id="iaf3cpt" type="iaf3" leakReversal="-60mV" deltaV="5mV" 
-	threshold="-30mV" leakConductance="5pS"
-	refractoryPeriod="4ms" capacitance="1pF" reset="-70mV"/>
 
 
 <Include file="SimpleNetwork.xml"/>
@@ -196,23 +160,32 @@ class IF_curr_alpha(cells.IF_curr_alpha):
 
 <Network id="net1">
     <Population id="p1" component="gen1" size="1"/>
-    <Population id="p3" component="iaf3cpt" size="1"/>
+    <Population id="p2" component="gen2" size="1"/>
+    <Population id="p3" component="iaf1" size="1"/>
     
-    <EventConnectivity id="p1-p3" source="p1" target="p3">
+    <EventConnectivity id="p1-p3" source="p1" target="p3" targetPort="excitatory-in">
         <Connections type="AllAll"/>
     </EventConnectivity>
+    
+     <EventConnectivity id="p1-p3" source="p1" target="p3" targetPort="inhibitoryIn">
+        <Connections type="AllAll"/>
+    </EventConnectivity>
+    
 </Network>
 
 <Include file="MultiRunSimulation.xml"/>
 
 
 <SimulationSet id="simset">
-	<Display id="disp1" title="Example1" xmin="0" xmax="80" ymin="-80" ymax="50"/>
+	<Display id="disp1" title="ExampleIaFCondAlpha" xmin="0" xmax="80" ymin="-80" ymax="50"/>
  
 	<Simulation id="sim1" length="80ms" step="0.05ms" target="net1" display="disp1">
     	<DisplayList timeScale="1ms" title="Example 1: Dimensions, Units, ComponentTypes and Components">
         	<Line id="tsince" quantity="p1[0]/tsince" scale="1ms" timeScale="1ms" color="#00c000"/>     
         	<Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0"/>
+        	
+        	<Line id="p3ye" quantity="p3[0]/yi" scale="1" timeScale="1ms" color="#ff00f0"/>
+        	<Line id="p3gi" quantity="p3[0]/gi" scale="10pA" timeScale="1ms" color="#ff0000"/>
     	</DisplayList>
 	</Simulation>
 </SimulationSet>
