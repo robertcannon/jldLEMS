@@ -144,10 +144,12 @@ public class DerivedVariable extends ExpressionValued implements Valued {
     	if (!resolved) {
     		E.warning("Accessing dimension beforeresolving " + this);
     	}
+    	String ret = "";
     	if (r_dimension == null) {
     		E.warning("Null dimension in " + this);
+    	} else {
+    		ret = r_dimension.getDimensionString();
     	}
-     	String ret = r_dimension.getDimensionString();
     	return ret;
     }
 	
