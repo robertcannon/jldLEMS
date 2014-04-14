@@ -1,6 +1,6 @@
 package org.lemsml.jlems.core.lite.model;
 
-public class OutputVariable {
+public class RecordableVariable {
 
 	
 	public String name;
@@ -8,12 +8,12 @@ public class OutputVariable {
 	  
 
 
-	public OutputVariable(String as) {
+	public RecordableVariable(String as) {
 		name = as;
 	}
 
 
-	public OutputVariable() {
+	public RecordableVariable() {
 		// called from generated factory
 	}
 

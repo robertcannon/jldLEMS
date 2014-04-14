@@ -91,7 +91,10 @@ public class Discretizer {
 			lems.resolve(ct);
 			lems.resolve(cp);
 
-			StateType st = cp.getStateType();
+			StateType st = cp.getFixedStateType();
+			
+		
+			
 
 			E.info("St summary: " + st.getSummary());
 			

@@ -1,6 +1,7 @@
 package org.lemsml.jlems.core.numerics;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
  
 import org.lemsml.jlems.core.eval.BooleanEvaluator;
@@ -55,8 +56,11 @@ public class DiscreteUpdateGenerator {
 		DiscreteUpdateComponent ret = new DiscreteUpdateComponent(stateType.getID());
 		
 		 
+		HashSet<String> stateVars = new HashSet<String>();
+		
 		for (String s : stateType.getStateVariables()) {
 			ret.addStateVariable(s);
+			stateVars.add(s);
 		}
 	
 		for (PathDerivedVariable pdv : stateType.getPathderiveds()) {
@@ -111,11 +115,11 @@ public class DiscreteUpdateGenerator {
 		
 		
 		for (EventAction ea : stateType.getEventActions()) {
-			addEventAction(ret, ea);
+			addEventAction(ret, ea, stateVars);
 		}
 		
 		for (ConditionAction ca : stateType.getConditionActions()) {
-			addConditionAction(ret, ca);
+			addConditionAction(ret, ca, stateVars);
 		}
 		
 		HashMap<String, String> expHM = stateType.getExposureMap();
@@ -129,30 +133,45 @@ public class DiscreteUpdateGenerator {
 	}
 		
 	
-	private void addEventAction(DiscreteUpdateComponent ret, EventAction ea) {
+	private void addEventAction(DiscreteUpdateComponent ret, EventAction ea, HashSet<String> stateVars) {
 	 
 		OnEvent oe = ret.addOnEvent(ea.getPortName());
 		
 		ActionBlock ab = ea.getAction();
 	 	
 		for (VariableAssignment ve : ab.getAssignments()) {
-			Var fa = new Var(ve.getVarName(), ve.getValexp().getExpressionString());
-			oe.addVar(fa);
+			String nm = ve.getVarName();
+			if (stateVars.contains(nm)) {
+				Update ua = new Update(ve.getVarName(), ve.getValexp().getExpressionString());
+				oe.addUpdate(ua);
+				
+			} else {
+				Var ua = new Var(ve.getVarName(), ve.getValexp().getExpressionString());
+				oe.addVar(ua);
+			}
 		}
 	}
 	
 	
-	private void addConditionAction(DiscreteUpdateComponent ret, ConditionAction ca) {
+	private void addConditionAction(DiscreteUpdateComponent ret, ConditionAction ca, HashSet<String> stateVars) {
 		 
 		BooleanEvaluator be = ca.getCondition();
 		OnAbstract os = ret.addOnCondition(be.getExpressionString());
 		ActionBlock ab = ca.getAction();
 		
- 		
+
 		for (VariableAssignment ve : ab.getAssignments()) {
- 			Var fa = new Var(ve.getVarName(), ve.getValexp().getExpressionString());
-			os.addVar(fa);
+			String nm = ve.getVarName();
+			if (stateVars.contains(nm)) {
+				Update ua = new Update(ve.getVarName(), ve.getValexp().getExpressionString());
+				os.addUpdate(ua);
+				
+			} else {
+				Var ua = new Var(ve.getVarName(), ve.getValexp().getExpressionString());
+				os.addVar(ua);
+			}
 		}
+	 
 		
 		for (String s : ab.getOutEvents()) {
 			os.addSend(s);

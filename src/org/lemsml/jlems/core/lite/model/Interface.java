@@ -13,7 +13,7 @@ public class Interface {
 	
 	public LemsCollection<InputVariable> inputVariables = new LemsCollection<InputVariable>();
 
-	public LemsCollection<OutputVariable> outputVariables = new LemsCollection<OutputVariable>();
+	public LemsCollection<RecordableVariable> recordableVariables = new LemsCollection<RecordableVariable>();
 
 	public LemsCollection<InputEventPort> inputEventPorts = new LemsCollection<InputEventPort>();
 
@@ -24,16 +24,16 @@ public class Interface {
 
 	
 	
-	public void addOutputVariable(OutputVariable ov) {
-		outputVariables.add(ov);
+	public void addRecordableVariable(RecordableVariable ov) {
+		recordableVariables.add(ov);
 	}
 	
 	public void addInputVariable(InputVariable ov) {
 		inputVariables.add(ov);
 	}
 
-	public LemsCollection<OutputVariable> getOutputVariables() {
-		 return outputVariables;
+	public LemsCollection<RecordableVariable> getRecordableVariables() {
+		 return recordableVariables;
 	}
 
 	public LemsCollection<InputVariable> getInputVariables() {

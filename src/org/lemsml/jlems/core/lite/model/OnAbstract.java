@@ -33,7 +33,9 @@ public class OnAbstract {
 		vars.add(fa);
 	}
 
-	  
+	public void addUpdate(Update fa) {
+		updates.add(fa);
+	}
 	
 	
 }

@@ -29,8 +29,8 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             ret = buildOutputEventPort(xel);
         } else if (tag.equals("Constant")) {
             ret = buildConstant(xel);
-        } else if (tag.equals("OutputVariable")) {
-            ret = buildOutputVariable(xel);
+        } else if (tag.equals("RecordableVariable")) {
+            ret = buildRecordableVariable(xel);
         } else if (tag.equals("State")) {
             ret = buildState(xel);
         } else if (tag.equals("StateVariable")) {
@@ -213,8 +213,8 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
                 ret.constants.add((Constant)obj);
             } else if (obj instanceof InputVariable) {
                 ret.inputVariables.add((InputVariable)obj);
-            } else if (obj instanceof OutputVariable) {
-                ret.outputVariables.add((OutputVariable)obj);
+            } else if (obj instanceof RecordableVariable) {
+                ret.recordableVariables.add((RecordableVariable)obj);
             } else if (obj instanceof InputEventPort) {
                 ret.inputEventPorts.add((InputEventPort)obj);
             } else if (obj instanceof OutputEventPort) {
@@ -306,8 +306,8 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
         return ret;
     }
 
-    private OutputVariable buildOutputVariable(XMLElement xel) {
-        OutputVariable ret = new OutputVariable();
+    private RecordableVariable buildRecordableVariable(XMLElement xel) {
+        RecordableVariable ret = new RecordableVariable();
 
         for (XMLAttribute xa : xel.getAttributes()) {
             String xn = internalFieldName(xa.getName());

@@ -750,13 +750,13 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	
 
-	public StateType makeStateType() throws ContentError, ParseError {
+	public StateType makeStateType(boolean fixParams) throws ContentError, ParseError {
 	
 		if (madeCB) {
 			throw new ContentError("remaking a component behavior that is already made " + id + " " + r_type);
 		}
 
-		StateType ret = r_type.makeStateType(this);
+		StateType ret = r_type.makeStateType(this, fixParams);
 		stateType = ret;
 		madeCB = true;
 		return ret;
@@ -784,7 +784,18 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 	
 
+	public StateType getFixedStateType() throws ContentError, ParseError {
+		StateType ret = getStateType(true);
+		return ret;
+	}
+	
 	public StateType getStateType() throws ContentError, ParseError  {
+		StateType ret = getStateType(false);
+		return ret;
+	}
+
+	
+	public StateType getStateType(boolean fixParams) throws ContentError, ParseError  {
 		StateType ret = null;
 	
 		if (r_replacement != null) {
@@ -800,7 +811,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		} else {
 			if (stateType == null) {
 				//	E.info("Building stae type for " + getID());
- 				makeStateType();
+ 				makeStateType(fixParams);
 			}
 			ret = stateType;
 		}

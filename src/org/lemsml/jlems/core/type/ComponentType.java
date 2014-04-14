@@ -886,8 +886,9 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public LemsCollection<Procedure> getProcedures() {
 		return procedures;
 	}
-
-	public StateType makeStateType(Component cpt) throws ContentError, ParseError {
+	
+	
+	public StateType makeStateType(Component cpt, boolean fixParams) throws ContentError, ParseError {
 
 		HashMap<String, Double> fixedHM = new HashMap<String, Double>();
 
@@ -900,9 +901,15 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		
 		// TODO this can contain the parm values that aren't changed by instances,
 		// but not those that are.
-		// for now, just leave them all out.
-		for (ParamValue pv : cpt.getParamValues()) {
-		//	fixedHM.put(pv.getName(), pv.getDoubleValue());
+		// for now, only use fixParams=true when generating LemsLite
+		if (fixParams) {
+			E.info("AM fixing params in " + this);
+			for (ParamValue pv : cpt.getParamValues()) {
+				fixedHM.put(pv.getName(), pv.getDoubleValue());
+				E.info("Fixed param " + pv.getName());
+			}
+		} else {
+			E.info("NOT fixing params in " + this);
 		}
 
 		StateType ret = null;

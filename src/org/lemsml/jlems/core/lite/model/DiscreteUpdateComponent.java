@@ -82,7 +82,7 @@ public class DiscreteUpdateComponent {
  
 	
 	public void addFloatExposure(String var, String as) {
-		getInterface().addOutputVariable(new OutputVariable(as));
+		getInterface().addRecordableVariable(new RecordableVariable(as));
 		getStep().addOutput(as, var);
 	}
 
@@ -108,8 +108,8 @@ public class DiscreteUpdateComponent {
 		return getState().getStateVariables();
 	}
 	
-	public LemsCollection<OutputVariable> getVariableExposures() {
-		return getInterface().getOutputVariables(); 
+	public LemsCollection<RecordableVariable> getVariableExposures() {
+		return getInterface().getRecordableVariables(); 
 	}
 	 
 	public LemsCollection<Update> getUpdateAssignments() {
