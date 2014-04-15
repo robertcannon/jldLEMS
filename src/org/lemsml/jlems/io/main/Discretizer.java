@@ -52,7 +52,7 @@ public class Discretizer {
 		outPath = op;
 	}
 
-	public void generateDiscreteModel() throws IOException, ContentError, ParseError, ParseException, BuildException, XMLException, ConnectionError {
+	public String generateDiscreteModel() throws IOException, ContentError, ParseError, ParseException, BuildException, XMLException, ConnectionError {
 	 
 			File simFile = new File(modelName);
 
@@ -138,8 +138,8 @@ public class Discretizer {
 				E.info("Written discrete model to " + fout.getAbsolutePath());
 			}
 
-	 
-
+			
+			return ret;
 	}
 
 }

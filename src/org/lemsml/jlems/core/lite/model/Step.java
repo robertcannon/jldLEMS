@@ -10,11 +10,17 @@ public class Step {
 
 	public LemsCollection<Update> updates = new LemsCollection<Update>();
 	
+	public LemsCollection<ConditionCheck> conditionChecks = new LemsCollection<ConditionCheck>();
+
 	public LemsCollection<Output> outputs = new LemsCollection<Output>();
 	
-	public LemsCollection<ConditionCheck> conditionChecks = new LemsCollection<ConditionCheck>();
 	
 	 
+	public Step() {
+		ConditionCheck cc = new ConditionCheck();
+		conditionChecks.add(cc);
+	}
+	
 
 	public LemsCollection<Update> getUpdates() {
 		return updates;

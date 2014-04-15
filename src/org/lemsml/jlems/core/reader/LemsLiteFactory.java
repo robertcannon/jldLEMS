@@ -423,7 +423,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else if (xn.equals("rp")) {
-                ret.rp = parseString(xv);
+               
             } else {
                 E.warning("unrecognized attribute " + xa + " " + xv);
             }
@@ -446,7 +446,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else if (xn.equals("rp")) {
-                ret.rp = parseString(xv);
+                ret.p_rp = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa + " " + xv);
             }

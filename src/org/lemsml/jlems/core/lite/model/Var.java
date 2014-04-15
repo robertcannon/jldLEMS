@@ -6,8 +6,8 @@ public class Var {
 	public String name;
 	public String value;
 	
-	// public String expression;
-	public String rp;
+	 
+	public String p_rp;
 	
 	public Var(String vnm, String expr) {
 		name = vnm;
@@ -29,11 +29,11 @@ public class Var {
 	}
 	
 	public void setReversePolishExpression(String s) {
-		rp = s;
+		p_rp = s;
 	}
 	
 	public String getReversePolishExpression() {
-		return rp;
+		return p_rp;
 	}
 	
 	

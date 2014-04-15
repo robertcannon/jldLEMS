@@ -15,6 +15,7 @@ import org.lemsml.jlems.core.type.BuildException;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.main.Discretizer;
+import org.lemsml.jlems.validation.LemsLiteValidator;
  
  
 public class IaFAlphaTest {
@@ -28,8 +29,13 @@ public class IaFAlphaTest {
     	
     	Discretizer dtz = new Discretizer("examples/exampleIAFCurrAlpha.xml", "examples");
     	dtz.setTargetID("iaf1");
-    	dtz.generateDiscreteModel();
     	
+    	String xcpt = dtz.generateDiscreteModel();
+    	
+    	String llxml = "<LemsLite>\n" + xcpt + "\n</LemsLite>";
+    	
+    	LemsLiteValidator llv = new LemsLiteValidator();
+    	llv.checkXMLText(llxml);
 
     }
 
