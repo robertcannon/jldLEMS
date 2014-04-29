@@ -127,6 +127,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildOnEntry(xel);
         } else if (tag.equals("Transition")) {
             ret = buildTransition(xel);
+        } else if (tag.equals("IfCondition")) {
+            ret = buildIfCondition(xel);
         } else if (tag.equals("Super")) {
             ret = buildSuper(xel);
         } else if (tag.equals("ConditionalDerivedVariable")) {
@@ -240,7 +242,7 @@ public class LemsFactory extends AbstractLemsFactory {
         } else if (tag.equals("WorkState")) {
             ret = buildWorkState(xel);
         } else {
-            E.error("Unrecognized name " + tag);
+            E.error("Unrecognized element name found in model xml: " + tag);
         }
         return ret;
     }
@@ -1409,6 +1411,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.eventOuts.add((EventOut)obj);
             } else if (obj instanceof Transition) {
                 ret.transitions.add((Transition)obj);
+            } else if (obj instanceof IfCondition) {
+                ret.ifConditions.add((IfCondition)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -1445,6 +1449,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.eventOuts.add((EventOut)obj);
             } else if (obj instanceof Transition) {
                 ret.transitions.add((Transition)obj);
+            } else if (obj instanceof IfCondition) {
+                ret.ifConditions.add((IfCondition)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -1481,6 +1487,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.eventOuts.add((EventOut)obj);
             } else if (obj instanceof Transition) {
                 ret.transitions.add((Transition)obj);
+            } else if (obj instanceof IfCondition) {
+                ret.ifConditions.add((IfCondition)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -1619,6 +1627,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.eventOuts.add((EventOut)obj);
             } else if (obj instanceof Transition) {
                 ret.transitions.add((Transition)obj);
+            } else if (obj instanceof IfCondition) {
+                ret.ifConditions.add((IfCondition)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -1640,6 +1650,44 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.regime = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa + " " + xv);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private IfCondition buildIfCondition(XMLElement xel) {
+        IfCondition ret = new IfCondition();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("test")) {
+                ret.test = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa + " " + xv);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof StateAssignment) {
+                ret.stateAssignments.add((StateAssignment)obj);
+            } else if (obj instanceof EventOut) {
+                ret.eventOuts.add((EventOut)obj);
+            } else if (obj instanceof Transition) {
+                ret.transitions.add((Transition)obj);
+            } else if (obj instanceof IfCondition) {
+                ret.ifConditions.add((IfCondition)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
             }
         }
 

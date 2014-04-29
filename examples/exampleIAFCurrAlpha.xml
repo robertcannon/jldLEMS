@@ -65,9 +65,8 @@ class IF_curr_alpha(cells.IF_curr_alpha):
 <Unit symbol="pF" dimension="capacitance" power="-12"/>
 <Unit symbol="per_ms" dimension="per_time" power="3"/>
 <Unit symbol="pA" dimension="current" power="-12"/>
- 
-  
-  
+<Unit symbol="nA" dimension="current" power="-9"/>
+   
 <ComponentType name="iafcondalpha">
 	  <Parameter name="capacitance" dimension="capacitance"/>
 	  <Parameter name="timeConstant" dimension="time"/>
@@ -77,6 +76,7 @@ class IF_curr_alpha(cells.IF_curr_alpha):
 	  <Parameter name="restPotential" dimension="voltage"/>
 	  <Parameter name="injectionCurrent" dimension="current"/>
 	  <Parameter name="threshold" dimension="voltage"/>
+	  <Parameter name="refractoryTime" dimension="time"/>
 	  
 	  <Parameter name="synapseCurrent" dimension="current"/>
 	  
@@ -84,13 +84,17 @@ class IF_curr_alpha(cells.IF_curr_alpha):
 	  <ReceivePort name="inhibitory-in"/>
       <SendPort name="spikes-out"/>
       <Exposure name="v" dimension="voltage"/>
- 
+      <Exposure name="tEx" dimension="time"/>
+      <Exposure name="tIn" dimension="time"/>
+    
       <Dynamics>
 	    <StateVariable name="v" exposure="v" dimension="voltage"/>
 		<StateVariable name="ye" dimension="none"/>
 		<StateVariable name="yi" dimension="none"/>
         <StateVariable name="ge" dimension="current"/>
         <StateVariable name="gi" dimension="current"/>
+        <StateVariable name="tEx" dimension="time" exposure="tEx"/>
+        <StateVariable name="tIn" dimension="time" exposure="tIn"/>
 
 		<TimeDerivative variable="ye" value="-1 * ye / excitatoryTimeConstant"/>
 		<TimeDerivative variable="yi" value="-1 * yi / inhibitoryTimeConstant"/>
@@ -103,11 +107,18 @@ class IF_curr_alpha(cells.IF_curr_alpha):
  
              
        <OnEvent port="excitatory-in">
-            <StateAssignment variable="ye" value="ye + 1"/>
+			<IfCondition test="t .gt. tEx + refractoryTime">
+	            <StateAssignment variable="ye" value="ye + 1"/>
+				<StateAssignment variable="tEx" value="t"/>
+			</IfCondition>
        </OnEvent>      
 	
+	
 	   <OnEvent port="inhibitory-in">
-            <StateAssignment variable="yi" value="yi + 1"/>
+    		<IfCondition test="t .gt. tIn + refractoryTime">
+	            <StateAssignment variable="yi" value="yi + 1"/>
+    			<StateAssignment variable="tIn" value="t"/>
+    		</IfCondition>
        </OnEvent> 
 	
 		<OnCondition test="v .gt. threshold">
@@ -121,6 +132,13 @@ class IF_curr_alpha(cells.IF_curr_alpha):
    
   
    
+<Component id="brunel" type="iafcondalpha" 
+ 	capacitance="10pF" timeConstant="20ms" refractoryTime="2ms"
+ 	excitatoryTimeConstant="0.1ms" inhibitoryTimeConstant="0.1ms" 
+ 	resetPotential="0mV" restPotential="0mV" 
+ 	injectionCurrent="0pA" threshold="20mV" synapseCurrent="10.0pA"/>
+  
+<!--  synapseCurrent is such that a single synaptic event will change the membrane potential by 0.1mV -->
 
  
 
@@ -138,14 +156,7 @@ class IF_curr_alpha(cells.IF_curr_alpha):
     </Dynamics>
 </ComponentType>
 
-
-  
- <Component id="iaf1" type="iafcondalpha" 
- 	capacitance="100pF" timeConstant="5ms" excitatoryTimeConstant="5ms" 
- 	inhibitoryTimeConstant="3ms" resetPotential="-60mV" restPotential="-60mV" 
- 	injectionCurrent="0pA" threshold="-10mV" synapseCurrent="500pA"/>
-  
-	  
+ 
    
   
 <Component id="gen1" type="spikeGenerator" period="20ms"/>
@@ -161,13 +172,13 @@ class IF_curr_alpha(cells.IF_curr_alpha):
 <Network id="net1">
     <Population id="p1" component="gen1" size="1"/>
     <Population id="p2" component="gen2" size="1"/>
-    <Population id="p3" component="iaf1" size="1"/>
+    <Population id="p3" component="brunel" size="1"/>
     
     <EventConnectivity id="p1-p3" source="p1" target="p3" targetPort="excitatory-in">
         <Connections type="AllAll"/>
     </EventConnectivity>
     
-     <EventConnectivity id="p1-p3" source="p1" target="p3" targetPort="inhibitoryIn">
+     <EventConnectivity id="p2-p3" source="p2" target="p3" targetPort="inhibitory-in">
         <Connections type="AllAll"/>
     </EventConnectivity>
     
@@ -181,11 +192,18 @@ class IF_curr_alpha(cells.IF_curr_alpha):
  
 	<Simulation id="sim1" length="80ms" step="0.05ms" target="net1" display="disp1">
     	<DisplayList timeScale="1ms" title="Example 1: Dimensions, Units, ComponentTypes and Components">
+        
+        <!-- 
         	<Line id="tsince" quantity="p1[0]/tsince" scale="1ms" timeScale="1ms" color="#00c000"/>     
+         -->
+        
         	<Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0"/>
         	
-        	<Line id="p3ye" quantity="p3[0]/yi" scale="1" timeScale="1ms" color="#ff00f0"/>
+        	<Line id="p3yi" quantity="p3[0]/yi" scale="1" timeScale="1ms" color="#ff00f0"/>
+		  
         	<Line id="p3gi" quantity="p3[0]/gi" scale="10pA" timeScale="1ms" color="#ff0000"/>
+		 
+
     	</DisplayList>
 	</Simulation>
 </SimulationSet>

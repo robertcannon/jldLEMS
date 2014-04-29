@@ -11,6 +11,7 @@ import org.lemsml.jlems.core.eval.Times;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.lite.convert.DUStateTypeBuilder;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
+import org.lemsml.jlems.core.lite.model.IfCondition;
 import org.lemsml.jlems.core.lite.model.OnAbstract;
 import org.lemsml.jlems.core.lite.model.OnEvent;
 import org.lemsml.jlems.core.lite.model.Output;
@@ -135,23 +136,54 @@ public class DiscreteUpdateGenerator {
 	
 	private void addEventAction(DiscreteUpdateComponent ret, EventAction ea, HashSet<String> stateVars) {
 	 
-		OnEvent oe = ret.addOnEvent(ea.getPortName());
-		
 		ActionBlock ab = ea.getAction();
-	 	
+
+		OnEvent oe = ret.addOnEvent(ea.getPortName());
+		populateOnEvent(oe, ab, stateVars);
+		
+		for (ConditionAction ca : ab.getConditionActions()) {
+			String cond = ca.getCondition().getExpressionString();
+			
+			IfCondition ic = new IfCondition(cond);
+			oe.addIfCondition(ic);
+			ActionBlock cab = ca.getAction();
+			populateIfCondition(ic, cab, stateVars);
+			
+		}
+	}
+	
+	
+	private void populateOnEvent(OnEvent oe, ActionBlock ab, HashSet<String> stateVars) {
+	  
+	for (VariableAssignment ve : ab.getAssignments()) {
+		String nm = ve.getVarName();
+		if (stateVars.contains(nm)) {
+			Update ua = new Update(ve.getVarName(), ve.getValexp().getExpressionString());
+			oe.addUpdate(ua);
+			
+		} else {
+			Var ua = new Var(ve.getVarName(), ve.getValexp().getExpressionString());
+			oe.addVar(ua);
+		}
+	}
+	}
+	
+	
+	private void populateIfCondition(IfCondition ic, ActionBlock ab, HashSet<String> stateVars) {
+		  
 		for (VariableAssignment ve : ab.getAssignments()) {
 			String nm = ve.getVarName();
 			if (stateVars.contains(nm)) {
 				Update ua = new Update(ve.getVarName(), ve.getValexp().getExpressionString());
-				oe.addUpdate(ua);
+				ic.addUpdate(ua);
 				
 			} else {
 				Var ua = new Var(ve.getVarName(), ve.getValexp().getExpressionString());
-				oe.addVar(ua);
+				ic.addVar(ua);
 			}
 		}
 	}
-	
+		
 	
 	private void addConditionAction(DiscreteUpdateComponent ret, ConditionAction ca, HashSet<String> stateVars) {
 		 

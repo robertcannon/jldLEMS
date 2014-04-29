@@ -55,6 +55,7 @@ import org.lemsml.jlems.core.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.Equilibrium;
 import org.lemsml.jlems.core.type.dynamics.EventOut;
+import org.lemsml.jlems.core.type.dynamics.IfCondition;
 import org.lemsml.jlems.core.type.dynamics.KineticScheme;
 import org.lemsml.jlems.core.type.dynamics.OnCondition;
 import org.lemsml.jlems.core.type.dynamics.OnEntry;
@@ -183,6 +184,7 @@ public final class LemsClasses {
 	 	ret.add(new LemsClass(Regime.class, section));
 	 	ret.add(new LemsClass(OnEntry.class, section));
 	 	ret.add(new LemsClass(Transition.class, section));
+	 	ret.add(new LemsClass(IfCondition.class, section));
 	 	ret.add(new LemsClass(Super.class, section));
 	 	
 	 	ret.add(new LemsClass(ConditionalDerivedVariable.class, section));

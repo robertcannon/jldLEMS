@@ -28,7 +28,7 @@ public class IaFAlphaTest {
     	DefaultLogger.initialize();
     	
     	Discretizer dtz = new Discretizer("examples/exampleIAFCurrAlpha.xml", "examples");
-    	dtz.setTargetID("iaf1");
+    	dtz.setTargetID("brunel");
     	
     	String xcpt = dtz.generateDiscreteModel();
     	
