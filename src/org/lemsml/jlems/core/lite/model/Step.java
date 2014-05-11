@@ -1,24 +1,26 @@
 package org.lemsml.jlems.core.lite.model;
 
-import org.lemsml.jlems.core.lite.run.component.FloatAssignment;
 import org.lemsml.jlems.core.type.LemsCollection;
 
 public class Step {
 
 	
-	public LemsCollection<Update> updates = new LemsCollection<Update>();
 	
 	public LemsCollection<Var> vars = new LemsCollection<Var>();
-	
-	public LemsCollection<Output> outputs = new LemsCollection<Output>();
+
+	public LemsCollection<Update> updates = new LemsCollection<Update>();
 	
 	public LemsCollection<ConditionCheck> conditionChecks = new LemsCollection<ConditionCheck>();
+
+	public LemsCollection<Output> outputs = new LemsCollection<Output>();
 	
 	
-	public void addUpdateAssignment(FloatAssignment fa) {
-		// TODO Auto-generated method stub
-		
+	 
+	public Step() {
+		ConditionCheck cc = new ConditionCheck();
+		conditionChecks.add(cc);
 	}
+	
 
 	public LemsCollection<Update> getUpdates() {
 		return updates;
@@ -41,5 +43,13 @@ public class Step {
 	public void addVar(Var fa) {
 		vars.add(fa);
 	}
+	
+	public void addUpdate(Update fa) {
+		updates.add(fa);
+	}
 
+	
+	public void addOutput(Output o) {
+		outputs.add(o);
+	}
 }

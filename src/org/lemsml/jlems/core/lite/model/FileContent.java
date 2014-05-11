@@ -1,12 +1,12 @@
 package org.lemsml.jlems.core.lite.model;
 
 
-import org.lemsml.jlems.core.lite.simulation.DataSource;
+import org.lemsml.jlems.core.lite.simulation.AbstractDataSource;
 import org.lemsml.jlems.core.sim.ContentError;
 
 public class FileContent {
 	
-	DataSource dsource;
+	AbstractDataSource dsource;
 	
 	String id;
 	
@@ -19,7 +19,7 @@ public class FileContent {
 	double[][] rows = null;
 	
 	
-	public FileContent(String aid, DataSource ds) {
+	public FileContent(String aid, AbstractDataSource ds) {
 		id = aid;
 		dsource = ds;
 	}

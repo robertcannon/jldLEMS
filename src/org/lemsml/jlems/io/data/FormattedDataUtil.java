@@ -124,8 +124,7 @@ public class FormattedDataUtil {
            }
         }
      } catch (Exception ex) {
-        E.warning("file read exception for " + br + " " + ex);
-        ex.printStackTrace();
+        E.report("file read exception for " + br + " " + ex, ex);
      }
 
      double[][] ret = new double[al.size()][ncol];

@@ -1,0 +1,211 @@
+<Lems>
+  
+  
+  
+  
+<!-- 
+Definitions from PyNN for Brian: 
+
+class IF_curr_alpha(cells.IF_curr_alpha):
+
+    __doc__ = cells.IF_curr_alpha.__doc__        
+    
+    translations = build_translations(
+        ('v_rest',     'v_rest',     mV),
+        ('v_reset',    'v_reset'),
+        ('cm',         'c_m',        nF), 
+        ('tau_m',      'tau_m',      ms),
+        ('tau_refrac', 'tau_refrac'),
+        ('tau_syn_E',  'tau_syn_E',  ms),
+        ('tau_syn_I',  'tau_syn_I',  ms),
+        ('v_thresh',   'v_thresh'),
+        ('i_offset',   'i_offset',   nA), 
+    )
+    eqs= brian.Equations('''
+        dv/dt  = (ge + gi + i_offset + i_inj)/c_m + (v_rest-v)/tau_m : mV
+        dge/dt = (2.7182818284590451*ye-ge)/tau_syn_E : nA
+        dye/dt = -ye/tau_syn_E                        : nA
+        dgi/dt = (2.7182818284590451*yi-gi)/tau_syn_I : nA
+        dyi/dt = -yi/tau_syn_I                        : nA
+        c_m                                   : nF
+        tau_syn_E                             : ms
+        tau_syn_I                             : ms
+        tau_m                                 : ms
+        v_rest                                : mV
+        i_offset                              : nA
+        i_inj                                 : nA
+        '''
+        )
+    synapses  = {'excitatory' : 'ye', 'inhibitory' : 'yi'}
+    
+  
+ -->  
+  
+  
+  
+  
+  
+  
+  
+<Target component="simset"/> 
+ 
+<Dimension name="voltage" m="1" l="2" t="-3" i="-1"/>
+<Dimension name="time" t="1"/>
+<Dimension name="per_time" t="-1"/>
+<Dimension name="conductance" m="-1" l="-2" t="3" i="2"/>
+<Dimension name="capacitance" m="-1" l="-2" t="4" i="2"/>
+<Dimension name="current" i="1"/>
+ 
+<Unit symbol="mV" dimension="voltage" power="-3"/> 
+<Unit symbol="ms" dimension="time" power="-3"/> 
+<Unit symbol="pS" dimension="conductance" power="-12"/>
+<Unit symbol="nS" dimension="conductance" power="-9"/>
+<Unit symbol="uF" dimension="capacitance" power="-6"/>
+<Unit symbol="nF" dimension="capacitance" power="-9"/>
+<Unit symbol="pF" dimension="capacitance" power="-12"/>
+<Unit symbol="per_ms" dimension="per_time" power="3"/>
+<Unit symbol="pA" dimension="current" power="-12"/>
+<Unit symbol="nA" dimension="current" power="-9"/>
+   
+<ComponentType name="iafcondalpha">
+	  <Parameter name="capacitance" dimension="capacitance"/>
+	  <Parameter name="timeConstant" dimension="time"/>
+	  <Parameter name="excitatoryTimeConstant" dimension="time"/>
+	  <Parameter name="inhibitoryTimeConstant" dimension="time"/>
+	  <Parameter name="resetPotential" dimension="voltage"/>
+	  <Parameter name="restPotential" dimension="voltage"/>
+	  <Parameter name="injectionCurrent" dimension="current"/>
+	  <Parameter name="threshold" dimension="voltage"/>
+	  <Parameter name="refractoryTime" dimension="time"/>
+	  
+	  <Parameter name="synapseCurrent" dimension="current"/>
+	  
+	  <ReceivePort name="excitatory-in"/>
+	  <ReceivePort name="inhibitory-in"/>
+      <SendPort name="spikes-out"/>
+      <Exposure name="v" dimension="voltage"/>
+      <Exposure name="tEx" dimension="time"/>
+      <Exposure name="tIn" dimension="time"/>
+    
+      <Dynamics>
+	    <StateVariable name="v" exposure="v" dimension="voltage"/>
+		<StateVariable name="ye" dimension="none"/>
+		<StateVariable name="yi" dimension="none"/>
+        <StateVariable name="ge" dimension="current"/>
+        <StateVariable name="gi" dimension="current"/>
+        <StateVariable name="tEx" dimension="time" exposure="tEx"/>
+        <StateVariable name="tIn" dimension="time" exposure="tIn"/>
+
+		<TimeDerivative variable="ye" value="-1 * ye / excitatoryTimeConstant"/>
+		<TimeDerivative variable="yi" value="-1 * yi / inhibitoryTimeConstant"/>
+		<TimeDerivative variable="ge" value="(synapseCurrent * ye - ge) / excitatoryTimeConstant"/>
+		<TimeDerivative variable="gi" value="(synapseCurrent * yi - gi) / inhibitoryTimeConstant"/>
+
+		<DerivedVariable name="gtot" dimension="current" value="(ge - gi + injectionCurrent)"/>
+
+		<TimeDerivative variable="v" value="gtot / capacitance - (v - restPotential) / timeConstant"/>
+ 
+             
+       <OnEvent port="excitatory-in">
+			<IfCondition test="t .gt. tEx + refractoryTime">
+	            <StateAssignment variable="ye" value="ye + 1"/>
+				<StateAssignment variable="tEx" value="t"/>
+			</IfCondition>
+       </OnEvent>      
+	
+	
+	   <OnEvent port="inhibitory-in">
+    		<IfCondition test="t .gt. tIn + refractoryTime">
+	            <StateAssignment variable="yi" value="yi + 1"/>
+    			<StateAssignment variable="tIn" value="t"/>
+    		</IfCondition>
+       </OnEvent> 
+	
+		<OnCondition test="v .gt. threshold">
+			<EventOut port="spikes-out"/>
+			 <StateAssignment variable="v" value="resetPotential"/>
+		</OnCondition>
+
+    </Dynamics>
+
+</ComponentType>  
+   
+  
+   
+<Component id="brunel" type="iafcondalpha" 
+ 	capacitance="10pF" timeConstant="20ms" refractoryTime="2ms"
+ 	excitatoryTimeConstant="0.1ms" inhibitoryTimeConstant="0.1ms" 
+ 	resetPotential="0mV" restPotential="0mV" 
+ 	injectionCurrent="0pA" threshold="20mV" synapseCurrent="10.0pA"/>
+  
+<!--  synapseCurrent is such that a single synaptic event will change the membrane potential by 0.1mV -->
+
+ 
+
+<ComponentType name="spikeGenerator">
+    <Parameter name="period" dimension="time"/>
+    <SendPort name="a"/>
+    <Exposure name="tsince" dimension="time"/>
+    <Dynamics>
+        <StateVariable name="tlast" dimension="time"/>
+        <DerivedVariable name="tsince" exposure="tsince" value="t - tlast"/>
+        <OnCondition test="t - tlast .gt. period">
+            <StateAssignment variable="tlast" value="t"/>
+            <EventOut port="a"/>
+        </OnCondition>
+    </Dynamics>
+</ComponentType>
+
+ 
+   
+  
+<Component id="gen1" type="spikeGenerator" period="20ms"/>
+
+<Component id="gen2" type="spikeGenerator" period="302ms"/>
+
+ 
+
+
+<Include file="SimpleNetwork.xml"/>
+
+
+<Network id="net1">
+    <Population id="p1" component="gen1" size="1"/>
+    <Population id="p2" component="gen2" size="1"/>
+    <Population id="p3" component="brunel" size="1"/>
+    
+    <EventConnectivity id="p1-p3" source="p1" target="p3" targetPort="excitatory-in">
+        <Connections type="AllAll"/>
+    </EventConnectivity>
+    
+     <EventConnectivity id="p2-p3" source="p2" target="p3" targetPort="inhibitory-in">
+        <Connections type="AllAll"/>
+    </EventConnectivity>
+    
+</Network>
+
+<Include file="MultiRunSimulation.xml"/>
+
+
+<SimulationSet id="simset">
+	<Display id="disp1" title="ExampleIaFCondAlpha" xmin="0" xmax="80" ymin="-80" ymax="50"/>
+ 
+	<Simulation id="sim1" length="80ms" step="0.05ms" target="net1" display="disp1">
+    	<DisplayList timeScale="1ms" title="Example 1: Dimensions, Units, ComponentTypes and Components">
+        
+        <!-- 
+        	<Line id="tsince" quantity="p1[0]/tsince" scale="1ms" timeScale="1ms" color="#00c000"/>     
+         -->
+        
+        	<Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0"/>
+        	
+        	<Line id="p3yi" quantity="p3[0]/yi" scale="1" timeScale="1ms" color="#ff00f0"/>
+		  
+        	<Line id="p3gi" quantity="p3[0]/gi" scale="10pA" timeScale="1ms" color="#ff0000"/>
+		 
+
+    	</DisplayList>
+	</Simulation>
+</SimulationSet>
+
+</Lems>

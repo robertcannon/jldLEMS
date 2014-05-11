@@ -47,8 +47,7 @@ public class TunnelBuilder extends AbstractPostBuilder {
 		StateInstance saf = endStateType.newInstance();
 		StateInstance sat = endStateType.newInstance();
 		
-		
-		StateInstance sab = (StateInstance)base;
+		 
 		// TODO - method in StateRunnable?
 		//((StateInstance)sf).addListChild(tunnelName, "", saf);
 		//((StateInstance)st).addListChild(tunnelName, "", sat);
@@ -73,7 +72,7 @@ public class TunnelBuilder extends AbstractPostBuilder {
  
 	@Override
 	public void consolidateStateTypes() {
-		 
+		 // nothing to do
 	}
 
  

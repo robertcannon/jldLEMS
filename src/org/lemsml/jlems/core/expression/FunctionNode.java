@@ -37,11 +37,7 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 	}
 	
 	
-
-	@Override
-	public void claim() throws ParseError {
-		super.claim();
-	}
+ 
 
 	@Override
 	public void replaceChild(Node nold, Node nnew) throws ParseError {

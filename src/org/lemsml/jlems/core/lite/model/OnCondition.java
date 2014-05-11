@@ -1,8 +1,5 @@
 package org.lemsml.jlems.core.lite.model;
 
-import java.util.ArrayList;
-
-import org.lemsml.jlems.core.logging.E;
 
 public class OnCondition extends OnAbstract {
  
@@ -10,11 +7,12 @@ public class OnCondition extends OnAbstract {
 	public String x_if;
 	
 	public OnCondition() {
-		 
+		 super();
 	}
 
 	
 	public OnCondition(String estr) {
+		super();
 		x_if = estr;
 	}
 

@@ -6,20 +6,18 @@ public class Var {
 	public String name;
 	public String value;
 	
-	// public String expression;
-	public String rpExpression;
+	 
+	public String p_rp;
 	
 	public Var(String vnm, String expr) {
 		name = vnm;
 		value = expr;
 	}
-	
-	
-	
-	public Var() {
-		 
-	}
+	 
 
+	public Var() {
+		// TODO Auto-generated constructor stub
+	}
 
 
 	public String getVariableName() {
@@ -31,11 +29,11 @@ public class Var {
 	}
 	
 	public void setReversePolishExpression(String s) {
-		rpExpression = s;
+		p_rp = s;
 	}
 	
 	public String getReversePolishExpression() {
-		return rpExpression;
+		return p_rp;
 	}
 	
 	

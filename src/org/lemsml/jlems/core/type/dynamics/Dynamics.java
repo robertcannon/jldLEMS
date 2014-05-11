@@ -19,6 +19,7 @@ import org.lemsml.jlems.core.run.ComponentRegime;
 import org.lemsml.jlems.core.run.ConditionAction;
 import org.lemsml.jlems.core.run.EventAction;
 import org.lemsml.jlems.core.run.KScheme;
+import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
@@ -125,14 +126,12 @@ public class Dynamics  {
 		if (valHM == null) {
 			valHM = new HashMap<String, Valued>();
 			ComponentType extt = r_type.getExtends();
-			if (extt != null) {
-				if (extt.hasBehavior()) {
+			if (extt != null && extt.hasBehavior()) {
 					Dynamics b = extt.getDynamics();
 					HashMap<String, Valued> extHM = b.getValHM();
 					for (String s : extHM.keySet()) {
 						valHM.put(s, extHM.get(s));
 					}
-				}
 			}
 		 
 			addToMap(p_requiredVars, valHM);
@@ -346,7 +345,13 @@ public class Dynamics  {
          // fixedHM should just contain global constants, we don't want 
          // the parameter values in there as these can still be overridden.
          
-         // 
+         for (String s : fixedHM.keySet()) {
+        	 E.info("FIXING Elt in fixedHM " + s + " " + fixedHM.get(s));
+          }
+         
+         
+         
+         
 		 for (ParamValue pv : cpt.getParamValues()) {
 			 String qn = pv.getName();
 			 double qv = pv.getDoubleValue();
@@ -355,11 +360,11 @@ public class Dynamics  {
 		 }
 		 
 		 for (RequiredVar rv : p_requiredVars) {
-			 ret.addIndependentVariable(rv.getName());
+			 ret.addIndependentVariable(rv.getName(), rv.getDimensionString());
 		 }
 		 
 		 for (ExposedVar ev : p_exposedVars) {
-			 ret.addExposedVariable(ev.getName());
+			 ret.addExposedVariable(ev.getName(), ev.getDimensionString());
 		 }
 		 
 		  
@@ -367,7 +372,7 @@ public class Dynamics  {
 		 HashSet<StateVariable> varHS = new HashSet<StateVariable>();
 		 for (StateVariable sv : stateVariables) {
 			varHS.add(sv); 
-			ret.addStateVaraible(sv.getName());
+			ret.addStateVariable(sv.getName(), sv.getDimensionString());
 			if (sv.hasExposure()) {
 				ret.addExposureMapping(sv.getName(), sv.getExposure().getName());
 			}
@@ -393,15 +398,13 @@ public class Dynamics  {
 		 
 		 for (DerivedVariable dv : derivedVariables) {
 			 if (dv.hasExpression()) {
+				
+				DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
 				 
-				// TODO NEXT - where is fixed float eval needed? 
-				 DoubleEvaluator db = dv.getParseTree().makeFloatEvaluator();
-				// DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
-				 
-				 ret.addExpressionDerived(dv.getName(), db);
+				 ret.addExpressionDerived(dv.getName(), db, dv.getDimensionString());
              	 
 			 } else if (dv.hasSelection()) {	 
-				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.isRequired(), dv.getReduce());
+				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.isRequired(), dv.getReduce(), dv.getDimensionString());
 				 
 			 } else {
 				 throw new ContentError("Derived variable needs as selection or an expression");
@@ -414,9 +417,8 @@ public class Dynamics  {
 		 
 		 for (ConditionalDerivedVariable cdv : conditionalDerivedVariables) {
 			  
-			DoubleEvaluator db = cdv.makeFloatFixedEvaluator(fixedHM);
-			// DoubleEvaluator db = cdv.makeFloatEvaluator();
-			 ret.addExpressionDerived(cdv.getName(), db);
+			 DoubleEvaluator db = cdv.makeFloatFixedEvaluator(fixedHM);
+	 		 ret.addExpressionDerived(cdv.getName(), db, cdv.getDimensionString());
              	 
 			 
             if (cdv.hasExposure()) {
@@ -431,15 +433,11 @@ public class Dynamics  {
 			 varHS.remove(sv);
 			 
 			 ParseTree pt = sd.getParseTree();
-			 // TODO - if no instances, can uise fixed evaluator. With instances, need general one
-			 DoubleEvaluator dev;
-			 
-			 // TODO NEXT - work out if have instances or not
-			 // dev = pt.makeFloatFixedEvaluator(fixedHM);
-			 //E.info("Using general purpose evaluator for " + cpt);
-			 dev = pt.makeFloatEvaluator();
-			 
-			 ret.addRate(sv.getName(), dev);
+ 
+			 DoubleEvaluator dev = pt.makeFloatFixedEvaluator(fixedHM);
+		 
+			 ret.addRate(sv.getName(), dev, sd.getDimensionString());
+
 		 }
 		 
 		 for (OnStart os : onStarts) {

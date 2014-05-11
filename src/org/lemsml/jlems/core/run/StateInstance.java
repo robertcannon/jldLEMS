@@ -1205,5 +1205,7 @@ public class StateInstance implements StateRunnable {
 		return stateType.getComponentID();
 	}
 
-	
+	public String getDimensionString(String fld) throws ContentError {
+		return stateType.getDimensionString(fld);
+	}
 }

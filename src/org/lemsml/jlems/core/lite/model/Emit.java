@@ -8,9 +8,12 @@ public class Emit {
 	public Emit(String s) {
 		port = s;
 	}
-	
+	 
+
 	public Emit() {
+		// called from generated factory
 	}
+
 
 	public String getPort() {
 		return port;

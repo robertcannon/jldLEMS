@@ -38,9 +38,8 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     
     
     private double dval = Double.NaN; // bit messy, just for constant powers
-
-    
-    static Dimension timeDimension;
+     
+    public static Dimension timeDimension;
     
 
     public Dimension() {
@@ -51,7 +50,16 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     public Dimension(String sn) {
         name = sn;
     }
-
+    
+    public Dimension(int im, int il, int it, int ii, int ik, int in, int ij) {
+    	m = im;
+    	l = ik;
+    	t = it;
+    	i = ii;
+    	k = ik;
+    	n = in;
+    	j = ij;
+    }
   
    
     public boolean dataMatches(Object obj) {
@@ -163,6 +171,10 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     public int getN() {
          return n;
     }
+    
+    public int getJ() {
+    	return j;
+    }
 
     public void setN(int n) {
         this.n = n;
@@ -245,19 +257,19 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
 	        int m = d.getM();
 	        int l = d.getL();
 	        int t = d.getT();
+	        int i = d.getI();
 	        int n = d.getN();
 	        int k = d.getK();
-	        int i = d.getI();
-	        
+	        int j = d.getJ();
 	       
-	        String[] symbols = {"kg", "m", "s", "A", "K", "mol"};
-	        int[] powers = {m, l, t, i, k, n};
+	        String[] symbols = {"kg", "m", "s", "A", "K", "mol", "lum"};
+	        int[] powers = {m, l, t, i, k, n, j};
 	        
 	        String ret = "";
-	        for (int j = 0; j < powers.length; j++) {
-	        	int p = powers[j];
+	        for (int jj = 0; jj < powers.length; jj++) {
+	        	int p = powers[jj];
 	        	if (p != 0) {
-	        		ret += symbols[j];
+	        		ret += symbols[jj];
 	        		if (p != 1) {
 	        			ret += "^" + p;
 	        		}
@@ -267,5 +279,18 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
 	        ret = ret.trim();
 	        return ret;
 	    }
+
+
+	 
+	 // the dimension string is a comma-separated list of dimension powers in the order
+	 // mass, length, time, current, temperature, amount, brightness
+	public String getDimensionString() {
+		int[] vals = {m, l, t, i, k, n, j};
+		String ret = "" + vals[0];
+		for (int i = 1; i < vals.length; i++) {
+			ret += "," + vals[i];
+		}
+		return ret;
+	}
    
 }

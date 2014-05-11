@@ -10,6 +10,7 @@ public class StringConditionalSetter extends AbstractOperation {
 	
 	
 	public StringConditionalSetter(String s1, String s2, String lvnm, String cvnm) {
+		super();
 		 cs1 = s1;
 		 cs2 = s2;
 		 locName = lvnm;

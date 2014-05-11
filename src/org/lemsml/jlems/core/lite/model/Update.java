@@ -7,18 +7,20 @@ public class Update {
 	public String variable;
 	public String value;
 	 
-	public String rpExpression;
+	public String p_rp;
 	
 	public Update(String vnm, String expr) {
 		variable = vnm;
 		value = expr;
 	}
 	
-	
-	
+	 
+
+
 	public Update() {
-		 
+		// called from generated factory on input
 	}
+
 
 
 
@@ -31,11 +33,11 @@ public class Update {
 	}
 	
 	public void setReversePolishExpression(String s) {
-		rpExpression = s;
+		p_rp = s;
 	}
 	
 	public String getReversePolishExpression() {
-		return rpExpression;
+		return p_rp;
 	}
 	
 	

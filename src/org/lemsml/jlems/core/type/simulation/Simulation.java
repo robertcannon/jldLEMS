@@ -1,7 +1,6 @@
 package org.lemsml.jlems.core.type.simulation;
 
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.out.ResultWriter;
 import org.lemsml.jlems.core.run.RuntimeDisplay;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 import org.lemsml.jlems.core.run.StateType;

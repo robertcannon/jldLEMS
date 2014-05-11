@@ -41,8 +41,8 @@ public class DynamicExecutionTest {
 			dct.generateAndRun(f1);
 			
 		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+			E.report("", ex);
+ 		}
 	}
 	
 	
@@ -124,7 +124,7 @@ public class DynamicExecutionTest {
 		  Component cna = lems.getComponent(tgtid);
 		  cg.addStateType(cna.getStateType());
   
-		  String srcCode = cg.getCombinedJavaSource();
+		  // String srcCode = cg.getCombinedJavaSource();
 	
 		  JavaGenerator jg = new JavaGenerator();
 		  jg.writeSourceFiles(destdir, cg);
@@ -134,7 +134,7 @@ public class DynamicExecutionTest {
 	
 		//  E.info("Generated code:\n\n" + srcCode);
 		  } catch (Exception ex) {
-			  ex.printStackTrace();
+ 			  E.report("", ex);
 			  throw new CodeGenerationException(ex);
 		  }
 	  }

@@ -9,11 +9,7 @@ public class LocalValues {
 	
 	HashMap<String, DoublePointer> valueMap = new HashMap<String, DoublePointer>();
 	
-	
-	public LocalValues() {
-		
-	}
-
+	 
 
 	public Set<String> keySet() {
 		return valueMap.keySet();

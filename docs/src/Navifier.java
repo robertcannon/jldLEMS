@@ -10,11 +10,7 @@ import java.util.StringTokenizer;
 
 public class Navifier {
 
-
-   public Navifier( ) {
-
-   }
-
+ 
 
 
    public static void main(String[] argv) {

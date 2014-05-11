@@ -2,6 +2,7 @@ package org.lemsml.examplemains;
 
 import java.io.File;
 
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
 
@@ -21,7 +22,7 @@ public class ExNumerics {
 
 			sim.readModel();	
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			E.report("",  ex);
 		}
 	}
 	

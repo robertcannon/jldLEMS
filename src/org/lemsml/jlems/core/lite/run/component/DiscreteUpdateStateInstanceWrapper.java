@@ -1,6 +1,5 @@
 package org.lemsml.jlems.core.lite.run.component;
-
-import org.lemsml.jlems.core.run.RegimeStateInstance;
+ 
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateWrapper;
 import org.lemsml.jlems.core.sim.ContentError;

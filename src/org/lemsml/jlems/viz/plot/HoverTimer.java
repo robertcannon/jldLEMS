@@ -1,5 +1,7 @@
 package org.lemsml.jlems.viz.plot;
 
+import org.lemsml.jlems.core.logging.E;
+
 
 public class HoverTimer implements Runnable {
 
@@ -48,7 +50,7 @@ public class HoverTimer implements Runnable {
             Thread.sleep(100);
 
          } catch (Exception ex) {
-        	 
+        	 E.info("Hover interrupted?");
          }
       }
 

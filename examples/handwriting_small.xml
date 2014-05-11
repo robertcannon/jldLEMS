@@ -27,7 +27,7 @@
         </State>
 
         <Step>
-            <!-- The original code ensures that "v > 0", but I thin kthis should be OK! -->
+            <!-- The original code ensures that "v > 0", but I think this should be OK! -->
             <Var name="total" value="(gain * (inp + constInput)) + bias"/>
             <!-- Recieve event here -->
             <Var name="dv" value="(total-v) * one_over_rc_float"/>
@@ -80,7 +80,7 @@
         <Let parameter="constInput" value="2"/>
         <Let parameter="bias" value="2"/>
         <Let parameter="gain" value="4"/>
-
+ 
         <Initialize stateVariable="inp" value="2" />
     </ComponentArray>
 
@@ -123,9 +123,9 @@
     
     <Simulation name="handwriting_simulation" dt="1.0e-3" endTime="1.0">
         <OutputFiles>
-            <File id="f_out1_hdf" name="f_out_i.hdf" format="hdf5"></File>
-            <File id="f_out2_csv" name="f_out_i.csv" format="csv"></File>
-            <File id="f_out3_csv" name="f_out_spikes.csv" format="csv"></File>
+            <File id="f_out1_hdf" name="f_out_i.hdf" format="hdf5"/>
+            <File id="f_out2_csv" name="f_out_i.csv" format="csv"/>
+            <File id="f_out3_csv" name="f_out_spikes.csv" format="csv"/>
         </OutputFiles>
 
 

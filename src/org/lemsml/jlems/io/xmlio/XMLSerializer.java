@@ -146,6 +146,11 @@ public class XMLSerializer {
 						// exported
 						if (fieldName != null) {
 							
+							if (fieldName.startsWith("x_")) {
+								fieldName = fieldName.substring(2, fieldName.length());
+							}
+							
+							
 							if (wk instanceof Double) {
 								setAttribute(ret, fieldName, "" + ((Double) wk).doubleValue());
 

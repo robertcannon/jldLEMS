@@ -8,6 +8,7 @@ public class MapDoubleExtraction extends AbstractOperation {
 	
 	
 	public MapDoubleExtraction(String vnm, String mnm, String fnm) {
+		super();
 		var = vnm;
 		map = mnm;
 		val = fnm;

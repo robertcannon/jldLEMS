@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="LemsLite" type="LemsLiteType"/>
+  <xs:complexType name="StateVariableType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="DiscreteUpdateComponentType">
+    <xs:sequence>
+      <xs:element type="InterfaceType" name="Interface" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="StateType" name="State" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="StepType" name="Step" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="OnEventType" name="OnEvent" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element type="OnConditionType" name="OnCondition" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name"/>
+  </xs:complexType>
+
+  <xs:complexType name="PropertyType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="array"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="EmitType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="port"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="EventSourceType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="port"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="OnConditionType">
+    <xs:sequence>
+      <xs:element type="UpdateType" name="Update" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="EmitType" name="Emit" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="if"/>
+  </xs:complexType>
+
+  <xs:complexType name="ArgType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="value"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="FileType" mixed="true">
+    <xs:sequence>
+      <xs:element type="FileSourceType" name="FileSource" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="optional"/>
+    <xs:attribute type="xs:string" name="id" use="optional"/>
+    <xs:attribute type="xs:string" name="format" use="optional"/>
+    <xs:attribute type="xs:string" name="delimiter" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="DataSourcesType">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element type="FileType" name="File"/>
+      <xs:element type="ArrayType" name="Array" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="StateType">
+    <xs:sequence>
+      <xs:element type="StateVariableType" name="StateVariable" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="EventTargetType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="port"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="LetType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="parameter" use="optional"/>
+        <xs:attribute type="xs:string" name="array" use="optional"/>
+        <xs:attribute type="xs:string" name="value" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="FileSourceType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="file" use="required"/>
+        <xs:attribute type="xs:string" name="column" use="optional"/>
+        <xs:attribute type="xs:string" name="size" use="optional"/>
+        <xs:attribute type="xs:string" name="row_offset" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ArrayType" mixed="true">
+    <xs:sequence>
+      <xs:element type="FileSourceType" name="FileSource" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="optional"/>
+    <xs:attribute type="xs:string" name="id" use="optional"/>
+    <xs:attribute type="xs:string" name="format" use="optional"/>
+    <xs:attribute type="xs:string" name="delimiter" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="InterfaceType">
+    <xs:sequence>
+      <xs:element type="ParameterType" name="Parameter" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="InputEventPortType" name="InputEventPort" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="OutputEventPortType" name="OutputEventPort" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="ConstantType" name="Constant" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="RecordableVariableType" name="RecordableVariable" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SourceTargetConnectorType">
+    <xs:sequence>
+      <xs:element type="FromArrayConnectorType" name="FromArrayConnector"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ParameterType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="parameter" use="optional"/>
+        <xs:attribute type="xs:string" name="array" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ConstantType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="value"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="RecordableVariableType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ComponentArrayType">
+    <xs:choice maxOccurs="unbounded" minOccurs="0">
+      <xs:element type="ParameterType" name="Parameter"/>
+      <xs:element type="LetType" name="Let"/>
+      <xs:element type="InitializeType" name="Initialize" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:choice>
+    <xs:attribute type="xs:string" name="name"/>
+    <xs:attribute type="xs:string" name="component"/>
+    <xs:attribute type="xs:string" name="size"/>
+  </xs:complexType>
+
+  <xs:complexType name="OnEventType">
+    <xs:sequence>
+      <xs:element type="UpdateType" name="Update"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="port"/>
+  </xs:complexType>
+
+  <xs:complexType name="VarType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+        <xs:attribute type="xs:string" name="value" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="EventArgumentsType">
+    <xs:sequence>
+      <xs:element type="ArgType" name="Arg"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="UpdateType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="variable" use="optional"/>
+        <xs:attribute type="xs:string" name="value" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="InitializeType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="state_variable" use="required"/>
+        <xs:attribute type="xs:string" name="array" use="optional"/>
+        <xs:attribute type="xs:string" name="value" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="RandomVarType">
+      <xs:simpleContent>
+          <xs:extension base="xs:string">
+            <xs:attribute type="xs:string" name="name" use="required"/>
+            <xs:attribute type="xs:string" name="series" use="required"/>
+          </xs:extension>
+      </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="StepType">
+    <xs:sequence>
+      <xs:element type="RandomVarType" name="RandomVar" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="VarType" name="Var" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="UpdateType" name="Update" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="xs:string" name="ConditionCheck"/>
+      <xs:element type="OutputType" name="Output" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="OutputType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="variable"/>
+        <xs:attribute type="xs:string" name="value"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!--
+  <xs:complexType name="SimulationType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name"/>
+        <xs:attribute type="xs:string" name="dt"/>
+        <xs:attribute type="xs:string" name="end_time"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  -->
+
+  <xs:simpleType name="RandomNumberDataType">
+      <xs:restriction base="xs:string">
+          <xs:enumeration value="int"/>
+          <xs:enumeration value="float"/>
+      </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="RandomSeriesType">
+      <xs:simpleContent>
+          <xs:extension base="xs:string">
+              <xs:attribute type="xs:string" name="name" use="required"/>
+              <xs:attribute type="RandomNumberDataType" name="type"/>
+              <xs:attribute type="xs:string" name="min" use="required"/>
+              <xs:attribute type="xs:string" name="max" use="required"/>
+              <xs:attribute type="xs:string" name="seed" use="optional"/>
+          </xs:extension>
+      </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="SimulationType">
+    <xs:sequence>
+        <xs:element type="RandomSeriesType" name="RandomSeries" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name"/>
+    <xs:attribute type="xs:string" name="dt"/>
+    <xs:attribute type="xs:string" name="end_time"/>
+  </xs:complexType>
+
+  <xs:complexType name="EventConnectionsType">
+    <xs:sequence>
+      <xs:element type="EventSourceType" name="EventSource"/>
+      <xs:element type="EventTargetType" name="EventTarget"/>
+      <xs:element type="SourceTargetConnectorType" name="SourceTargetConnector"/>
+      <xs:element type="ConnectionPropertiesType" name="ConnectionProperties"/>
+      <xs:element type="EventArgumentsType" name="EventArguments"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name"/>
+    <xs:attribute type="xs:string" name="from"/>
+    <xs:attribute type="xs:string" name="to"/>
+  </xs:complexType>
+
+  <xs:complexType name="OutputEventPortType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="FromArrayConnectorType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="pre"/>
+        <xs:attribute type="xs:string" name="post"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ConnectionPropertiesType">
+    <xs:sequence>
+      <xs:element type="PropertyType" name="Property"/>
+      <xs:element type="DelayType" name="Delay"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DelayType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="value"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="LemsLiteType">
+    <xs:sequence>
+      <xs:element type="DiscreteUpdateComponentType" name="DiscreteUpdateComponent" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element type="DataSourcesType" name="DataSources" minOccurs="0" maxOccurs="1"/>
+      <xs:element type="ComponentArrayType" name="ComponentArray" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element type="EventConnectionsType" name="EventConnections" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element type="SimulationType" name="Simulation" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="InputEventPortType">
+    <xs:sequence>
+      <xs:element type="ParameterType" name="Parameter"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name"/>
+  </xs:complexType>
+</xs:schema>

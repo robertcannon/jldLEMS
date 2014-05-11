@@ -6,12 +6,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.lemsml.jlems.core.display.DataViewer;
+import org.lemsml.jlems.core.lite.simulation.AbstractRecordingWriter;
 import org.lemsml.jlems.core.lite.simulation.InstanceWriter;
-import org.lemsml.jlems.core.lite.simulation.RecWriter;
 import org.lemsml.jlems.core.run.RuntimeError;
 
-public class RecFileWriter extends RecWriter {
+public class RecFileWriter extends AbstractRecordingWriter {
 	
 	String id;
 	String fileName;
@@ -23,6 +22,7 @@ public class RecFileWriter extends RecWriter {
 	
  
 	public RecFileWriter(String fid, String fnm, String fmt) {
+		super();
 		id = fid;
 		fileName = fnm;
 		format = fmt;

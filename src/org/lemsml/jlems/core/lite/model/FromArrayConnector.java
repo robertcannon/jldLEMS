@@ -1,6 +1,5 @@
 package org.lemsml.jlems.core.lite.model;
-
-import org.lemsml.jlems.core.logging.E;
+ 
 
 public class FromArrayConnector {
 

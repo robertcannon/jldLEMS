@@ -14,7 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.lemsml.jlems.core.display.DataViewPort;
@@ -23,7 +22,6 @@ import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.io.data.FormattedDataUtil;
 import org.lemsml.jlems.io.util.FileUtil;
 import org.lemsml.jlems.viz.plot.DataDisplay;
-import org.lemsml.jlems.viz.plot.DisplayLine;
 import org.lemsml.jlems.viz.plot.DisplayList;
 import org.lemsml.jlems.viz.plot.DisplayListPainter;
 import org.lemsml.jlems.viz.plot.PaintInstructor;
