@@ -61,11 +61,7 @@ public class Tunnel extends BuildElement {
 			throw new ContentError("Cant locate tunnel component " + component);
 		}
 		
-		
-		
-		
 		return tb;
-		
 	}
 
 	

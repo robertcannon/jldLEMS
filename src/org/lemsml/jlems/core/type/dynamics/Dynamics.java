@@ -433,9 +433,11 @@ public class Dynamics  {
 			 ParseTree pt = sd.getParseTree();
 			 // TODO - if no instances, can uise fixed evaluator. With instances, need general one
 			 DoubleEvaluator dev;
-			  dev = pt.makeFloatFixedEvaluator(fixedHM);
+			 
+			 // TODO NEXT - work out if have instances or not
+			 // dev = pt.makeFloatFixedEvaluator(fixedHM);
 			 //E.info("Using general purpose evaluator for " + cpt);
-			 //dev = pt.makeFloatEvaluator();
+			 dev = pt.makeFloatEvaluator();
 			 
 			 ret.addRate(sv.getName(), dev);
 		 }

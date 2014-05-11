@@ -72,6 +72,11 @@ public class ParseTree {
 	
 	
 	public DoubleEvaluator makeFloatFixedEvaluator(HashMap<String, Double> fixedHM) throws ContentError {
+		
+		if (fixedHM.containsKey("leakConductance")) {
+			E.trace();
+		}
+		
 		DBase ret = null;
 		if (root instanceof DoubleParseTreeNode) {
 			ret = new DBase(((DoubleParseTreeNode) root).makeEvaluable(fixedHM));

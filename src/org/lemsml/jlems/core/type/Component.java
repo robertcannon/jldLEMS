@@ -89,6 +89,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	private	 Component r_replacement;
 	
+	private boolean hasInst = false;
 	 
 	// RuntimeType can be a NativeType for code generated components
 	private RuntimeType runtimeType;
@@ -574,8 +575,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	public void addToChildren(String childrenName, Component c) throws ContentError {
 
-		if (childrenHM == null)
-        {
+		if (childrenHM == null) {
 			childrenNames = new ArrayList<String>();
 			childrenHM = new HashMap<String, ArrayList<Component>>();
         }
@@ -1099,6 +1099,13 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return ret;
 	}
 
+	public void setHasInstances() {
+		hasInst = true;
+	}
+
+	public boolean hasInstances() {
+		return hasInst;
+	}
 
 
 
