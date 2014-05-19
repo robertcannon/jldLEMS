@@ -2,7 +2,7 @@ package org.lemsml.jlems.viz;
  
 import java.io.IOException;
 
-import org.lemsml.jlems.Main;
+import org.lemsml.jlems.LEMSMain;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
@@ -28,6 +28,6 @@ public final class VizMain {
     	SwingDataViewerFactory.initialize();
 		DefaultLogger.initialize();
 	 
-    	Main.main(argv);
+    	LEMSMain.main(argv);
     }
 }

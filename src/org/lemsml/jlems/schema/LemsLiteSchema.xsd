@@ -25,6 +25,7 @@
       <xs:extension base="xs:string">
         <xs:attribute type="xs:string" name="name"/>
         <xs:attribute type="xs:string" name="array"/>
+        <xs:attribute type="xs:string" name="value"/>
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
@@ -113,13 +114,25 @@
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
+  
+   <xs:complexType name="ListSourceType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="values" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
 
   <xs:complexType name="ArrayType" mixed="true">
     <xs:sequence>
       <xs:element type="FileSourceType" name="FileSource" minOccurs="0"/>
+         <xs:element type="ListSourceType" name="ListSource" minOccurs="0"/>
     </xs:sequence>
+    
     <xs:attribute type="xs:string" name="name" use="optional"/>
     <xs:attribute type="xs:string" name="id" use="optional"/>
+    <xs:attribute type="xs:string" name="integer" use="optional"/>
     <xs:attribute type="xs:string" name="format" use="optional"/>
     <xs:attribute type="xs:string" name="delimiter" use="optional"/>
   </xs:complexType>
@@ -212,7 +225,7 @@
   <xs:complexType name="InitializeType">
     <xs:simpleContent>
       <xs:extension base="xs:string">
-        <xs:attribute type="xs:string" name="state_variable" use="required"/>
+        <xs:attribute type="xs:string" name="stateVariable" use="required"/>
         <xs:attribute type="xs:string" name="array" use="optional"/>
         <xs:attribute type="xs:string" name="value" use="optional"/>
       </xs:extension>
@@ -278,13 +291,102 @@
       </xs:simpleContent>
   </xs:complexType>
 
+
+ <xs:complexType name="OutputFilesType">
+    <xs:sequence>
+        <xs:element type="FileType" name="File" minOccurs="0" maxOccurs="unbounded"/>
+	</xs:sequence>
+</xs:complexType>
+	
+	
+ <xs:complexType name="VariableRecordingType">
+      <xs:simpleContent>
+          <xs:extension base="xs:string">
+              <xs:attribute type="xs:string" name="file" use="required"/>
+              <xs:attribute type="xs:string" name="componentArray" use="required"/>
+              <xs:attribute type="xs:string" name="indices" use="optional"/>
+              <xs:attribute type="xs:string" name="variable" use="required"/>
+          </xs:extension>
+      </xs:simpleContent>
+  </xs:complexType>
+	
+	
+ <xs:complexType name="InputEventRecordingType">
+      <xs:simpleContent>
+          <xs:extension base="xs:string">
+           <xs:attribute type="xs:string" name="file" use="required"/>
+              <xs:attribute type="xs:string" name="componentArray" use="required"/>
+              <xs:attribute type="xs:string" name="indices" use="optional"/>
+              <xs:attribute type="xs:string" name="port" use="optional"/>
+          </xs:extension>
+      </xs:simpleContent>
+  </xs:complexType>
+	
+	
+ <xs:complexType name="OutputEventRecordingType">
+      <xs:simpleContent>
+          <xs:extension base="xs:string">
+           <xs:attribute type="xs:string" name="file" use="required"/>
+              <xs:attribute type="xs:string" name="componentArray" use="required"/>
+              <xs:attribute type="xs:string" name="indices" use="optional"/>
+              <xs:attribute type="xs:string" name="port" use="optional"/>
+          </xs:extension>
+      </xs:simpleContent>
+  </xs:complexType>
+	
+	
+	
+ <xs:complexType name="RecordingType">
+    <xs:sequence>
+        <xs:element type="VariableRecordingType" name="VariableRecording" minOccurs="0" maxOccurs="unbounded"/>
+	    <xs:element type="InputEventRecordingType" name="InputEventRecording" minOccurs="0" maxOccurs="unbounded"/>
+	    <xs:element type="OutputEventRecordingType" name="OutputEventRecording" minOccurs="0" maxOccurs="unbounded"/>
+	</xs:sequence>
+	  
+	 
+              <xs:attribute type="xs:string" name="startTime" use="optional"/>
+              <xs:attribute type="xs:string" name="endTime" use="optional"/>
+              <xs:attribute type="xs:string" name="interval" use="optional"/>
+        
+	
+</xs:complexType>
+	
+	
+	
+ <xs:complexType name="VariableDisplayType">
+      <xs:simpleContent>
+          <xs:extension base="xs:string">
+              <xs:attribute type="xs:string" name="componentArray" use="required"/>
+              <xs:attribute type="xs:string" name="indices" use="required"/>
+              <xs:attribute type="xs:string" name="variable" use="required"/>
+              <xs:attribute type="xs:string" name="color" use="optional"/>
+          </xs:extension>
+      </xs:simpleContent>
+  </xs:complexType>
+
+	
+ <xs:complexType name="DisplayType">
+    <xs:sequence>
+        <xs:element type="VariableDisplayType" name="VariableDisplay" minOccurs="0" maxOccurs="unbounded"/>
+	</xs:sequence>
+    <xs:attribute type="xs:string" name="interval" use="optional"/>
+    <xs:attribute type="xs:string" name="id" use="optional"/>
+</xs:complexType>
+
+
+
+
   <xs:complexType name="SimulationType">
     <xs:sequence>
         <xs:element type="RandomSeriesType" name="RandomSeries" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element type="OutputFilesType" name="OutputFiles" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element type="RecordingType" name="Recording" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element type="DisplayType" name="Display" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
+    
     <xs:attribute type="xs:string" name="name"/>
     <xs:attribute type="xs:string" name="dt"/>
-    <xs:attribute type="xs:string" name="end_time"/>
+    <xs:attribute type="xs:string" name="endTime"/>
   </xs:complexType>
 
   <xs:complexType name="EventConnectionsType">
