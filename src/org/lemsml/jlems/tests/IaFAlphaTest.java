@@ -15,7 +15,7 @@ import org.lemsml.jlems.core.type.BuildException;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.main.Discretizer;
-import org.lemsml.jlems.validation.LemsLiteValidator;
+import org.lemsml.jlems.validation.FileSchemaValidator;
  
  
 public class IaFAlphaTest {
@@ -34,7 +34,7 @@ public class IaFAlphaTest {
     	
     	String llxml = "<LemsLite>\n" + xcpt + "\n</LemsLite>";
     	
-    	LemsLiteValidator llv = new LemsLiteValidator();
+    	FileSchemaValidator llv = new FileSchemaValidator();
     	llv.checkXMLText(llxml);
 
     }

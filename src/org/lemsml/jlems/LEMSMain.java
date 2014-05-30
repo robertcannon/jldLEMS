@@ -17,12 +17,12 @@ import org.lemsml.jlems.io.main.Discretizer;
 import org.lemsml.jlems.io.main.SimulationRunner;
  
 
-public final class Main {
+public final class LEMSMain {
 
 	 static String usage = "USAGE: java -jar lems-0.X.X.jar [-cp folderpaths] model-file\n";
 	
 
-	 private Main() {
+	 private LEMSMain() {
 		 
 	 }
 	 

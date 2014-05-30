@@ -9,26 +9,33 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.*;
 
+import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.io.util.JUtil;
+import org.lemsml.jlems.schema.SchemaRoot;
+
 public class LemsLiteValidator {
 
+	String schemaFileName = "LemsLiteSchema.xsd";
 	
-	
-	public void checkXMLText(String txt) {
-
+	public boolean checkXMLText(String txt) {
+		boolean ret = false;
 		try {
 		
-			File schemaFile = new File("schema/LemsLiteSchema.xsd");
-			Source xmlFile = new StreamSource(new StringReader(txt));
+			String schemaSrc = JUtil.getRelativeResource(SchemaRoot.class, schemaFileName);	
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Schema schema = schemaFactory.newSchema(schemaFile);
+			Schema schema = schemaFactory.newSchema(new StreamSource(new StringReader(schemaSrc)));
 			Validator validator = schema.newValidator();
+			
+			Source xmlFile = new StreamSource(new StringReader(txt));
+						
 			validator.validate(xmlFile);
-			System.out.println("Generated text IS valid LemsLite");
-		
+			ret = true;
+			
 		} catch (Exception ex) {
-			System.out.println("text is NOT valid against lems lite schema");
-			System.out.println("Reason: " + ex.getLocalizedMessage());
+			E.info("text is NOT valid against lems lite schema");
+			E.info("Reason: " + ex.getLocalizedMessage());
 		}
+		return ret;
 	}
 	
 	

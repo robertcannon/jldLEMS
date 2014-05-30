@@ -71,7 +71,7 @@ public class LEMSToLite {
     	}
     	E.info("Calling lems main with arguments: " + sa);
     	
-    	Main.main(sargs);
+    	LEMSMain.main(sargs);
     	 
     }
     

@@ -1,9 +1,9 @@
-package org.lemsml.jlems.tests;
-
+package org.lemsml.jlems;
+ 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
-import org.junit.Test;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.lite.model.LemsLite;
 import org.lemsml.jlems.core.lite.simulation.LemsLiteSimulation;
@@ -19,64 +19,82 @@ import org.lemsml.jlems.core.xml.XMLElementReader;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.data.FileDataSource;
 import org.lemsml.jlems.io.logging.DefaultLogger;
+import org.lemsml.jlems.io.main.ArgReader;
+import org.lemsml.jlems.io.main.Discretizer;
+import org.lemsml.jlems.io.main.SimulationRunner;
 import org.lemsml.jlems.io.util.FileUtil;
+import org.lemsml.jlems.validation.LemsLiteValidator;
 import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
  
 
+public final class LEMSLiteMain {
 
-public class LEMSLiteSmallNetworkTest {
-
+	 static String usage = "USAGE: java -jar lemslite-0.X.X.jar model-file\n";
 	
+
+	 private LEMSLiteMain() {
+		 
+	 }
 	 
-    public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException {
-    
+	 
+	 public static void showUsage() {
+		 E.info(usage);
+	 }
+	 
+	 
+	
+    public static void main(String[] argv) throws ConnectionError, ContentError, 
+    	RuntimeError, ParseError, ParseException, BuildException, XMLException, IOException {        
+    	
     	SwingDataViewerFactory.initialize();
 		DefaultLogger.initialize();
-    
-    	LEMSLiteSmallNetworkTest dut = new LEMSLiteSmallNetworkTest();
-    //	dut.runExampleIaF(); 
-    //	dut.runExampleHandwriting(); 
     	
-    	dut.runExampleHandwritingSmall();
+    	if (argv.length == 0) {
+            showUsage();
+            System.exit(1);
+        }
+        
+    	File fmod = new File(argv[argv.length - 1]);
+    	String stxt = FileUtil.readStringFromFile(fmod);
+        
+    	if (argv.length >= 2) {
+    		if (argv[0].equals("-v")) {
+    			validateModel(stxt);
+    			
+    		} else {
+    			E.error("Unrecognized argument " + argv[0]);
+    		}
     	
-    }
-     
-     
-    
-    @Test
-    public void runExampleHandwriting() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
-    	File f1 = new File("examples/mh_handwriting.xml");
-    	
-    	runDiscreteUpdateComponent(f1);
-    	
-    }
-    
-    public void runExampleHandwritingSmall() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
-    	File f1 = new File("examples/handwriting_small.xml");
-    	
-    	runDiscreteUpdateComponent(f1);
-    	
+    	} else {
+    		runModel(fmod, stxt);
+    	}	
     }
     
     
+    private static void validateModel(String stxt) {
+    	LemsLiteValidator llv = new LemsLiteValidator();
+    	boolean ok = llv.checkXMLText(stxt);
+    	if (ok) {
+    		E.info("OK, valid LemsLits");
+    	}
+    }
     
-    private void runDiscreteUpdateComponent(File f1) throws ContentError, IOException, ParseError, ConnectionError, RuntimeError {
-   
-    	String stxt = FileUtil.readStringFromFile(f1);
-     
+    
+    
+    private static void runModel(File fmod, String stxt) throws ContentError, ParseError, ConnectionError, RuntimeError {
     	XMLElementReader exmlr = new XMLElementReader(stxt + "    ");
 
 		XMLElement xel = exmlr.getRootElement();
   		
 		LemsLiteFactory lf = new LemsLiteFactory();
 		LemsLite lemsLite = lf.buildLemsFromXMLElement(xel);
-	
+		
 		E.info("lemsLite model read: " + lemsLite.getSummary());
 	
 		// XMLSerializer xs = new XMLSerializer();
 		// String sx = xs.serialize(lemsLite);
 	 
-		File fdir = f1.getParentFile();
+		File fdir = fmod.getParentFile();
 	
 		LemsLiteSimulation lls = new LemsLiteSimulation(lemsLite);
 
@@ -84,9 +102,11 @@ public class LEMSLiteSmallNetworkTest {
 		
 		lls.run(fds);
 		
+    
+ 
+    
     }
     
-	
-    
-   
+     
+  
 }

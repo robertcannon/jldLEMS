@@ -1,0 +1,27 @@
+Changes are:
+
+ main.php
+>  minSize :  200   
+instead of 300 for the sidebar
+
+
+style.ini
+> __sidebar_width = "12em"
+instead of 16em for the initial sidebar width
+
+
+
+design.less
+background color of sidebar:
+> background:#1970a9 !important;
+> color : #f0f0f0;
+
+
+and colors of ps and uls in the sidebar:
+
+p {
+      margin-left : 12px;
+}
+ul {
+     margin-left : 30px;
+}
