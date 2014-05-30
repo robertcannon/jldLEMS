@@ -24,6 +24,7 @@ import org.lemsml.jlems.core.type.ComponentTypeReference;
 import org.lemsml.jlems.core.type.Constant;
 import org.lemsml.jlems.core.type.DerivedParameter;
 import org.lemsml.jlems.core.type.Dimension;
+import org.lemsml.jlems.core.type.EventPort;
 import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.Fixed;
 import org.lemsml.jlems.core.type.IndexParameter;
@@ -32,6 +33,7 @@ import org.lemsml.jlems.core.type.Insertion;
 import org.lemsml.jlems.core.type.InstanceRequirement;
 import org.lemsml.jlems.core.type.IntegerParameter;
 import org.lemsml.jlems.core.type.Lems;
+import org.lemsml.jlems.core.type.Link;
 import org.lemsml.jlems.core.type.LocalParameters;
 import org.lemsml.jlems.core.type.Location;
 import org.lemsml.jlems.core.type.Meta;
@@ -252,11 +254,13 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Child.class, section));
 		ret.add(new LemsClass(Children.class, section));
  		ret.add(new LemsClass(ComponentReference.class, section));
+ 		ret.add(new LemsClass(Link.class, section)); // Deprecaed
  		ret.add(new LemsClass(ComponentTypeReference.class, section));
  		ret.add(new LemsClass(Collection.class, section));
  		ret.add(new LemsClass(PairCollection.class, section));
 		ret.add(new LemsClass(SendPort.class, section));
 		ret.add(new LemsClass(ReceivePort.class, section));
+		ret.add(new LemsClass(EventPort.class, section)); // Deprecated
 		ret.add(new LemsClass(Text.class, section));
 		ret.add(new LemsClass(Path.class, section));
 		ret.add(new LemsClass(Attachments.class, section));

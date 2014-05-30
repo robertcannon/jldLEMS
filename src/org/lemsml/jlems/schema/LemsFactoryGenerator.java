@@ -169,6 +169,10 @@ public class LemsFactoryGenerator {
 	sb.append("            String xn = cel.getTag();\n\n");
 	sb.append("            Object obj = instantiateFromXMLElement(cel);\n");
 	
+	sb.append("            if (obj != null && obj instanceof DeprecatedElement) {\n");
+	sb.append("                obj = ((DeprecatedElement)obj).getReplacement();\n");
+	sb.append("            }\n");
+	
 	sb.append("            if (xn.equals(\"UNUSED\")) {\n");
 	
 	for (Field f : c.getFields()) {
