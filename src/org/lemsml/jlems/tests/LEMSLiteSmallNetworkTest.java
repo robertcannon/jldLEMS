@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
+import org.lemsml.jlems.LemsLiteMain;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.lite.model.LemsLite;
 import org.lemsml.jlems.core.lite.simulation.LemsLiteSimulation;
@@ -54,7 +55,9 @@ public class LEMSLiteSmallNetworkTest {
     public void runExampleHandwritingSmall() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
     	File f1 = new File("examples/handwriting_small.xml");
     	
-    	runDiscreteUpdateComponent(f1);
+    	LemsLiteMain.validateModel(f1);
+    	
+//    	runDiscreteUpdateComponent(f1);
     	
     }
     

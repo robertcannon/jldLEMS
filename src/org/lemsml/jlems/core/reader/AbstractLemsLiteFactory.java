@@ -7,6 +7,7 @@ import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
 import org.lemsml.jlems.core.lite.model.EventConnections;
 import org.lemsml.jlems.core.lite.model.LemsLite;
 import org.lemsml.jlems.core.lite.model.Simulation;
+import org.lemsml.jlems.core.lite.model.TimedEvents;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.xml.XMLElement;
@@ -16,7 +17,9 @@ public abstract class AbstractLemsLiteFactory {
 	
 	public LemsLite buildLemsFromXMLElement(XMLElement root) throws ContentError {
 	 	LemsLite ret=  null;
-		if (root.isTag("LEMSLite")) {
+	 	if (root == null) {
+	 		throw new ContentError("Cant read lems lite: root element is null");
+	 	} else if (root.isTag("LemsLite")) {
 			ret = readLemsLite(root);
 		} else {
 			throw new ContentError("Cant read lems lite from " + root);
@@ -43,8 +46,13 @@ public abstract class AbstractLemsLiteFactory {
 			} else if (xel.isTag("EventConnections")) {
 				ret.eventConnectionss.add((EventConnections)instantiateFromXMLElement(xel));
 		
+			} else if (xel.isTag("TimedEvents")) {
+				ret.timedEventss.add((TimedEvents)instantiateFromXMLElement(xel));
+				
 			} else if (xel.isTag("Simulation")) {
 				ret.simulations.add((Simulation)instantiateFromXMLElement(xel));
+				
+			 
 				
 			} else {
 				throw new ContentError("Unrecognized tag " + xel);

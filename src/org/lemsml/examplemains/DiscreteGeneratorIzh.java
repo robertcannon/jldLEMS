@@ -1,6 +1,6 @@
 package org.lemsml.examplemains;
 
-import org.lemsml.jlems.LEMSMain;
+import org.lemsml.jlems.LemsMain;
 
 public class DiscreteGeneratorIzh {
 
@@ -9,7 +9,7 @@ public class DiscreteGeneratorIzh {
 		
 		String[] args = {"-d", "-t", "izBurst", "examples/example-izh.xml"};
 		
-		LEMSMain.selfContainedMain(args);
+		LemsMain.selfContainedMain(args);
 	
 	}
 	

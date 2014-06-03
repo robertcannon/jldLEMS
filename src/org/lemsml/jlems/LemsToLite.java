@@ -16,7 +16,7 @@ import org.lemsml.jlems.io.logging.DefaultLogger;
  
 
 
-public class LEMSToLite {
+public class LemsToLite {
 
 	
 	 
@@ -36,7 +36,7 @@ public class LEMSToLite {
     			if (args.length >= 2) {
     				cptID = args[1];
     					
-    				LEMSToLite ltl = new LEMSToLite();
+    				LemsToLite ltl = new LemsToLite();
     				
     				ltl.doConversion(fmod, cptID);
     			}
@@ -71,7 +71,7 @@ public class LEMSToLite {
     	}
     	E.info("Calling lems main with arguments: " + sa);
     	
-    	LEMSMain.main(sargs);
+    	LemsMain.main(sargs);
     	 
     }
     

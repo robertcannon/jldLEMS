@@ -27,12 +27,12 @@ import org.lemsml.jlems.validation.LemsLiteValidator;
 import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
  
 
-public final class LEMSLiteMain {
+public final class LemsLiteMain {
 
 	 static String usage = "USAGE: java -jar lemslite-0.X.X.jar model-file\n";
 	
 
-	 private LEMSLiteMain() {
+	 private LemsLiteMain() {
 		 
 	 }
 	 
@@ -55,18 +55,17 @@ public final class LEMSLiteMain {
         }
         
     	File fmod = new File(argv[argv.length - 1]);
-    	String stxt = FileUtil.readStringFromFile(fmod);
         
     	if (argv.length >= 2) {
     		if (argv[0].equals("-v")) {
-    			validateModel(stxt);
+    			validateModel(fmod);
     			
     		} else {
     			E.error("Unrecognized argument " + argv[0]);
     		}
     	
     	} else {
-    		runModel(fmod, stxt);
+    		runModel(fmod);
     	}	
     }
     
@@ -79,9 +78,17 @@ public final class LEMSLiteMain {
     	}
     }
     
+    public static void validateModel(File f) throws IOException {
+    	String stxt = FileUtil.readStringFromFile(f);
+    	validateModel(stxt);
+    }
     
     
-    private static void runModel(File fmod, String stxt) throws ContentError, ParseError, ConnectionError, RuntimeError {
+    public static void runModel(File fmod) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException {
+    	
+    	String stxt = FileUtil.readStringFromFile(fmod);
+        
+    	
     	XMLElementReader exmlr = new XMLElementReader(stxt + "    ");
 
 		XMLElement xel = exmlr.getRootElement();

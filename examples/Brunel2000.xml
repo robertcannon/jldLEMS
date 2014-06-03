@@ -1,0 +1,266 @@
+<LemsLite>
+	<DiscreteUpdateComponent name="IaF_curr_alpha">
+	    <Interface>
+	        <InputEventPort name="inhibitory-in">
+	                <Parameter name="weight"/>
+	        </InputEventPort>
+	        <InputEventPort name="excitatory-in">
+	                <Parameter name="weight"/>
+	        </InputEventPort>
+	        <OutputEventPort name="spikes-out"/>
+	        <!--
+	        <RecordableVariable name="tIn"/>
+	        <RecordableVariable name="tEx"/> -->
+	        <RecordableVariable name="v"/>
+	    </Interface>
+	    <State>
+	        <StateVariable name="v"/>
+	        <StateVariable name="ye"/>
+	        <StateVariable name="yi"/>
+	        <StateVariable name="ge"/>
+	        <StateVariable name="gi"/>
+	        <StateVariable name="tEx"/>
+	        <StateVariable name="tIn"/>
+	    </State>
+	    <Step>
+	        <Var name="gtot" value="((ge - gi) + 0.0)"/>
+	        <Var name="d_ye_dt" value="(0.0 - (1.0 * (ye / 1.0E-4)))"/>
+	        <Var name="d_yi_dt" value="(0.0 - (1.0 * (yi / 1.0E-4)))"/>
+	        <Var name="d_ge_dt" value="(((1.0E-11 * ye) - ge) / 1.0E-4)"/>
+	        <Var name="d_gi_dt" value="(((1.0E-11 * yi) - gi) / 1.0E-4)"/>
+	        <Var name="d_v_dt" value="((gtot / 1.0E-11) - ((v - 0.0) / 0.02))"/>
+	        <Update variable="ye" value="(ye + (d_ye_dt * dt))"/>
+	        <Update variable="yi" value="(yi + (d_yi_dt * dt))"/>
+	        <Update variable="ge" value="(ge + (d_ge_dt * dt))"/>
+	        <Update variable="gi" value="(gi + (d_gi_dt * dt))"/>
+	        <Update variable="v" value="(v + (d_v_dt * dt))"/>
+	        <!--
+	        <Output variable="tIn" value="tIn"/>
+	        <Output variable="tEx" value="tEx"/> -->
+	        <Output variable="v" value="v"/>
+	    </Step>
+	    <OnEvent port="inhibitory-in">
+	        <IfCondition test="(t .gt. (tIn + 0.002))">
+	            <Update variable="yi" value="(yi + weight)"/>
+	            <Update variable="tIn" value="t"/>
+	        </IfCondition>
+	    </OnEvent>
+	    <OnEvent port="excitatory-in">
+	        <IfCondition test="(t .gt. (tEx + 0.002))">
+	            <Update variable="ye" value="(ye + weight)"/>
+	            <Update variable="tEx" value="t"/>
+	        </IfCondition>
+	    </OnEvent>
+	    <OnCondition test="(v .gt. 0.02)">
+	        <Update variable="v" value="0.0"/>
+	        <Emit port="spikes-out"/>
+	    </OnCondition>
+	</DiscreteUpdateComponent>
+
+	<!-- External Data-Sources -->
+
+	<DataSources>
+
+	    <!-- Pre-determined (Poisson) Input Spikes -->
+
+	    <!-- Excitatory Input -->
+	    <File name="excitatory_input_spikes.csv" id="ei_spikes" format="csv" delimiter=" "/>
+	    <Array name="e_input_times">
+	        <FileSource file="ei_spikes" column="0"/>
+	    </Array>
+	    <Array name="e_input_targets">
+	        <FileSource file="ei_spikes" column="1"/>
+	    </Array>
+	    <Array name="e_input_weights">
+	        <FileSource file="ei_spikes" column="2"/>
+	    </Array>
+
+	    <!-- Inhibitory Input -->
+	    <File name="inhibitory_input_spikes.csv" id="ii_spikes" format="csv" delimiter=" "/>
+	    <Array name="i_input_times">
+	        <FileSource file="ii_spikes" column="0"/>
+	    </Array>
+	    <Array name="i_input_targets">
+	        <FileSource file="ii_spikes" column="1"/>
+	    </Array>
+	    <Array name="i_input_weights">
+	        <FileSource file="ii_spikes" column="2"/>
+	    </Array>
+
+
+
+	    <!-- Initial Membrane Potential Values (v) -->
+
+	    <File name="excitatory_initial_v.txt" id="excitatory_v" format="csv" delimiter=" "/>
+	    <File name="inhibitory_initial_v.txt" id="inhibitory_v" format="csv" delimiter=" "/>
+	    <Array name="excitatory_v">
+	        <FileSource file="excitatory_v" column="1"/>
+	    </Array>
+	    <Array name="inhibitory_v">
+	        <FileSource file="inhibitory_v" column="1"/>
+	    </Array>
+
+
+
+	    <!-- Population Projection Connectivity -->
+
+	    <!-- Excitatory-to-Excitatory -->
+	    <File name="E_to_E.txt" id="e_to_e" format="csv" delimiter=" "/>
+	    <Array name="e_to_e_source">
+	        <FileSource file="e_to_e" column="0"/>
+	    </Array>
+	    <Array name="e_to_e_destination">
+	        <FileSource file="e_to_e" column="1"/>
+	    </Array>
+	    <Array name="e_to_e_weight">
+	        <FileSource file="e_to_e" column="2"/>
+	    </Array>
+
+	    <!-- Excitatory-to-Inhibitory -->
+	    <File name="E_to_I.txt" id="e_to_i" format="csv" delimiter=" "/>
+	    <Array name="e_to_i_source">
+	        <FileSource file="e_to_i" column="0"/>
+	    </Array>
+	    <Array name="e_to_i_destination">
+	        <FileSource file="e_to_i" column="1"/>
+	    </Array>
+	    <Array name="e_to_i_weight">
+	        <FileSource file="e_to_i" column="2"/>
+	    </Array>
+
+	    <!-- Inhibitory-to-Inhibitory -->
+	    <File name="I_to_I.txt" id="i_to_i" format="csv" delimiter=" "/>
+	    <Array name="i_to_i_source">
+	        <FileSource file="i_to_i" column="0"/>
+	    </Array>
+	    <Array name="i_to_i_destination">
+	        <FileSource file="i_to_i" column="1"/>
+	    </Array>
+	    <Array name="i_to_i_weight">
+	        <FileSource file="i_to_i" column="2"/>
+	    </Array>
+
+	    <!-- Inhibitory-to-Excitatory -->
+	    <File name="I_to_E.txt" id="i_to_e" format="csv" delimiter=" "/>
+	    <Array name="i_to_e_source">
+	        <FileSource file="i_to_e" column="0"/>
+	    </Array>
+	    <Array name="i_to_e_destination">
+	        <FileSource file="i_to_e" column="1"/>
+	    </Array>
+	    <Array name="i_to_e_weight">
+	        <FileSource file="i_to_e" column="2"/>
+	    </Array>
+
+	</DataSources>
+
+
+	<!-- Population Definitions -->
+
+	<!-- Excitatory Population -->
+	<ComponentArray name="excitatory_IaF" component="IaF_curr_alpha" size="4000">
+	    <Initialize stateVariable="v" array="excitatory_v"/>
+	    <Initialize stateVariable="ye" value="0"/>
+	    <Initialize stateVariable="yi" value="0"/>
+	    <Initialize stateVariable="ge" value="0"/>
+	    <Initialize stateVariable="gi" value="0"/>
+	    <Initialize stateVariable="tEx" value="0"/>
+	    <Initialize stateVariable="tIn" value="0"/>
+	</ComponentArray>
+
+	<!-- Inhibitory Population -->
+	<ComponentArray name="inhibitory_IaF" component="IaF_curr_alpha" size="1000">
+	    <Initialize stateVariable="v" array="inhibitory_v"/>
+	    <Initialize stateVariable="ye" value="0"/>
+	    <Initialize stateVariable="yi" value="0"/>
+	    <Initialize stateVariable="ge" value="0"/>
+	    <Initialize stateVariable="gi" value="0"/>
+	    <Initialize stateVariable="tEx" value="0"/>
+	    <Initialize stateVariable="tIn" value="0"/>
+	</ComponentArray>
+
+
+
+	<!-- Population Projections -->
+
+
+	<!-- Excitatory Connections -->
+
+	<!-- Excitatory-to-Excitatory -->
+	<EventConnections name="connections_E_to_E" from="excitatory_IaF" to="excitatory_IaF">
+	    <EventSource port="spikes-out"/><EventTarget port="excitatory-in"/>
+	    <SourceTargetConnector>
+	        <FromArrayConnector pre="e_to_e_source" post="e_to_e_destination"/>
+	    </SourceTargetConnector>
+	    <ConnectionProperties>
+	        <Property name="weight" array="e_to_e_weight"/>
+	        <Delay value="15"/>
+	    </ConnectionProperties>
+	</EventConnections>
+
+	<!-- Excitatory-to-Inhibitory -->
+	<EventConnections name="connections_E_to_I" from="excitatory_IaF" to="inhibitory_IaF">
+	    <EventSource port="spikes-out"/><EventTarget port="excitatory-in"/>
+	    <SourceTargetConnector>
+	        <FromArrayConnector pre="e_to_i_source" post="e_to_i_destination"/>
+	    </SourceTargetConnector>
+	    <ConnectionProperties>
+	        <Property name="weight" array="e_to_i_weight"/>
+	        <Delay value="15"/>
+	    </ConnectionProperties>
+	</EventConnections>
+
+
+	<!-- Inhibitory Connections -->
+
+	<!-- Inhibitory-to-Inhibitory -->
+	<EventConnections name="connections_I_to_I" from="inhibitory_IaF" to="inhibitory_IaF">
+	    <EventSource port="spikes-out"/><EventTarget port="inhibitory-in"/>
+	    <SourceTargetConnector>
+	        <FromArrayConnector pre="i_to_i_source" post="i_to_i_destination"/>
+	    </SourceTargetConnector>
+	    <ConnectionProperties>
+	        <Property name="weight" array="i_to_i_weight"/>
+	        <Delay value="15"/>
+	    </ConnectionProperties>
+	</EventConnections>
+
+	<!-- Inhibitory-to-Excitatory -->
+	<EventConnections name="connections_I_to_E" from="inhibitory_IaF" to="excitatory_IaF">
+	    <EventSource port="spikes-out"/><EventTarget port="inhibitory-in"/>
+	    <SourceTargetConnector>
+	        <FromArrayConnector pre="i_to_e_source" post="i_to_e_destination"/>
+	    </SourceTargetConnector>
+	    <ConnectionProperties>
+	        <Property name="weight" array="i_to_e_weight"/>
+	        <Delay value="15"/>
+	    </ConnectionProperties>
+	</EventConnections>
+
+
+
+	<!-- Timed Inputs -->
+ 
+	 <TimedEvents name="excitatory_inputs" to="excitatory_IaF" times="e_input_times" targets="e_input_targets">
+	     <EventTarget port="excitatory-in"/>
+	     
+	      
+	    <ConnectionProperties>
+	     	 
+	        <Property name="weight" array="e_input_weights"/>
+	    </ConnectionProperties>
+	</TimedEvents>
+ 
+
+	<!-- Poisson inputs are excitatory to give network an underlying frequency -->
+	<TimedEvents name="inhibitory_inputs" to="inhibitory_IaF" times="i_input_times" targets="i_input_targets">
+		<EventTarget port="excitatory-in"/>
+		 
+	    <ConnectionProperties>
+	        <Property name="weight" array="i_input_weights"/>
+	    </ConnectionProperties>
+	</TimedEvents>
+
+	<Simulation name="Brunel2000" dt="0.1e-3" endTime="0.01"/>
+
+</LemsLite>

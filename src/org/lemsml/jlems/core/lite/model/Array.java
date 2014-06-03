@@ -10,7 +10,7 @@ public class Array {
 	
 	public LemsCollection<FileSource> fileSources = new LemsCollection<FileSource>();
 
-	public LemsCollection<IntegerListArraySource> integerListArraySources = new LemsCollection<IntegerListArraySource>();
+	public LemsCollection<ListSource> listSources = new LemsCollection<ListSource>();
 	
 	
 	public boolean hasFileSource() {
@@ -29,14 +29,14 @@ public class Array {
 	
 	public boolean hasIntListSource() {
 		boolean ret = false;
-		if (integerListArraySources.size() > 0) {
+		if (listSources.size() > 0) {
 			ret = true;
 		}
 		return ret;
 	}
 	
 	public int[] getIntArray() {
-		return integerListArraySources.get(0).getValues();
+		return listSources.get(0).getValues();
 	}
 		
 	

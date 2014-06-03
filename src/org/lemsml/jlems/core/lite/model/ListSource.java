@@ -2,7 +2,7 @@ package org.lemsml.jlems.core.lite.model;
 
 import java.util.ArrayList;
 
-public class IntegerListArraySource {
+public class ListSource {
 
 	
 	public String values;

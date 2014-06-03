@@ -47,13 +47,11 @@
   </xs:complexType>
 
   <xs:complexType name="OnConditionType">
-    <!-- <xs:choice minOccurs="0" maxOccurs="unbounded"> -->
     <xs:sequence>
       <xs:element type="UpdateType" name="Update" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element type="EmitType" name="Emit" maxOccurs="unbounded" minOccurs="0"/>
     </xs:sequence>
-    <!-- </xs:choice> -->
-    <xs:attribute type="xs:string" name="test"/>
+    <xs:attribute type="xs:string" name="if"/>
   </xs:complexType>
 
   <xs:complexType name="ArgType">
@@ -116,26 +114,25 @@
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
-
-
-  <xs:complexType name="ListSourceType">
+  
+   <xs:complexType name="ListSourceType">
     <xs:simpleContent>
       <xs:extension base="xs:string">
         <xs:attribute type="xs:string" name="values" use="required"/>
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
-
+  
 
   <xs:complexType name="ArrayType" mixed="true">
     <xs:sequence>
       <xs:element type="FileSourceType" name="FileSource" minOccurs="0"/>
-      <xs:element type="ListSourceType" name="ListSource" minOccurs="0"/>
-   
+         <xs:element type="ListSourceType" name="ListSource" minOccurs="0"/>
     </xs:sequence>
+    
     <xs:attribute type="xs:string" name="name" use="optional"/>
     <xs:attribute type="xs:string" name="id" use="optional"/>
-     <xs:attribute type="xs:string" name="integer" use="optional"/>
+    <xs:attribute type="xs:string" name="integer" use="optional"/>
     <xs:attribute type="xs:string" name="format" use="optional"/>
     <xs:attribute type="xs:string" name="delimiter" use="optional"/>
   </xs:complexType>
@@ -194,17 +191,9 @@
     <xs:attribute type="xs:string" name="size"/>
   </xs:complexType>
 
-  <xs:complexType name="IfConditionType">
-    <xs:sequence>
-      <xs:element type="UpdateType" name="Update" maxOccurs="unbounded" minOccurs="0"/>
-    </xs:sequence>
-    <xs:attribute type="xs:string" name="test"/>
-  </xs:complexType>
-
   <xs:complexType name="OnEventType">
     <xs:sequence>
-      <xs:element type="UpdateType" name="Update" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element type="IfConditionType" name="IfCondition" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element type="UpdateType" name="Update"/>
     </xs:sequence>
     <xs:attribute type="xs:string" name="port"/>
   </xs:complexType>
@@ -257,7 +246,6 @@
       <xs:element type="RandomVarType" name="RandomVar" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element type="VarType" name="Var" maxOccurs="unbounded" minOccurs="0"/>
       <xs:element type="UpdateType" name="Update" maxOccurs="unbounded" minOccurs="0"/>
-      <!-- <xs:element type="xs:string" name="ConditionCheck"/> -->
       <xs:element type="OutputType" name="Output" maxOccurs="unbounded" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
@@ -295,13 +283,12 @@
           <xs:extension base="xs:string">
               <xs:attribute type="xs:string" name="name" use="required"/>
               <xs:attribute type="RandomNumberDataType" name="type"/>
-              <xs:attribute type="xs:float" name="min" use="required"/>
-              <xs:attribute type="xs:float" name="max" use="required"/>
-              <xs:attribute type="xs:integer" name="seed" use="optional"/>
+              <xs:attribute type="xs:string" name="min" use="required"/>
+              <xs:attribute type="xs:string" name="max" use="required"/>
+              <xs:attribute type="xs:string" name="seed" use="optional"/>
           </xs:extension>
       </xs:simpleContent>
   </xs:complexType>
-
 
 
  <xs:complexType name="OutputFilesType">
@@ -376,8 +363,7 @@
       </xs:simpleContent>
   </xs:complexType>
 
-
-
+	
  <xs:complexType name="DisplayType">
     <xs:sequence>
         <xs:element type="VariableDisplayType" name="VariableDisplay" minOccurs="0" maxOccurs="unbounded"/>
@@ -388,6 +374,7 @@
 
 
 
+
   <xs:complexType name="SimulationType">
     <xs:sequence>
         <xs:element type="RandomSeriesType" name="RandomSeries" minOccurs="0" maxOccurs="unbounded"/>
@@ -395,6 +382,7 @@
         <xs:element type="RecordingType" name="Recording" minOccurs="0" maxOccurs="unbounded"/>
         <xs:element type="DisplayType" name="Display" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
+    
     <xs:attribute type="xs:string" name="name"/>
     <xs:attribute type="xs:string" name="dt"/>
     <xs:attribute type="xs:string" name="endTime"/>
@@ -402,26 +390,15 @@
 
   <xs:complexType name="EventConnectionsType">
     <xs:sequence>
-      <xs:element type="EventSourceType" name="EventSource" minOccurs="1" maxOccurs="1"/>
-      <xs:element type="EventTargetType" name="EventTarget" minOccurs="1" maxOccurs="1"/>
-      <xs:element type="SourceTargetConnectorType" name="SourceTargetConnector" minOccurs="1" maxOccurs="1"/>
-      <xs:element type="ConnectionPropertiesType" name="ConnectionProperties" minOccurs="1" maxOccurs="1"/>
-      <xs:element type="EventArgumentsType" name="EventArguments" minOccurs="0" maxOccurs="1"/>
+      <xs:element type="EventSourceType" name="EventSource"/>
+      <xs:element type="EventTargetType" name="EventTarget"/>
+      <xs:element type="SourceTargetConnectorType" name="SourceTargetConnector"/>
+      <xs:element type="ConnectionPropertiesType" name="ConnectionProperties"/>
+      <xs:element type="EventArgumentsType" name="EventArguments"/>
     </xs:sequence>
     <xs:attribute type="xs:string" name="name"/>
     <xs:attribute type="xs:string" name="from"/>
     <xs:attribute type="xs:string" name="to"/>
-  </xs:complexType>
-
-  <xs:complexType name="TimedEventsType">
-    <xs:sequence>
-      <xs:element type="ConnectionPropertiesType" name="ConnectionProperties" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-    <xs:attribute type="xs:string" name="name"/>
-    <xs:attribute type="xs:string" name="to"/>
-    <xs:attribute type="xs:string" name="port"/>
-    <xs:attribute type="xs:string" name="targets"/>
-    <xs:attribute type="xs:string" name="times"/>
   </xs:complexType>
 
   <xs:complexType name="OutputEventPortType">
@@ -443,8 +420,8 @@
 
   <xs:complexType name="ConnectionPropertiesType">
     <xs:sequence>
-      <xs:element type="PropertyType" name="Property" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element type="DelayType" name="Delay" minOccurs="0" maxOccurs="1"/>
+      <xs:element type="PropertyType" name="Property"/>
+      <xs:element type="DelayType" name="Delay"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -460,10 +437,9 @@
     <xs:sequence>
       <xs:element type="DiscreteUpdateComponentType" name="DiscreteUpdateComponent" minOccurs="1" maxOccurs="unbounded"/>
       <xs:element type="DataSourcesType" name="DataSources" minOccurs="0" maxOccurs="1"/>
-      <xs:element type="ComponentArrayType" name="ComponentArray" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element type="ComponentArrayType" name="ComponentArray" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element type="EventConnectionsType" name="EventConnections" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element type="TimedEventsType" name="TimedEvents" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element type="SimulationType" name="Simulation" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="SimulationType" name="Simulation" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 

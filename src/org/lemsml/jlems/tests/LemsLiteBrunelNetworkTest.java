@@ -25,26 +25,38 @@ import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
  
 
 
-public class LEMSLiteMainSmallNetworkTest {
+public class LemsLiteBrunelNetworkTest {
 
 	
 	 
     public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException {
-     
-       	String sf = "examples/handwriting_small.xml";
-    	
-       	String[] callargs = {"-v", sf};
-     
-       	LemsLiteMain.main(callargs);
-       	
-       	
-       	String sf2 = "examples/mh_handwriting.xml";
-    	
-       	String[] callargs2 = {"-v", sf2};
-     
-       	LemsLiteMain.main(callargs);
-    }
     
+    	SwingDataViewerFactory.initialize();
+		DefaultLogger.initialize();
+    
+    	LemsLiteBrunelNetworkTest dut = new LemsLiteBrunelNetworkTest();
+    //	dut.runExampleIaF(); 
+    //	dut.runExampleHandwriting(); 
+    	
+    	dut.runBrunel();
+    	
+    }
+     
+     
+    
+    @Test
+    public void runBrunel() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
+    	File f1 = new File("examples/Brunel2000.xml");
+    	 
+    	LemsLiteMain.validateModel(f1);
+    	
+    	LemsLiteMain.runModel(f1);
+    	
+    }
+   
+    
+     
+	
     
    
 }

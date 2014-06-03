@@ -1,6 +1,6 @@
  
 
-<LEMSLite>
+<LemsLite>
  
     <DiscreteUpdateComponent name="lif_neuron">
         <Interface>
@@ -240,7 +240,7 @@
     
     </Simulation>
 
-</LEMSLite>
+</LemsLite>
 
 
 
