@@ -77,7 +77,7 @@ public class EventManager {
 			ConnectionArray ca = bins[ibin];
 			if (ca.size() > 0) {
 				for (Connection c : ca.getConnections()) {
-					c.deliver();
+					c.deliver(t + dt);
 				}
 				ca.clear();
 			}

@@ -6,7 +6,10 @@ import org.lemsml.jlems.core.type.LemsCollection;
 public class Interface {
 
 	
+	public LemsCollection<InputEventPort> inputEventPorts = new LemsCollection<InputEventPort>();
 	
+	public LemsCollection<OutputEventPort> outputEventPorts = new LemsCollection<OutputEventPort>();
+
 	public LemsCollection<Parameter> parameters = new LemsCollection<Parameter>();
 
 	public LemsCollection<Constant> constants = new LemsCollection<Constant>();
@@ -15,9 +18,7 @@ public class Interface {
 
 	public LemsCollection<RecordableVariable> recordableVariables = new LemsCollection<RecordableVariable>();
 
-	public LemsCollection<InputEventPort> inputEventPorts = new LemsCollection<InputEventPort>();
 
-	public LemsCollection<OutputEventPort> outputEventPorts = new LemsCollection<OutputEventPort>();
 	
 	
 	
@@ -48,5 +49,22 @@ public class Interface {
 		 return constants;
 	}
 
+	public void addInputEvent(String portName) {
+		InputEventPort iep = new InputEventPort(portName);
+		inputEventPorts.add(iep);
+	}
+
+	public void ensureOutPort(String pn) {
+		boolean got = false;
+		for (OutputEventPort oep : outputEventPorts) {
+			if (oep.getName().equals(pn)) {
+				got = true;
+			}
+		}
+		if (!got) {
+			OutputEventPort oep = new OutputEventPort(pn);
+			outputEventPorts.add(oep);
+		}
+	}
 	
 }

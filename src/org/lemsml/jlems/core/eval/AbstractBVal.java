@@ -11,5 +11,7 @@ public abstract class AbstractBVal {
 	public abstract AbstractBVal makeCopy();
 	
 	public abstract String toExpression();
+
+	public abstract String toLemsExpression();
 	
 }

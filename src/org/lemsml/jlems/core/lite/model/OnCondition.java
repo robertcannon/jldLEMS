@@ -4,7 +4,7 @@ package org.lemsml.jlems.core.lite.model;
 public class OnCondition extends OnAbstract {
  
 	
-	public String x_if;
+	public String test;
 	
 	public OnCondition() {
 		 super();
@@ -13,12 +13,12 @@ public class OnCondition extends OnAbstract {
 	
 	public OnCondition(String estr) {
 		super();
-		x_if = estr;
+		test = estr;
 	}
 
 
 	public String getExpression() {
-		return x_if;
+		return test;
 	}
 	
 }

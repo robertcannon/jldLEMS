@@ -6,6 +6,15 @@ public class InputEventPort {
 	
 	
 	
+	public InputEventPort() {
+		
+	}
+	
+	public InputEventPort(String nm) {
+		name = nm;
+	}
+	
+	
 	public String getName() {
 		return name;
 	}

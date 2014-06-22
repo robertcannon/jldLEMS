@@ -63,7 +63,7 @@ public class Connection {
 	}
 
 
-	public void deliver() throws RuntimeError {
+	public void deliver(double t) throws RuntimeError {
 		
 		// HashMap<String, DoublePointer> vars = src.getVariables();
 		
@@ -75,9 +75,10 @@ public class Connection {
 				double val = ass.evaluate(myVars);
 				
 				dest.setVariableMaybeNew(vnm, val);
-			//	E.info("Set a variable in receiver cpt " + vnm + " " + val);
+				E.info("Set a variable in receiver cpt " + vnm + " " + val);
 			}
-		}
+		} 
+		dest.setVariableMaybeNew("t", t);
 		dest.receiveEvent(tgtPort);
 	}
 

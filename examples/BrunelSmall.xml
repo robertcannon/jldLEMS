@@ -41,13 +41,13 @@
 	    </Step>
 	    <OnEvent port="inhibitory-in">
 	        <IfCondition test="(t .gt. (tIn + 0.002))">
-	            <Update variable="yi" value="(yi + weight)"/>
+	            <Update variable="yi" value="(yi + 1 + weight)"/>
 	            <Update variable="tIn" value="t"/>
 	        </IfCondition>
 	    </OnEvent>
 	    <OnEvent port="excitatory-in">
 	        <IfCondition test="(t .gt. (tEx + 0.002))">
-	            <Update variable="ye" value="(ye + weight)"/>
+	            <Update variable="ye" value="(ye + 1 + weight)"/>
 	            <Update variable="tEx" value="t"/>
 	        </IfCondition>
 	    </OnEvent>
@@ -64,27 +64,25 @@
 	    <!-- Pre-determined (Poisson) Input Spikes -->
 
 	    <!-- Excitatory Input -->
-	    <File name="bruneldata/excitatory_input_spikes.csv" id="ei_spikes" format="csv" delimiter=" "/>
 	    <Array name="e_input_times">
-	        <FileSource file="ei_spikes" column="0"/>
+	        <ListSource values="0.01, 0.02, 0.03, 0.04"/>
 	    </Array>
 	    <Array name="e_input_targets">
-	        <FileSource file="ei_spikes" column="1"/>
+	        <ListSource values="0, 1, 2, 3"/>
 	    </Array>
 	    <Array name="e_input_weights">
-	        <FileSource file="ei_spikes" column="2"/>
+	        <ListSource values="0.01, 0.01, 0.01, 0.01"/>
 	    </Array>
 
 	    <!-- Inhibitory Input -->
-	    <File name="bruneldata/inhibitory_input_spikes.csv" id="ii_spikes" format="csv" delimiter=" "/>
 	    <Array name="i_input_times">
-	        <FileSource file="ii_spikes" column="0"/>
+	         <ListSource values="0.02, 0.025, 0.026, 0.026"/>
 	    </Array>
 	    <Array name="i_input_targets">
-	        <FileSource file="ii_spikes" column="1"/>
+	         <ListSource values="0, 1, 0, 1"/>
 	    </Array>
 	    <Array name="i_input_weights">
-	        <FileSource file="ii_spikes" column="2"/>
+	          <ListSource values="0.01, 0.01, 0.01, 0.01"/>
 	    </Array>
 
 
@@ -94,10 +92,10 @@
 	    <File name="bruneldata/excitatory_initial_v.txt" id="excitatory_v" format="csv" delimiter=" "/>
 	    <File name="bruneldata/inhibitory_initial_v.txt" id="inhibitory_v" format="csv" delimiter=" "/>
 	    <Array name="excitatory_v">
-	        <FileSource file="excitatory_v" column="1"/>
+	       <ListSource values="0.001, 0.002, 0.003, 0.004, 0.005"/>
 	    </Array>
 	    <Array name="inhibitory_v">
-	        <FileSource file="inhibitory_v" column="1"/>
+	          <ListSource values="0, 0"/>
 	    </Array>
 
 
@@ -107,49 +105,47 @@
 	    <!-- Excitatory-to-Excitatory -->
 	    <File name="bruneldata/E_to_E.txt" id="e_to_e" format="csv" delimiter=" "/>
 	    <Array name="e_to_e_source">
-	        <FileSource file="e_to_e" column="0"/>
+	        <ListSource values="0, 1, 2, 3"/>
 	    </Array>
 	    <Array name="e_to_e_destination">
-	        <FileSource file="e_to_e" column="1"/>
+	        <ListSource values="1, 2, 3, 4"/>
 	    </Array>
 	    <Array name="e_to_e_weight">
-	        <FileSource file="e_to_e" column="2"/>
+	          <ListSource values="0.01, 0.01, 0.01, 0.01"/>
 	    </Array>
 
 	    <!-- Excitatory-to-Inhibitory -->
-	    <File name="bruneldata/E_to_I.txt" id="e_to_i" format="csv" delimiter=" "/>
 	    <Array name="e_to_i_source">
-	        <FileSource file="e_to_i" column="0"/>
+	        <ListSource values="0, 1, 2, 3, 4"/>
 	    </Array>
 	    <Array name="e_to_i_destination">
-	        <FileSource file="e_to_i" column="1"/>
+	        <ListSource values="0, 1, 0, 1, 0"/>
 	    </Array>
 	    <Array name="e_to_i_weight">
-	        <FileSource file="e_to_i" column="2"/>
+	          <ListSource values="0.01, 0.01, 0.01, 0.01, 0.01"/>
 	    </Array>
 
 	    <!-- Inhibitory-to-Inhibitory -->
-	    <File name="bruneldata/I_to_I.txt" id="i_to_i" format="csv" delimiter=" "/>
+	   
 	    <Array name="i_to_i_source">
-	        <FileSource file="i_to_i" column="0"/>
+	       	<ListSource values="0, 1"/> 
 	    </Array>
 	    <Array name="i_to_i_destination">
-	        <FileSource file="i_to_i" column="1"/>
+	         	<ListSource values="1, 0"/> 
 	    </Array>
 	    <Array name="i_to_i_weight">
-	        <FileSource file="i_to_i" column="2"/>
+	        <ListSource values="0.01, 0.01"/>
 	    </Array>
 
 	    <!-- Inhibitory-to-Excitatory -->
-	    <File name="bruneldata/I_to_E.txt" id="i_to_e" format="csv" delimiter=" "/>
 	    <Array name="i_to_e_source">
-	        <FileSource file="i_to_e" column="0"/>
+	        <ListSource values="0, 1, 0, 1"/>
 	    </Array>
 	    <Array name="i_to_e_destination">
-	        <FileSource file="i_to_e" column="1"/>
+	       <ListSource values="1, 2, 3, 4"/>
 	    </Array>
 	    <Array name="i_to_e_weight">
-	        <FileSource file="i_to_e" column="2"/>
+	       <ListSource values="0.01, 0.01, 0.01, 0.01"/>
 	    </Array>
 
 	</DataSources>
@@ -158,24 +154,24 @@
 	<!-- Population Definitions -->
 
 	<!-- Excitatory Population -->
-	<ComponentArray name="excitatory_IaF" component="IaF_curr_alpha" size="4000">
+	<ComponentArray name="excitatory_IaF" component="IaF_curr_alpha" size="5">
 	    <Initialize stateVariable="v" array="excitatory_v"/>
 	    <Initialize stateVariable="ye" value="0"/>
 	    <Initialize stateVariable="yi" value="0"/>
 	    <Initialize stateVariable="ge" value="0"/>
 	    <Initialize stateVariable="gi" value="0"/>
-	    <Initialize stateVariable="tEx" value="0"/>
+	    <Initialize stateVariable="tEx" value="-1"/>
 	    <Initialize stateVariable="tIn" value="0"/>
 	</ComponentArray>
 
 	<!-- Inhibitory Population -->
-	<ComponentArray name="inhibitory_IaF" component="IaF_curr_alpha" size="1000">
+	<ComponentArray name="inhibitory_IaF" component="IaF_curr_alpha" size="2">
 	    <Initialize stateVariable="v" array="inhibitory_v"/>
 	    <Initialize stateVariable="ye" value="0"/>
 	    <Initialize stateVariable="yi" value="0"/>
 	    <Initialize stateVariable="ge" value="0"/>
 	    <Initialize stateVariable="gi" value="0"/>
-	    <Initialize stateVariable="tEx" value="0"/>
+	    <Initialize stateVariable="tEx" value="-1"/>
 	    <Initialize stateVariable="tIn" value="0"/>
 	</ComponentArray>
 
@@ -194,7 +190,7 @@
 	    </SourceTargetConnector>
 	    <ConnectionProperties>
 	        <Property name="weight" array="e_to_e_weight"/>
-	        <Delay value="15"/>
+	        <Delay value="0.015"/>
 	    </ConnectionProperties>
 	</EventConnections>
 
@@ -206,7 +202,7 @@
 	    </SourceTargetConnector>
 	    <ConnectionProperties>
 	        <Property name="weight" array="e_to_i_weight"/>
-	        <Delay value="15"/>
+	        <Delay value="0.015"/>
 	    </ConnectionProperties>
 	</EventConnections>
 
@@ -221,7 +217,7 @@
 	    </SourceTargetConnector>
 	    <ConnectionProperties>
 	        <Property name="weight" array="i_to_i_weight"/>
-	        <Delay value="15"/>
+	        <Delay value="0.015"/>
 	    </ConnectionProperties>
 	</EventConnections>
 
@@ -233,7 +229,7 @@
 	    </SourceTargetConnector>
 	    <ConnectionProperties>
 	        <Property name="weight" array="i_to_e_weight"/>
-	        <Delay value="15"/>
+	        <Delay value="0.015"/>
 	    </ConnectionProperties>
 	</EventConnections>
 
@@ -252,7 +248,6 @@
 	</TimedEvents>
  
 
-	<!-- Poisson inputs are excitatory to give network an underlying frequency -->
 	<TimedEvents name="inhibitory_inputs" to="inhibitory_IaF" times="i_input_times" targets="i_input_targets">
 		<EventTarget port="excitatory-in"/>
 		 
@@ -261,6 +256,14 @@
 	    </ConnectionProperties>
 	</TimedEvents>
 
-	<Simulation name="Brunel2000" dt="0.1e-3" endTime="0.01"/>
+
+	<Simulation name="Brunel2000" dt="0.1e-3" endTime="0.1">
+	
+    	  <Display interval="0.1" id="d1">
+	            <VariableDisplay componentArray="excitatory_IaF" indices="0, 1, 2" variable="v" color="#ffff00"/>
+	             <VariableDisplay componentArray="inhibitory_IaF" indices="0, 1" variable="v" color="#0000ff"/>
+	   	</Display>
+	   	 
+	</Simulation>
 
 </LemsLite>

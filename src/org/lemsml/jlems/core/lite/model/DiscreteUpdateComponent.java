@@ -124,7 +124,10 @@ public class DiscreteUpdateComponent {
 	
 
 	public OnEvent addOnEvent(String portName) {
-	 	 OnEvent oe = new OnEvent(portName);
+
+		getInterface().addInputEvent(portName);
+		
+		OnEvent oe = new OnEvent(portName);
 	 	 onEvents.add(oe);
 	 	 return oe;
 	}
@@ -132,6 +135,13 @@ public class DiscreteUpdateComponent {
 	public void addOnEvent(OnEvent oe) {
 		onEvents.add(oe);
 	}
+
+
+	public void ensureOutPort(String s) {
+		getInterface().ensureOutPort(s);
+	}
+
+
 
 
 
@@ -187,7 +197,7 @@ public class DiscreteUpdateComponent {
 	}
 
 
-
+ 
  
 
 

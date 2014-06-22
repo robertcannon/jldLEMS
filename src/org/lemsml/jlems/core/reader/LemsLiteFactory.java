@@ -407,8 +407,7 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
                 ret.vars.add((Var)obj);
             } else if (obj instanceof Update) {
                 ret.updates.add((Update)obj);
-            } else if (obj instanceof ConditionCheck) {
-                ret.conditionChecks.add((ConditionCheck)obj);
+       
             } else if (obj instanceof Output) {
                 ret.outputs.add((Output)obj);
             } else {
@@ -550,10 +549,10 @@ public class LemsLiteFactory extends AbstractLemsLiteFactory {
             String xv = xa.getValue();
 
             if (xn.equals("UNUSED")) {
-            } else if (xn.equals("x_if")) {
-                ret.x_if = parseString(xv);
-            } else if (xn.equals("if")) {
-                ret.x_if = parseString(xv);
+            } else if (xn.equals("test")) {
+                ret.test = parseString(xv);
+            } else if (xn.equals("test")) {
+                ret.test = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa + " " + xv);
             }

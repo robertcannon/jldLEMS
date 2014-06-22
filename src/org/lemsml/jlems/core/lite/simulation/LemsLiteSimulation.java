@@ -29,6 +29,7 @@ import org.lemsml.jlems.core.lite.model.Let;
 import org.lemsml.jlems.core.lite.model.Property;
 import org.lemsml.jlems.core.lite.model.Recording;
 import org.lemsml.jlems.core.lite.model.Simulation;
+import org.lemsml.jlems.core.lite.model.TimedEvents;
 import org.lemsml.jlems.core.lite.model.VariableDisplay;
 import org.lemsml.jlems.core.lite.model.VariableRecording;
 import org.lemsml.jlems.core.lite.run.component.Assignment;
@@ -37,6 +38,7 @@ import org.lemsml.jlems.core.lite.run.component.DiscreteUpdateStateType;
 import org.lemsml.jlems.core.lite.run.network.Connection;
 import org.lemsml.jlems.core.lite.run.network.EventBuilder;
 import org.lemsml.jlems.core.lite.run.network.EventManager;
+import org.lemsml.jlems.core.lite.run.network.InputEvents;
 import org.lemsml.jlems.core.lite.run.network.InstanceArray;
 import org.lemsml.jlems.core.lite.run.network.MultiConnectionProperty;
 import org.lemsml.jlems.core.logging.E;
@@ -52,6 +54,8 @@ public class LemsLiteSimulation {
 	
 	ArrayList<InstanceArray> instanceArrays;
 	HashMap<String, InstanceArray> instanceArrayHM;
+	
+	ArrayList<InputEvents> inputEvents;
 	
 	
 	double maxDelay = 0;
@@ -101,6 +105,9 @@ public class LemsLiteSimulation {
 		createEventConnections();
 		
 		
+		createInputEvents();
+		
+		
 	
 		E.info("Connecting event manager...");
 		eventManager = new EventManager();
@@ -109,6 +116,8 @@ public class LemsLiteSimulation {
 		for (InstanceArray ia : instanceArrays) {
 			ia.connectEventManager(eventManager);
 		}
+		
+	 
 		
 		// no longer need arrays
 		arrayHM = null;
@@ -146,6 +155,10 @@ public class LemsLiteSimulation {
 		for (int istep = 0; istep < ns; istep++) {
 			for (InstanceArray arr : instanceArrays) {
 				arr.advance(t, dt);
+			}
+			
+			for (InputEvents ev : inputEvents) {
+				ev.advance(t, dt);
 			}
 			
 			//instanceArrays.get(0).dumpState(0);
@@ -472,6 +485,42 @@ public class LemsLiteSimulation {
 		return ret;
 	}
 
+	
+	public void createInputEvents() throws ContentError, ParseError {
+		 inputEvents = new ArrayList<InputEvents>();
+		
+		for (TimedEvents te : lemsLite.getTimedEvents()) {
+			InputEvents es = new InputEvents(te.getName());
+
+			es.setTimes(getFloatArray(te.getTimes()));
+			es.setTargetIndices(getIntArray(te.getTArgets()));
+			InstanceArray arr = getInstanceArray(te.getTo());
+			es.setTargetArray(arr);
+			
+			es.setTargetPort(te.getTargetPortName());
+			
+			ArrayList<MultiConnectionProperty> mcProperties = readConnectionProperties(te.getConnectionProperties(), arrayHM);
+
+			
+			for (MultiConnectionProperty mcp : mcProperties) {
+				if (mcp.getName() != null && mcp.getName().equals("weight")) {
+					es.setWeights(mcp.getValues());
+				
+					EventBuilder eb = new EventBuilder();
+					ExpressionParser expressionParser = new ExpressionParser();
+					ParseTree pt = expressionParser.parseExpression("connection.weight");
+					Assignment as = new Assignment("weight", pt.makeFloatEvaluator());
+					eb.addAssignment(as);
+					es.setEventBuilder(eb);		
+				} 
+			}
+			
+			E.info("Created input events list " + es);
+			inputEvents.add(es);
+		}
+	}
+	
+	
 
 	private int[] getIntArray(String nm) throws ContentError {
 		int[] ret = null;
@@ -487,6 +536,19 @@ public class LemsLiteSimulation {
 		 return ret;
 	}
 
+	
+	private double[] getFloatArray(String nm) throws ContentError {
+		double[] ret = null;
+		if (arrayHM.containsKey(nm)) {
+			ret = arrayHM.get(nm);
+			
+		 } else {
+			 throw new ContentError("No such data array " + nm);
+		 }
+		 return ret;
+	}
+	
+	
 	
 	private double[] getArray(HashMap<String, double[]> arrayHM, String nm) throws ContentError {
 		 if (arrayHM.containsKey(nm)) {
@@ -675,7 +737,9 @@ public class LemsLiteSimulation {
 				E.error("No file for " + f);
 			}
 			
-	 		
+		} else if (array.hasListSource()) {
+			ret = array.getFloatArray();
+			
 		} else {
 			E.error("No file source?");
 			throw new ContentError("Can only handle file data sources in arrays so far");

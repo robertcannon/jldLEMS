@@ -32,6 +32,12 @@ public class BBase implements BooleanEvaluator {
  		return root.toExpression();
 	}
     
+    public String getLemsExpressionString() {
+ 		return root.toLemsExpression();
+	}
+    
+    
+    
     @Override
     public String toString() {
         return "BBase{" + "root=" + root + ", vars=" + Arrays.toString(vars) + '}';

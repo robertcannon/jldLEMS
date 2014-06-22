@@ -20,4 +20,8 @@ public class NEQComp extends AbstractBComp {
 		return "("+left.toExpression() +" != "+ right.toExpression() +")";
     }
 	
+	@Override
+	public String toLemsExpression() {
+		return "("+left.toExpression() +" .ne. "+ right.toExpression() +")";
+    }
 }

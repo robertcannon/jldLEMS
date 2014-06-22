@@ -29,15 +29,30 @@ public class Array {
 	
 	public boolean hasIntListSource() {
 		boolean ret = false;
-		if (listSources.size() > 0) {
+		if (integer && listSources.size() > 0) {
 			ret = true;
 		}
 		return ret;
 	}
 	
 	public int[] getIntArray() {
-		return listSources.get(0).getValues();
+		return listSources.get(0).getIntValues();
 	}
+	
+	public boolean hasListSource() {
+		boolean ret = false;
+		if (listSources.size() > 0) {
+			ret = true;
+		}
+		return ret;
+	}
+	
+	public double[] getFloatArray() {
+		return listSources.get(0).getFloatValues();
+	}
+	
+	
+	
 		
 	
 	public String getName() {

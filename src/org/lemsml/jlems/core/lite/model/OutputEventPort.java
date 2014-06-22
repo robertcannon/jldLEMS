@@ -6,6 +6,17 @@ public class OutputEventPort {
 	
 	
 	
+	public OutputEventPort() {
+		 
+	}
+
+	
+	public OutputEventPort(String pn) {
+		name = pn;
+	}
+
+
+
 	public String getName() {
 		return name;
 	}

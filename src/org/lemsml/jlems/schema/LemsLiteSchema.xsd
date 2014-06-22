@@ -458,18 +458,18 @@
 
   <xs:complexType name="LemsLiteType">
     <xs:sequence>
-      <xs:element type="DiscreteUpdateComponentType" name="DiscreteUpdateComponent" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element type="DiscreteUpdateComponentType" name="DiscreteUpdateComponent" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element type="DataSourcesType" name="DataSources" minOccurs="0" maxOccurs="1"/>
-      <xs:element type="ComponentArrayType" name="ComponentArray" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element type="ComponentArrayType" name="ComponentArray" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element type="EventConnectionsType" name="EventConnections" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element type="TimedEventsType" name="TimedEvents" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element type="SimulationType" name="Simulation" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="SimulationType" name="Simulation" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="InputEventPortType">
     <xs:sequence>
-      <xs:element type="ParameterType" name="Parameter"/>
+      <xs:element type="ParameterType" name="Parameter" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute type="xs:string" name="name"/>
   </xs:complexType>

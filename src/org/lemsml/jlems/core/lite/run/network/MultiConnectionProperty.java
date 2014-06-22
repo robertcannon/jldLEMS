@@ -19,6 +19,18 @@ public class MultiConnectionProperty {
 	}
 	
 	
+	public double[] getValues() {
+		double[] ret = null;
+		if (avalue != null) {
+			ret = avalue;
+		} else {
+			ret = new double[1];
+			ret[0] = dvalue;
+		}
+		return ret;
+	}
+	
+	
 	public double getValue(int i) throws ContentError {
 		double ret = 0.;
 		if (hasArray) {

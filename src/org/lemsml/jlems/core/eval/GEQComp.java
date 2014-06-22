@@ -20,4 +20,10 @@ public class GEQComp extends AbstractBComp {
 		return "("+left.toExpression() +" >= "+ right.toExpression() +")";
     }
 	
+	@Override
+	public String toLemsExpression() {
+		return "(" + left.toExpression() +" .ge. " + right.toExpression() + ")";
+    }
+	
+	
 }
