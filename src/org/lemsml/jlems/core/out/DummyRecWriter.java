@@ -1,11 +1,12 @@
 package org.lemsml.jlems.core.out;
 
-import org.lemsml.jlems.core.lite.simulation.RecWriter;
+import org.lemsml.jlems.core.lite.simulation.AbstractRecordingWriter;
 import org.lemsml.jlems.core.run.RuntimeError;
 
-public class DummyRecWriter extends RecWriter {
+public class DummyRecWriter extends AbstractRecordingWriter {
 
 	public DummyRecWriter(String fid, String fnm, String fmt) {
+		super();
 		// TODO Auto-generated constructor stub
 	}
 

@@ -193,20 +193,9 @@ public class ConditionalDerivedVariable implements Valued {
 		return ret;
 	}
 
-	
-	public DoubleEvaluator makeFloatEvaluator() throws ContentError {
-		ConditionalDBase ret = new ConditionalDBase();
-		for (Case c : cases) {
-			BooleanEvaluator bev = c.conditionParseTree.makeBooleanEvaluator();
-			DoubleEvaluator dev = c.valueParseTree.makeFloatEvaluator();
-			
-			if (bev == null || dev == null) {
-				throw new ContentError("Null evaluators in condition: " + bev + " " +dev);
-			}
-			
-			ret.addCondition(bev, dev);
-		}
+	public String getDimensionString() {
+		String ret = r_dimension.getDimensionString();
 		return ret;
 	}
-
+ 
 }

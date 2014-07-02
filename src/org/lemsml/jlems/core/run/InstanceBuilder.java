@@ -11,19 +11,14 @@ public class InstanceBuilder extends AbstractChildBuilder {
 	
 	StateType stateType;
  
-	
-	
-	public InstanceBuilder() {
-		super(); 
 	 
-	}
 	
 	
 	public void childInstantiate(StateInstance par) throws ContentError, ConnectionError, RuntimeError {
   		
 		// MultiInstance mi = new MultiInstance(stateType.typeName, "");
 		 
-		StateRunnable si = par.getScopeInstance(ctr.getID());
+		// StateRunnable si = par.getScopeInstance(ctr.getID());
 	
 		E.missing();
 		/*
@@ -49,7 +44,7 @@ public class InstanceBuilder extends AbstractChildBuilder {
 
 
 	@Override
-	public void consolidateStateTypes() {
+	public void consolidateStateTypes() throws ContentError {
 		 if (stateType != null) {
 			 stateType = stateType.getConsolidatedStateType("(instancebuilder)");
 		 }	

@@ -22,7 +22,6 @@ public class LemsLiteFactoryGenerator {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("package org.lemsml.jlems.core.reader;\n\n");
-		sb.append("import org.lemsml.jlems.core.dimensionless.*;\n");
 		sb.append("import org.lemsml.jlems.core.lite.model.*;\n");
 	 
 		
@@ -118,7 +117,7 @@ public class LemsLiteFactoryGenerator {
 		
 		
 		sb.append("            } else {\n");
-		sb.append("                E.warning(\"unrecognized attribute \" + xa);\n");
+		sb.append("                E.warning(\"unrecognized attribute \" + xa + \" \" + xv);\n");
 		sb.append("            }\n");
 		sb.append("        }\n\n\n");
 		

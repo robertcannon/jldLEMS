@@ -6,6 +6,7 @@ public class LocalMethodCall extends AbstractOperation {
 	
 	
 	public LocalMethodCall(Method mm) {
+		super();
 		method = mm;
 	}
 

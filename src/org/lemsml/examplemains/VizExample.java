@@ -1,7 +1,6 @@
 package org.lemsml.examplemains;
 
 import java.io.File;
-import java.util.Timer;
 
 import org.lemsml.jlems.io.examples.RunFileExample;
 import org.lemsml.jlems.io.logging.DefaultLogger;
@@ -67,13 +66,7 @@ public final class VizExample {
 		tim.report("Meta");
 	}
 	
-	
-	public static void runSrc(String srcText) { 
-		initIO();
-		TimeLogger tim = new TimeLogger();
- 		
-	}
-	
+	 
 	
 	
 }

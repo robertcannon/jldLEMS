@@ -2,13 +2,13 @@ package org.lemsml.jlems.core.type.dynamics;
 
 import java.util.HashMap;
 
+import org.lemsml.jlems.core.eval.BooleanEvaluator;
 import org.lemsml.jlems.core.eval.DoubleEvaluator;
 import org.lemsml.jlems.core.expression.Dimensional;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ActionBlock;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.LemsCollection;
@@ -22,6 +22,9 @@ public class PointResponse {
 	 
 	public LemsCollection<Transition> transitions = new LemsCollection<Transition>();
 	 
+	public LemsCollection<IfCondition> ifConditions = new LemsCollection<IfCondition>();
+	
+	
 	public void supResolve(Dynamics bhv, LemsCollection<StateVariable> stateVariables, HashMap<String, Valued> valHM, ExpressionParser expressionParser) throws ContentError, ParseError {
 	 
 		for (StateAssignment sa : stateAssignments) {
@@ -35,6 +38,9 @@ public class PointResponse {
 			t.resolve(bhv);
 		}
 	
+		for (IfCondition ic : ifConditions) {
+			ic.resolve(bhv, stateVariables, valHM, expressionParser);
+		}
 	}
  
 	public void addStateAssignment(String vnm, String val) {
@@ -62,6 +68,10 @@ public class PointResponse {
     	transitions.add(t);
     }
 
+    public void addIfCondition(IfCondition ic) {
+    	ifConditions.add(ic);
+    }
+    
 	private void addEventOut(EventOut eo) {
 		eventOuts.add(eo);
 	}
@@ -78,18 +88,20 @@ public class PointResponse {
 		 
 		 
 		 for (StateAssignment sa : stateAssignments) {
-			 
 			 ParseTree pt = sa.getParseTree();
-
-			 //E.warning("Using fxed evaluator: won't work for instance models");
-			 // TODO NEXT - back to float, not fixed
-			 // DoubleEvaluator dase = pt.makeFloatFixedEvaluator(fixedHM); 
-			
-			 // Switching back  - what does this break?
-			 DoubleEvaluator dase = pt.makeFloatEvaluator(); 
-			 
+			 DoubleEvaluator dase = pt.makeFloatFixedEvaluator(fixedHM); 
 			 ret.addAssignment(sa.getStateVariable().getName(), dase);
 		 } 
+		 
+		 
+		 for (IfCondition ic : ifConditions) {
+			 ParseTree pt = ic.getParseTree();
+			 BooleanEvaluator be = pt.makeBooleanFixedEvaluator(fixedHM);
+			 ActionBlock ab = ic.makeEventAction(fixedHM);
+			 ret.addConditionalActionBlock(be, ab);
+		 }
+		 
+		 
 		 for (EventOut eout : eventOuts) {
 			 ret.addEventOut(eout.getPortName());
 		 }
@@ -113,6 +125,11 @@ public class PointResponse {
 		 for (StateAssignment sa : stateAssignments) {
 			 ret.addStateAssignment(sa.makeCopy());
 		 }
+		 
+		 for (IfCondition ic : ifConditions) {
+			 ret.addIfCondition(ic.makeCopy());
+		 }
+		 
 		 for (Transition t : transitions) {
 			 ret.addTransition(t.makeCopy());
 		 }

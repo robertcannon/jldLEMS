@@ -14,6 +14,8 @@ public class LemsLite {
 	
 	public LemsCollection<EventConnections> eventConnectionss = new LemsCollection<EventConnections>();
 
+	public LemsCollection<TimedEvents> timedEventss = new LemsCollection<TimedEvents>();
+	
 	public LemsCollection<Simulation> simulations = new LemsCollection<Simulation>();
 	
 	

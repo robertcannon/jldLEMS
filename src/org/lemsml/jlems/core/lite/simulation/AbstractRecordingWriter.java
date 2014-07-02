@@ -4,16 +4,11 @@ import java.util.ArrayList;
  
 import org.lemsml.jlems.core.run.RuntimeError;
 
-public abstract class RecWriter {
+public abstract class AbstractRecordingWriter {
  
 	
 	ArrayList<InstanceWriter> writers = new ArrayList<InstanceWriter>();
 	 
-	public RecWriter() {
-	 
-	}
-
-
 	public void addWriter(InstanceWriter iw) {
 		 writers.add(iw);
 	}

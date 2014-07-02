@@ -9,7 +9,7 @@ public class TimeDerivative extends AbstractStateChange {
 
 	 
   
-
+	
 	 
 	public Dimension getStateVariableDimensionMultiplier() {
 		 Dimension ret = new Dimension("per_time");
@@ -22,9 +22,6 @@ public class TimeDerivative extends AbstractStateChange {
 		super.copyInto(ret);
 		return ret;
 	}
-
-
-
 
  
 

@@ -24,19 +24,17 @@ import org.lemsml.jlems.core.type.ComponentTypeReference;
 import org.lemsml.jlems.core.type.Constant;
 import org.lemsml.jlems.core.type.DerivedParameter;
 import org.lemsml.jlems.core.type.Dimension;
+import org.lemsml.jlems.core.type.EventPort;
 import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.Fixed;
 import org.lemsml.jlems.core.type.IndexParameter;
 import org.lemsml.jlems.core.type.InputSource;
 import org.lemsml.jlems.core.type.Insertion;
 import org.lemsml.jlems.core.type.InstanceRequirement;
-import org.lemsml.jlems.core.type.LocalParameters;
-import org.lemsml.jlems.core.type.ReceivePort;
-import org.lemsml.jlems.core.type.SendPort;
-import org.lemsml.jlems.core.type.SimulatorShortcut;
- 
 import org.lemsml.jlems.core.type.IntegerParameter;
 import org.lemsml.jlems.core.type.Lems;
+import org.lemsml.jlems.core.type.Link;
+import org.lemsml.jlems.core.type.LocalParameters;
 import org.lemsml.jlems.core.type.Location;
 import org.lemsml.jlems.core.type.Meta;
 import org.lemsml.jlems.core.type.PairCollection;
@@ -44,7 +42,10 @@ import org.lemsml.jlems.core.type.Parameter;
 import org.lemsml.jlems.core.type.Path;
 import org.lemsml.jlems.core.type.PathParameter;
 import org.lemsml.jlems.core.type.Property;
+import org.lemsml.jlems.core.type.ReceivePort;
 import org.lemsml.jlems.core.type.Requirement;
+import org.lemsml.jlems.core.type.SendPort;
+import org.lemsml.jlems.core.type.SimulatorShortcut;
 import org.lemsml.jlems.core.type.Target;
 import org.lemsml.jlems.core.type.Text;
 import org.lemsml.jlems.core.type.Unit;
@@ -56,6 +57,7 @@ import org.lemsml.jlems.core.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.Equilibrium;
 import org.lemsml.jlems.core.type.dynamics.EventOut;
+import org.lemsml.jlems.core.type.dynamics.IfCondition;
 import org.lemsml.jlems.core.type.dynamics.KineticScheme;
 import org.lemsml.jlems.core.type.dynamics.OnCondition;
 import org.lemsml.jlems.core.type.dynamics.OnEntry;
@@ -77,7 +79,6 @@ import org.lemsml.jlems.core.type.procedure.Equilibrate;
 import org.lemsml.jlems.core.type.procedure.ForEachComponent;
 import org.lemsml.jlems.core.type.procedure.Print;
 import org.lemsml.jlems.core.type.procedure.Procedure;
-import org.lemsml.jlems.core.type.procedure.Statement;
 import org.lemsml.jlems.core.type.simulation.DataDisplay;
 import org.lemsml.jlems.core.type.simulation.DataWriter;
 import org.lemsml.jlems.core.type.simulation.Record;
@@ -95,14 +96,12 @@ import org.lemsml.jlems.core.type.structure.GatherPairs;
 import org.lemsml.jlems.core.type.structure.If;
 import org.lemsml.jlems.core.type.structure.IncludePair;
 import org.lemsml.jlems.core.type.structure.Instance;
- 
 import org.lemsml.jlems.core.type.structure.MultiInstance;
-import org.lemsml.jlems.core.type.structure.Tunnel;
- 
 import org.lemsml.jlems.core.type.structure.MultiInstantiate;
 import org.lemsml.jlems.core.type.structure.PairFilter;
 import org.lemsml.jlems.core.type.structure.PairsEventConnection;
 import org.lemsml.jlems.core.type.structure.Structure;
+import org.lemsml.jlems.core.type.structure.Tunnel;
 import org.lemsml.jlems.core.type.structure.With;
 import org.lemsml.jlems.core.type.visualization.Circle;
 import org.lemsml.jlems.core.type.visualization.LinkSourceConnector;
@@ -187,6 +186,7 @@ public final class LemsClasses {
 	 	ret.add(new LemsClass(Regime.class, section));
 	 	ret.add(new LemsClass(OnEntry.class, section));
 	 	ret.add(new LemsClass(Transition.class, section));
+	 	ret.add(new LemsClass(IfCondition.class, section));
 	 	ret.add(new LemsClass(Super.class, section));
 	 	
 	 	ret.add(new LemsClass(ConditionalDerivedVariable.class, section));
@@ -254,11 +254,13 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Child.class, section));
 		ret.add(new LemsClass(Children.class, section));
  		ret.add(new LemsClass(ComponentReference.class, section));
+ 		ret.add(new LemsClass(Link.class, section)); // Deprecaed
  		ret.add(new LemsClass(ComponentTypeReference.class, section));
  		ret.add(new LemsClass(Collection.class, section));
  		ret.add(new LemsClass(PairCollection.class, section));
 		ret.add(new LemsClass(SendPort.class, section));
 		ret.add(new LemsClass(ReceivePort.class, section));
+		ret.add(new LemsClass(EventPort.class, section)); // Deprecated
 		ret.add(new LemsClass(Text.class, section));
 		ret.add(new LemsClass(Path.class, section));
 		ret.add(new LemsClass(Attachments.class, section));

@@ -147,7 +147,7 @@ public class BaseMouseHandler {
 
 
    public void applyOnScrollWheel(Mouse mouse) {
- 	
+	   // ignore
    }
 
 }

@@ -9,7 +9,7 @@ import org.lemsml.jlems.core.display.DataViewer;
 import org.lemsml.jlems.core.display.DataViewerFactory;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
-import org.lemsml.jlems.core.lite.convert.DUComponentToDUStateType;
+import org.lemsml.jlems.core.lite.convert.DUStateTypeBuilder;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
 import org.lemsml.jlems.core.lite.run.component.DiscreteUpdateStateType;
  
@@ -157,7 +157,7 @@ public class DiscreteUpdateTest {
 		} 
 		
 		
-		DUComponentToDUStateType cdustg = new DUComponentToDUStateType(dum);
+		DUStateTypeBuilder cdustg = new DUStateTypeBuilder(dum);
 		DiscreteUpdateStateType dust = cdustg.makeDiscretUpdateStateType();
 
 		StateRunnable sr = dust.newStateRunnable();
@@ -174,14 +174,20 @@ public class DiscreteUpdateTest {
 		RunnableAccessor ra = new RunnableAccessor(sr);
 		
 		ArrayList<RuntimeRecorder> arr = new ArrayList<RuntimeRecorder>();
-		RuntimeRecorder rr = new RuntimeRecorder("v");
-		rr.connectRunnable(ra, dv);
-		arr.add(rr);
 		
-		String[] vars = {"popna_na_m_Reverse_r", "popna_na_m_Forward_x", "popna_na_m_Forward_r",
-					"popna_na_m_ex", "popna_na_m_q", "popna_na_m_fcond"};
-		for (String s : vars) {
-			RuntimeRecorder rs = new RuntimeRecorder(s);
+		String[] avars = {"popna_na_m_Reverse_r", "popna_na_m_Forward_x", "popna_na_m_Forward_r",
+					"popna_na_m_ex", "popna_na_m_q", "popna_na_m_fcond", "v"};
+		
+		String[] vars = {"popna_na_m_ex", "popna_na_m_q", "popna_na_m_fcond", "v"};
+		String[] cols = {"#ff0000", "#00ff00", "#0000ff", "#ffff00", "#00ffff", "#ff00ff", "#ffffff"};
+		
+		
+		
+		for (int i = 0; i < vars.length; i++) {
+			RuntimeRecorder rs = new RuntimeRecorder(vars[i]);
+			
+			rs.setColor(cols[i]);
+			
 			rs.connectRunnable(ra,  dv);
 			arr.add(rs);
 		}
@@ -199,7 +205,7 @@ public class DiscreteUpdateTest {
 			for (RuntimeRecorder r : arr) {
 				r.appendState(t);
 			}
-//			rrorig.appendState(t);
+			rrorig.appendState(t);
 		}
 		
 		

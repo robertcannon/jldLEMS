@@ -17,6 +17,9 @@ public class StateType implements RuntimeType {
 	String cptid;
 	String typeName;
 	
+	HashMap<String, String> dimensions = new HashMap<String, String>();
+	
+	
 	ArrayList<String> vars = new ArrayList<String>();
 	
 	ArrayList<String> indeps = new ArrayList<String>();
@@ -218,6 +221,11 @@ public class StateType implements RuntimeType {
 		
     private StateInstance ownNewInstance() throws ContentError, ConnectionError, RuntimeError {
 					
+    	
+    	E.info("Making new instance " + dimensions);
+    	
+    	
+    	
 		StateInstance uin = new StateInstance(this);
 		// E.info("Creating new state instance of " + cptid + " " + typeName);
 		
@@ -647,10 +655,11 @@ public class StateType implements RuntimeType {
 		}
 	
 	}
+ 
+    
 
-
-	public void addExpressionDerived(String snm, DoubleEvaluator db) {
-		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(snm, db);
+	public void addExpressionDerived(String snm, DoubleEvaluator db, String dim) {
+		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(snm, db, dim);
         //E.info("Adding: "+edv);
 		exderiveds.add(edv);
 	}
@@ -658,8 +667,8 @@ public class StateType implements RuntimeType {
 	 
 	
 	public PathDerivedVariable addPathDerived(String snm, String path, String rf, 
-			boolean reqd, String reduce) {
-		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, rf, reqd, reduce);
+			boolean reqd, String reduce, String dimension) {
+		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, rf, reqd, reduce, dimension);
 		pathderiveds.add(pdv);
         return pdv;
 	}
@@ -673,16 +682,17 @@ public class StateType implements RuntimeType {
 	}
 	
 	
-	public void addIndependentVariable(String vnm) {
+	public void addIndependentVariable(String vnm, String dim) {
 		if (indeps.contains(vnm)) {
 			E.warning("Added an independent variable again? " + vnm + " " + this);
 		} else {
 			indeps.add(vnm);
+			dimensions.put(vnm, dim);
 		}
  	}
 
-	public void addRate(String name, DoubleEvaluator de) {
-		rates.add(new VariableROC(name, de));
+	public void addRate(String name, DoubleEvaluator de, String dim) {
+		rates.add(new VariableROC(name, de, dim));
 	}
 
 	public void addEventResponse(EventAction er) {
@@ -875,13 +885,11 @@ public class StateType implements RuntimeType {
 		}
 	}
 	
-	
-	public void addStateVaraible(String name) {
-		svars.add(name);
-	}
+	 
 
-	public void addExposedVariable(String name) {
+	public void addExposedVariable(String name, String dim) {
 		exposedNames.add(name);
+		dimensions.put(name, dim);
 	}
 
 	public void addExposureMapping(String from, String to) {
@@ -920,7 +928,7 @@ public class StateType implements RuntimeType {
 	
 	
 	
-	public StateType getConsolidatedStateType(String knownas) {
+	public StateType getConsolidatedStateType(String knownas) throws ContentError {
 		if (consolidatedCB == null) {
 			consolidatedCB = makeConsolidatedStateType(knownas);
 		}
@@ -928,7 +936,7 @@ public class StateType implements RuntimeType {
 	}
 	
 	
-	public StateType getFlattenedStateType(String knownas) {
+	public StateType getFlattenedStateType(String knownas) throws ContentError {
 		if (flattenedCB == null) {
 			flattenedCB = makeFlattened(knownas);
 		}
@@ -937,7 +945,7 @@ public class StateType implements RuntimeType {
 	
 	 
 	
-	public StateType makeConsolidatedStateType(String knownas) {
+	public StateType makeConsolidatedStateType(String knownas) throws ContentError {
 		StateType ret = null;
 		if (simultaneous) {
 			E.info("********* Flattening " + knownas + " (id=" + cptid + ")");
@@ -949,7 +957,7 @@ public class StateType implements RuntimeType {
 	}
 	
 	
-	public StateType makeChildConsolidated() {
+	public StateType makeChildConsolidated() throws ContentError {
 		StateType ret = makeShallowCopy();
 		ret.consolidateChildren();
 		return ret;
@@ -971,7 +979,7 @@ public class StateType implements RuntimeType {
 		
 	
 	
-	private void consolidateChildren() {
+	private void consolidateChildren() throws ContentError {
 		// E.info("Consolidating children in " + knownas + (cptid != null ? "(id=" + cptid + ")" : ""));
 		for (String sch : childHM.keySet()) {
 			// E.info("Child: " + sch);
@@ -1020,7 +1028,7 @@ public class StateType implements RuntimeType {
 	
 	
 	
-	public StateType makeFlattened(String knownas) {	
+	public StateType makeFlattened(String knownas) throws ContentError {	
 		Flattener flattener = new Flattener();
 
 		// E.info("FLAT making flattened of " + typeName + " " + cptid + " " + indeps);
@@ -1064,7 +1072,7 @@ public class StateType implements RuntimeType {
 
 	
 	
-	private void addToFlattener(String pfx, Flattener fl) {
+	private void addToFlattener(String pfx, Flattener fl) throws ContentError {
 		String fullpfx = "";
 		if (pfx != null && pfx.length() > 0) {
 			fullpfx = pfx + "_";
@@ -1081,17 +1089,17 @@ public class StateType implements RuntimeType {
 		
 		
 		for (String s : indeps) {
-			fl.addIndependentVariable(s);
+			fl.addIndependentVariable(s, dimensions.get(s));
 		}
 		
 		for (String s : svars) {
-			fl.addStateVariable(fullpfx + s);
+			fl.addStateVariable(fullpfx + s, dimensions.get(s));
 		}
 		for (PathDerivedVariable pdv : pathderiveds) {
 			fl.add(pdv.makeFlat(fullpfx));
 		}
 		for (ExpressionDerivedVariable edv : exderiveds) {
-			fl.add(edv.makeFlat(fullpfx, indHS));
+			fl.add(edv.makeFlat(fullpfx, indHS, edv.getDimensionString()));
 		}
 		for (VariableROC vroc : rates) {
 			fl.add(vroc.makeFlat(fullpfx, indHS));
@@ -1105,20 +1113,39 @@ public class StateType implements RuntimeType {
 	}
 	
 	
-	public void addStateVariable(String s) {
+	public void addStateVariable(String s, String dim) throws ContentError {
 		svars.add(s);
+		if (dim == null) {
+			throw new ContentError("Null dimension for " + s);
+		}
+		dimensions.put(s, dim);
 	}
 	
-	public void addPathDerivedVariable(PathDerivedVariable pdv) {
+	public void addPathDerivedVariable(PathDerivedVariable pdv) throws ContentError {
 		pathderiveds.add(pdv);
+		String d = pdv.getDimensionString();
+		if (d == null) {
+			throw new ContentError("Null dimension for " + pdv);
+		}
+		dimensions.put(pdv.getVariableName(), d);
 	}
 	
-	public void addExpressionDerivedVariable(ExpressionDerivedVariable edv) {
+	public void addExpressionDerivedVariable(ExpressionDerivedVariable edv) throws ContentError {
 		exderiveds.add(edv);
+		String d = edv.getDimensionString();
+		if (d == null) {
+			throw new ContentError("Null dimension for " + edv);
+		}
+		dimensions.put(edv.getVariableName(), d);
 	}
 	
-	public void addVariableROC(VariableROC vroc) {
+	public void addVariableROC(VariableROC vroc) throws ContentError {
 		rates.add(vroc);
+		String d = vroc.getDimensionString();
+		if (d == null) {
+			throw new ContentError("Null dimension for " + vroc);
+		}
+		dimensions.put(vroc.getVariableName(), d);
 	}
 	
 	
@@ -1154,12 +1181,12 @@ public class StateType implements RuntimeType {
 
 
 	
-	public StateType makeShallowCopy() {
+	public StateType makeShallowCopy() throws ContentError {
 		StateType ret = new StateType(cptid, typeName);
 	
 		
 		for (String s : indeps) {
- 			ret.addIndependentVariable(s);
+ 			ret.addIndependentVariable(s, dimensions.get(s));
 		}
 		
 		for (String s : childHM.keySet()) {
@@ -1196,7 +1223,7 @@ public class StateType implements RuntimeType {
 			ret.addVariableROC(vroc.makeCopy());
 		}
 		for (String s : svars) {
-			ret.addStateVariable(s);
+			ret.addStateVariable(s, dimensions.get(s));
 		}
 		
 		for (PathDerivedVariable pdv : pathderiveds) {
@@ -1423,6 +1450,46 @@ public class StateType implements RuntimeType {
 		}
 		exderiveds = orderedEDVs;	
 	}
+
+	public String getSummary() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("State type " + getID() + "\n");
+		sb.append("variables: " + vars.size() + " (");
+		for (String s : vars) {
+			sb.append(s + ", ");
+		}
+		sb.append(")\n");
+		
+		sb.append("indeps: " + indeps.size() + " (");
+		for (String s : indeps) {
+			sb.append(s + ", ");
+		}
+		sb.append(")\n");
+		
+		sb.append("Path derived: " + pathderiveds.size() + " (");
+		for (PathDerivedVariable pd : pathderiveds) {
+			sb.append(pd.getVariableName() + ", ");
+		}
+		sb.append(")\n");
+		
+		sb.append("Expression derived: " + exderiveds.size() + " (");
+		for (ExpressionDerivedVariable pd : exderiveds) {
+			sb.append(pd.getVariableName() + ", ");
+		}
+		sb.append(")\n");
+		return sb.toString();
+	}
+
+	public String getDimensionString(String fld) throws ContentError {
+		String ret = null;
+		if (dimensions.containsKey(fld)) {
+			ret = dimensions.get(fld);
+		} else {
+			throw new ContentError("No dimension for " + fld + " in " + this);
+		}
+		return ret;
+	}
+	
 	
 	
 	

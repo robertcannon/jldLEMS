@@ -1,7 +1,5 @@
 package org.lemsml.jlems.core.reader;
 
-import java.util.Locale;
-
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.About;
@@ -154,7 +152,8 @@ public abstract class AbstractLemsFactory {
 			
 			// GWT doesn't have the locale version - why did we need this?
 			// String sl = s.toLowerCase(Locale.ENGLISH);
-
+			// (it was just to avoid a PMD warning - should disable in PMD)
+			
 			String sl = s.toLowerCase();
 			
 			if (sl.equals("0") || sl.equals("false")) {

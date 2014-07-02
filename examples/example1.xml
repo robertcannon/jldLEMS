@@ -75,7 +75,7 @@
 <ComponentType name="spikeGenerator2" extends="spikeGenerator">
     <Dynamics>
         <StateVariable name="tlast" dimension="time"/>
-        <DerivedVariable name="tsince" exposure="tsince" value="t - tlast"/>
+        <DerivedVariable name="tsince" dimension="time" exposure="tsince" value="t - tlast"/>
         <OnCondition test="t - tlast .gt. period">
             <StateAssignment variable="tlast" value="t"/>
             <EventOut port="a"/>

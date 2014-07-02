@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
+import org.lemsml.jlems.LemsLiteMain;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.lite.model.LemsLite;
 import org.lemsml.jlems.core.lite.simulation.LemsLiteSimulation;
@@ -20,7 +21,6 @@ import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.data.FileDataSource;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.util.FileUtil;
-import org.lemsml.jlems.io.xmlio.XMLSerializer;
 import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
  
 
@@ -55,7 +55,9 @@ public class LEMSLiteSmallNetworkTest {
     public void runExampleHandwritingSmall() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
     	File f1 = new File("examples/handwriting_small.xml");
     	
-    	runDiscreteUpdateComponent(f1);
+    	LemsLiteMain.validateModel(f1);
+    	
+//    	runDiscreteUpdateComponent(f1);
     	
     }
     
@@ -71,11 +73,11 @@ public class LEMSLiteSmallNetworkTest {
   		
 		LemsLiteFactory lf = new LemsLiteFactory();
 		LemsLite lemsLite = lf.buildLemsFromXMLElement(xel);
-		
+	
 		E.info("lemsLite model read: " + lemsLite.getSummary());
 	
-		XMLSerializer xs = new XMLSerializer();
-		String sx = xs.serialize(lemsLite);
+		// XMLSerializer xs = new XMLSerializer();
+		// String sx = xs.serialize(lemsLite);
 	 
 		File fdir = f1.getParentFile();
 	

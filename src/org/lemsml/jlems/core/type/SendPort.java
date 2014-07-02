@@ -2,7 +2,6 @@ package org.lemsml.jlems.core.type;
 
 import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.annotation.ModelProperty;
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
 @ModelElement(info = "A port on a component that can send or receive events, depending on the direction speicfied.")
@@ -33,7 +32,7 @@ public class SendPort implements Named {
     }
 
     public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
-    
+    	// nothing to do
     }
 
     public String getName() {

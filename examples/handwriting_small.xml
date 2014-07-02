@@ -1,6 +1,6 @@
  
 
-<LEMSLite>
+<LemsLite>
 
     <!-- Components -->
     <DiscreteUpdateComponent name="lif_neuron">
@@ -17,7 +17,7 @@
 
             <Constant name="one_over_rc_float" value="0.15429"/>
     
-            <OutputVariable name="v"/>
+            <RecordableVariable name="v"/>
         </Interface>
 
         <State>
@@ -27,16 +27,12 @@
         </State>
 
         <Step>
-            <!-- The original code ensures that "v > 0", but I thin kthis should be OK! -->
+            <!-- The original code ensures that "v > 0", but I think this should be OK! -->
             <Var name="total" value="(gain * (inp + constInput)) + bias"/>
-            <!-- Recieve event here -->
+            <!-- Receive event here -->
             <Var name="dv" value="(total-v) * one_over_rc_float"/>
             <Update variable="v" value="v + dv*dt"/>
             <Update variable="inp" value="inp * (1-one_over_rc_float)"/>
-
-
-            <!-- event_handling -->
-            <ConditionCheck/>
 
             
             <Output variable="v" value="v"/>
@@ -50,14 +46,14 @@
         
 
         <!-- Is there a spike? -->
-        <OnCondition if="v .gt. 1.0">
+        <OnCondition test="v .gt. 1.0">
             <Update variable="v" value="0"/>
             <Update variable="ref" value="2"/>
             <Emit port="spike-out"/>
         </OnCondition>
         
         <!-- Are are in a refactory period -->
-        <OnCondition if="ref .gt. 0">
+        <OnCondition test="ref .gt. 0">
             <Update variable="v" value="0"/>
             <Update variable="ref" value="ref-1"/>
         </OnCondition>
@@ -65,6 +61,16 @@
     </DiscreteUpdateComponent>
 
  
+  <DataSources>
+  		<Array name="conn01_pre" integer="true">
+  			<ListSource values="0,0,0,1,1,2,2,2,3,4,5,6,7,8,9"/>
+  		</Array>
+  		
+  		<Array name="conn01_post" integer="true">
+  			<ListSource values="1,2,3,1,2,7,8,6,5,6,7,8,9,9,9"/>
+  		</Array>
+  </DataSources>
+  
 
 
     <ComponentArray name="level0" component="lif_neuron" size="10">
@@ -80,21 +86,11 @@
         <Let parameter="constInput" value="2"/>
         <Let parameter="bias" value="2"/>
         <Let parameter="gain" value="4"/>
-
+ 
         <Initialize stateVariable="inp" value="2" />
     </ComponentArray>
 
 
-  <DataSources>
-  		<Array name="conn01_pre" integer="true">
-  			<IntegerListArraySource values="0,0,0,1,1,2,2,2,3,4,5,6,7,8,9"/>
-  		</Array>
-  		
-  		<Array name="conn01_post" integer="true">
-  			<IntegerListArraySource values="1,2,3,1,2,7,8,6,5,6,7,8,9,9,9"/>
-  		</Array>
-  </DataSources>
-  
   
 
     <!-- Connect Pop0 to Pop1 -->
@@ -123,9 +119,9 @@
     
     <Simulation name="handwriting_simulation" dt="1.0e-3" endTime="1.0">
         <OutputFiles>
-            <File id="f_out1_hdf" name="f_out_i.hdf" format="hdf5"></File>
-            <File id="f_out2_csv" name="f_out_i.csv" format="csv"></File>
-            <File id="f_out3_csv" name="f_out_spikes.csv" format="csv"></File>
+            <File id="f_out1_hdf" name="f_out_i.hdf" format="hdf5"/>
+            <File id="f_out2_csv" name="f_out_i.csv" format="csv"/>
+            <File id="f_out3_csv" name="f_out_spikes.csv" format="csv"/>
         </OutputFiles>
 
 
@@ -150,7 +146,7 @@
     
     </Simulation>
 
-</LEMSLite>
+</LemsLite>
 
 
 

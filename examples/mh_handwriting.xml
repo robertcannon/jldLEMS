@@ -1,6 +1,6 @@
  
 
-<LEMSLite>
+<LemsLite>
  
     <DiscreteUpdateComponent name="lif_neuron">
         <Interface>
@@ -230,8 +230,8 @@
     
     <Simulation name="handwriting_simulation" dt="1.0e-3" endTime="0.02">
         <OutputFiles>
-            <File id="f_out0_csv" name="f_out1.csv" format="csv"></File>
-          </OutputFiles>
+            <File id="f_out0_csv" name="f_out1.csv" format="csv"/>
+        </OutputFiles>
 
 
         <Recording startTime="0" endTime="1" interval="0.1">
@@ -240,7 +240,7 @@
     
     </Simulation>
 
-</LEMSLite>
+</LemsLite>
 
 
 

@@ -25,6 +25,9 @@ public class ArgReader {
 	     						ret.put(s, argv[iarg]);
 	     						iarg += 1;
 	     					}
+	    				} else {
+	    					// got a -x flag as the last arg
+	    					ret.put(s, "true");
 	    				}
 	    			} else {
 	      				ret.put("" + ifree, s);

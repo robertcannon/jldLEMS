@@ -48,6 +48,9 @@ public class Instance extends BuildElement {
                 } else {
                     c = cpt.getChild(componentReference);
                 }
+            
+                c.setHasInstances();
+                
                 cb = c.getRuntimeType();
                 
             }  

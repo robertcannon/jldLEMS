@@ -10,11 +10,7 @@ import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.io.util.FileUtil;
 
 public class JavaGenerator {
-
-	public JavaGenerator() {
-		
-	}
-	
+ 
 	
 	public void writeSourceFiles(File destdir, StateTypeGenerator stg) throws IOException {
 		

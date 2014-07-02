@@ -199,7 +199,7 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 
 	@Override
 	public void checkBuilt() throws ConnectionError, ContentError, RuntimeError {
-	 
+		// anything needed?
 	}
 
 	@Override
@@ -277,7 +277,7 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 		} else {
 			throw new ContentError("no such property: " + sel + " in " + this);
 		}
-		return 0;
+		return ret;
 	}
 
 	@Override
@@ -345,6 +345,14 @@ public class DiscreteUpdateStateInstance implements StateRunnable {
 		} else {
 			E.warning("No connections from port " + port + " on " + this);
 		}
+	}
+
+
+	@Override
+	public String getDimensionString(String lastbit) {
+		E.missing();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

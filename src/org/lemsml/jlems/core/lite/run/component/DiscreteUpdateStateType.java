@@ -35,12 +35,7 @@ public class DiscreteUpdateStateType implements RuntimeType {
 	HashSet<String> parameters = new HashSet<String>();
 	HashSet<String> inputs = new HashSet<String>();
 	HashSet<String> stateVariables = new HashSet<String>();
-	
-	
-	public DiscreteUpdateStateType() {
-		 
-	}
-	
+	 
 	
 	 
 	

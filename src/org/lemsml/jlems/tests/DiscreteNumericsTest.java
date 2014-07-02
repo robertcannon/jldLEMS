@@ -45,7 +45,7 @@ public class DiscreteNumericsTest {
     	File fnum = new File("devexamples/numerics.xml");
  
     	File f1 = new File("examples/example1.xml");
- 		String s = generateDiscreteUpdateComponent(f1, "na", fnum);
+ 		String s = generateDiscreteUpdateComponent(f1, "hhcell_1", fnum);
  		E.info("Generated XML: \n" + s);
     }
     

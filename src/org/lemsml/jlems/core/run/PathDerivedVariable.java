@@ -9,7 +9,7 @@ public class PathDerivedVariable {
 
     String varname;
     String path;
-    
+    String dimension;
    
     String func;
     String tgtvar;
@@ -23,11 +23,12 @@ public class PathDerivedVariable {
     boolean required;
     
 
-    public PathDerivedVariable(String snm, String p, String f, boolean rd, String reduce) {
+    public PathDerivedVariable(String snm, String p, String f, boolean rd, String reduce, String dim) {
         varname = snm;
         path = p;
         func = f;
         required = rd;
+        dimension = dim;
       
         if (reduce != null) {
         	if (reduce.equals("add")) {
@@ -158,7 +159,7 @@ public class PathDerivedVariable {
         for (int i = 0; i < bits.length - 1; i++) {
         	if (wkinst.hasChildInstance(bits[i])) {
         		StateRunnable sr = wkinst.getChildInstance(bits[i]);
-        		wkinst = wkinst.getChildInstance(bits[i]);
+        		wkinst = sr;
         	} else {
         		// this may be OK if this is an optional path
         		if (isRequired()) {
@@ -312,7 +313,7 @@ public class PathDerivedVariable {
 			modeString = "multiply";
 		}
 		PathDerivedVariable ret = new PathDerivedVariable(pfx + varname, flattenPath(pfx), 
-				func, required, modeString); 
+				func, required, modeString, dimension); 
 		return ret;
 	}
 	
@@ -367,6 +368,11 @@ public class PathDerivedVariable {
 
 	public boolean isRequired() {
 		return required;
+	}
+
+
+	public String getDimensionString() {
+		return dimension;
 	}
 	
 }

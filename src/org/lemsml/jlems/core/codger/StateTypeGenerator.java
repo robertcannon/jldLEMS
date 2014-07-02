@@ -15,7 +15,6 @@ import org.lemsml.jlems.core.codger.metaclass.Product;
 import org.lemsml.jlems.core.codger.metaclass.VarType;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ExpressionDerivedVariable;
-import org.lemsml.jlems.core.run.FixedQuantity;
 import org.lemsml.jlems.core.run.MultiStateType;
 import org.lemsml.jlems.core.run.PathDerivedVariable;
 import org.lemsml.jlems.core.run.StateType;
@@ -338,7 +337,7 @@ public class StateTypeGenerator {
 		for (String s : amchm.keySet()) {
 			ArrayList<StateType> acb = amchm.get(s).getCBs();
 			if (!acb.isEmpty()) {
-				String atn = arrayTypeName(s);
+//				String atn = arrayTypeName(s);
 //				ret.addDependency("LIST");
 //				ret.addObjectArrayField(partsPkg, arrayName(s), atn);				
 			

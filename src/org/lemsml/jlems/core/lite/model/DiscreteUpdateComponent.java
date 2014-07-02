@@ -1,9 +1,5 @@
 package org.lemsml.jlems.core.lite.model;
 
-import java.util.HashMap;
-
-import org.lemsml.jlems.core.lite.run.component.FloatAssignment;
- 
 import org.lemsml.jlems.core.type.LemsCollection;
 
 
@@ -30,10 +26,14 @@ public class DiscreteUpdateComponent {
 		name = sn;
 	}
 	
-	
-	public DiscreteUpdateComponent() {
 	 
+
+
+	public DiscreteUpdateComponent() {
+		// called from generated factory
 	}
+
+
 
 
 	public String getID() {
@@ -82,7 +82,7 @@ public class DiscreteUpdateComponent {
  
 	
 	public void addFloatExposure(String var, String as) {
-		getInterface().addOutputVariable(new OutputVariable(as));
+		getInterface().addRecordableVariable(new RecordableVariable(as));
 		getStep().addOutput(as, var);
 	}
 
@@ -90,39 +90,26 @@ public class DiscreteUpdateComponent {
 		getStep().addVar(fa);
 	}
 
+	public void addUpdate(Update fa) {
+		getStep().addUpdate(fa);
+	}
+
+	public void addOutput(Output out) {
+		getStep().addOutput(out);
+	}
 	
 	public void addIndependentVariagble(String s) {
 		getInterface().addInputVariable(new InputVariable(s));
 	}
-
-	public void addFloatAssignment(String variableName, String expressionString) {
-		FloatAssignment fa = new FloatAssignment(variableName, expressionString);
-		getStep().addUpdateAssignment(fa);
-		
-	}
+ 
 	
-	public void addFloatAssignment(FloatAssignment fa) {
-		getStep().addUpdateAssignment(fa);
-	}
-	
-	
-	public void addUpdateFloatAssignment(String variableName, String expressionString) {
-		FloatAssignment fa = new FloatAssignment(variableName, expressionString);
-		getStep().addUpdateAssignment(fa);
-		
-	}
-
-	public void addUpdateFloatAssignment(FloatAssignment fa) {
-		getStep().addUpdateAssignment(fa);
-	}
-	
-	 
+	  
 	public LemsCollection<StateVariable> getStateVariables() { 
 		return getState().getStateVariables();
 	}
 	
-	public LemsCollection<OutputVariable> getVariableExposures() {
-		return getInterface().getOutputVariables(); 
+	public LemsCollection<RecordableVariable> getVariableExposures() {
+		return getInterface().getRecordableVariables(); 
 	}
 	 
 	public LemsCollection<Update> getUpdateAssignments() {
@@ -198,6 +185,8 @@ public class DiscreteUpdateComponent {
 	public LemsCollection<OnEvent> getOnEvents() {
 		return onEvents;
 	}
+
+
 
  
 

@@ -8,6 +8,7 @@ public class MethodCallOnChildren extends AbstractOperation {
 	
 	
 	public MethodCallOnChildren(String anm, String atnm, Method mm) {
+		super();
 		typName = atnm;
 		arrName = anm;
 		method = mm;

@@ -18,11 +18,7 @@ public class Case extends ExpressionValued implements Valued {
     public String condition;
     ParseTree valueParseTree;
     ParseTree conditionParseTree;
-
-    public Case() {
-        super();
-    }
-
+ 
     @Override
     public String getName() {
         return name;

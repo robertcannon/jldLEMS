@@ -80,13 +80,12 @@ fall back to using the distal point of the parent segment -->
 	<!--  a point conductance can only be defined within a context that defines a solid 
 	geometry for the conductance to be located on. The 
 	presence of a Location child in a component type is a bit like a Requirement.
-	A component can only be defined in a context where a parent defines a solid -->
+	A Location element can only be defined in a context where a parent defines a solid -->
 	<Location name="at"/>
 	 
-		<!--  Its not clear if we need any Geometry element here or not. We could have something 
-		here (or in Dynamics) to say the e and g exposures apply at the position set
-		by the Location property. -->
- 
+	<!--  Its not clear if we need any Geometry element here or not. We could have something 
+	here (or in Dynamics) to say the e and g exposures apply at the position set
+	by the Location property. -->
  </ComponentType> 
 
   
@@ -97,9 +96,7 @@ fall back to using the distal point of the parent segment -->
 </ComponentType>  
   
 
-<ComponentType name="ChannelDistribution">
-
-</ComponentType>
+<ComponentType name="ChannelDistribution"/>
 
 
 
@@ -111,20 +108,12 @@ fall back to using the distal point of the parent segment -->
 	<Children name="inputs" type="PointConductance"/>
 	
 	<Children name="channelDistributions" type="ChannelDistribution"/>
-	
-	<SimulatorShortcut for="jLEMS">
-		<CableCell conductivityField="conductivity" capacitanceField="membraneCapacitance"
-					morphologyField="morphology" morphologyFormat="proximal,distal,x,y,z,r">
-			<InputSource field="inputs" format=""/>
-		</CableCell>
-	</SimulatorShortcut>
-	
-	
+ 
 	<!--  the equations will actually be solved over the 1-dimensional space 
 	that is the skeleton the 3-D tree volume in the morphology specification 
 	"Skeleton" is another primary geometrical construct understood by LEMS along with 
 	"Frustum" and "Solid". The radius() and pathLength() functions are core functions that 
-	are meaningful within the skeleton element. They and yield scalar fields over 
+	are meaningful within the skeleton element. They yield scalar fields over 
 	the resulting skeleton based on properties of the original solid. 
 	-->
 	<Geometry>
@@ -132,11 +121,6 @@ fall back to using the distal point of the parent segment -->
 			<ScalarField name="r" dimension="length" value="radius()"/>
 			<ScalarField name="p" dimension="length" value="pathLength()"/>
 		</Skeleton>
-		
-		<!-- 
-		<Distribution of="channelDistributions" density="..."
-		     set="gbase" from=".."/>		
-		 -->
 		
 	</Geometry>
 	
@@ -176,9 +160,7 @@ fall back to using the distal point of the parent segment -->
 		-->	
 		<DerivedScalarField name="g_smooth" region="skel" select=""/>	
 			
-			
-			
-			
+					
 		<!--  time derivative as normal except all the terms are now scalar fields.
 		The laplacian function here reduces to d^2v/dx^2 if x is path distance along the 
 		structure. But since the geometry of skeleton is already understood by lems we don't 
@@ -213,6 +195,23 @@ fall back to using the distal point of the parent segment -->
 
 
 
+<ComponentType name="ActiveBranchedCell2">
+    <ComponentReference name="morphology" type="SegmentCell"/>
+	<Parameter name="membraneCapacitance" dimension="capacitance_per_area"/>
+	<Parameter name="conductivity" dimension="conductivity"/>
+	<Children name="inputs" type="PointConductance"/>
+	
+	<Children name="channelDistributions" type="ChannelDistribution"/>
+	
+	<SimulatorShortcut for="jLEMS">
+		<CableCell conductivityField="conductivity" capacitanceField="membraneCapacitance"
+					morphologyField="morphology" morphologyFormat="proximal,distal,x,y,z,r">
+			<InputSource field="inputs" format=""/>
+		</CableCell>
+	</SimulatorShortcut>
+	
+</ComponentType>
+	
 
 
 <SimulationSet id="simset">

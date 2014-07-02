@@ -22,6 +22,8 @@ import java.util.jar.Manifest;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import org.lemsml.jlems.core.logging.E;
+
 public static class FileUtil {
 
 
@@ -89,7 +91,7 @@ public static class FileUtil {
 
          } catch (IOException ex) {
             E.error("file read error ");
-            ex.printStackTrace();
+            E.trace();
          }
       }
       return sdat;
@@ -114,8 +116,7 @@ public static class FileUtil {
             ok = true;
 
          } catch (IOException ex) {
-            E.error("file writing error, trying to write file " + f + " " + f.getParentFile().exists());
-            ex.printStackTrace();
+            E.report("file writing error, trying to write file " + f + " " + f.getParentFile().exists(), ex);
          }
       }
       return ok;
@@ -174,10 +175,17 @@ public static class FileUtil {
 
             // Transfer bytes from in to out
             byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-               out.write(buf, 0, len);
+             
+            while (true) {
+            	int len = in.read(buf);
+            	if (len > 0) {
+            		out.write(buf, 0, len);
+            	} else {
+            		break;
+            	}
             }
+            
+          
             in.close();
             out.close();
          } catch (Exception ex) {
@@ -235,8 +243,8 @@ public static class FileUtil {
             fr.close();
 
          } catch (IOException ex) {
-            E.error("file read error ");
-            ex.printStackTrace();
+            E.report("file read error ", ex);
+             
          }
       }
       return ret;
@@ -259,8 +267,7 @@ public static class FileUtil {
 	            fr.close();
 
 	         } catch (IOException ex) {
-	            E.error("file read error ");
-	            ex.printStackTrace();
+	            E.report("file read error ", ex);
 	         }
 	      }
 	      return sb.toString();
@@ -431,10 +438,17 @@ public static class FileUtil {
 	            zos.putNextEntry(new JarEntry(f.getName()));
 	            FileInputStream fis  = new FileInputStream(f);
 	                byte[] buf = new byte[4096];
-	                int nread = 0;
-	                while((nread = fis.read(buf)) > 0) {
-	                   zos.write(buf, 0, nread);
+	               
+	                while (true) {
+	                	int nread = fis.read(buf);
+	                	if (fis > 0) {
+	                		 zos.write(buf, 0, nread);
+	                	} else {
+	                		break;
+	                	}
 	                }
+ 	                
+	              
 	                fis.close();
 
 	             zos.closeEntry();
@@ -445,8 +459,7 @@ public static class FileUtil {
 	          byte[] ba= baos.toByteArray();
  	          writeByteArrayToFile(ba, fout);
 	       } catch (Exception ex) {
-	          E.error("custom jar writing error " + ex);
-	          ex.printStackTrace();
+	          E.report("custom jar writing error ", ex);
 	       }
 	   }
 

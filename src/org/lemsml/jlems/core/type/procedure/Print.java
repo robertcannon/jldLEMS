@@ -5,7 +5,7 @@ import org.lemsml.jlems.core.run.ExecutableStatement;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Lems;
 
-public class Print extends Statement {
+public class Print extends AbstractStatement {
 
 	
 	public String template;

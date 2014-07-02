@@ -17,7 +17,7 @@ public class ComponentRequirement implements Named {
  
 
     public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
-      
+      // nothing to do
     }
 
     public String getName() {

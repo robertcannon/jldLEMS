@@ -64,10 +64,11 @@ public class MathMLWriterTest {
 		try {
 			wt.generatMathML();
 		} catch (ParseError pe) {
-			pe.printStackTrace();
+			E.report("", pe);
+ 		
 		} catch (ContentError ce) {
-			ce.printStackTrace();
-		}
+			E.report("", ce);
+ 		}
 	}
 	
 	

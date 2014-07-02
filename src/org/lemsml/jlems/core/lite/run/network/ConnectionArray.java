@@ -8,9 +8,7 @@ public class ConnectionArray {
 	
 	ArrayList<Connection> connections = new ArrayList<Connection>();
 	
-	public ConnectionArray() {
-		
-	}
+ 
 
 	public void add(Connection c) {
 		connections.add(c);

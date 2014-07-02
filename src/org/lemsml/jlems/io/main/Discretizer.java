@@ -6,7 +6,6 @@ import java.io.IOException;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
- 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.numerics.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.numerics.IntegrationScheme;
@@ -21,7 +20,6 @@ import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.LemsCollection;
-import org.lemsml.jlems.core.xml.XMLElement;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
 import org.lemsml.jlems.io.util.FileUtil;
@@ -54,7 +52,7 @@ public class Discretizer {
 		outPath = op;
 	}
 
-	public void generateDiscreteModel() throws IOException, ContentError, ParseError, ParseException, BuildException, XMLException, ConnectionError {
+	public String generateDiscreteModel() throws IOException, ContentError, ParseError, ParseException, BuildException, XMLException, ConnectionError {
 	 
 			File simFile = new File(modelName);
 
@@ -93,8 +91,14 @@ public class Discretizer {
 			lems.resolve(ct);
 			lems.resolve(cp);
 
-			StateType st = cp.getStateType();
+			StateType st = cp.getFixedStateType();
+			
+		
+			
 
+			E.info("St summary: " + st.getSummary());
+			
+			
 			// now get the numerics specification
 
 			
@@ -131,10 +135,11 @@ public class Discretizer {
 			} else {
 				File fout = new File(outPath);
 				FileUtil.writeStringToFile(ret, fout);
+				E.info("Written discrete model to " + fout.getAbsolutePath());
 			}
 
-	 
-
+			
+			return ret;
 	}
 
 }

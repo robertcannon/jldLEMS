@@ -69,6 +69,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildChildren(xel);
         } else if (tag.equals("ComponentReference")) {
             ret = buildComponentReference(xel);
+        } else if (tag.equals("Link")) {
+            ret = buildLink(xel);
         } else if (tag.equals("ComponentTypeReference")) {
             ret = buildComponentTypeReference(xel);
         } else if (tag.equals("Collection")) {
@@ -79,6 +81,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildSendPort(xel);
         } else if (tag.equals("ReceivePort")) {
             ret = buildReceivePort(xel);
+        } else if (tag.equals("EventPort")) {
+            ret = buildEventPort(xel);
         } else if (tag.equals("Text")) {
             ret = buildText(xel);
         } else if (tag.equals("Path")) {
@@ -127,6 +131,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildOnEntry(xel);
         } else if (tag.equals("Transition")) {
             ret = buildTransition(xel);
+        } else if (tag.equals("IfCondition")) {
+            ret = buildIfCondition(xel);
         } else if (tag.equals("Super")) {
             ret = buildSuper(xel);
         } else if (tag.equals("ConditionalDerivedVariable")) {
@@ -245,7 +251,6 @@ public class LemsFactory extends AbstractLemsFactory {
         return ret;
     }
 
-    
 
     private Lems buildLems(XMLElement xel) {
         Lems ret = new Lems();
@@ -258,7 +263,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -267,6 +272,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Dimension) {
                 ret.dimensions.add((Dimension)obj);
@@ -304,7 +312,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("component")) {
                 ret.component = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -331,7 +339,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("dimension")) {
                 ret.dimension = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -364,7 +372,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("j")) {
                 ret.j = parseInt(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -393,7 +401,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("offset")) {
                 ret.offset = parseDouble(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -414,7 +422,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("matches")) {
                 ret.matches = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -445,7 +453,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("yPosition")) {
                 ret.yPosition = parseDouble(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -454,6 +462,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Insertion) {
                 ret.insertions.add((Insertion)obj);
@@ -491,7 +502,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -500,6 +511,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Parameter) {
                 ret.parameters.add((Parameter)obj);
@@ -595,7 +609,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("exposure")) {
                 ret.exposure = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -614,7 +628,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -633,7 +647,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -654,7 +668,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("dimension")) {
                 ret.dimension = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -679,7 +693,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -700,7 +714,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -723,7 +737,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -744,7 +758,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -767,7 +781,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -790,7 +804,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -813,7 +827,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("substitute")) {
                 ret.substitute = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -834,7 +848,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("type")) {
                 ret.type = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -865,7 +879,28 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("defaultComponent")) {
                 ret.defaultComponent = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Link buildLink(XMLElement xel) {
+        Link ret = new Link();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else if (xn.equals("type")) {
+                ret.type = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -884,7 +919,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -903,7 +938,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -922,7 +957,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -943,7 +978,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -964,7 +999,30 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("description")) {
                 ret.description = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private EventPort buildEventPort(XMLElement xel) {
+        EventPort ret = new EventPort();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
+            } else if (xn.equals("direction")) {
+                ret.direction = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -983,7 +1041,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1002,7 +1060,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1025,7 +1083,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("compClass")) {
                 ret.compClass = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1044,7 +1102,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("component")) {
                 ret.component = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1069,7 +1127,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("exposure")) {
                 ret.exposure = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1094,7 +1152,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("exposure")) {
                 ret.exposure = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1111,7 +1169,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1130,7 +1188,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("context")) {
                 ret.context = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1149,7 +1207,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("x_for")) {
                 ret.x_for = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1158,6 +1216,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof CableCell) {
                 ret.cableCells.add((CableCell)obj);
@@ -1187,7 +1248,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("morphologyFormat")) {
                 ret.morphologyFormat = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1196,6 +1257,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof InputSource) {
                 ret.inputSources.add((InputSource)obj);
@@ -1221,7 +1285,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("format")) {
                 ret.format = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1242,7 +1306,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("simultaneous")) {
                 ret.simultaneous = parseBoolean(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1251,6 +1315,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Super) {
                 ret.supers.add((Super)obj);
@@ -1302,7 +1369,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("exposure")) {
                 ret.exposure = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1323,7 +1390,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1344,7 +1411,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1377,7 +1444,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1394,7 +1461,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1403,6 +1470,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof StateAssignment) {
                 ret.stateAssignments.add((StateAssignment)obj);
@@ -1410,6 +1480,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.eventOuts.add((EventOut)obj);
             } else if (obj instanceof Transition) {
                 ret.transitions.add((Transition)obj);
+            } else if (obj instanceof IfCondition) {
+                ret.ifConditions.add((IfCondition)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -1430,7 +1502,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("test")) {
                 ret.test = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1439,6 +1511,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof StateAssignment) {
                 ret.stateAssignments.add((StateAssignment)obj);
@@ -1446,6 +1521,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.eventOuts.add((EventOut)obj);
             } else if (obj instanceof Transition) {
                 ret.transitions.add((Transition)obj);
+            } else if (obj instanceof IfCondition) {
+                ret.ifConditions.add((IfCondition)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -1466,7 +1543,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("port")) {
                 ret.port = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1475,6 +1552,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof StateAssignment) {
                 ret.stateAssignments.add((StateAssignment)obj);
@@ -1482,6 +1562,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.eventOuts.add((EventOut)obj);
             } else if (obj instanceof Transition) {
                 ret.transitions.add((Transition)obj);
+            } else if (obj instanceof IfCondition) {
+                ret.ifConditions.add((IfCondition)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -1502,7 +1584,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("port")) {
                 ret.port = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1539,7 +1621,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("step")) {
                 ret.step = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1562,7 +1644,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("b_initial")) {
                 ret.b_initial = parseBoolean(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1571,6 +1653,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof DerivedVariable) {
                 ret.derivedVariables.add((DerivedVariable)obj);
@@ -1604,7 +1689,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1613,6 +1698,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof StateAssignment) {
                 ret.stateAssignments.add((StateAssignment)obj);
@@ -1620,6 +1708,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.eventOuts.add((EventOut)obj);
             } else if (obj instanceof Transition) {
                 ret.transitions.add((Transition)obj);
+            } else if (obj instanceof IfCondition) {
+                ret.ifConditions.add((IfCondition)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -1640,7 +1730,48 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("regime")) {
                 ret.regime = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private IfCondition buildIfCondition(XMLElement xel) {
+        IfCondition ret = new IfCondition();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("test")) {
+                ret.test = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa + " " + xv);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof StateAssignment) {
+                ret.stateAssignments.add((StateAssignment)obj);
+            } else if (obj instanceof EventOut) {
+                ret.eventOuts.add((EventOut)obj);
+            } else if (obj instanceof Transition) {
+                ret.transitions.add((Transition)obj);
+            } else if (obj instanceof IfCondition) {
+                ret.ifConditions.add((IfCondition)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -1657,7 +1788,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1682,7 +1813,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("required")) {
                 ret.required = parseBoolean(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1691,6 +1822,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Case) {
                 ret.cases.add((Case)obj);
@@ -1718,7 +1852,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1735,7 +1869,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1744,6 +1878,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof DerivedVariable) {
                 ret.derivedVariables.add((DerivedVariable)obj);
@@ -1771,7 +1908,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("region")) {
                 ret.region = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1796,7 +1933,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1821,7 +1958,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("select")) {
                 ret.select = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1838,7 +1975,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1847,6 +1984,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -1876,7 +2016,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("componentType")) {
                 ret.componentType = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1885,6 +2025,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Assign) {
                 ret.assigns.add((Assign)obj);
@@ -1914,7 +2057,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("componentType")) {
                 ret.componentType = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1923,6 +2066,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Assign) {
                 ret.assigns.add((Assign)obj);
@@ -1950,7 +2096,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("componentReference")) {
                 ret.componentReference = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1959,6 +2105,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Assign) {
                 ret.assigns.add((Assign)obj);
@@ -1984,7 +2133,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("children")) {
                 ret.children = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -1993,6 +2142,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2020,7 +2172,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("exposeAs")) {
                 ret.exposeAs = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2037,7 +2189,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2046,6 +2198,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2071,7 +2226,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("componentType")) {
                 ret.componentType = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2080,6 +2235,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Assign) {
                 ret.assigns.add((Assign)obj);
@@ -2107,7 +2265,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("as")) {
                 ret.as = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2116,6 +2274,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2151,7 +2312,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("targetPort")) {
                 ret.targetPort = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2160,6 +2321,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Assign) {
                 ret.assigns.add((Assign)obj);
@@ -2195,7 +2359,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("component")) {
                 ret.component = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2204,6 +2368,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2235,7 +2402,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("targetPort")) {
                 ret.targetPort = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2244,6 +2411,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2267,7 +2437,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("select")) {
                 ret.select = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2276,6 +2446,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2299,7 +2472,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("collection")) {
                 ret.collection = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2308,6 +2481,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2337,7 +2513,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("as")) {
                 ret.as = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2346,6 +2522,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2369,7 +2548,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("test")) {
                 ret.test = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2378,6 +2557,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2401,7 +2583,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("components")) {
                 ret.components = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2410,6 +2592,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2435,7 +2620,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("collection")) {
                 ret.collection = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2444,6 +2629,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2473,7 +2661,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("collection")) {
                 ret.collection = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2482,6 +2670,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2503,7 +2694,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2512,6 +2703,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Record) {
                 ret.records.add((Record)obj);
@@ -2549,7 +2743,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("destination")) {
                 ret.destination = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2570,7 +2764,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("dataRegion")) {
                 ret.dataRegion = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2593,7 +2787,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("fileName")) {
                 ret.fileName = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2618,7 +2812,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("total")) {
                 ret.total = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2635,7 +2829,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2644,6 +2838,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Print) {
                 ret.prints.add((Print)obj);
@@ -2669,7 +2866,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2690,7 +2887,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("as")) {
                 ret.as = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2699,9 +2896,12 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
-            } else if (obj instanceof Statement) {
-                ret.statements.add((Statement)obj);
+            } else if (obj instanceof AbstractStatement) {
+                ret.abstractStatements.add((AbstractStatement)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -2722,7 +2922,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("template")) {
                 ret.template = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2741,7 +2941,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2750,6 +2950,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Frustum) {
                 ret.frustums.add((Frustum)obj);
@@ -2791,7 +2994,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("rb")) {
                 ret.rb = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2814,7 +3017,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("topologyConstraint")) {
                 ret.topologyConstraint = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2837,7 +3040,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("on")) {
                 ret.on = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2858,7 +3061,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("solid")) {
                 ret.solid = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2867,6 +3070,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof ScalarField) {
                 ret.scalarFields.add((ScalarField)obj);
@@ -2894,7 +3100,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2911,7 +3117,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2920,6 +3126,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof DrawingElement) {
                 ret.drawingElements.add((DrawingElement)obj);
@@ -2951,7 +3160,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("componentReference")) {
                 ret.componentReference = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -2976,7 +3185,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("componentReference")) {
                 ret.componentReference = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3009,7 +3218,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("fillColor")) {
                 ret.fillColor = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3046,7 +3255,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("fillColor")) {
                 ret.fillColor = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3083,7 +3292,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("fillColor")) {
                 ret.fillColor = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3114,7 +3323,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("fillColor")) {
                 ret.fillColor = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3145,7 +3354,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("fillColor")) {
                 ret.fillColor = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3164,7 +3373,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3173,6 +3382,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof WorkState) {
                 ret.workStates.add((WorkState)obj);
@@ -3196,7 +3408,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3205,6 +3417,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof GradientStateIncrement) {
                 ret.gradientStateIncrements.add((GradientStateIncrement)obj);
@@ -3226,7 +3441,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3245,7 +3460,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("at")) {
                 ret.at = parseString(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3262,7 +3477,7 @@ public class LemsFactory extends AbstractLemsFactory {
 
             if (xn.equals("UNUSED")) {
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3271,6 +3486,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof MeanGradientComponent) {
                 ret.meanGradientComponents.add((MeanGradientComponent)obj);
@@ -3294,7 +3512,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("weight")) {
                 ret.weight = parseDouble(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3315,7 +3533,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("timeFactor")) {
                 ret.timeFactor = parseDouble(xv);
             } else {
-                E.warning("unrecognized attribute " + xa);
+                E.warning("unrecognized attribute " + xa + " " + xv);
             }
         }
 
@@ -3324,6 +3542,9 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
+            if (obj != null && obj instanceof DeprecatedElement) {
+                obj = ((DeprecatedElement)obj).getReplacement();
+            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof GradientStateIncrement) {
                 ret.gradientStateIncrements.add((GradientStateIncrement)obj);

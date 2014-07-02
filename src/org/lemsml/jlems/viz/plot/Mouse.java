@@ -161,8 +161,7 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
     	  }
       }
       
-      if (!handled) {  
-      if (motionHandler != null) {
+      if (!handled && motionHandler != null) {
             if (motionHandler.motionChange(this)) {
  
                // TODO this is lazy - the mh should be
@@ -171,7 +170,7 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
                canvas.repaint();
 
             }
-         }
+       
       }
      
    }
@@ -188,8 +187,7 @@ public final class Mouse implements MouseListener, MouseMotionListener, MouseWhe
       // long tp = e.getWhen();
      // periodDownToDown = tp - timeDown;
      // timeDown = tp;
-      
-      boolean handled = false;
+     
       if (leadHandler != null) {
     	  leadHandler.init(this);
     	  

@@ -9,6 +9,7 @@ import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.logging.E;
  
 import org.lemsml.jlems.core.run.LocalValues;
+import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.RuntimeType;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -89,6 +90,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	private	 Component r_replacement;
 	
+	private boolean hasInst = false;
 	 
 	// RuntimeType can be a NativeType for code generated components
 	private RuntimeType runtimeType;
@@ -454,7 +456,6 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		for (Component cpt : components) {		
 			cpt.checkResolve(lems, r_type);
 
-			String snm = cpt.getName();
 			// Called By
 			String scb = cpt.getDeclaredType();
 			
@@ -574,8 +575,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	public void addToChildren(String childrenName, Component c) throws ContentError {
 
-		if (childrenHM == null)
-        {
+		if (childrenHM == null) {
 			childrenNames = new ArrayList<String>();
 			childrenHM = new HashMap<String, ArrayList<Component>>();
         }
@@ -750,15 +750,13 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	
 
-	public StateType makeStateType() throws ContentError, ParseError {
+	public StateType makeStateType(boolean fixParams) throws ContentError, ParseError {
 	
-	 
-		
 		if (madeCB) {
 			throw new ContentError("remaking a component behavior that is already made " + id + " " + r_type);
 		}
 
-		StateType ret = r_type.makeStateType(this);
+		StateType ret = r_type.makeStateType(this, fixParams);
 		stateType = ret;
 		madeCB = true;
 		return ret;
@@ -768,7 +766,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		
 	
 	
-	public StateType makeConsolidatedCoponentBehavior(String knownas) throws ContentError, ParseError {
+	public StateType makeConsolidatedCoponentBehavior(String knownas) throws ContentError, ParseError, RuntimeError {
 		StateType cb = getStateType();
 	    StateType ret = cb.makeConsolidatedStateType(knownas);
  	    return ret;
@@ -786,7 +784,18 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 	
 
-	public StateType getStateType() throws ContentError, ParseError {
+	public StateType getFixedStateType() throws ContentError, ParseError {
+		StateType ret = getStateType(true);
+		return ret;
+	}
+	
+	public StateType getStateType() throws ContentError, ParseError  {
+		StateType ret = getStateType(false);
+		return ret;
+	}
+
+	
+	public StateType getStateType(boolean fixParams) throws ContentError, ParseError  {
 		StateType ret = null;
 	
 		if (r_replacement != null) {
@@ -802,7 +811,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		} else {
 			if (stateType == null) {
 				//	E.info("Building stae type for " + getID());
- 				makeStateType();
+ 				makeStateType(fixParams);
 			}
 			ret = stateType;
 		}
@@ -1099,6 +1108,13 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return ret;
 	}
 
+	public void setHasInstances() {
+		hasInst = true;
+	}
+
+	public boolean hasInstances() {
+		return hasInst;
+	}
 
 
 

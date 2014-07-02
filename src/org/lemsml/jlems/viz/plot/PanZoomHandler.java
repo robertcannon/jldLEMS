@@ -49,10 +49,6 @@ final class PanZoomHandler extends BaseMouseHandler {
    
    
 
-   public void activate() {
-      super.activate();
-   }
-
    public void applyOnDown(Mouse m) {
 	   m.initializeZoom(xc, yc);
    }

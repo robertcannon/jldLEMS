@@ -15,10 +15,7 @@ public class ConditionalDBase implements DoubleEvaluator {
 	ArrayList<BooleanEvaluator> conditions = new ArrayList<BooleanEvaluator>();
 	ArrayList<DoubleEvaluator> values = new ArrayList<DoubleEvaluator>();
 	
-	
-	public ConditionalDBase() {
 	 
-	}
 
    
 	public void addCondition(BooleanEvaluator be, DoubleEvaluator de) {

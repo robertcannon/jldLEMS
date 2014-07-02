@@ -19,7 +19,7 @@ public class RunnableAccessor {
 	}
 
 
-	public StateWrapper getStateWrapper(String path) throws ConnectionError {
+	public StateWrapper getStateWrapper(String path) throws ConnectionError, ContentError {
 		StateWrapper ret = null;
 		
 		// E.info("seeking sw for " + path);
@@ -45,9 +45,11 @@ public class RunnableAccessor {
 		
 		if (wk != null) {
 			String lastbit = bits[bits.length - 1];
-			E.info("Seeking " + lastbit + " in " + wk);
 			
 			ret = wk.getWrapper(lastbit);
+		
+			E.info("Seeking " + lastbit + " in " + wk + ", got " + ret + " " + wk.getDimensionString(lastbit));
+			
 		}
 		if (ret == null) {
 			E.info("starting from " + root);
@@ -196,7 +198,6 @@ public class RunnableAccessor {
 
 	
 	public ArrayList<StateRunnable> getStateInstances(String path) throws ConnectionError, ContentError {
-		StateRunnable wk = root;
 		return getRelativeStateInstances(root, path);
 	}
 		

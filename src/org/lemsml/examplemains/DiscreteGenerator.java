@@ -1,6 +1,6 @@
 package org.lemsml.examplemains;
 
-import org.lemsml.jlems.Main;
+import org.lemsml.jlems.LemsMain;
 
 public class DiscreteGenerator {
 
@@ -9,7 +9,7 @@ public class DiscreteGenerator {
 		
 		String[] args = {"-d", "-t", "na", "examples/example1.xml"};
 		
-		Main.selfContainedMain(args);
+		LemsMain.selfContainedMain(args);
 	
 	}
 	

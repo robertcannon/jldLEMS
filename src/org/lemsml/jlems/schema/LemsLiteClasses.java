@@ -17,13 +17,15 @@ import org.lemsml.jlems.core.lite.model.EventArguments;
 import org.lemsml.jlems.core.lite.model.EventConnections;
 import org.lemsml.jlems.core.lite.model.EventSource;
 import org.lemsml.jlems.core.lite.model.EventTarget;
+import org.lemsml.jlems.core.lite.model.EventTimes;
 import org.lemsml.jlems.core.lite.model.File;
 import org.lemsml.jlems.core.lite.model.FileSource;
 import org.lemsml.jlems.core.lite.model.FromArrayConnector;
+import org.lemsml.jlems.core.lite.model.IfCondition;
 import org.lemsml.jlems.core.lite.model.Initialize;
 import org.lemsml.jlems.core.lite.model.InputEventPort;
 import org.lemsml.jlems.core.lite.model.InputEventRecording;
-import org.lemsml.jlems.core.lite.model.IntegerListArraySource;
+import org.lemsml.jlems.core.lite.model.ListSource;
 import org.lemsml.jlems.core.lite.model.Interface;
 import org.lemsml.jlems.core.lite.model.LemsLite;
 import org.lemsml.jlems.core.lite.model.Let;
@@ -33,15 +35,18 @@ import org.lemsml.jlems.core.lite.model.Output;
 import org.lemsml.jlems.core.lite.model.OutputEventPort;
 import org.lemsml.jlems.core.lite.model.OutputEventRecording;
 import org.lemsml.jlems.core.lite.model.OutputFiles;
-import org.lemsml.jlems.core.lite.model.OutputVariable;
+import org.lemsml.jlems.core.lite.model.RecordableVariable;
 import org.lemsml.jlems.core.lite.model.Parameter;
 import org.lemsml.jlems.core.lite.model.Property;
+import org.lemsml.jlems.core.lite.model.RecordableVariable;
 import org.lemsml.jlems.core.lite.model.Recording;
 import org.lemsml.jlems.core.lite.model.Simulation;
 import org.lemsml.jlems.core.lite.model.SourceTargetConnector;
 import org.lemsml.jlems.core.lite.model.State;
 import org.lemsml.jlems.core.lite.model.StateVariable;
 import org.lemsml.jlems.core.lite.model.Step;
+import org.lemsml.jlems.core.lite.model.TargetIndices;
+import org.lemsml.jlems.core.lite.model.TimedEvents;
 import org.lemsml.jlems.core.lite.model.Update;
 import org.lemsml.jlems.core.lite.model.Var;
 import org.lemsml.jlems.core.lite.model.VariableDisplay;
@@ -101,7 +106,7 @@ public final class LemsLiteClasses {
 		ret.add(new LemsClass(InputEventPort.class, section));
 		ret.add(new LemsClass(OutputEventPort.class, section));
 		ret.add(new LemsClass(Constant.class, section));
-	 	ret.add(new LemsClass(OutputVariable.class, section));	
+	 	ret.add(new LemsClass(RecordableVariable.class, section));	
 	 	ret.add(new LemsClass(State.class, section));
 	 	ret.add(new LemsClass(StateVariable.class, section));
 	 	ret.add(new LemsClass(Step.class, section));
@@ -113,6 +118,7 @@ public final class LemsLiteClasses {
 	 	ret.add(new LemsClass(OnEvent.class, section));
 	 	ret.add(new LemsClass(OnCondition.class, section));
 	 	ret.add(new LemsClass(Emit.class, section));
+	 	ret.add(new LemsClass(IfCondition.class, section));
 		return ret;
 	}
 	
@@ -139,6 +145,9 @@ public final class LemsLiteClasses {
 		ret.add(new LemsClass(EventArguments.class, section));
 		ret.add(new LemsClass(Arg.class, section));
 		
+		ret.add(new LemsClass(EventTimes.class, section));
+		ret.add(new LemsClass(TimedEvents.class, section));
+		ret.add(new LemsClass(TargetIndices.class, section));
 	
 		return ret;
 	}
@@ -149,7 +158,7 @@ public final class LemsLiteClasses {
 		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
 		String section = "simulation";
 		ret.add(new LemsClass(DataSources.class, section));
-		ret.add(new LemsClass(IntegerListArraySource.class, section));
+		ret.add(new LemsClass(ListSource.class, section));
 		ret.add(new LemsClass(File.class, section));
 		ret.add(new LemsClass(Array.class, section));
 		ret.add(new LemsClass(FileSource.class, section));

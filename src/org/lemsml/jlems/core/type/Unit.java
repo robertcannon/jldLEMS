@@ -64,20 +64,29 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
     public boolean dataMatches(Object obj) {
         boolean ret = false;
         if (obj instanceof Unit) {
-            Unit u = (Unit) obj;
-            if (symbol.equals(u.symbol) && power == u.power && dimension.equals(u.dimension)) {
-                if (Math.abs(scale - u.scale) / (scale + u.scale) < 1.e-9) {
-                    if (offset == 0 && u.offset == 0) {
-                        ret = true;
-                    }
-                    else if(Math.abs(offset - u.offset) / (offset + u.offset) < 1.e-9) {
-                        ret = true;
-                    }
-                }
-            }
+        	ret = unitDataMatches((Unit)obj);
         }
         return ret;
     }
+     
+    
+	public boolean unitDataMatches(Unit u) {
+		boolean ret = false;
+		if (symbol.equals(u.symbol) && power == u.power && dimension.equals(u.dimension)) {
+			if (Math.abs(scale - u.scale) / (scale + u.scale) < 1.e-9) {
+				if (offset == 0 && u.offset == 0) {
+					ret = true;
+				
+				} else {
+					if (Math.abs(offset - u.offset) / (offset + u.offset) < 1.e-9) {
+						ret = true;
+					}
+				}
+			}
+		}
+
+		return ret;
+	}
 
     @Override
     public String toString() {

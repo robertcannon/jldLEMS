@@ -119,7 +119,6 @@ public final class FileUtil {
    }
 
    public static boolean appendStringToFile(String sdat, File f) throws IOException {
-	      String fnm = f.getName();
 	      boolean ok = false;
 	      if (f != null) {
 	    	  OutputStream fos = new FileOutputStream(f, true);

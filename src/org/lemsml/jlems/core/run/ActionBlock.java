@@ -3,6 +3,7 @@ package org.lemsml.jlems.core.run;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lemsml.jlems.core.eval.BooleanEvaluator;
 import org.lemsml.jlems.core.eval.DoubleEvaluator;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -13,14 +14,13 @@ public class ActionBlock {
 	 
 	private final ArrayList<String> outPorts = new ArrayList<String>();
 	
+	private final ArrayList<ConditionAction> conditionActions = new ArrayList<ConditionAction>();
+	
 	
 	public boolean doesTransition = false;
 	public String transitionTo;
 	
-	
-	public ActionBlock() {
-	}
-	
+	 
 	
 	public void addAssignment(String name, DoubleEvaluator das) {	
  		assignments.add(new VariableAssignment(name, das));	
@@ -44,6 +44,12 @@ public class ActionBlock {
 	public ArrayList<VariableAssignment> getAssignments() {
 		return assignments;
     }
+	
+
+	public ArrayList<ConditionAction> getConditionActions() {
+		return conditionActions;
+	}
+	
 
 	public void addVarsTo(ArrayList<String> vars) {
 		for (VariableAssignment va : assignments) {
@@ -63,12 +69,19 @@ public class ActionBlock {
 	}
 
     public void run(StateInstance uin) throws RuntimeError {
-        //E.info("Running action blocks for "+ uin.getID());
+        E.info("Running action blocks for "+ uin.getID());
         HashMap<String, DoublePointer> varHM = uin.getVarHM();
         for (VariableAssignment vass : assignments) {
             double v = vass.evalptr(varHM);
             varHM.get(vass.varname).set(v);
         }
+        
+    	for (ConditionAction ca : conditionActions) {
+			if (ca.evalptr(varHM)) {
+				ca.getAction().run(uin);
+			}
+		}
+        
         for (String sop : outPorts) {
             uin.sendFromPort(sop);
         }
@@ -80,6 +93,12 @@ public class ActionBlock {
 		for (VariableAssignment vass : assignments) {
 			varHM.get(vass.varname).set(vass.evalptr(varHM));
 		}
+		for (ConditionAction ca : conditionActions) {
+			if (ca.evalptr(varHM)) {
+				ca.getAction().run(rsi);
+			}
+		}
+		
 		for (String sop : outPorts) {
 			rsi.sendFromPort(sop);
 		}
@@ -107,6 +126,9 @@ public class ActionBlock {
 		for (VariableAssignment a : assignments) {
 			ret.addVariableAssignment(a.makeCopy());
 		}
+		for (ConditionAction ca : conditionActions) {
+			ret.addConditionalActionBlock(ca.getCondition(), ca.getAction());
+		}
 		return ret;
 		
 	}
@@ -115,5 +137,15 @@ public class ActionBlock {
 	public ArrayList<String> getOutEvents() {
 		return outPorts;
 	}
+
+
+	public void addConditionalActionBlock(BooleanEvaluator be, ActionBlock ab) {
+		 ConditionAction ca = new ConditionAction(be);
+		 ca.setAction(ab);
+		 conditionActions.add(ca);
+		
+	}
+
+ 
 	
 }

@@ -7,6 +7,7 @@ public class MethodCallOnChild extends AbstractOperation {
 	
 	
 	public MethodCallOnChild(String onm, Method mm) {
+		super();
 		objName = onm;
 		method = mm;
 	}

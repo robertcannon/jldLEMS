@@ -12,6 +12,7 @@ import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.Constants;
+import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
  
@@ -885,8 +886,9 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public LemsCollection<Procedure> getProcedures() {
 		return procedures;
 	}
-
-	public StateType makeStateType(Component cpt) throws ContentError, ParseError {
+	
+	
+	public StateType makeStateType(Component cpt, boolean fixParams) throws ContentError, ParseError {
 
 		HashMap<String, Double> fixedHM = new HashMap<String, Double>();
 
@@ -896,8 +898,18 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			fixedHM.putAll(chm);
 		}
 		
-		for (ParamValue pv : cpt.getParamValues()) {
-			fixedHM.put(pv.getName(), pv.getDoubleValue());
+		
+		// TODO this can contain the parm values that aren't changed by instances,
+		// but not those that are.
+		// for now, only use fixParams=true when generating LemsLite
+		if (fixParams) {
+			E.info("AM fixing params in " + this);
+			for (ParamValue pv : cpt.getParamValues()) {
+				fixedHM.put(pv.getName(), pv.getDoubleValue());
+				E.info("Fixed param " + pv.getName());
+			}
+		} else {
+			E.info("NOT fixing params in " + this);
 		}
 
 		StateType ret = null;

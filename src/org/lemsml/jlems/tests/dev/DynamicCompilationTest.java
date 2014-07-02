@@ -15,8 +15,8 @@ public class DynamicCompilationTest {
 		try {
 			dct.compileAndLoad();
 		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+			E.report("", ex);
+ 		}
 	}
 	
 	
