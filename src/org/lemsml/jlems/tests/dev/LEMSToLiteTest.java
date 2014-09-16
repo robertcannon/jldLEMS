@@ -7,7 +7,7 @@ public class LEMSToLiteTest {
 
 	
 	public static void main(String[] argv) {
-		String[] args = {"examples/example1.xml", "na"};
+		String[] args = {"examples/exampleIAFCurrAlpha.xml", "brunel"};
 		try {
 			LemsToLite.main(args);
 		} catch (Exception ex) {

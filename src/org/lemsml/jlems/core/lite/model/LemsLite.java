@@ -37,6 +37,10 @@ public class LemsLite {
 		return componentArrays;
 	}
 	
+	public LemsCollection<TimedEvents> getTimedEvents() {
+		return timedEventss;
+	}
+	
 	
 	public HashMap<String, DiscreteUpdateComponent> getComponentMap() {
 		HashMap<String, DiscreteUpdateComponent> ret = new HashMap<String, DiscreteUpdateComponent>();
@@ -57,5 +61,9 @@ public class LemsLite {
 			 ret = simulations.get(0);
 		 }
 		 return ret;
+	}
+
+	public void addDiscreteUpdateComponent(DiscreteUpdateComponent dum) {
+		discreteUpdateComponents.add(dum);
 	}
 }

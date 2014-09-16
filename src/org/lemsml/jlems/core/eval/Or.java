@@ -25,7 +25,10 @@ public class Or extends AbstractBOp {
 		return "("+left.toExpression() +" || "+ right.toExpression() +")";
     }
 	
-	
+	@Override
+	public String toLemsExpression() {
+		return "("+left.toExpression() +" .or. "+ right.toExpression() +")";
+    }
 	
         @Override
         public String toString() {

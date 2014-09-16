@@ -26,6 +26,17 @@ public class TimedEvents {
 		return to;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
+	public String getTimes() {
+		return times;
+	}
+	
+	public String getTArgets() {
+		return targets;
+	}
  
 	
 	public String getTargetPortName() {

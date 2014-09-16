@@ -142,7 +142,7 @@ public class DiscreteUpdateGenerator {
 		populateOnEvent(oe, ab, stateVars);
 		
 		for (ConditionAction ca : ab.getConditionActions()) {
-			String cond = ca.getCondition().getExpressionString();
+			String cond = ca.getCondition().getLemsExpressionString();
 			
 			IfCondition ic = new IfCondition(cond);
 			oe.addIfCondition(ic);
@@ -188,7 +188,7 @@ public class DiscreteUpdateGenerator {
 	private void addConditionAction(DiscreteUpdateComponent ret, ConditionAction ca, HashSet<String> stateVars) {
 		 
 		BooleanEvaluator be = ca.getCondition();
-		OnAbstract os = ret.addOnCondition(be.getExpressionString());
+		OnAbstract os = ret.addOnCondition(be.getLemsExpressionString());
 		ActionBlock ab = ca.getAction();
 		
 
@@ -206,7 +206,8 @@ public class DiscreteUpdateGenerator {
 	 
 		
 		for (String s : ab.getOutEvents()) {
-			os.addSend(s);
+			os.addEmit(s);
+			ret.ensureOutPort(s);
 		}
 	}
 	

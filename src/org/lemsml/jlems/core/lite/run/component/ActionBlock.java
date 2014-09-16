@@ -7,6 +7,8 @@ public class ActionBlock {
 	
 	ArrayList<Assignment> assignments = new ArrayList<Assignment>();
 	
+	ArrayList<ConditionBlock> conditionBlocks = new ArrayList<ConditionBlock>();
+	
 	ArrayList<EmitAction> emitActions = new ArrayList<EmitAction>();
 	
 	public void addAssignment(Assignment as) {
@@ -27,6 +29,17 @@ public class ActionBlock {
 
 	public ArrayList<EmitAction> getEmitActions() {
 		return emitActions;
+	}
+
+
+	public void addConditionBlock(ConditionBlock cb) {
+		conditionBlocks.add(cb);
+	}
+
+
+
+	public ArrayList<ConditionBlock> getConditionBlocks() {
+		 return conditionBlocks;
 	}
 	
 	

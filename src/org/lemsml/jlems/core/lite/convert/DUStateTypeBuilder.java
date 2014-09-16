@@ -6,6 +6,7 @@ import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.lite.model.Constant;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
 import org.lemsml.jlems.core.lite.model.Emit;
+import org.lemsml.jlems.core.lite.model.IfCondition;
 import org.lemsml.jlems.core.lite.model.InputVariable;
 import org.lemsml.jlems.core.lite.model.OnAbstract;
 import org.lemsml.jlems.core.lite.model.OnCondition;
@@ -18,6 +19,7 @@ import org.lemsml.jlems.core.lite.model.Var;
 import org.lemsml.jlems.core.lite.run.component.ActionBlock;
 import org.lemsml.jlems.core.lite.run.component.Assignment;
 import org.lemsml.jlems.core.lite.run.component.Condition;
+import org.lemsml.jlems.core.lite.run.component.ConditionBlock;
 import org.lemsml.jlems.core.lite.run.component.Copy;
 import org.lemsml.jlems.core.lite.run.component.DiscreteUpdateStateType;
 import org.lemsml.jlems.core.lite.run.component.EmitAction;
@@ -122,6 +124,15 @@ public class DUStateTypeBuilder {
 			ParseTree pt = expressionParser.parseExpression(ua.getExpression());
 			Assignment as = new Assignment(ua.getVariableName(), pt.makeFloatEvaluator());
 			ret.addAssignment(as);
+		}
+		
+		
+		for (IfCondition ifc : oc.getIfConditions()) {
+			ParseTree pt = expressionParser.parseCondition(ifc.getExpression());
+			ActionBlock ab = makeActionBlock(ifc, expressionParser);
+			
+			ConditionBlock cb = new ConditionBlock(pt.makeBooleanEvaluator(), ab);
+			ret.addConditionBlock(cb);
 		}
 		
 		for (Emit e : oc.getEmits()) {

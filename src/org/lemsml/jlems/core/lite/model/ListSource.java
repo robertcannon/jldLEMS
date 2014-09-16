@@ -7,21 +7,23 @@ public class ListSource {
 	
 	public String values;
 	
-	int[] dat = null;
 	
 	
+	int[] intDat = null;
+	double[] dblDat = null;
 	
-	public int[] getValues() {
-		if (dat == null) {
-			readData();
+	
+	public int[] getIntValues() {
+		if (intDat == null) {
+			readIntData();
 		}
-		return dat;
+		return intDat;
 	}
 		
 	
 	
 	
-	private void readData() {
+	private void readIntData() {
 		String[] bits = new String[0];
 		
 		if (values.indexOf(",") > 0) {
@@ -41,9 +43,46 @@ public class ListSource {
 		}
  	 
 		int n = wk.size();
-		dat = new int[n];
+		intDat = new int[n];
 		for (int i = 0; i < n; i++) {
-			dat[i] = wk.get(i);
+			intDat[i] = wk.get(i);
+		}
+	}
+	
+	
+	public double[] getFloatValues() {
+		if (dblDat == null) {
+			readFloatData();
+		}
+		return dblDat;
+	}
+		
+	
+	
+	
+	private void readFloatData() {
+		String[] bits = new String[0];
+		
+		if (values.indexOf(",") > 0) {
+			bits = values.split(",");
+		} else {
+			bits = values.split(" ");
+		}
+			
+		ArrayList<Double> wk = new ArrayList<Double>();
+			
+		for (int i = 0; i < bits.length; i++) {
+			String tok = bits[i].trim();
+			if (tok.length() > 0) {
+				double d = Double.parseDouble(tok);
+				wk.add(d);				
+			}
+		}
+ 	 
+		int n = wk.size();
+		dblDat = new double[n];
+		for (int i = 0; i < n; i++) {
+			dblDat[i] = wk.get(i);
 		}
 	}
 	

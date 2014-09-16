@@ -20,4 +20,8 @@ public class LTComp extends AbstractBComp {
 		return "("+left.toExpression() +" < "+ right.toExpression() +")";
     }
 	
+	@Override
+	public String toLemsExpression() {
+		return "("+left.toExpression() +" .lt. "+ right.toExpression() +")";
+    }
 }

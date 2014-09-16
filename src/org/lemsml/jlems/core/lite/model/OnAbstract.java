@@ -9,11 +9,8 @@ public class OnAbstract {
 	public LemsCollection<Emit> emits = new LemsCollection<Emit>();
 
 	public LemsCollection<IfCondition> ifConditions = new LemsCollection<IfCondition>();
+	 
 	
-	public void addSend(String s) {
-		emits.add(new Emit(s));
-	}
-
 	public void addEmit(String p) {        
 		Emit e = new Emit(p);
 		emits.add(e);
@@ -25,6 +22,10 @@ public class OnAbstract {
 
 	public LemsCollection<Update> getUpdates() {
 		return updates;
+	}
+
+	public LemsCollection<IfCondition> getIfConditions() {
+		return ifConditions;
 	}
 
 	public LemsCollection<Emit> getEmits() {

@@ -191,10 +191,21 @@ public class DiscreteUpdateStateType implements RuntimeType {
 	private void execActionBlock(ActionBlock ab, HashMap<String, DoublePointer> variables, DiscreteUpdateStateInstance src) throws RuntimeError {
 		for (Assignment a : ab.getAssignments()) {
 			a.exec(variables);
+			E.info("Execd event assignemnt " + a.varName + " " + variables.get("weight").getValue());
 		}
+		
+		for (ConditionBlock cb : ab.getConditionBlocks()) {
+			if (cb.conditionHolds(variables)) {
+				execActionBlock(cb.getActionBlock(), variables, src);
+			}
+		}
+		
 		for (EmitAction ea : ab.getEmitActions()) {
 			src.sendEvent(ea.getPort());
 		}
+	
+		
+	 
 	}
 	
 	

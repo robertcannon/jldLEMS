@@ -44,7 +44,7 @@ public class Logo {
 		 g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 	
-		 Ellipse2D.Double disc = new Ellipse2D.Double(1, 1, w-2, h-2);
+		 Ellipse2D.Double disc = new Ellipse2D.Double(1, 1, w-3, h-3);
 		 gp.append(disc, false);
 		 g.setColor(new Color(0, 0, 0));
 		 g.fill(gp);
@@ -59,7 +59,7 @@ public class Logo {
 		 
 		 
 		 
-		 g.drawString("l", (int)(0.36 * w - hsw), (int) (0.25 * h + hsh));
+		 g.drawString("l", (int)(0.38 * w - hsw), (int) (0.25 * h + hsh));
 		 g.drawString("e", (int)(0.66 * w - hsw), (int) (0.25 * h + hsh));
 
 		 g.drawString("m",  (int)(0.36 * w - hsw), (int) (0.6 * h + hsh));

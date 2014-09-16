@@ -26,4 +26,9 @@ public class And extends AbstractBOp {
 		return "("+left.toExpression() +" && "+ right.toExpression() +")";
 	}
         
+	@Override
+	public String toLemsExpression() {
+		return "("+left.toExpression() +" .and. "+ right.toExpression() +")";
+	}
+	
 }

@@ -9,17 +9,13 @@ public class Step {
 	public LemsCollection<Var> vars = new LemsCollection<Var>();
 
 	public LemsCollection<Update> updates = new LemsCollection<Update>();
-	
-	public LemsCollection<ConditionCheck> conditionChecks = new LemsCollection<ConditionCheck>();
-
+	 
 	public LemsCollection<Output> outputs = new LemsCollection<Output>();
 	
 	
 	 
 	public Step() {
-		ConditionCheck cc = new ConditionCheck();
-		conditionChecks.add(cc);
-	}
+ 	}
 	
 
 	public LemsCollection<Update> getUpdates() {

@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
+import org.lemsml.jlems.core.lite.model.LemsLite;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.numerics.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.numerics.IntegrationScheme;
@@ -25,6 +26,7 @@ import org.lemsml.jlems.io.reader.FileInclusionReader;
 import org.lemsml.jlems.io.util.FileUtil;
 import org.lemsml.jlems.io.util.JUtil;
 import org.lemsml.jlems.io.xmlio.XMLSerializer;
+import org.lemsml.jlems.validation.LemsLiteValidator;
 
 public class Discretizer {
 
@@ -125,8 +127,11 @@ public class Discretizer {
 
 			DiscreteUpdateComponent dum = dug.buildDiscreteUpdateComponent();
 
-		 
-			String ret = XMLSerializer.serialize(dum);
+			LemsLite ll = new LemsLite();
+			ll.addDiscreteUpdateComponent(dum);
+			
+			
+			String ret = XMLSerializer.serialize(ll);
 
 			if (outPath == null) {
 				E.info("discrete model:\n" + ret);
@@ -138,6 +143,14 @@ public class Discretizer {
 				E.info("Written discrete model to " + fout.getAbsolutePath());
 			}
 
+			
+			LemsLiteValidator llv = new LemsLiteValidator();
+			boolean bok = llv.checkXMLText(ret);
+			if (bok) {
+				E.info("Output validated OK against lems lite schema");
+			} else {
+				E.info("WARNING: output is not valid acording to lems lite schema");
+			}
 			
 			return ret;
 	}
