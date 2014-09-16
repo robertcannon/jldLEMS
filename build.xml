@@ -164,5 +164,19 @@
 			</classpath>
 		</java>
 	</target>
+    
+	<target name="exTunnel" depends="viz-jar"
+            description="Tests the LEMS example: exampleTunnelling.xml">
+
+		<java classname="org.lemsml.jlems.viz.VizMain" fork="true">
+			<jvmarg value="-Xmx100M" />
+
+			<arg value="examples/exampleTunnelling.xml"/>
+
+			<classpath>
+				<pathelement location="builtjars/lems-viz.jar"/>
+			</classpath>
+		</java>
+	</target>
 
 </project>
