@@ -27,9 +27,11 @@ import org.lemsml.jlems.io.reader.FileInclusionReader;
  
 public class ExamplesTest {
 
-	private static File rootDir;
+	private File rootDir;
 	
-	 
+	public ExamplesTest() {
+		rootDir = new File("examples");
+	}
 	
     @Test
     public void testExample1() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException  {
@@ -140,8 +142,7 @@ public class ExamplesTest {
 
     public static void main(String[] args) {
     	DefaultLogger.initialize();
-    	rootDir = new File("examples");
-    	ExamplesTest ct = new ExamplesTest();
+        	ExamplesTest ct = new ExamplesTest();
         Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
         MainTest.checkResults(r);
 
@@ -150,7 +151,7 @@ public class ExamplesTest {
     public static void extMain() {
     	DefaultLogger.initialize();
     	File dir = new File("examples");
-    	rootDir = new File("../jLEMS/src/test/resources");
+    	// rootDir = new File("../jLEMS/src/test/resources");
     	ExamplesTest ct = new ExamplesTest();
         Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
         MainTest.checkResults(r);
