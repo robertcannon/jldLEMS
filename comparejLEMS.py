@@ -8,6 +8,8 @@ dirs_to_compare = ['core/type']
 dirs_to_compare = ['core/run']
 dirs_to_compare = ['core/expression']
 dirs_to_compare = ['core/sim']
+dirs_to_compare = ['core/xml']
+dirs_to_compare = ['core/flatten']
 
 dirs_to_compare = ['core/sim',
                    'core/expression',
@@ -15,9 +17,18 @@ dirs_to_compare = ['core/sim',
                    'core/type',
                    'core/eval',
                    'core/util',
-                   'core/xml']
+                   'core/xml',
+                   'core/display',
+                   'core/out',
+                   'core/reader']
                    
-dirs_to_compare = ['core/xml']
+
+examples = False
+
+if examples:
+    jlemsdev_src_dir = 'examples/'
+    jlems_src_dir = '../jLEMS/src/test/resources/'
+    dirs_to_compare = ['.']
 
 ignores = ['SendPort.java', 'SimulatorShortcut.java', 'InputSource.java', 'LocalParameters.java', 'ComponentRelative.java', \
            'ReceivePort.java', 'CableCell.java','LocalParameterValue']
