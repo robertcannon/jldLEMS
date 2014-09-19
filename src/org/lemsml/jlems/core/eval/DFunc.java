@@ -40,7 +40,6 @@ public class DFunc extends AbstractDVal {
 		return arg.toReversePolishExpression() + " " + fname + "()";
 	}
 	
-
 	 
 	public double eval() {
 		double ret = 0;
