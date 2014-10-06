@@ -6,6 +6,7 @@ import java.util.Iterator;
  
 import org.lemsml.jlems.core.sim.ContentError;
 
+@SuppressWarnings("StringConcatenationInsideStringBufferAppend")
 public class LemsCollection<T> implements Iterable<T> {
 
  
@@ -15,6 +16,7 @@ public class LemsCollection<T> implements Iterable<T> {
 	private transient HashMap<String, T> pseudoNameHM;
 	private transient HashMap<String, T> idHM;
 	
+    @Override
 	public Iterator<T> iterator() {
 		return contents.iterator();
 	}
@@ -153,7 +155,7 @@ public class LemsCollection<T> implements Iterable<T> {
 			if (t instanceof IDd) {
 				String pn = ((IDd)t).getID();
 				if (pn != null && idHM.containsKey(pn)) {
-					throw new ContentError("Duplicate id: " + pn+"\nidHM: "+ idHM);
+                        throw new ContentError("Duplicate id: " + pn + "\nidHM: " + idHM);
 				} else {
 					idHM.put(pn, t);
 				}
@@ -173,17 +175,16 @@ public class LemsCollection<T> implements Iterable<T> {
 	}
 
 	
-	
-	
-
 	public int size() {
 		return contents.size();
 	}
+    
     
 	public boolean isEmpty() {
 		return contents.isEmpty();
 	}
 	
+
     @Override
 	public String toString() {
          
@@ -192,8 +193,6 @@ public class LemsCollection<T> implements Iterable<T> {
 			sb.append(t.toString() + "\n");
 		}
 		return sb.toString();
-	 
-	//	return listAsText(" ");
     }
 
 
@@ -210,9 +209,9 @@ public class LemsCollection<T> implements Iterable<T> {
 			sb.append(scn + "s:\n");
 			for (T t : contents) {
 				if (t instanceof Summaried) {
-					sb.append("    " +  ((Summaried)t).summary() + "\n");
+                    sb.append("    " + ((Summaried) t).summary() + "\n");
 				} else {
-					sb.append("    " +  t.toString() + "\n");
+                    sb.append("    " + t.toString() + "\n");
 				}	
 				sb.append(sep);
 			}
@@ -237,7 +236,6 @@ public class LemsCollection<T> implements Iterable<T> {
 	}
 	
 	 
-
 	public void deduplicate() throws ContentError {
 		HashMap<String, T> xidHM = new HashMap<String, T>();
 		ArrayList<T> ddContents = new ArrayList<T>();
@@ -246,7 +244,7 @@ public class LemsCollection<T> implements Iterable<T> {
 			if (xidHM.containsKey(st)) {
 				T pt = xidHM.get(st);
 				if (t instanceof DataMatchable) {
-					if (((DataMatchable)t).dataMatches(pt)) {
+                    if (((DataMatchable) t).dataMatches(pt)) {
 					// OK
 					} else {
 						String msg = "Two elements with the same identifier but different properties: " + t + "\nand " + pt;
@@ -269,11 +267,11 @@ public class LemsCollection<T> implements Iterable<T> {
 	public String getXID(T t) throws ContentError {
 		String ret = "";
 		if (t instanceof Named) {
-			ret = ((Named)t).getName();
+            ret = ((Named) t).getName();
 		} else if (t instanceof PseudoNamed) {
-			ret = ((PseudoNamed)t).getPseudoName();
+            ret = ((PseudoNamed) t).getPseudoName();
 		} else if (t instanceof IDd) {
-			ret = ((IDd)t).getID();
+            ret = ((IDd) t).getID();
 		} else {
 			throw new ContentError("no identification for " + t);
 		}
@@ -286,7 +284,6 @@ public class LemsCollection<T> implements Iterable<T> {
 			add(t);
 		}
 	}
-
 
 	public ArrayList<T> getContents() {
 		return contents;
@@ -301,10 +298,8 @@ public class LemsCollection<T> implements Iterable<T> {
 	}
 	
  
-
-
 	public HashMap<String, T> getMap() throws ContentError {
-		HashMap<String, T> ret= new HashMap<String, T>();
+        HashMap<String, T> ret = new HashMap<String, T>();
 		for (T t : contents) {
 			ret.put(getXID(t), t);
 		}

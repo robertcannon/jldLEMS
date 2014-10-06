@@ -9,11 +9,12 @@ public interface Dimensional {
 	int getI();
 	int getK();
 	int getN();
+	int getJ();
 	
 	Dimensional getTimes(Dimensional d);
-	
 	Dimensional getDivideBy(Dimensional d);
 	
+	 
 	
 	boolean matches(Dimensional dr);
 	boolean isDimensionless();
