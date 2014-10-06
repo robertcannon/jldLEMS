@@ -76,7 +76,7 @@
 			<fileset dir="src" includes="org/lemsml/jlems/**"/>
 			<fileset dir="src" includes="org/lemsml/jlemsio/**"/>
 			<manifest>
-				<attribute name="Main-Class" value="org.lemsml.jlemsio.Main"/>
+				<attribute name="Main-Class" value="org.lemsml.jlems.Main"/>
 			</manifest>
 		</jar>
 		<copy tofile="builtjars/lems.jar" file="builtjars/lems-${version.number}.jar"/>
@@ -95,7 +95,7 @@
 			<fileset dir="src" includes="org/lemsml/jlems/**"/>
 			<fileset dir="src" includes="org/lemsml/jlemsio/**"/>
 			<manifest>
-				<attribute name="Main-Class" value="org.lemsml.jlemsviz.VizMain"/>
+				<attribute name="Main-Class" value="org.lemsml.jlems.viz.VizMain"/>
 			</manifest>
 		</jar>
 		<copy tofile="builtjars/lems-viz.jar" file="builtjars/lems-viz-${version.number}.jar"/>
@@ -128,7 +128,7 @@
 
 
 	<target name="runtests" depends="compile">
-		<java classname="org.lemsml.jlemstests.MainTest">
+		<java classname="org.lemsml.jlems.tests.MainTest">
 			<classpath>
 				<pathelement location="build"/>
 				<pathelement location="lib/junit-4.8.1.jar"/>
@@ -154,7 +154,7 @@
 	<target name="ex1" depends="viz-jar"
             description="Tests the LEMS example: example1.xml">
 
-		<java classname="org.lemsml.jlemsviz.VizMain" fork="true">
+		<java classname="org.lemsml.jlems.viz.VizMain" fork="true">
 			<jvmarg value="-Xmx100M" />
 
 			<arg value="examples/example1.xml"/>
