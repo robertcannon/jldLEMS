@@ -1,3 +1,30 @@
+With, padraig's example where 
+synapse containse spiking element which containst connection all in 
+component type definitin. With in structure wants instance to resolve relative
+to the component directly on type definition, not on params of declared component.
+
+LEMS_NML_Ex16_Inputs.xml example in experimental branch of nml2
+
+
+Check why accessing children by index doesn't work injLEMS when declared as a list going in a Children element
+onlySI.getChildren?
+
+
+API: generate node tree of instantiated model with params, state variables etc
+ Or just make and expose set of peers
+ 
+Also access to lems "documents" so can create and query 
+
+
+
+
+
+
+
+
+
+
+
 Instance variables - channel populations that change a property of a channel (vshift) from place to place.
 
 Possibility of inheriting behaviors between component types? Not sure - why? Only case so far is 
