@@ -73,7 +73,7 @@ public class LemsDimension extends LemsElement {
 	}
 
 
-	public void set(SI bd, int i) throws APIException {
+	public void set(SI bd, int i) throws APIException, APISequenceException {
 		//throw exception on resetting?
 		if (dims.containsKey(bd)) {
 			throw new APIException("After it isset, the power of a base diemsion cannot be changed");

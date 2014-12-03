@@ -10,7 +10,7 @@ public class LemsElement {
 	}
 
 	
-	protected void checkFocus() {
+	protected void checkFocus() throws APISequenceException {
 		if (this == lemsModel.focusElement) {
 			// OK
 		} else {

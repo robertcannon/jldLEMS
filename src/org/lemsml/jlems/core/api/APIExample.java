@@ -6,7 +6,7 @@ public class APIExample {
 	 
 	
 	
-	public void buildExample1() throws APIException {
+	public void buildExample1() throws APIException, APISequenceException {
 		LemsModel lemsModel = new LemsModel();
 		
 		
@@ -51,7 +51,7 @@ public class APIExample {
 	
 	
 	
-	public static void main(String[] argv) throws APIException {
+	public static void main(String[] argv) throws APIException, APISequenceException {
 		APIExample be = new APIExample();
 		be.buildExample1();
 		
