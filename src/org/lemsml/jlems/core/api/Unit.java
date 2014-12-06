@@ -1,13 +1,14 @@
 package org.lemsml.jlems.core.api;
 
-public class LemsUnit {
+public class Unit extends AbstractElement {
 
 	
-	protected LemsDimension dimension = null;
+	protected Dimension dimension = null;
 	protected int power = 0;
 	protected String symbol;
 	
-	protected LemsUnit(String s) {
+	protected Unit(Lems l, String s) {
+		super(l, s);
 	}
 
 
@@ -16,7 +17,7 @@ public class LemsUnit {
 	}
 
 
-	public void setDmension(LemsDimension d) {
+	public void setDimension(Dimension d) {
 		dimension = d;
 	}
 

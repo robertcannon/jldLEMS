@@ -1,13 +1,9 @@
 package org.lemsml.jlems.core.api;
 
 import java.util.HashMap;
-
-import org.lemsml.jlems.core.type.Dimension;
-
-public class LemsDimension extends LemsElement {
-
-	public String name;
-
+ 
+public class Dimension extends AbstractElement {
+ 
 	
 	protected int m;
 	protected int l;
@@ -18,24 +14,22 @@ public class LemsDimension extends LemsElement {
 	protected int j;
 	
 	public static enum SI {
-		MASS {void apply(LemsDimension d, int i) { d.setM(i); }},
-		LENGTH {void apply(LemsDimension d, int i) { d.setL(i); }},
-		TIME {void apply(LemsDimension d, int i) { d.setT(i); }},
-		CURRENT {void apply(LemsDimension d, int i) { d.setI(i); }},
-		TEMPERATURE {void apply(LemsDimension d, int i) { d.setK(i); }},
-		AMOUNT {void apply(LemsDimension d, int i) 	{ d.setN(i); }},
-		LUMINOUS_INTENSITY {void apply(LemsDimension d, int i) { d.setJ(i); }};
-		abstract void apply(LemsDimension d, int i);
+		MASS {void apply(Dimension d, int i) { d.setM(i); }},
+		LENGTH {void apply(Dimension d, int i) { d.setL(i); }},
+		TIME {void apply(Dimension d, int i) { d.setT(i); }},
+		CURRENT {void apply(Dimension d, int i) { d.setI(i); }},
+		TEMPERATURE {void apply(Dimension d, int i) { d.setK(i); }},
+		AMOUNT {void apply(Dimension d, int i) 	{ d.setN(i); }},
+		LUMINOUS_INTENSITY {void apply(Dimension d, int i) { d.setJ(i); }};
+		abstract void apply(Dimension d, int i);
 	}
 	
 	
 	HashMap<SI, Integer> dims = new HashMap<SI, Integer>();
  
 
-	protected LemsDimension(LemsModel m, String s) {
-		super(m);
-		name = s;
-		
+	protected Dimension(Lems m, String s) {
+		super(m, s);
 	}
 	
 	

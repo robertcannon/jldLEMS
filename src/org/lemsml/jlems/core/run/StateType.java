@@ -1485,7 +1485,9 @@ public class StateType implements RuntimeType {
 		if (dimensions.containsKey(fld)) {
 			ret = dimensions.get(fld);
 		} else {
-			throw new ContentError("No dimension for " + fld + " in " + this);
+
+			ret = "(none)";
+			// throw new ContentError("No dimension for " + fld + " in " + this);
 		}
 		return ret;
 	}

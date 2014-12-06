@@ -3,47 +3,56 @@ package org.lemsml.jlems.core.api;
 public class APIExample {
 
 	
-	 
-	
 	
 	public void buildExample1() throws APIException, APISequenceException {
-		LemsModel lemsModel = new LemsModel();
+		Lems lemsModel = new Lems();
 		
 		
 		// create a new dimension value, set its components in terms of the base dimensions
-		LemsDimension acc = lemsModel.addDimension("accelleration");
-		acc.set(LemsDimension.SI.MASS, 1);
-		acc.set(LemsDimension.SI.LENGTH, 1);
-		acc.set(LemsDimension.SI.TIME, -2);
+		Dimension acc = lemsModel.addDimension("accelleration");
+		acc.set(Dimension.SI.MASS, 1);
+		acc.set(Dimension.SI.LENGTH, 1);
+		acc.set(Dimension.SI.TIME, -2);
 	 
 	
-		LemsDimension mass = lemsModel.addDimension("mass");
-		mass.set(LemsDimension.SI.MASS, 1);
+		Dimension mass = lemsModel.addDimension("mass");
+		mass.set(Dimension.SI.MASS, 1);
 		
 		
-		LemsDimension length = lemsModel.addDimension("mass");
-		length.set(LemsDimension.SI.LENGTH, 1);
+		Dimension length = lemsModel.addDimension("mass");
+		length.set(Dimension.SI.LENGTH, 1);
 		
 		
-		LemsUnit gram = lemsModel.addUnit("gram");
+		Unit gram = lemsModel.addUnit("gram");
 		gram.setSymbol("g");
-		gram.setDmension(mass);
+		gram.setDimension(mass);
 		gram.setPower(-3);
 		
-		// this will throw an exception 
-		length.set(LemsDimension.SI.CURRENT, 1);
 		
-		LemsComponentType lct = lemsModel.addComponentType("cell");	
+		Unit milligram = lemsModel.addUnit("milligram", mass, -6, "mg");
+	 
+		// this will throw an exception 
+		length.set(Dimension.SI.CURRENT, 1);
+		
+		ComponentType lct = lemsModel.addComponentType("cell");	
 		lct.addParameter("radius", length);
 		
+		// this points to the mass dimension by name -will need 
+		// resolving later - only needed when deserializing a model
+		lct.addParameter("m", "mass");
 		
-		LemsComponentType lct2 = lemsModel.addExtendingComponentType("cell2", lct);
+		lct.addChild("child1", "type1");
+		
+		lct.addChildren("children1", "type2");
 		
 		
+		ComponentType lct2 = lemsModel.addExtendingComponentType("cell2", lct);
 		
 		
+		Component cpt = lemsModel.addComponent("cptid", "type2");
+		cpt.setParameterValue("a", "1");
 		
-		
+		cpt.setParameterValue("a", new Quantity(1, gram));
 	
 	}
 	

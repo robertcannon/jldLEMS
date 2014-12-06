@@ -1,17 +1,19 @@
 package org.lemsml.jlems.core.api;
 
-public class LemsElement {
+public class AbstractElement {
 
-	LemsModel lemsModel;
+	Lems lems;
+	String name;
 	
-	protected LemsElement(LemsModel lm) {
-		lemsModel = lm;
+	protected AbstractElement(Lems lm, String s) {
+		lems = lm;
+		name = s;
 		lm.setFocusElement(this);
 	}
 
 	
 	protected void checkFocus() throws APISequenceException {
-		if (this == lemsModel.focusElement) {
+		if (this == lems.focusElement) {
 			// OK
 		} else {
 			throw new APISequenceException("All poperties of an element must be set " +
