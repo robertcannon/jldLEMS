@@ -208,7 +208,7 @@
 	<ComponentType name="Compound">
 		<Children name="elements" type="CompoundElement"/>
 	</ComponentType>
-
+<Assertion dimension="resistance" matches="1 / conductance"/>
 
 	<ComponentType name="Solute">
 		<ComponentReference name="compound" type="Compound"/>
@@ -228,7 +228,7 @@
  		<CompoundElement species="Sodium" n="1"/>
  		<CompoundElement species="Chloride" n="1"/>
  	</Compound>	
-
+<Assertion dimension="resistance" matches="1 / conductance"/>
 	<Compound id="KCl">
 		<CompoundElement species="Potassium" n="1"/>
  		<CompoundElement species="Chloride" n="1"/>

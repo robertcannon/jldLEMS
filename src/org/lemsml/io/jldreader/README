@@ -1,0 +1,4 @@
+The jldreader package is an implementation of the API ModelReader interface that uses the jLEMS parser etc.
+
+This is ripe for replacement by some other technology using a standard XML parser etc.
+ 
