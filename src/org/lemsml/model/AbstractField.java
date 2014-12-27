@@ -3,9 +3,9 @@ package org.lemsml.model;
 
 public class AbstractField extends AbstractElement {
 	
-	private String dimensionName = null;
+	protected String dimension = null;
 	
-	protected Dimension dimension = null;
+	private Dimension r_dimension = null;
 	
 	
 	protected AbstractField(Lems l, String n) {
@@ -13,11 +13,11 @@ public class AbstractField extends AbstractElement {
 	}
 	
 	public void setDimension(Dimension d) {
-		dimension = d;
+		r_dimension = d;
 	}
 	
 	public void setDimension(String n) {
-		dimensionName = n;
+		dimension = n;
 	}
 	
 }

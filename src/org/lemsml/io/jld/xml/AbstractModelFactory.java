@@ -1,34 +1,37 @@
-package org.lemsml.io.jldreader;
+package org.lemsml.io.jld.xml;
 
-import org.lemsml.api.ContentError;
-import org.lemsml.io.jldreader.xml.XMLAttribute;
-import org.lemsml.io.jldreader.xml.XMLElement;
+import org.lemsml.api.APIException;
+import org.lemsml.io.jld.E;
 import org.lemsml.model.Component;
 import org.lemsml.model.Lems;
+import org.lemsml.model.ModelException;
   
 
 public abstract class AbstractModelFactory {
 
 	
-	public Lems buildLemsFromXMLElement(XMLElement root) throws ContentError {
+	int nid = 0;
+	
+	
+	public Lems buildLemsFromXMLElement(XMLElement root) throws APIException, ModelException {
 	 	Lems ret = null;
 		if (root.isTag("Lems")) {
 			
 			ret = new Lems();
-			populateFromXMLElement(ret, root);
+			populateLemsFromXMLElement(ret, root);
 			
 		} else {
-			throw new ContentError("Cant read lems from " + root);
+			throw new APIException("Cant read lems from " + root);
 		}
 		return ret;
 	}
 	
-	public abstract void populateFromXMLElement(Lems lems, XMLElement xel) throws ContentError;
+	public abstract void populateLemsFromXMLElement(Lems lems, XMLElement xel) throws APIException, ModelException;
 	
 	 
 	  
 
-	private void readComponentFromXMLElement(Lems lems, XMLElement xel) throws ContentError {
+	protected void readComponentFromXMLElement(Lems lems, XMLElement xel) throws ModelException {
 		
 		String typeName = "";
 		if (xel.getTag().equals("Component")) {
@@ -144,6 +147,25 @@ public abstract class AbstractModelFactory {
 		return ret;
 	}
 	
+
 	
+	public String getNameAttribute(XMLElement xel) {
+		String ret = null;
+		for (XMLAttribute at : xel.getAttributes()) {
+			if (at.getName().equals("name")) {
+				ret = at.getValue();
+				break;
+			}
+			// TODO check - fall back on id, but prefer name
+			if (at.getName().equals("id")) {
+				ret = at.getValue();
+			}
+		}
+		if (ret == null) {
+			nid += 1;
+			ret = "_" + nid;
+		}
+		return ret;
+	}
 	
 }

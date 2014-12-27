@@ -1,4 +1,4 @@
-package org.lemsml.io.jldreader;
+package org.lemsml.io.jld;
 
 public class LEMSException extends Exception {
 	private static final long serialVersionUID = 1L;

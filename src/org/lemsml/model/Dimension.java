@@ -1,6 +1,8 @@
 package org.lemsml.model;
 
 import java.util.HashMap;
+
+import org.lemsml.api.APIException;
  
 public class Dimension extends AbstractElement {
  
@@ -33,44 +35,44 @@ public class Dimension extends AbstractElement {
 	}
 	
 	
-	protected void setJ(int v) {
+	public void setJ(int v) {
 			j = v;
 	}
 
-	protected void setN(int v) {
+	public void setN(int v) {
 		n = v;
 	}
 
 
-	protected void setK(int v) {
+	public void setK(int v) {
 		k = v;
 	}
 
 
-	protected void setI(int v) {
+	public void setI(int v) {
 		i = v;
 	}
 
 
-	protected void setT(int v) {
+	public void setT(int v) {
 		t = v;
 	}
 
 
-	protected void setL(int v) {
+	public void setL(int v) {
 		l = v;
 	}
 
 
-	protected void setM(int v) {
+	public void setM(int v) {
 		m = v;
 	}
 
 
-	public void set(SI bd, int i) throws APIException, APISequenceException {
+	public void set(SI bd, int i) throws ModelException {
 		//throw exception on resetting?
 		if (dims.containsKey(bd)) {
-			throw new APIException("After it isset, the power of a base diemsion cannot be changed");
+			throw new ModelException("After it is set, the power of a base diemsion cannot be changed");
 		}
 		
 		checkFocus();

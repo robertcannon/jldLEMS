@@ -12,14 +12,19 @@ public class Lems {
 	// is likely to be an error
 	AbstractElement focusElement;
 	
-	
-	HashMap<String, Dimension> dimensionHM = new HashMap<String, Dimension>();
+	protected ListMap<Target> targetMap = new ListMap<Target>();
 
-	HashMap<String, Unit> unitHM = new HashMap<String, Unit>();
+	protected ListMap<Dimension> dimensionMap = new ListMap<Dimension>();
 	
-	HashMap<String, ComponentType> typeHM = new HashMap<String, ComponentType>();
+	protected ListMap<Unit> unitMap = new ListMap<Unit>();
+
+	protected ListMap<Constant> constantMap = new ListMap<Constant>();
 	
-	HashMap<String, Component> cptHM = new HashMap<String, Component>();
+	protected ListMap<ComponentType> componentTypeMap = new ListMap<ComponentType>();
+	
+	
+	
+	protected ComponentMap componentMap = new ComponentMap();
 	
 	
 	public Lems() {
@@ -28,20 +33,20 @@ public class Lems {
 	
 	public Dimension addDimension(String name) {
 		Dimension ret = new Dimension(this, name);
-		dimensionHM.put(name, ret);
+		dimensionMap.put(name, ret);
 		return ret;
 	}
 	
 	public Unit addUnit(String s) {
 		Unit ret = new Unit(this, s);
-		unitHM.put(s, ret);
+		unitMap.put(s, ret);
 		return ret;
 	}
 
 
 	public ComponentType addComponentType(String s) {
 		ComponentType ret = new ComponentType(this, s);
-		typeHM.put(s, ret);
+		componentTypeMap.put(s, ret);
 		return ret;
 	}
 
@@ -72,7 +77,7 @@ public class Lems {
 	
 	public Component addComponent(String id) {
 		Component ret = new Component(this, id);
-		cptHM.put(id,ret);
+		componentMap.put(id, ret);
 		return ret;
 	}
 
@@ -81,6 +86,18 @@ public class Lems {
 		ret.setTypeName(tn);
 		return ret;
 	}
+
+
+	public Target addTarget(String eltname) {
+		Target ret = new Target(this, eltname);
+		targetMap.put(eltname, ret);
+		return ret;
+	}
 	
+	public Constant addConstant(String eltname) {
+		Constant ret = new Constant(this, eltname);
+		constantMap.put(eltname, ret);
+		return ret;
+	}
 	
 }

@@ -1,4 +1,4 @@
-package org.lemsml.io.jldreader;
+package org.lemsml.io.jld.generation;
 
 import java.util.ArrayList;
  
@@ -20,6 +20,7 @@ import org.lemsml.model.IntegerParameter;
 import org.lemsml.model.Lems; 
 import org.lemsml.model.LocalParameters;  
 import org.lemsml.model.Parameter; 
+import org.lemsml.model.Path;
 import org.lemsml.model.Property;
 import org.lemsml.model.ReceivePort;
 import org.lemsml.model.Requirement;
@@ -101,8 +102,6 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Lems.class, section));
 		ret.add(new LemsClass(Target.class, section));
 		ret.add(new LemsClass(Constant.class, section));	
-		
-		section = "unitsdimensions";
 		ret.add(new LemsClass(Dimension.class, section));
 		ret.add(new LemsClass(Unit.class, section));
 		ret.add(new LemsClass(Assertion.class, section));
@@ -156,6 +155,9 @@ public final class LemsClasses {
 		String section = "componenttypes";
 		ret.add(new LemsClass(ComponentType.class, section));
 		ret.add(new LemsClass(Parameter.class, section));
+		ret.add(new LemsClass(Text.class, section));
+		ret.add(new LemsClass(Path.class, section));
+
  		ret.add(new LemsClass(LocalParameters.class, section));
 		
 		ret.add(new LemsClass(Property.class, section));
@@ -168,8 +170,7 @@ public final class LemsClasses {
  		ret.add(new LemsClass(ComponentReference.class, section));
   		ret.add(new LemsClass(SendPort.class, section));
 		ret.add(new LemsClass(ReceivePort.class, section));
- 		ret.add(new LemsClass(Text.class, section));
- 		ret.add(new LemsClass(Attachments.class, section));
+  		ret.add(new LemsClass(Attachments.class, section));
  		ret.add(new LemsClass(Insertion.class, section));
 		ret.add(new LemsClass(IntegerParameter.class, section));
  		ret.add(new LemsClass(About.class, section));

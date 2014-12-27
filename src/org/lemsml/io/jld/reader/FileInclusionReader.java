@@ -1,10 +1,12 @@
-package org.lemsml.io.jldreader;
+package org.lemsml.io.jld.reader;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.lemsml.api.ContentError;
+import org.lemsml.api.APIException;
+import org.lemsml.io.jld.xml.AbstractInclusionReader;
+
  
 
 
@@ -53,7 +55,7 @@ public class FileInclusionReader extends AbstractInclusionReader {
 	}
 
     
-    public String getRelativeContent(String s) throws ContentError {
+    public String getRelativeContent(String s) throws APIException {
     	String ret = "";
     	
         //E.info("Getting rel path for: "+s+", rootDir: "+ rootDir.getAbsolutePath()+", searchDirs: "+ searchDirs);
@@ -90,7 +92,7 @@ public class FileInclusionReader extends AbstractInclusionReader {
         	final StringBuilder sb = new StringBuilder();
         	sb.append("Can't find file at path: " + s + "\n");
         	sb.append("Search directories are: " + searchDirs + "\n");
-         	throw new ContentError(sb.toString());
+         	throw new APIException(sb.toString());
         }
         
         boolean readOK = false;
@@ -104,7 +106,7 @@ public class FileInclusionReader extends AbstractInclusionReader {
         }
         
         if (!readOK) {
-        	 throw new ContentError("Error reading fole " + f.getAbsolutePath());
+        	 throw new APIException("Error reading fole " + f.getAbsolutePath());
         }
         
         return ret;
@@ -112,12 +114,12 @@ public class FileInclusionReader extends AbstractInclusionReader {
 
    
     
-    public String getRootContent() throws ContentError {
+    public String getRootContent() throws APIException {
         try {
             return FileUtil.readStringFromFile(rootFile);
         }
         catch (IOException ex) {
-            throw new ContentError("Problem reading from file: " + rootFile.getAbsolutePath() + 
+            throw new APIException("Problem reading from file: " + rootFile.getAbsolutePath() + 
             			" " + ex.getMessage());
         }
     }

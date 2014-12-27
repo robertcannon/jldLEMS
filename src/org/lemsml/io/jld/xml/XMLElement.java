@@ -1,4 +1,4 @@
-package org.lemsml.io.jldreader.xml;
+package org.lemsml.io.jld.xml;
 
 import java.util.ArrayList;
 import java.util.HashMap;

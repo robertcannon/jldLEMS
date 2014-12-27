@@ -1,4 +1,4 @@
-package org.lemsml.io.jldreader;
+package org.lemsml.io.jld.reader;
 
 
 import java.io.BufferedInputStream;

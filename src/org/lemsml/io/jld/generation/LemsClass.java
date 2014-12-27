@@ -1,4 +1,4 @@
-package org.lemsml.io.jldreader;
+package org.lemsml.io.jld.generation;
 
 public class LemsClass {
 

@@ -4,9 +4,12 @@ package org.lemsml.model;
 public class Unit extends AbstractElement {
 
 	
-	protected Dimension dimension = null;
+	protected String dimension = null;
 	protected int power = 0;
-	protected String symbol;
+	protected String symbol = null;
+	
+	private Dimension r_dimension = null;
+
 	
 	protected Unit(Lems l, String s) {
 		super(l, s);
@@ -18,8 +21,12 @@ public class Unit extends AbstractElement {
 	}
 
 
+	public void setDimension(String s) {
+		dimension = s;
+	}
+	
 	public void setDimension(Dimension d) {
-		dimension = d;
+		r_dimension = d;
 	}
 
 

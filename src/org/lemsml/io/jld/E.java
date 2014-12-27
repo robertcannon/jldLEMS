@@ -1,4 +1,4 @@
-package org.lemsml.io.jldreader;
+package org.lemsml.io.jld;
 
 import org.lemsml.jlems.core.sim.ContentError;
 

@@ -1,4 +1,5 @@
-package org.lemsml.io.jldreader.xml;
+package org.lemsml.io.jld.xml;
+
 
 
 // read XMLElements from compact text

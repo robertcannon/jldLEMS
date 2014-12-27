@@ -4,7 +4,7 @@ package org.lemsml.model;
 public class AbstractElement {
 
 	Lems lems;
-	String name;
+	protected String name;
 	
 	protected AbstractElement(Lems lm, String s) {
 		lems = lm;
@@ -13,13 +13,13 @@ public class AbstractElement {
 	}
 
 	
-	protected void checkFocus() throws APISequenceException {
+	protected void checkFocus() throws ModelException {
 		if (this == lems.focusElement) {
 			// OK
 		} else {
-			throw new APISequenceException("All poperties of an element must be set " +
+			throw new ModelException("All poperties of an element must be set " +
 					"before moving on to thenext one.");
 		}
 	}
-	
+
 }

@@ -4,19 +4,25 @@ package org.lemsml.model;
 public class Children extends AbstractElement {
 
 	
-	private String typeName;
-	protected ComponentType componentType;
+	protected String type;
+	
+	private ComponentType componentType;
+	
 	
 	protected Children(Lems lm, String s) {
 		super(lm, s);
 	}
 
 	public void setComponentType(String s) {
-		typeName = s;
+		type = s;
 	}
 	
 	public void setComponentType(ComponentType ct) {
 		componentType = ct;
+	}
+	
+	public void setType(String s) {
+		type = s;
 	}
 	
 }

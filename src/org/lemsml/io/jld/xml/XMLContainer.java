@@ -1,4 +1,4 @@
-package org.lemsml.io.jldreader.xml;
+package org.lemsml.io.jld.xml;
 
 
 public interface XMLContainer {

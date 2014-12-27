@@ -1,0 +1,7 @@
+Packages under org.lemsml.jld implement of the API ModelReader and ModelWriter interfaces
+using the parser and xml elements from jLEMSDev.
+
+It is not recommended to rely on this for production use. 
+
+Rather, the functionality in the jld package could be achieved with a variety of standard 
+tools for parsing xml files and and instantiating java classes.

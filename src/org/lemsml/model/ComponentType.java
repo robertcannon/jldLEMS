@@ -2,17 +2,28 @@ package org.lemsml.model;
 
 import java.util.HashMap;
 
+import org.lemsml.api.APIException;
+import org.lemsml.model.dynamics.Dynamics;
+import org.lemsml.model.simulation.Simulation;
+import org.lemsml.model.structure.Structure;
+
 public class ComponentType extends AbstractElement {
 
 		
-	protected HashMap<String, Parameter> parameterHM = new HashMap<String, Parameter>();
-	protected HashMap<String, Requirement> requirementHM = new HashMap<String, Requirement>();
-	protected HashMap<String, Exposure> exposureHM = new HashMap<String, Exposure>();
+	protected ListMap<Parameter> parameterMap = new ListMap<Parameter>();
+	protected ListMap<Text> textMap = new ListMap<Text>();
+	protected ListMap<Path> pathMap = new ListMap<Path>();
 	
-	protected HashMap<String, Child> childHM = new HashMap<String, Child>();
-	protected HashMap<String, Children> childrenHM = new HashMap<String, Children>();
+	protected ListMap<Requirement> requirementMap = new ListMap<Requirement>();
+	protected ListMap<Exposure> exposureMap = new ListMap<Exposure>();
+	
+	
+	protected ListMap<Child> childMap = new ListMap<Child>();
+	protected ListMap<Children> childrenMap = new ListMap<Children>();
 
-	
+	protected Single<Dynamics> dynamicsSingle = new Single<Dynamics>();
+	protected Single<Structure> structureSingle = new Single<Structure>();
+	protected Single<Simulation> simulationSingle = new Single<Simulation>();
 	
 	
 	protected ComponentType(Lems l, String s) {
@@ -22,7 +33,7 @@ public class ComponentType extends AbstractElement {
 	
 	public Parameter addParameter(String s) {
 		Parameter p = new Parameter(lems, s);
-		parameterHM.put(s, p);
+		parameterMap.put(s, p);
 		return p;
 	}
 
@@ -39,12 +50,22 @@ public class ComponentType extends AbstractElement {
 	}
 
 	
+	public Text addText(String s) {
+		Text ret = new Text(lems, s);
+		textMap.put(s, ret);
+		return ret;
+	}
 	
-	
+	public Path addPath(String s) {
+		Path ret = new Path(lems, s);
+		pathMap.put(s, ret);
+		return ret;
+	}
 
+	
 	public Requirement addRequirement(String s) {
 		Requirement p = new Requirement(lems, s);
-		requirementHM.put(s, p);
+		requirementMap.put(s, p);
 		return p;
 	}
 
@@ -67,7 +88,7 @@ public class ComponentType extends AbstractElement {
 
 	public Exposure addExposure(String s) {
 		Exposure p = new Exposure(lems, s);
-		exposureHM.put(s, p);
+		exposureMap.put(s, p);
 		return p;
 	}
 
@@ -89,7 +110,7 @@ public class ComponentType extends AbstractElement {
 
 	public Children addChildren(String s) {
 		Children ret = new Children(lems, s);
-		childrenHM.put(s, ret);
+		childrenMap.put(s, ret);
 		return ret;
 	}
 	
@@ -103,13 +124,34 @@ public class ComponentType extends AbstractElement {
 
 	public Child addChild(String s) {
 		Child ret = new Child(lems, s);
-		childHM.put(s, ret);
+		childMap.put(s, ret);
 		return ret;
 	}
 	
 	public void addChild(String n, String t) {
 		Child ret = addChild(n);
 		ret.setComponentType(t);
+	}
+	
+	
+	public Dynamics addDynamics() throws APIException {
+		Dynamics ret = new Dynamics();
+		dynamicsSingle.setValue(ret);
+		return ret;
+	}
+
+
+	public Structure addStructure() throws APIException {
+		Structure ret = new Structure();
+		structureSingle.setValue(ret);
+		return ret;
+	}
+
+
+	public Simulation addSimulation() throws APIException {
+		Simulation ret = new Simulation();
+		simulationSingle.setValue(ret);
+		return ret;
 	}
 	
 	

@@ -1,12 +1,13 @@
 package org.lemsml.model;
 
+import org.lemsml.api.APIException;
 import org.lemsml.model.Dimension.SI;
 
 public class APIExample {
 
 	
 	
-	public void buildExample1() throws APIException, APISequenceException {
+	public void buildExample1() throws ModelException {
 		Lems lemsModel = new Lems();
 		
 		
@@ -62,7 +63,7 @@ public class APIExample {
 	
 	
 	
-	public static void main(String[] argv) throws APIException, APISequenceException {
+	public static void main(String[] argv) throws ModelException {
 		APIExample be = new APIExample();
 		be.buildExample1();
 		

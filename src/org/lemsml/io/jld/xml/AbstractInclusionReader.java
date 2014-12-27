@@ -1,27 +1,28 @@
-package org.lemsml.io.jldreader;
+package org.lemsml.io.jld.xml;
 
 import java.util.HashSet;
 
-import org.lemsml.api.ContentError;
-import org.lemsml.jlems.core.logging.E;
+import org.lemsml.api.APIException;
+import org.lemsml.io.jld.E;
+
 
 public abstract class AbstractInclusionReader {
 
 	HashSet<String> included = new HashSet<String>();
  	
-	public abstract String getRootContent() throws ContentError;
+	public abstract String getRootContent() throws APIException;
 	
-	public abstract String getRelativeContent(String s) throws ContentError;
+	public abstract String getRelativeContent(String s) throws APIException;
 	
 	
 	
-	public String read() throws ContentError {
+	public String read() throws APIException {
 		String sroot = getRootContent();
 		String ret = insertIncludes(sroot);
 		return ret;
 	}
 	
-	public String cleanAttributeString(String sattsa) throws ContentError {
+	public String cleanAttributeString(String sattsa) throws APIException {
 		String ret = "";
 		String satts = sattsa;
 		
@@ -37,13 +38,13 @@ public abstract class AbstractInclusionReader {
 			ret = scomp.substring(sfind.length(), scomp.length()-1);
 		
 		} else {
-			throw new ContentError("can't parse include directive: " + satts);
+			throw new APIException("can't parse include directive: " + satts);
 		}
 		return ret;
 	}
 	
 	
-	protected String getIncludeContent(String srel) throws ContentError {
+	protected String getIncludeContent(String srel) throws APIException {
 			String ret = "";
 			if (included.contains(srel)) {
 				// already included - nothing to do;
@@ -60,7 +61,7 @@ public abstract class AbstractInclusionReader {
 	}
 	
 		
-	protected String insertIncludes(String stxta) throws ContentError {
+	protected String insertIncludes(String stxta) throws APIException {
 		String stxt = removeXMLComments(stxta);
 		StringBuilder sfullSB = new StringBuilder();
 		String sinc = "<Include ";

@@ -1,4 +1,4 @@
-package org.lemsml.model;
+package org.lemsml.api;
 
 public class APIException extends Exception {
 
