@@ -1,6 +1,6 @@
 With, padraig's example where 
-synapse containse spiking element which containst connection all in 
-component type definitin. With in structure wants instance to resolve relative
+synapse contains spiking element which contains connection all in 
+component type definition. With in structure wants instance to resolve relative
 to the component directly on type definition, not on params of declared component.
 
 LEMS_NML_Ex16_Inputs.xml example in experimental branch of nml2
