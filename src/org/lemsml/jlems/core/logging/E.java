@@ -29,6 +29,7 @@ public final class E {
 
    public static void setDebug(boolean b) {
 	   debug = b;
+	   E.trace();
    }
   
    
@@ -50,6 +51,7 @@ public final class E {
    }
 
    public static void info(String s) {
+	   System.out.println(s);
 	   if (debug) {
 		   handler.msg(MessageType.INFO,  s + getShortSource());
 	   } else {

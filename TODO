@@ -1,3 +1,43 @@
+
+Get rid of componentReference
+Just use Child, 
+
+
+<ComponentType name="channeldensity">
+	<Child type="channel"/>
+</ComponentType>
+
+   
+<Component type="chaneldensity"> 
+	<Channel source="id_of_ref_channel"/>
+</Component>
+    
+
+<Component type="chaneldensity"> 
+	<Channel source="id_of_other_cpt"> 
+   		 <Override parameter="gates/k/scale"  value="3"/>
+	</Channel>
+</Component>
+ 
+     
+<Component type="chaneldensity"> 
+	<Channel g="2">
+		<Gate a="1" b="3"/>
+		<Gate a="1" b="3"/>
+	</Channel>
+</Component>
+    
+  
+  
+  
+If cpt has structure block don't do default instantiation
+
+When instantiating ComponentTypes, create separate classes for Dynamics
+and Structure - resolving code etc goes in these classes not in ComponentType 
+or Component. Same for Geometry etc in future.
+
+
+
 With, padraig's example where 
 synapse contains spiking element which contains connection all in 
 component type definition. With in structure wants instance to resolve relative
@@ -14,6 +54,13 @@ API: generate node tree of instantiated model with params, state variables etc
  Or just make and expose set of peers
  
 Also access to lems "documents" so can create and query 
+
+
+
+"extends" for components - not clear what it really means. Should only use for ComponentTypes
+
+
+
 
 
 

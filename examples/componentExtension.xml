@@ -1,0 +1,221 @@
+<Lems>
+  
+<Target component="simset"/> 
+ 
+<Dimension name="voltage" m="1" l="2" t="-3" i="-1"/>
+<Dimension name="time" t="1"/>
+<Dimension name="per_time" t="-1"/>
+<Dimension name="conductance" m="-1" l="-2" t="3" i="2"/>
+<Dimension name="capacitance" m="-1" l="-2" t="4" i="2"/>
+<Dimension name="current" i="1"/>
+
+
+<ComponentType name="iaf1">
+	<Parameter name="threshold" dimension="voltage"/>
+	<Parameter name="refractoryPeriod" dimension="time"/>
+	<Parameter name="capacitance" dimension="capacitance"/>
+</ComponentType>
+
+
+<Unit symbol="mV" dimension="voltage" power="-3"/> 
+<Unit symbol="ms" dimension="time" power="-3"/> 
+<Unit symbol="pS" dimension="conductance" power="-12"/>
+<Unit symbol="nS" dimension="conductance" power="-9"/>
+<Unit symbol="uF" dimension="capacitance" power="-6"/>
+<Unit symbol="nF" dimension="capacitance" power="-9"/>
+<Unit symbol="pF" dimension="capacitance" power="-12"/>
+<Unit symbol="per_ms" dimension="per_time" power="3"/>
+<Unit symbol="pA" dimension="current" power="-12"/>
+
+<iaf1 id="celltype_a" threshold="-30 mV" refractoryPeriod="2 ms" capacitance="3uF"/> 
+<!--  or -->
+<Component id="ctb" type="iaf1" threshold="-30 mV" refractoryPeriod="2 ms" capacitance="1uF"/>
+ 
+ 
+ 
+ 
+ <Component copyof="ctb">
+ 	<Override parameter="kgate > x" value="3"/>
+ </Component>
+ 
+<div class="a"> 
+	<div class="b">
+		<div class="c"></div>
+	</div>
+</div>
+
+
+
+ 
+<ComponentType name="iaf2" extends="iaf1">
+	<Fixed parameter="threshold" value="-45mV"/>
+</ComponentType>
+
+<ComponentType name="iaf3" extends="iaf1">
+    <Parameter name="leakConductance" dimension="conductance"/>
+    <Parameter name="leakReversal" dimension="voltage"/>
+    <Parameter name="deltaV" dimension="voltage"/>
+ 
+    <ReceivePort name="spikes-in"/>
+    <Exposure name="v" dimension="voltage"/>
+
+    <Dynamics>
+       <StateVariable name="v" exposure="v" dimension="voltage"/>
+       <TimeDerivative variable="v" value="leakConductance * (leakReversal - v) / capacitance"/>
+             
+       <OnEvent port="spikes-in">
+            <StateAssignment variable="v" value="v + deltaV"/>
+       </OnEvent>      
+    </Dynamics>
+
+</ComponentType>
+
+ 
+
+<ComponentType name="spikeGenerator">
+    <Parameter name="period" dimension="time"/>
+    <SendPort name="a"/>
+    <Exposure name="tsince" dimension="time"/>
+    <Dynamics>
+        <StateVariable name="tsince" exposure="tsince" dimension="time"/>
+        <TimeDerivative variable="tsince" value="1"/>
+        <OnCondition test="tsince .gt. period">
+            <StateAssignment variable="tsince" value="0"/>
+            <EventOut port="a"/>
+        </OnCondition>
+    </Dynamics>
+</ComponentType>
+
+
+<ComponentType name="spikeGenerator1" extends="spikeGenerator">
+	<Dynamics>
+		<Super/>
+	</Dynamics>
+</ComponentType>
+
+<ComponentType name="spikeGenerator2" extends="spikeGenerator">
+    <Dynamics>
+        <StateVariable name="tlast" dimension="time"/>
+        <DerivedVariable name="tsince" exposure="tsince" value="t - tlast"/>
+        <OnCondition test="t - tlast .gt. period">
+            <StateAssignment variable="tlast" value="t"/>
+            <EventOut port="a"/>
+        </OnCondition>
+    </Dynamics>
+</ComponentType>
+
+<ComponentType name="Network">
+    <Children name="populations" type="Population"/>
+    <Children name="instancePopulations" type="InstancePopulation"/>
+    <Children name="connectivities" type="EventConnectivity"/>
+</ComponentType>
+
+
+<ComponentType name="Population">
+    <ComponentReference name="component" type="Component" required="false"/>
+    <Parameter name="size" dimension="none"/>
+    <Structure>
+	    <MultiInstantiate number="size" component="component"/>
+	</Structure>
+</ComponentType>
+
+ 
+ 
+<ComponentType name="Instance">
+	<ComponentReference name="of" type="Component" defaultComponent="../component"/>
+	<LocalParameters name="locals"/>
+	
+	<Structure>
+		<Instance componentReference="of" localParameters="locals"/>		
+	</Structure>
+</ComponentType>
+ 
+
+
+
+<ComponentType name="InstancePopulation">
+    <ComponentReference name="component" type="Component" required="false"/>
+	<Children name="instances" type = "Instance"/>
+</ComponentType>
+ 
+
+
+
+<ComponentType name="EventConnectivity">
+    <ComponentReference name="source" type="Population" local="true"/>
+    <ComponentReference name="target" type="Population" local="true"/>
+    <Child name="Connections" type="ConnectionPattern"/>
+</ComponentType>
+
+<ComponentType name="ConnectionPattern"/>
+
+
+
+<ComponentType name="AllAll" extends="ConnectionPattern">
+   	<Structure>
+            <ForEach instances="../source" as="a">
+                 <ForEach instances="../target" as="b">
+                      <EventConnection from="a" to="b"/>
+                 </ForEach>
+            </ForEach>    
+   	</Structure>
+       
+</ComponentType>
+  
+
+<Component id="celltype_c" type="iaf3" leakConductance="3 pS" refractoryPeriod="3 ms" threshold="45 mV"
+leakReversal="-50 mV" deltaV="5mV" capacitance="1uF"/>
+ 
+<Component id="celltype_d" extends="celltype_c" leakConductance="5 pS"/>
+
+<Component id="gen1" type="spikeGenerator1" period="30ms"/>
+
+<Component id="gen2" type="spikeGenerator2" period="32ms"/>
+
+<Component id="iaf3cpt" type="iaf3" leakReversal="-50mV" deltaV="50mV" threshold="-30mV" leakConductance="50pS"
+refractoryPeriod="4ms" capacitance="1pF"/>
+
+ 
+
+<Network id="net1">
+    <Population id="p1" component="gen1" size="1"/>
+    <Population id="p2" component="gen2" size="1"/>
+    <InstancePopulation id="p3">
+    	<Instance of="iaf3cpt" leakConductance="14 pS"  deltaV = "10mV"/>
+    	<Instance of="iaf3cpt" leakConductance="25 pS"  deltaV = "15mV"/>
+    	<Instance of="iaf3cpt" leakConductance="36 pS"  deltaV = "20mV"/>
+    	<Instance of="iaf3cpt" leakConductance="47 pS"  deltaV = "25mV"/>
+    </InstancePopulation>
+     
+     
+     <InstancePopulation id="p4" component="iaf3cpt">
+    	<Instance leakConductance="8 pS"  deltaV = "10mV"/>
+    	<Instance leakConductance="9 pS"  deltaV = "10mV"/>
+    </InstancePopulation>
+    	
+    	
+    <EventConnectivity id="p1-p3" source="p1" target="p3">
+        <Connections type="AllAll"/>
+    </EventConnectivity>
+</Network>
+
+<Include file="MultiRunSimulation.xml"/>
+
+
+<SimulationSet id="simset">
+	<Display id="disp1" title="Example1" xmin="0" xmax="80" ymin="-80" ymax="50"/>
+ 
+	<Simulation id="sim1" length="80ms" step="0.05ms" target="net1" display="disp1">
+    	<DisplayList timeScale="1ms" title="Example 1: Dimensions, Units, ComponentTypes and Components">
+        	<Line id="tsince" quantity="p1[0]/tsince" scale="1ms" timeScale="1ms" color="#00c000"/>     
+        	<Line id="p3v0" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0"/>
+        	<Line id="p3v1" quantity="p3[1]/v" scale="1mV" timeScale="1ms" color="#00f000"/>
+        	<Line id="p3v2" quantity="p3[2]/v" scale="1mV" timeScale="1ms" color="#f000f0"/>
+        	<Line id="p3v3" quantity="p3[3]/v" scale="1mV" timeScale="1ms" color="#00f0f0"/>
+        	<Line id="pvv0" quantity="p4[0]/v" scale="1mV" timeScale="1ms" color="#f0f0f0"/>
+        	<Line id="p4v1" quantity="p4[1]/v" scale="1mV" timeScale="1ms" color="#f0f000"/>
+    	</DisplayList>
+	</Simulation>
+</SimulationSet>
+
+</Lems>
