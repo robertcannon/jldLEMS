@@ -3,7 +3,7 @@ package org.lemsml.io.jld.reader;
 import java.io.File;
 
 import org.lemsml.api.APIException;
-import org.lemsml.model.ModelException;
+import org.lemsml.model.core.ModelException;
 
 public class ReadExample {
 

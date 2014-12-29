@@ -3,13 +3,13 @@ package org.lemsml.io.jld.reader;
 import java.io.File;
 
 import org.lemsml.api.APIException;
-import org.lemsml.api.ModelReader;
+import org.lemsml.api.APIModelReader;
 import org.lemsml.io.jld.xml.XMLElement;
 import org.lemsml.io.jld.xml.XMLElementReader;
 import org.lemsml.model.Lems;
-import org.lemsml.model.ModelException;
+import org.lemsml.model.core.ModelException;
 
-public class JLDModelReader implements ModelReader {
+public class JLDModelReader implements APIModelReader {
 
 	@Override
 	public Lems readModelFromXMLFile(File xmlFile) throws APIException, ModelException {
@@ -20,7 +20,7 @@ public class JLDModelReader implements ModelReader {
 		XMLElementReader xer = new XMLElementReader(xmlText);
 		XMLElement root = xer.getRootElement();
 		
-		ModelFactory mf = new ModelFactory();
+		GeneratedModelReader mf = new GeneratedModelReader();
 		Lems ret = mf.buildLemsFromXMLElement(root);
 		
 		return ret;

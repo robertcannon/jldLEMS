@@ -1,34 +1,17 @@
 package org.lemsml.io.jld.generation;
 
 import java.util.ArrayList;
- 
-import org.lemsml.model.About;
+
 import org.lemsml.model.Assertion;
-import org.lemsml.model.Attachments; 
-import org.lemsml.model.Child;
-import org.lemsml.model.Children; 
 import org.lemsml.model.Component;
-import org.lemsml.model.ComponentReference; 
-import org.lemsml.model.ComponentType; 
 import org.lemsml.model.Constant;
-import org.lemsml.model.DerivedParameter;
 import org.lemsml.model.Dimension; 
-import org.lemsml.model.Exposure;  
 import org.lemsml.model.Insertion;
-import org.lemsml.model.InstanceRequirement;
-import org.lemsml.model.IntegerParameter;
 import org.lemsml.model.Lems; 
-import org.lemsml.model.LocalParameters;  
-import org.lemsml.model.Parameter; 
-import org.lemsml.model.Path;
-import org.lemsml.model.Property;
-import org.lemsml.model.ReceivePort;
-import org.lemsml.model.Requirement;
-import org.lemsml.model.SendPort; 
 import org.lemsml.model.Target;
-import org.lemsml.model.Text;
 import org.lemsml.model.Unit; 
 import org.lemsml.model.dynamics.ConditionalDerivedVariable; 
+import org.lemsml.model.dynamics.DerivedParameter;
 import org.lemsml.model.dynamics.DerivedScalarField;
 import org.lemsml.model.dynamics.DerivedVariable;
 import org.lemsml.model.dynamics.Dynamics; 
@@ -46,7 +29,7 @@ import org.lemsml.model.dynamics.TimeDerivative;
 import org.lemsml.model.dynamics.Transition; 
 import org.lemsml.model.simulation.DataDisplay;
 import org.lemsml.model.simulation.DataWriter;
-import org.lemsml.model.simulation.Record;
+import org.lemsml.model.simulation.Recording;
 import org.lemsml.model.simulation.Run;
 import org.lemsml.model.simulation.Simulation; 
 import org.lemsml.model.structure.ChildInstance; 
@@ -57,6 +40,20 @@ import org.lemsml.model.structure.MultiInstantiate;
 import org.lemsml.model.structure.Structure;
 import org.lemsml.model.structure.Tunnel;
 import org.lemsml.model.structure.With;
+import org.lemsml.model.type.About;
+import org.lemsml.model.type.Attachments;
+import org.lemsml.model.type.Child;
+import org.lemsml.model.type.Children;
+import org.lemsml.model.type.ComponentType;
+import org.lemsml.model.type.Exposure;
+import org.lemsml.model.type.InstanceRequirement;
+import org.lemsml.model.type.Parameter;
+import org.lemsml.model.type.Path;
+import org.lemsml.model.type.Property;
+import org.lemsml.model.type.ReceivePort;
+import org.lemsml.model.type.Requirement;
+import org.lemsml.model.type.SendPort;
+import org.lemsml.model.type.Text;
 
 
 public final class LemsClasses {
@@ -105,8 +102,7 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Dimension.class, section));
 		ret.add(new LemsClass(Unit.class, section));
 		ret.add(new LemsClass(Assertion.class, section));
-		ret.add(new LemsClass(Component.class, section));
-		
+	 		
 		return ret;
 	}
 	
@@ -157,9 +153,7 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Parameter.class, section));
 		ret.add(new LemsClass(Text.class, section));
 		ret.add(new LemsClass(Path.class, section));
-
- 		ret.add(new LemsClass(LocalParameters.class, section));
-		
+ 	
 		ret.add(new LemsClass(Property.class, section));
 		ret.add(new LemsClass(DerivedParameter.class, section));
  		ret.add(new LemsClass(Requirement.class, section));
@@ -167,13 +161,11 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Exposure.class, section));
 		ret.add(new LemsClass(Child.class, section));
 		ret.add(new LemsClass(Children.class, section));
- 		ret.add(new LemsClass(ComponentReference.class, section));
   		ret.add(new LemsClass(SendPort.class, section));
 		ret.add(new LemsClass(ReceivePort.class, section));
   		ret.add(new LemsClass(Attachments.class, section));
  		ret.add(new LemsClass(Insertion.class, section));
-		ret.add(new LemsClass(IntegerParameter.class, section));
- 		ret.add(new LemsClass(About.class, section));
+  		ret.add(new LemsClass(About.class, section));
  		 
 		return ret;
 	}
@@ -182,7 +174,7 @@ public final class LemsClasses {
 		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
 		String section = "simulation";
 		ret.add(new LemsClass(Simulation.class, section));
-		ret.add(new LemsClass(Record.class, section));
+		ret.add(new LemsClass(Recording.class, section));
 		ret.add(new LemsClass(DataDisplay.class, section));
 		ret.add(new LemsClass(DataWriter.class, section));
 		ret.add(new LemsClass(Run.class, section));

@@ -1,6 +1,8 @@
 package org.lemsml.model;
 
-public class Constant extends AbstractElement {
+import org.lemsml.model.core.AbstractLemsElement;
+
+public class Constant extends AbstractLemsElement {
 
 	protected String dimension;
 	protected double value;
@@ -27,6 +29,16 @@ public class Constant extends AbstractElement {
 	
 	public void setValue(double d) {
 		value = d;
+	}
+
+
+	public String getDimension() {
+		return dimension;
+	}
+
+
+	public double getValue() {
+		return value;
 	}
 	
 	

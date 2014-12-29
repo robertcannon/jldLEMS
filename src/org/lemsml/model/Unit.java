@@ -1,7 +1,9 @@
 package org.lemsml.model;
 
+import org.lemsml.model.core.AbstractLemsElement;
 
-public class Unit extends AbstractElement {
+
+public class Unit extends AbstractLemsElement {
 
 	
 	protected String dimension = null;
@@ -32,6 +34,20 @@ public class Unit extends AbstractElement {
 
 	public void setPower(int p) {
 		power = p;
+	}
+
+
+	public String getDimension() {
+		return dimension;
+	}
+
+
+	public String getSymbol() {
+		return symbol;
+	}
+	
+	public int getPower() {
+		return power;
 	}
 
 }

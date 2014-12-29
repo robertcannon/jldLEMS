@@ -1,6 +1,8 @@
 package org.lemsml.model;
 
-public class Target extends AbstractElement {
+import org.lemsml.model.core.AbstractLemsElement;
+
+public class Target extends AbstractLemsElement {
 
 	protected String component;
 	
@@ -11,4 +13,9 @@ public class Target extends AbstractElement {
 	public void setComponent(String s) {
 		component = s;
 	}
+
+	public String getComponent() {
+		return component;
+	}
+
 }

@@ -47,8 +47,7 @@
  
 	<ball id="ball1" fbounce="0.95" y0="5m"/>
 	
-	<Component type="ball" id="ball1" fbounce="0.95" y0="5m"/>
-	
+ 	
 	<Include file="SingleSimulation.xml" />
  
 

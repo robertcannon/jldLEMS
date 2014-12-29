@@ -1,8 +1,5 @@
 package org.lemsml.io.jld;
-
-import org.lemsml.jlems.core.sim.ContentError;
-
-
+ 
 
 
 public final class E {
@@ -49,7 +46,7 @@ public final class E {
    }
 
    public static void info(String s) {
-	  out("INFO", s);
+	  out("INFO", s + getShortSource());
    } 
 
    public static void out(String typ, String s) {
@@ -114,12 +111,7 @@ public final class E {
    }
 
   
- 
-
-
-
-
- 
+  
  
 
 	private static String printArray(double[] da) {

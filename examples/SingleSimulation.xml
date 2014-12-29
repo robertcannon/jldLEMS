@@ -23,7 +23,7 @@
     <Text name="color"/>
     <Path name="quantity"/>
     <Simulation>
-        <Record quantity="quantity" timeScale="timeScale" scale="scale" color="color"/>
+        <Recording quantity="quantity" timeScale="timeScale" scale="scale" color="color"/>
     </Simulation>
 </ComponentType>
 
@@ -44,7 +44,7 @@
 <ComponentType name="OutputColumn">
      <Path name="quantity"/>
 	 <Simulation>
-        <Record quantity="quantity"/>
+        <Recording quantity="quantity"/>
     </Simulation>
 </ComponentType>
 
@@ -54,7 +54,7 @@
     <Parameter name="length" dimension="time"/>
     <Parameter name="step" dimension="time"/>
     
-    <ComponentReference name="target" type="Component"/>
+    <Child name="target" type="Component"/>
 
 
     <Children name="displays" type="Display"/>

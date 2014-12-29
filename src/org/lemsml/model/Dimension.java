@@ -3,8 +3,10 @@ package org.lemsml.model;
 import java.util.HashMap;
 
 import org.lemsml.api.APIException;
+import org.lemsml.model.core.AbstractLemsElement;
+import org.lemsml.model.core.ModelException;
  
-public class Dimension extends AbstractElement {
+public class Dimension extends AbstractLemsElement {
  
 	
 	protected int m;
@@ -80,7 +82,35 @@ public class Dimension extends AbstractElement {
 		dims.put(bd, i);
 		bd.apply(this, i);
 	}
+
+
+	public int getM() {
+		return m;
+	}
 	
+	public int getL() {
+		return l;
+	}
+	
+	public int getT() {
+		return t;
+	}
+	
+	public int getN() {
+		return n;
+	}
+	
+	public int getK() {
+		return k;
+	}
+	
+	public int getJ() {
+		return j;
+	}
+
+	public int getI() {
+		return i;
+	}
 	
 
 	

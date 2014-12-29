@@ -1,5 +1,6 @@
 package org.lemsml.model;
 
+
 public class Quantity {
 
 	double value;

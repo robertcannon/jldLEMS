@@ -9,9 +9,9 @@ import java.util.HashMap;
 
 import org.lemsml.io.jld.E;
 import org.lemsml.io.jld.reader.FileUtil;
-import org.lemsml.model.ComponentMap;
-import org.lemsml.model.ListMap;
-import org.lemsml.model.Single;
+import org.lemsml.model.core.ComponentMap;
+import org.lemsml.model.core.ListMap;
+import org.lemsml.model.core.Single;
  
 public class ModelWriterGenerator {
 
@@ -26,10 +26,12 @@ public class ModelWriterGenerator {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("package org.lemsml.io.jld.writer;\n\n");
-		sb.append("import org.lemsml.io.jld.xml*;\n\n");
+		sb.append("import org.lemsml.io.jld.xml.*;\n\n");
 
 		sb.append("import org.lemsml.api.*;\n");
 		sb.append("import org.lemsml.model.*;\n");
+		sb.append("import org.lemsml.model.core.*;\n");
+		sb.append("import org.lemsml.model.type.*;\n");
 		sb.append("import org.lemsml.model.dynamics.*;\n");
 		sb.append("import org.lemsml.model.structure.*;\n");
 		sb.append("import org.lemsml.model.simulation.*;\n\n");
@@ -37,7 +39,7 @@ public class ModelWriterGenerator {
 	
 		sb.append("// NB this is generated code. Don't edit it. If there is a problem, fix the superclass,\n");
 		sb.append("// the generator - org.lemsml.jld.generation.ModelFactoryGenerator, or the class being instantiated.\n\n");
-		sb.append("public class ModelWriter extends AbstractModelWriter {\n\n\n");
+		sb.append("public class GeneratedModelWriter extends AbstractModelWriter {\n\n\n");
 	
 			 	
 		for (LemsClass lc : alc) {
@@ -61,8 +63,8 @@ public class ModelWriterGenerator {
 		
 		String cnm = c.getSimpleName();
 
-		sb.append("    public XMLElement write" + cnm +"toXML(" + cnm + " tgt) throws APIException, ModelException {\n");		
-		sb.append("       XMLElement ret = new XMLElement(" + cnm + ");\n");
+		sb.append("    public XMLElement write" + cnm +"ToXML(" + cnm + " tgt) throws APIException, ModelException {\n");		
+		sb.append("       XMLElement ret = new XMLElement(\"" + cnm + "\");\n");
  
 		
 		for (Field f : getProtectedFields(c)) {					
@@ -74,30 +76,48 @@ public class ModelWriterGenerator {
 			if (f.getType() == String.class) {
 				sb.append("      String " + fnm + " = tgt.get" + capitalize(fnm) + "();\n");
 				sb.append("      if (" + fnm + " != null) {\n");
-				sb.append("             ret.addAttribute(" + fnm + ", fnm);\n");
-				sb.append("       }\n");
+				sb.append("          ret.addAttribute(\"" + fnm + "\", " + fnm + ");\n");
+				sb.append("      }\n");
 			
-			} else if (f.getType() == double.class || f.getType() == int.class || f.getType() == boolean.class) {
-				sb.append("             ret.addAttribute(" + fnm + ", get" + capitalize(fnm) + "();\n");
+			} else if (f.getType() == double.class) {
+				sb.append("             addDoubleAttribute(ret, \"" + fnm + "\", tgt.get" + capitalize(fnm) + "());\n");
+					
+			} else if (f.getType() == int.class) {
+				sb.append("             addIntAttribute(ret, \"" + fnm + "\", tgt.get" + capitalize(fnm) + "());\n");
+				
+			} else if (f.getType() == boolean.class) {
+				sb.append("             addBooleanAttribute(ret, \"" + fnm + "\", tgt.get" + capitalize(fnm) + "());\n");
 			
 			} else if (f.getType() == ListMap.class) {
 				String lcnm = getListClassName(f.getName());
+				sb.append("       for (" + lcnm + " x : tgt.get" + lcnm + "s" + "()) {\n");
+				sb.append("          ret.addXMLElement(write" + lcnm + "ToXML(x));\n");
+				sb.append("       }\n");
 				
 				
 				
 			}  else if (f.getType() == Single.class) {
 				String lcnm = getSingleClassName(f.getName());
-				sb.append("      " + lcnm + " " + lc(lcnm) + " = tgt.get" + lcnm + "();\n";
-				sb.append("       if (" + lcnm + " != null) {\n");
-				sb.append("          ret.addElement(write")
+				String vnm = lc(lcnm);
+				sb.append("      " + lcnm + " " + vnm + " = tgt.get" + lcnm + "();\n");
+				sb.append("       if (" + vnm + " != null) {\n");
+				sb.append("          ret.addXMLElement(write" + lcnm + "ToXML(" + vnm + "));\n");
 				sb.append("       }\n");
 				
+			} else if (f.getType() == ComponentMap.class) {
+				sb.append("      writeComponentsToXML(tgt, ret);\n");
 			}
 		}
-		sb.append("            }\n");
-		sb.append("        }\n\n\n");
+		sb.append("       return ret;\n");
+		sb.append("    }\n\n\n");
 	}
 	
+	
+	
+	private String lc(String s) {
+		String ret = s.substring(0, 1).toLowerCase() + s.substring(1, s.length());
+		return ret;
+	}
 	
 	
 	private String capitalize(String s) {
@@ -129,70 +149,9 @@ public class ModelWriterGenerator {
 		return ret;
 	}
 	
-	private boolean hasFields(Class<?> c, Class tgt) {
-		boolean ret = false;
-		for (Field f : c.getDeclaredFields()) {
-			if (Modifier.isProtected(f.getModifiers())) {
-				if (f.getType() == tgt) {
-					ret = true;
-					break;
-				}
-			}
-		}
-		return ret;
-	}
-	
 	 
 	
 	
-	
-	
-	private void appendChildInstantiation(Class<?> c, StringBuilder sb) {
-		sb.append("        for (XMLElement cel : xel.getXMLElements()) {\n");
-		sb.append("            String xn = cel.getTag();\n\n");
-	
-		sb.append("            if (xn.equals(\"UNUSED\")) {\n");
-	
-		String cnm = c.getSimpleName();
-		
-		boolean hasModel = false;
-		
-		for (Field f : getProtectedFields(c)) {
-			if (f.getType() == ListMap.class) {
-				
-				String ccnm = getListClassName(f.getName());
-				
-				sb.append("            } else if (xn.equals(\"" + ccnm + "\")) {\n");
-				sb.append("                String eltname = getNameAttribute(cel);\n");
-				sb.append("                " + ccnm + " obj = tgt.add" + ccnm + "(eltname);\n");
-				sb.append("                populate" + ccnm + "FromXMLElement(obj, cel);\n");
-				
-			} else if (f.getType() == Single.class) {
-				String ccnm = getSingleClassName(f.getName());
-				
-				sb.append("            } else if (xn.equals(\"" + ccnm + "\")) {\n");
-				sb.append("                " + ccnm + " obj = tgt.add" + ccnm + "();\n");
-				sb.append("                populate" + ccnm + "FromXMLElement(obj, cel);\n");
-		
-				
-			} else if (f.getType() == ComponentMap.class) {
-				hasModel = true;
-			}
-		}	
- 
-		if (hasModel) {
-			sb.append("            } else {\n");
-			sb.append("                readComponentFromXMLElement(tgt, cel);\n");
-			sb.append("            }\n");
-		
-		} else {
-		
-			sb.append("            } else {\n");
-			sb.append("                E.warning(\"reading " + cnm + ": unrecognized element \" + cel);\n");
-			sb.append("            }\n");
-		}
-		sb.append("        }\n\n\n");
-	}
 	
 	 
 	
@@ -225,7 +184,7 @@ public class ModelWriterGenerator {
 		
 		String txt = lfg.generateJava();
  		
-		File f = new File("src/org/lemsml/io/jld/writer/ModelWriter.java");
+		File f = new File("src/org/lemsml/io/jld/writer/GeneratedModelWriter.java");
 	 
 		// E.info("About to write " + f.getAbsolutePath() + " local "+ (new File("")).getAbsolutePath());
 		

@@ -251,5 +251,73 @@ public class XMLElement {
 	public void setPostSpacing(int n) {
 		postSpacing = n;
 	}
+
+	public boolean matches(XMLElement xelOut) {
+		boolean ret = false;
+		if (subsetOf(xelOut) && xelOut.subsetOf(this)) {
+			ret = true;
+		}
+		return ret;
+	}
+
+	public boolean subsetOf(XMLElement tgt) {
+		boolean ret = false;
+		if (type.equals(tgt.type) && attributesSubsetOf(tgt) && elementsSubsetOf(tgt)) {
+			ret = true;
+		}
+		return ret;
+	}
+
 	
+	private boolean attributesSubsetOf(XMLElement tgt) {
+		boolean ret = true;
+		for (XMLAttribute xa : attributes) {
+			String xav = xa.getValue();
+			String tav = tgt.getAttribute(xa.getName());
+			if (tav == null) {
+				if (xav == null) {
+					// OK
+				} else {
+					E.info("Attribute " + xa.getName() + " in " + type + " is present in the source but not the target");
+					ret = false;
+					break;
+				}
+			} else if (tav.equals(xav)) {
+				// OK
+					
+			} else {
+				E.info("Attribute " + xa.getName() + " in " + type + " differs between source and target(" + xav + ", " + tav + ")");
+				ret = false;
+				break;
+			}
+		}
+		return ret;
+	}
+	
+	private boolean elementsSubsetOf(XMLElement tgt) {
+		boolean ret = true;
+		ArrayList<XMLElement> tgts = new ArrayList<XMLElement>();
+		tgts.addAll(tgt.getElements());
+		
+		for (XMLElement xel : children) {
+			XMLElement togo = null;
+			for (XMLElement tel : tgts) {
+				if (xel.subsetOf(tel)) {
+					togo = tel;
+					break;
+				}
+			}
+			if (togo == null) {
+				// not found
+				ret = false;
+				E.info("No matching element for " + xel);
+				break;
+			} else {
+				tgts.remove(togo);
+			}
+		}
+		
+		return ret;
+	}
+ 
 }
