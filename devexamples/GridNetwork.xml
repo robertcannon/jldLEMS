@@ -23,7 +23,7 @@
 
     <Behavior>
         <Build>
-            <MultiInstantiate/>
+            <MultiInstance/>
         </Build>
     </Behavior>
 

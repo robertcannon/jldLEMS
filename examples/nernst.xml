@@ -81,7 +81,7 @@
 
 	
 	<ComponentType name="BoltzmannSystem">
-		<ComponentReference name="env" type="ThermalEnvironment"/>
+		<Child name="env" type="ThermalEnvironment"/>
 		<Child name="state1" type="BoltzmannState"/>
 		<Child name="state2" type="BoltzmannState"/>
 		<Exposure name="p1_over_p2" dimension="none"/>
@@ -103,7 +103,7 @@
 	
 	
 	<ComponentType name="NernstSystem">
-		<ComponentReference name="species" type="Species"/>
+		<Child name="species" type="Species"/>
 		<Child name="Inside" type="NernstCompartment"/>
 		<Child name="Outside" type="NernstCompartment"/>
 		<Exposure name="E_S" dimension="voltage"/>
@@ -199,7 +199,7 @@
  		
  		
  	<ComponentType name="CompoundElement">
-		<ComponentReference name="species" type="Species"/>
+		<Child name="species" type="Species"/>
 		<IntegerParameter name="n"/>
 	</ComponentType>
 	
@@ -210,7 +210,7 @@
 
 
 	<ComponentType name="Solute">
-		<ComponentReference name="compound" type="Compound"/>
+		<Child name="compound" type="Compound"/>
 		<Parameter name="concentration" dimension="concentration"/>
 	</ComponentType>
 

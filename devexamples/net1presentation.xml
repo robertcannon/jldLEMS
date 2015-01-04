@@ -14,9 +14,9 @@
     <DerivedParameter name="n" dimension="none" value="(max - min) / step" />
     <Text name="quantity" />
     <Structure>
-      <MultiInstantiate componentType="GridPoint1D" number="n">
+      <MultiInstance componentType="GridPoint1D" number="n">
         <Assign property="position" value="min + step * index" exposeAs="quantity" />
-      </MultiInstantiate>
+      </MultiInstance>
     </Structure>
   </ComponentType>
 
@@ -31,7 +31,7 @@
 
 
   <ComponentType name="Population">
-    <ComponentReference name="component" type="Component" />
+    <Child name="component" type="Component" />
   </ComponentType>
 
   <ComponentType name="PointBasedPopulation" extends="Population">

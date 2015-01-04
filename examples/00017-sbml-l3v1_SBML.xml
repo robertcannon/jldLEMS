@@ -32,7 +32,7 @@
         <Parameter name="step" dimension="time"/>
         <Children name="displays" type="Display"/>
         <Children name="outputs" type="OutputFile"/>
-        <ComponentReference name="target" type="Component" isAny="true"/>
+        <Child name="target" type="Component" isAny="true"/>
         <Dynamics simultaneous="false">
             <StateVariable name="t" dimension="time"/>
         </Dynamics>

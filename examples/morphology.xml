@@ -43,7 +43,7 @@ point in space - it is just a collection of a distance and three positions -->
 the parent instead of an explicit RPoint for the proximal point, in which case it will
 fall back to using the distal point of the parent segment -->
 <ComponentType name="Segment">
-	<ComponentReference name="parent" type="Segment" root="../"/>
+	<Child name="parent" type="Segment" root="../"/>
 	<Child name="proximal" type="RPoint" substitute="parent/distal"/>
 	<Child name="distal" type="RPoint"/>
 
@@ -102,7 +102,7 @@ fall back to using the distal point of the parent segment -->
 
 <!--  the active cell combines a morphology with some inputs and a capacitance  -->
 <ComponentType name="ActiveBranchedCell">
-    <ComponentReference name="morphology" type="SegmentCell"/>
+    <Child name="morphology" type="SegmentCell"/>
 	<Parameter name="membraneCapacitance" dimension="capacitance_per_area"/>
 	<Parameter name="conductivity" dimension="conductivity"/>
 	<Children name="inputs" type="PointConductance"/>
@@ -196,7 +196,7 @@ fall back to using the distal point of the parent segment -->
 
 
 <ComponentType name="ActiveBranchedCell2">
-    <ComponentReference name="morphology" type="SegmentCell"/>
+    <Child name="morphology" type="SegmentCell"/>
 	<Parameter name="membraneCapacitance" dimension="capacitance_per_area"/>
 	<Parameter name="conductivity" dimension="conductivity"/>
 	<Children name="inputs" type="PointConductance"/>

@@ -18,7 +18,7 @@
 
 
 <ComponentType name="MembranePotential">
-    <ComponentReference name="species" type="Species"/>
+    <Child name="species" type="Species"/>
     <Parameter name="reversal" dimension="voltage"/>
 </ComponentType>
 
@@ -38,7 +38,7 @@
     
 <ComponentType name="KSChannel">
     <Parameter name="conductance" dimension="conductance"/>
-    <ComponentReference name="species" type="Species"/>
+    <Child name="species" type="Species"/>
     <Children name="gates" type="KSGate"/>
     <Exposure name="g" dimension="conductance"/>
     
@@ -90,8 +90,8 @@
 
 
 <ComponentType name="KSTransition">
-    <ComponentReference local="true" name="from" type="KSState"/>
-    <ComponentReference local="true" name="to" type="KSState"/>
+    <Child local="true" name="from" type="KSState"/>
+    <Child local="true" name="to" type="KSState"/>
     <Exposure name="rf" dimension="per_time"/>
     <Exposure name="rr" dimension="per_time"/>
  
@@ -145,7 +145,7 @@
 
 
 <ComponentType name="ChannelPopulation">
-    <ComponentReference name="channel" type="KSChannel"/>
+    <Child name="channel" type="KSChannel"/>
     <Parameter name="number" dimension="none"/>
      <Requirement name="v" dimension="voltage"/>
     <Exposure name="current" dimension="current"/>
@@ -156,11 +156,7 @@
         <DerivedVariable name="geff" value="channelg * number"/>
         <DerivedVariable name="current" exposure="current" value="geff * (erev - v)"/>
     </Dynamics>    
-    
-    
-    <Structure>    
-         <ChildInstance component="channel"/>    
-    </Structure>
+     
 </ComponentType>
 
 
@@ -168,7 +164,7 @@
 
 <ComponentType name="KSCell">
     <Parameter name="capacitance" dimension="capacitance"/>
-    <ComponentReference name="environment" type="Environment"/>
+    <Child name="environment" type="Environment"/>
     <Children name="populations" type="ChannelPopulation"/>
     <Parameter name="injection" dimension="current"/>
     <Parameter name="v0" dimension="voltage"/>

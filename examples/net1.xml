@@ -28,11 +28,11 @@
 		<Text name="quantity" />
 
 		<Structure>
-				<MultiInstantiate componentType="GridPoint1D"
+				<MultiInstance componentType="GridPoint1D"
 					number="n">
 					<Assign property="position" value="min + step * index"
 						exposeAs="quantity" />
-				</MultiInstantiate>
+				</MultiInstance>
 		</Structure>
 		 
 	</ComponentType>
@@ -102,13 +102,13 @@
 
 
 	<ComponentType name="Population">
-		<ComponentReference name="component" type="Component" />
+		<Child name="component" type="Component" />
 
 	</ComponentType>
 
 
 	<ComponentType name="PointBasedPopulation" extends="Population">
-		<ComponentReference local="true" type="Group" name="points" />
+		<Child local="true" type="Group" name="points" />
 
 		<Structure>
 			<CoInstantiate at="points" component="component" />
@@ -124,8 +124,8 @@
 
 	<ComponentType name="FromToConnections">
 		<Children name="selectors" type="PairSelector" />
-		<ComponentReference local="true" name="from" type="Population" />
-		<ComponentReference local="true" name="to" type="Population" />
+		<Child local="true" name="from" type="Population" />
+		<Child local="true" name="to" type="Population" />
 		<Structure>
 				<Apply components="selectors">
 					<PairsEventConnection pairs="pairs" />

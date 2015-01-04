@@ -58,8 +58,8 @@
 
 
 <ComponentType name="KSTransition">
-    <ComponentReference local="true" name="from" type="KSState"/>
-    <ComponentReference local="true" name="to" type="KSState"/>
+    <Child local="true" name="from" type="KSState"/>
+    <Child local="true" name="to" type="KSState"/>
     <Exposure name="rf" dimension="per_time"/>
     <Exposure name="rr" dimension="per_time"/>
 </ComponentType>
@@ -112,7 +112,7 @@
 
 
 <ComponentType name="ChannelPopulation">
-    <ComponentReference name="channel" type="KSChannel"/>
+    <Child name="channel" type="KSChannel"/>
     <Parameter name="number" dimension="none"/>
     <Parameter name="erev" dimension="voltage"/>
     <Requirement name="v" dimension="voltage"/>

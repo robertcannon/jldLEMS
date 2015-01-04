@@ -1,0 +1,18 @@
+The org.lemsml.jld package implements a sequential processing pipeline for lems models with the following stages
+
+
+1) jld.io.file:				reading in a file, and embedding any included elements (<Include/> elememts in the xml) to provide a 
+							complete representation of the model
+
+2) jld.io.xml:				converting the output text from (1) to a generic XML object tree (XMLElement and XMLAttribute)
+
+3) jld.io.reader:			mapping the XML object tree onto java objects in the jld.model package and sub-packages. This is done 
+							mainly by generated code: GeneratedModelReader.java which is created from the jld.model source files 
+							by code in io.generation
+					
+4) jld.resolver:			resolving references to dimensions in component types and sub-elements in the jld.model package. After
+							this, anything that was referred to by name in the xml should have an actual references 
+							to the target object
+
+5) jld.expression:			converting expressions to ASTs so we can operate on them
+ 

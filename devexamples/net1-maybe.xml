@@ -30,9 +30,9 @@
     
 		<Behavior>
 		  <Build>
-			<MultiInstantiate componentType="GridPoint1D" number="n">
+			<MultiInstance componentType="GridPoint1D" number="n">
 			     <Assign property="position" value="min + step * index" exposeAs="quantity"/>
-			</MultiInstantiate>
+			</MultiInstance>
 		  </Build>
 		</Behavior>
 	</ComponentType>
@@ -59,12 +59,12 @@
                 
         <Behavior>
             <Build>
-                <MultiInstantiate number="ny" indexVariable="yindex">
-                    <MultiInstantiate number="nx" indexVariable="xindex" componentType="GridPoint2D">
+                <MultiInstance number="ny" indexVariable="yindex">
+                    <MultiInstance number="nx" indexVariable="xindex" componentType="GridPoint2D">
                         <Assign property="xpos" value="xmin + xstep * xindex"/>
                         <Assign property="ypos" value="ymin + xstep * yindex"/>
-                    </MultiInstantiate>
-                </MultiInstantiate>
+                    </MultiInstance>
+                </MultiInstance>
             </Build>
             
         </Behavior>
@@ -118,7 +118,7 @@
 	
 	
     <ComponentType name="Population">
-         <ComponentReference name="component" type="Component"/>
+         <Child name="component" type="Component"/>
          
     </ComponentType>
 	

@@ -10,20 +10,14 @@
  
 
 <ComponentType name="ChannelPopulation">
-    <ComponentReference name="channel" type="HHChannel"/>
+    <Child name="channel" type="HHChannel"/>
     <Parameter name="number" dimension="none"/>
     <Parameter name="erev" dimension="voltage"/>
     <Requirement name="v" dimension="voltage"/>
     <Exposure name="current" dimension="current"/>
     <Exposure name="geff" dimension="conductance"/>
   
-  
-  
-    
-    <Structure>
-        <ChildInstance component="channel"/>
-    </Structure>
-  
+   
   
     <Dynamics simultaneous="false">
         <DerivedVariable name="channelg" dimension="conductance" select="channel/g"/>

@@ -75,11 +75,11 @@ refractoryPeriod="4ms" capacitance="1pF"/>
 
 
 <ComponentType name="Population">
-    <ComponentReference name="component" type="Component"/>
+    <Child name="component" type="Component"/>
     <Parameter name="size" dimension="none"/>
    
    	 <Structure>
-            <MultiInstantiate number="size" component="component"/>
+            <MultiInstance number="size" component="component"/>
      </Structure>
     
 </ComponentType>
@@ -91,7 +91,7 @@ refractoryPeriod="4ms" capacitance="1pF"/>
     <Path name="from"/>
     <Path name="to"/>
      
-    <ComponentReference name="synapse" type="Synapse"/>
+    <Child name="synapse" type="Synapse"/>
       
     <Text name="destination"/>
     <Text name="sourcePort"/>

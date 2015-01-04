@@ -19,9 +19,9 @@
 
 		<Behavior>
 		  <Build>
-			<MultiInstantiate type="GridPoint" number="n">
+			<MultiInstance type="GridPoint" number="n">
 			     <Assign property="position" value="min + step * index"/>
-			</MultiInstantiate>
+			</MultiInstance>
 		  </Build>
 		</Behavior>
 	</ComponentType>
@@ -48,12 +48,12 @@
         
         <Behavior>
             <Build>
-                <MultiInstantiate number="ny" indexVariable="yindex">
-                    <MultiInstantiate number="nx" indexVariable="xindex" type="GridPoint2D">
+                <MultiInstance number="ny" indexVariable="yindex">
+                    <MultiInstance number="nx" indexVariable="xindex" type="GridPoint2D">
                         <Assign property="xpos" value="xmin + xstep * xindex"/>
                         <Assign property="ypos" value="ymin + xstep * yindex"/>
-                    </MultiInstantiate>
-                </MultiInstantiate>
+                    </MultiInstance>
+                </MultiInstance>
             </Build>
             
         </Behavior>
@@ -96,7 +96,7 @@
     
     
     <ComponentType name="Projection">
-        <ComponentReference name="pattern" type="ProjectionPattern"/>
+        <Child name="pattern" type="ProjectionPattern"/>
         <Link name="from" type="Population"/>
         <Link name="to" type="Population"/>
     </ComponentType>

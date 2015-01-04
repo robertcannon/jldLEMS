@@ -6,18 +6,18 @@
 
 
 <ComponentType name="Population">
-    <ComponentReference name="component" type="Component"/>
+    <Child name="component" type="Component"/>
     <Parameter name="size" dimension="none"/>
     <Structure>
-	    <MultiInstantiate number="size" component="component"/>
+	    <MultiInstance number="size" component="component"/>
 	</Structure>
 </ComponentType>
 
 
 
 <ComponentType name="EventConnectivity">
-    <ComponentReference local="true" name="source" type="Population"/>
-    <ComponentReference local="true" name="target" type="Population"/>
+    <Child local="true" name="source" type="Population"/>
+    <Child local="true" name="target" type="Population"/>
     <Child name="Connections" type="ConnectionPattern"/>
 </ComponentType>
 

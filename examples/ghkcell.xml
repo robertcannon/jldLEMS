@@ -10,7 +10,7 @@
  <Unit name="mMolar" dimension="concentration" power="0"/>
 
 <ComponentType name="ChannelPopulation">
-    <ComponentReference name="channel" type="HHChannel"/>
+    <Child name="channel" type="HHChannel"/>
     <Parameter name="number" dimension="none"/>
     <Parameter name="erev" dimension="voltage"/>
     <Requirement name="v" dimension="voltage"/>
@@ -37,7 +37,7 @@
 
 
 <ComponentType name="GHKChannelPopulation">
-    <ComponentReference name="channel" type="GHK_HHChannel"/>
+    <Child name="channel" type="GHK_HHChannel"/>
     <Parameter name="number" dimension="none"/>
     
     <DerivedVariable name="extconc" 
@@ -88,7 +88,7 @@
 </ComponentType>
 
 <Component name="Solute">
-	<ComponentReference name="specie"/>
+	<Child name="specie"/>
 	<Parameter name="concentration" dimension="concentration"/>
 </Component>
 

@@ -106,10 +106,10 @@
 
 
 <ComponentType name="Population">
-    <ComponentReference name="component" type="Component" required="false"/>
+    <Child name="component" type="Component" required="false"/>
     <Parameter name="size" dimension="none"/>
     <Structure>
-	    <MultiInstantiate number="size" component="component"/>
+	    <MultiInstance number="size" component="component"/>
 	</Structure>
 </ComponentType>
 
@@ -119,8 +119,8 @@
 
 
 <ComponentType name="ExplicitConnectivity">
-    <ComponentReference name="sourceList" type="Population" local="true"/>
-    <ComponentReference name="targetList" type="Population" local="true"/>
+    <Child name="sourceList" type="Population" local="true"/>
+    <Child name="targetList" type="Population" local="true"/>
     <Children name="Connections" type="SingleEventConnection"/>
 </ComponentType>
 
@@ -147,8 +147,8 @@
 
 
 <ComponentType name="EventConnectivity">
-    <ComponentReference name="source" type="Population" local="true"/>
-    <ComponentReference name="target" type="Population" local="true"/>
+    <Child name="source" type="Population" local="true"/>
+    <Child name="target" type="Population" local="true"/>
     <Child name="Connections" type="ConnectionPattern"/>
 </ComponentType>
  
@@ -167,8 +167,8 @@
 
 
 <ComponentType name="ElectricalConnections">
-    <ComponentReference name="sourceList" type="Population" local="true"/>
-    <ComponentReference name="targetList" type="Population" local="true"/>
+    <Child name="sourceList" type="Population" local="true"/>
+    <Child name="targetList" type="Population" local="true"/>
     <Children name="connections" type="GapJunctionConnection"/>
 </ComponentType>
 
@@ -199,7 +199,7 @@
 	<ComponentRequirement name="sourceList"/>
 	<ComponentRequirement name="targetList"/>
 	
-	<ComponentReference name="connector" type="GapJunction"/>
+	<Child name="connector" type="GapJunction"/>
 	
 	<Structure>
 		<With list="sourceList" index="sourceIndex" as="a"/>

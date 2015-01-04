@@ -54,7 +54,7 @@
     <Parameter name="length" dimension="time"/>
     <Parameter name="step" dimension="time"/>
     
-    <Child name="target" type="Component"/>
+    <Child name="target" type="Type"/>
 
 
     <Children name="displays" type="Display"/>

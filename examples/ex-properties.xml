@@ -29,10 +29,10 @@
 		<Parameter name="maxPeriod" dimension="time" />
 		 
 		<Structure>
-			<MultiInstantiate componentType="spikeGenerator" number="n">
+			<MultiInstance componentType="spikeGenerator" number="n">
 				<Assign property="period" 
 					   value="minPeriod + (maxPeriod - minPeriod) * index/n"/>
-			</MultiInstantiate>
+			</MultiInstance>
 		</Structure>
 	</ComponentType>
 

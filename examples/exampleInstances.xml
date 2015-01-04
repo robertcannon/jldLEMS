@@ -97,17 +97,17 @@
 
 
 <ComponentType name="Population">
-    <ComponentReference name="component" type="Component" required="false"/>
+    <Child name="component" type="Component" required="false"/>
     <Parameter name="size" dimension="none"/>
     <Structure>
-	    <MultiInstantiate number="size" component="component"/>
+	    <MultiInstance number="size" component="component"/>
 	</Structure>
 </ComponentType>
 
  
  
 <ComponentType name="Instance">
-	<ComponentReference name="of" type="Component" defaultComponent="../component"/>
+	<Child name="of" type="Component" defaultComponent="../component"/>
 	<LocalParameters name="locals"/>
 	
 	<Structure>
@@ -119,7 +119,7 @@
 
 
 <ComponentType name="InstancePopulation">
-    <ComponentReference name="component" type="Component" required="false"/>
+    <Child name="component" type="Component" required="false"/>
 	<Children name="instances" type = "Instance"/>
 </ComponentType>
  
@@ -127,8 +127,8 @@
 
 
 <ComponentType name="EventConnectivity">
-    <ComponentReference name="source" type="Population" local="true"/>
-    <ComponentReference name="target" type="Population" local="true"/>
+    <Child name="source" type="Population" local="true"/>
+    <Child name="target" type="Population" local="true"/>
     <Child name="Connections" type="ConnectionPattern"/>
 </ComponentType>
 

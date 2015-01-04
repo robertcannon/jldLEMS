@@ -196,7 +196,7 @@
 
 
 <ComponentType name="ChannelPopulation">
-    <ComponentReference name="channel" type="HHChannel"/>
+    <Child name="channel" type="HHChannel"/>
     <Parameter name="number" dimension="none"/>
     <Parameter name="erev" dimension="voltage"/>
     <Requirement name="v" dimension="voltage"/>
@@ -207,10 +207,7 @@
         <DerivedVariable name="geff" value="channelg * number"/>
         <DerivedVariable name="current" exposure="current" value="geff * (erev - v)"/>
     </Dynamics>
-    
-    <Structure>
-         <ChildInstance component="channel"/>    
-    </Structure>
+
 </ComponentType>
 
 
