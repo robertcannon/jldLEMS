@@ -14,7 +14,7 @@ import org.lemsml.jld.io.xml.XMLElementReader;
 import org.lemsml.jld.model.Lems;
 import org.lemsml.jld.model.core.ModelException;
 import org.lemsml.jld.report.Reporter;
-import org.lemsml.jld.resolver.LemsResolver;
+import org.lemsml.jld.resolve.LemsResolver;
 import org.lemsml.jld.validation.ConsistencyCheck;
 
 public class PipelineExample {

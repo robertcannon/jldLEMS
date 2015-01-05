@@ -19,5 +19,11 @@ public class ParameterValue {
 	public String getName() {
 		return name;
 	}
+
+
+	public ParameterValue makeCopy() {
+		 ParameterValue ret = new ParameterValue(name, value);
+		 return ret;
+	}
  
 }

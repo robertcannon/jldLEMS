@@ -1,9 +1,13 @@
 package org.lemsml.jld.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.lemsml.jld.io.E;
 import org.lemsml.jld.model.core.AbstractElement;
 import org.lemsml.jld.model.core.ListMap;
+import org.lemsml.jld.model.type.ComponentType;
 
 
 public class Component {
@@ -17,9 +21,16 @@ public class Component {
 	protected ListMap<ParameterValue> parameterValueMap = new ListMap<ParameterValue>();
 	
 	protected ListMap<Component> componentMap = new ListMap<Component>();
-	
-	// the only use for this is when re-writing a model in the same style as it was read 
  	
+	
+	// after resolving, everything in componentMap should be in childHM or childrenHM
+	private HashMap<String, Component> childHM = new HashMap<String, Component>();
+	private HashMap<String, ArrayList<Component>> childrenHM = new HashMap<String, ArrayList<Component>>();
+	
+	
+	
+	private ComponentType r_componentType;
+	private Component r_parent;
 	
 	
 	protected Component(String id) {
@@ -50,10 +61,14 @@ public class Component {
 
 	public Component addComponent(String id) {
 		Component ret = new Component(id);
+		ret.r_parent = this;
 		componentMap.put(id,  ret);
 		return ret;
 	}
 
+	public Component getParent() {
+		return r_parent;
+	}
 
 	public String getType() {
 		return type;
@@ -85,5 +100,49 @@ public class Component {
 	public String getExtends() {
 		return eXtends;
 	}
+
+	public boolean hasParameter(String name) {
+		boolean ret = false;
+		if (parameterValueMap.containsKey(name)) {
+			ret = true;
+		}
+		return ret;
+	}
+
+	public void setComponentType(ComponentType ct) {
+		r_componentType = ct;
+	}
+
+	public ComponentType getComponentType() {
+		return r_componentType;
+	}
+
+	public void allocateToChild(Component cpt, String elt) {
+		 if (childHM.containsKey(elt)) {
+			 E.error("Tried to overwriting child " + elt + " in " + this);
+		 } else {
+			 childHM.put(elt, cpt);
+		 }
+	}
+
+	public void allocateToChildren(Component cpt, String elt) {
+		 if (!childrenHM.containsKey(elt)) {
+			 childrenHM.put(elt, new ArrayList<Component>());
+		 }
+		 childrenHM.get(elt).add(cpt);
+	}
+
+	public List<Component> getAllSubcomponents() {
+		 ArrayList<Component> ret = new ArrayList<Component>();
+		 for (String s : childHM.keySet()) {
+			 ret.add(childHM.get(s));
+		 }
+		 for (String s : childrenHM.keySet()) {
+			 ret.addAll(childrenHM.get(s));
+		 }
+		 return ret;
+	}
+
+
 	
 }

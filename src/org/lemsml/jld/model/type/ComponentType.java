@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.lemsml.jld.api.APIException;
 import org.lemsml.jld.io.E;
+import org.lemsml.jld.model.Component;
 import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.Lems;
 import org.lemsml.jld.model.core.AbstractElement;
@@ -276,8 +277,111 @@ public class ComponentType extends AbstractElement {
 	public ComponentType getSupertype() {
 		return r_supertype;
 	}
+
+	
+	public boolean hasChild(String elt) {
+		return childMap.containsKey(elt);
+	}
+
+	public Child getChild(String elt) {
+		return childMap.get(elt);
+	}
  
+	public boolean hasChildren(String elt) {
+		return childrenMap.containsKey(elt);
+	}
+
+	public Children getChildren(String elt) {
+		return childrenMap.get(elt);
+	}
 
 
+	public int getChildCount() {
+		return childMap.size();
+	}
+ 
+	public int getChildrenCount() {
+		return childrenMap.size();
+	}
+
+	public String getChildNameForType(String tnm) {
+		String ret = null;
+		Child ch = getChildByType(tnm);
+		if (ch != null) {
+			ret = ch.getName();
+		}
+		return ret;
+	}
+	
+	public String getChildrenNameForType(String tnm) {
+		String ret = null;
+		Children ch = getChildrenByType(tnm);
+		if (ch != null) {
+			ret = ch.getName();
+		}
+		return ret;
+	}
+	
+
+	public boolean hasChildType(String tnm) {
+		Child ch = getChildByType(tnm);
+		boolean ret = false;
+		if (ch != null) {
+			ret = true;
+		}
+		return ret;
+	}
+	
+	private Child getChildByType(String tnm) {	
+		Child ret = null;
+		for (Child ch : childMap.getItems()) {
+			String tt = ch.getType();
+			if (tt != null && tt.equals(tnm)) {
+				ret = ch;
+				break;
+			}
+		}
+		return ret;
+	}
+
+	public boolean hasChildrenType(String tnm) {
+		Children ch = getChildrenByType(tnm);
+		boolean ret = false;
+		if (ch != null) {
+			ret = true;
+		}
+		return ret;
+	}
+	
+	private Children getChildrenByType(String tnm) {	
+		Children ret = null;
+		for (Children ch : childrenMap.getItems()) {
+			String tt = ch.getType();
+			if (tt != null && tt.equals(tnm)) {
+				ret = ch;
+				break;
+			}
+		}
+		return ret;
+	}
+
+
+	public String getSoleChildrenName() {
+		String ret = null;
+		if (childrenMap.size() == 0) {
+			ret = childrenMap.get(0).getName();
+		}
+		return ret;
+	}
+
+	public String getSoleChildName() {
+		String ret = null;
+		if (childMap.size() == 0) {
+			ret = childMap.get(0).getName();
+		}
+		return ret;
+	}
+
+	
 	
 }

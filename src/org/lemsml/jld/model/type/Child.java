@@ -12,5 +12,7 @@ public class Child extends AbstractTypeElement {
 	public String toString() {
 		return "Child, type=" + getTargetTypeName() + ", parent=" + getParentTypeName();
 	}
+
+	 
  
 }

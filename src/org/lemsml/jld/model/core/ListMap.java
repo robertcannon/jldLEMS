@@ -31,6 +31,25 @@ public class ListMap<T> {
 		return ret;
 	}
 
+
+	public boolean containsKey(String name) {
+		boolean ret = false;
+		if (map.containsKey(name)) {
+			ret = true;
+		}
+		return ret;
+	}
+
+
+	public int size() {
+		return items.size();
+	}
+
+
+	public T get(int i) {
+		return items.get(i);
+	}
+
  
 	
 	

@@ -174,4 +174,9 @@ public class Lems {
 	public String getSourceName() {
 		return sourceName;
 	}
+
+
+	public Component getComponent(String ext) {
+		return componentMap.get(ext);
+	}
 }

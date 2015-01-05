@@ -30,7 +30,13 @@ public abstract class AbstractTypeElement extends AbstractElement {
 
 	public void setTargetType(ComponentType ct) {
 		targetType = ct;
+	} 
+	
+	public ComponentType getTargetType() {
+		return targetType;
 	}
+	
+	
 	
 	public String getTargetTypeName() {
 		String ret = "null";

@@ -1,4 +1,4 @@
-package org.lemsml.jld.resolver;
+package org.lemsml.jld.resolve;
 
 import java.util.HashMap;
 
