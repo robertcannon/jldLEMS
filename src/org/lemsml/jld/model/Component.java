@@ -37,6 +37,11 @@ public class Component {
 		this.id = id;
 	}
 	 
+	
+	public String toString() {
+		return "Component, elt=" + element + ", type=" + type + ", id=" + id + ", extends=" + eXtends;
+	}
+	
 	public void setType(String type) {
 		this.type = type;
 	}
@@ -68,6 +73,10 @@ public class Component {
 
 	public Component getParent() {
 		return r_parent;
+	}
+
+	public void setParent(Component cpt) {
+		 r_parent = cpt;
 	}
 
 	public String getType() {
@@ -143,6 +152,7 @@ public class Component {
 		 return ret;
 	}
 
+ 
 
 	
 }

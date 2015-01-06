@@ -48,14 +48,15 @@ public class LemsResolver {
 	
 	
 	public void resolveComponents() {
+		int ncpt = lems.getComponents().size();		
 		for (Component cpt : lems.getComponents()) {
 			resolveSingleComponent(cpt);
 		}
 	}
 	
 	public void resolveSingleComponent(Component cpt) {
-		ComponentResolver cr = new ComponentResolver(lems, cpt);
-		cr.resolve();
+		ComponentResolver cr = new ComponentResolver(lems);
+		cr.resolveComponent(cpt);
 	}
 	
 	

@@ -9,28 +9,21 @@ import org.lemsml.jld.model.type.ComponentType;
 public class ComponentResolver {
 
 	private Lems lems;
-	private Component targetComponent;
 	
 	
-	public ComponentResolver(Lems lems, Component cpt) {
+	public ComponentResolver(Lems lems) {
 		this.lems = lems;
-		this.targetComponent = cpt;
-	}
-	
-	
-	public void resolve() {
-		resolveComponent(targetComponent);
 	}
 	
 	
 	
-	private void resolveComponent(Component cpt) {
- 
-		applyInheritance(targetComponent);
+	public void resolveComponent(Component cpt) {
+		
+		applyInheritance(cpt);
 	
-		findType(targetComponent);
+		findType(cpt);
 	
-		allocateChildren(targetComponent);
+		allocateChildren(cpt);
 		
 		for (Component c : cpt.getComponents()) {
 			resolveComponent(c);
@@ -41,7 +34,7 @@ public class ComponentResolver {
 		if (ncpt == nall) {
 			// OK
 		} else {
-			E.error("Could not allocate some children: cpt=" + ncpt + ", allocated " + nall + " in " + this);
+			E.error("Could not allocate some children: total=" + ncpt + ", allocated " + nall + " in " + cpt);
 		}
 		
 	}
@@ -74,13 +67,19 @@ public class ComponentResolver {
 			} else {
 				tgt.setParameterValue(pv.getName(), pv.getValue());
 			}
+			if (tgt.getType() != null && tgt.getType().length() > 0) {
+				// keep as is
+				
+			} else if (src.getType() != null) {
+				tgt.setType(src.getType());
+			}
 		}
 	}
 
 	
 	private void findType(Component cpt) {
 		String typename = cpt.getType();
-		if (typename != null) {
+		if (typename != null && typename.length() > 0) {
 			ComponentType ct = lems.getComponentType(typename);
 			if (ct == null) {
 				E.error("No such component type " + typename + "needed by component: " + cpt);
@@ -101,14 +100,16 @@ public class ComponentResolver {
 				boolean gotChild = false;
 				Component par = cpt.getParent();
 				if (par != null) {
-					ComponentType typ = cpt.getComponentType();
-					if (typ.hasChild(elt)) {
-						cpt.setComponentType(typ.getChild(elt).getTargetType());
-						gotChild = true;
+					ComponentType typ = par.getComponentType();
+					if (typ != null) {
+						if (typ.hasChild(elt)) {
+							cpt.setComponentType(typ.getChild(elt).getTargetType());
+							gotChild = true;
 
-					} else if (typ.hasChildren(elt)) {
-						cpt.setComponentType(typ.getChildren(elt).getTargetType());
-						gotChild = true;
+						} else if (typ.hasChildren(elt)) {
+							cpt.setComponentType(typ.getChildren(elt).getTargetType());
+							gotChild = true;
+						}
 					}
 				}
 				
@@ -128,7 +129,12 @@ public class ComponentResolver {
 	
 	private void allocateChildren(Component cpt) {
 		ComponentType typ = cpt.getComponentType();
+		
+		int nsub = cpt.getComponents().size();
+		
 		for (Component ch : cpt.getComponents()) {
+			ch.setParent(cpt);
+			
 			String enm = ch.getElement();
 			boolean done = false;
 			if (typ.hasChild(enm)) {
@@ -137,6 +143,13 @@ public class ComponentResolver {
 				
 			} else if (typ.hasChildren(enm)) {
 				cpt.allocateToChild(ch, enm);
+				done = true;
+				
+			} else if (typ.hasChildType(enm)) {
+				cpt.allocateToChild(ch, typ.getChildNameForType(enm));
+				done = true;
+			} else if (typ.hasChildrenType(enm)) {
+				cpt.allocateToChildren(ch, typ.getChildrenNameForType(enm));
 				done = true;
 				
 			} else {
@@ -161,7 +174,9 @@ public class ComponentResolver {
 					done = true;
 				}
 			} 
-			if (!done) {
+			if (done) {
+				//E.info("OK, allocated " + ch + " within " + cpt);
+			} else {
 				E.error("Can't  allocate child component " + ch + " to container");
 			}
 		}

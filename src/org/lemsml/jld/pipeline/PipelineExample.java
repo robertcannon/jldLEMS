@@ -61,6 +61,7 @@ public class PipelineExample {
 		// at this stage we should have checked what we can about the types.
 		
 		
+		reporter.reportComponents();
 		
 		// resolve references in components to types and other components
 		lr.resolveComponents();
