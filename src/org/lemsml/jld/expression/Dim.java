@@ -16,6 +16,7 @@ public class Dim {
 	int j;
 	
 	boolean isZero = false;
+	boolean isWild = false;
 	
 	double doubleValue = Double.NaN; // bit of a hack to get powers through in the case of dimensionless constants
 
@@ -39,6 +40,9 @@ public class Dim {
 		k = d.getK();
 		n = d.getN();
 		j = d.getJ();
+		if (d.isAny()) {
+			isWild = true;
+		}
 	}
 
 
@@ -160,8 +164,7 @@ public class Dim {
 	}
 
 	public boolean isAny() {
-		// the constant zero can be of any dimension
-		return isZero;
+		return (isZero || isWild);
 	}
 
 	public void setDoubleValue(double dval) {

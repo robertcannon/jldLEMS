@@ -152,7 +152,30 @@ public class Component {
 		 return ret;
 	}
 
- 
 
+	public ParameterValue getParameterValue(String name) {
+		return parameterValueMap.get(name);
+	}
+
+	
+	// TODO - lists of new objects here instead?
+	public HashMap<String, Component> getChildMap() {
+		return childHM;
+	}
+	
+	public HashMap<String, ArrayList<Component>> getChildrenMap() {
+		return childrenHM;
+	}
+
+
+	public Component getChild(String s) {
+		Component ret = null;
+		if (childHM.containsKey(s)) {
+			ret = childHM.get(s);
+		}
+		return ret;
+	}
+	
+	
 	
 }

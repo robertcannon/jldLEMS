@@ -2,9 +2,9 @@ package org.lemsml.jld.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jld.exception.ExpressionError;
-import org.lemsml.jlems.core.eval.AbstractBComp;
-import org.lemsml.jlems.core.eval.GEQComp;
+import org.lemsml.jld.eval.AbstractBComp;
+import org.lemsml.jld.eval.GEQComp;
+import org.lemsml.jld.exception.ExpressionError; 
 
 public class GreaterThanOrEqualsNode extends AbstractComparisonNode {
 

@@ -29,4 +29,8 @@ public class ComponentMap {
 		return ret;
 	}
 
+	public Component getLast() {
+		return components.get(components.size() - 1);
+	}
+
 }

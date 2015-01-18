@@ -2,10 +2,10 @@ package org.lemsml.jld.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jld.exception.ExpressionError;
-import org.lemsml.jlems.core.eval.AbstractBComp;
-import org.lemsml.jlems.core.eval.EQComp;
-import org.lemsml.jlems.core.run.RuntimeError;
+import org.lemsml.jld.eval.AbstractBComp;
+import org.lemsml.jld.eval.EQComp;
+import org.lemsml.jld.exception.ExpressionError; 
+import org.lemsml.jld.hrun.RuntimeError;
 
 public class EqualsNode extends AbstractComparisonNode {
 

@@ -31,6 +31,7 @@ public class ComponentType extends AbstractElement {
 	protected ListMap<ReceivePort> receivePortMap = new ListMap<ReceivePort>();
 	protected ListMap<SendPort> sendPortMap = new ListMap<SendPort>();
 	protected ListMap<Fixed> fixedMap = new ListMap<Fixed>();
+	protected ListMap<Property> propertyMap = new ListMap<Property>();
 	
 	protected ListMap<Requirement> requirementMap = new ListMap<Requirement>();
 	protected ListMap<Exposure> exposureMap = new ListMap<Exposure>();
@@ -45,7 +46,6 @@ public class ComponentType extends AbstractElement {
 	
 	
 	private ComponentType r_supertype = null;
-	
 	
 	protected ComponentType(Lems l, String s) {
 		super(s);
@@ -82,6 +82,7 @@ public class ComponentType extends AbstractElement {
 		textMap.put(s, ret);
 		return ret;
 	}
+	 
 	
 	public Path addPath(String s) {
 		Path ret = new Path(this, s);
@@ -107,7 +108,16 @@ public class ComponentType extends AbstractElement {
 		fixedMap.put(s, ret);
 		return ret;
 	}
+	
+	public Property addProperty(String s) {
+		Property ret = new Property(this, s);
+		propertyMap.put(s, ret);
+		return ret;
+	}
 
+	public List<Property> getPropertys() {
+		return propertyMap.getItems();
+	}
 	 
 	
 
@@ -383,5 +393,10 @@ public class ComponentType extends AbstractElement {
 	}
 
 	
+
+	public Exposure getExposure(String expo) {
+		return exposureMap.get(expo);
+	}
+
 	
 }

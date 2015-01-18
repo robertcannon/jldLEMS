@@ -140,6 +140,7 @@ public final class E {
 	public static void warning(String s) {
 		out("WARNING ",  s);
 	}
+	
 
 	
 }

@@ -2,6 +2,7 @@ package org.lemsml.jld.model.dynamics;
 
 import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.core.AbstractAST;
+import org.lemsml.jld.model.type.Exposure;
 
 public class DerivedVariable extends AbstractDynamicsElement {
 
@@ -16,11 +17,14 @@ public class DerivedVariable extends AbstractDynamicsElement {
 	protected String select;
 	
 	protected String reduce;
+
 	
 	private Dimension r_dimension;
 	private AbstractAST  r_AST;
 
-
+	private Exposure r_exposure; 
+	
+	
 	public DerivedVariable(Dynamics d, String s) {
 		super(d);
 		name = s;
@@ -102,4 +106,13 @@ public class DerivedVariable extends AbstractDynamicsElement {
 	public AbstractAST getAST() {
 		return r_AST;
 	}
+	
+	public void setExposure(Exposure e) {
+		r_exposure = e;
+	}
+	
+	public Exposure getExposureObject() {
+		return r_exposure;
+	}
+	
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.lemsml.jld.model.Component;
 import org.lemsml.jld.model.Dimension;
 
 public class ListMap<T> {
@@ -48,6 +49,15 @@ public class ListMap<T> {
 
 	public T get(int i) {
 		return items.get(i);
+	}
+
+
+	public T getFirst() {
+		 return items.get(0);
+	}
+	
+	public T getLast() {
+		 return items.get(items.size() - 1);
 	}
 
  

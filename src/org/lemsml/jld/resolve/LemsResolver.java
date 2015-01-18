@@ -15,6 +15,7 @@ import org.lemsml.jld.model.core.AbstractTypeElement;
 import org.lemsml.jld.model.core.ParseException;
 import org.lemsml.jld.model.dynamics.DerivedVariable;
 import org.lemsml.jld.model.dynamics.Dynamics;
+import org.lemsml.jld.model.dynamics.TimeDerivative;
 import org.lemsml.jld.model.type.Child;
 import org.lemsml.jld.model.type.Children;
 import org.lemsml.jld.model.type.ComponentType;
@@ -36,9 +37,9 @@ public class LemsResolver {
 		
 		resolveConstantDimensions();
 		
-		resolveTypeDimensions();
-		
 		resolveTypeExtension();
+
+		resolveTypeDimensions();
 	
 		resolveTypeReferences();
 		
@@ -180,6 +181,9 @@ public class LemsResolver {
 		for (DerivedVariable dv : d.getDerivedVariables()) {
 			parseDerivedVariableExpressions(dv, ep);
 		}
+		for (TimeDerivative td : d.getTimeDerivatives()) {
+			parseTimeDerivativeExpression(td, ep);
+		}
 	}
 
 
@@ -194,6 +198,20 @@ public class LemsResolver {
 				 
 			 } catch (ParseError pe) {
 				 E.error("Failed to parse " + dv.getValue());
+				 lems.setError();
+			 }
+		 }
+	}
+	
+	private void parseTimeDerivativeExpression(TimeDerivative td, ExpressionParser ep) {
+		 if (td.getValue() != null) {
+			 try {
+				 ParseTree pt = ep.parseExpression(td.getValue());
+
+				 td.setAST(pt);
+				 
+			 } catch (ParseError pe) {
+				 E.error("Failed to parse " + td.getValue());
 				 lems.setError();
 			 }
 		 }

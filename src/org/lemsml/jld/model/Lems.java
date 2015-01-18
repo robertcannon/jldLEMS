@@ -38,6 +38,7 @@ public class Lems {
 	
 	public Dimension TIME_DIMENSION;
 	public Dimension NONE_DIMENSION;
+	public Dimension ANY_DIMENSION;
 	
 	
 	public Lems() {
@@ -51,6 +52,11 @@ public class Lems {
 	
 		NONE_DIMENSION = new Dimension(this, "none");
 		dimensionMap.put("none", NONE_DIMENSION);
+		
+		ANY_DIMENSION = new Dimension(this, "*");
+		dimensionMap.put("*", ANY_DIMENSION);
+		ANY_DIMENSION.setAny();
+		
 		
 		TIME_DIMENSION = new Dimension(this, "t");
 		TIME_DIMENSION.setT(1);
@@ -179,4 +185,22 @@ public class Lems {
 	public Component getComponent(String ext) {
 		return componentMap.get(ext);
 	}
+
+
+	public Component getTargetComponent() {
+		Component ret = null;
+		Target tgt = null;
+		if (targetMap.size() > 0) {
+			tgt = targetMap.getFirst();
+			if (tgt != null) {
+				ret = tgt.getComponentObject();
+			}
+		}
+		if (ret == null) {
+			ret = componentMap.getLast();
+		}
+	 
+		return ret;
+	}
+	
 }

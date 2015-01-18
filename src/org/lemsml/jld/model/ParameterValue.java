@@ -5,12 +5,19 @@ public class ParameterValue {
 	protected String name;
 	protected String value;
 	
+	private double doubleValue;
+	
 	public ParameterValue(String sn, String sv) {
 		name = sn;
 		value = sv;
 	}
  
 
+	public String toString() {
+		return "ParameterValue, name=" + name + ", value=" + value;
+	}
+	
+	
 	public String getValue() {
 		return value;
 	}
@@ -24,6 +31,15 @@ public class ParameterValue {
 	public ParameterValue makeCopy() {
 		 ParameterValue ret = new ParameterValue(name, value);
 		 return ret;
+	}
+
+
+	public void setDoubleValue(double v) {
+		 doubleValue = v;		
+	}
+	
+	public double getDoubleValue() {
+		return doubleValue;
 	}
  
 }

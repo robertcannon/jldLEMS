@@ -2,9 +2,9 @@ package org.lemsml.jld.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jld.exception.ExpressionError;
-import org.lemsml.jlems.core.eval.AbstractBVal;
-import org.lemsml.jlems.core.eval.And;
+import org.lemsml.jld.eval.AbstractBVal;
+import org.lemsml.jld.eval.And;
+import org.lemsml.jld.exception.ExpressionError; 
  
 
 public class AndNode extends AbstractBooleanOperatorNode {

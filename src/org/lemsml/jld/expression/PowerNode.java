@@ -2,10 +2,10 @@ package org.lemsml.jld.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jld.exception.ExpressionError;
-import org.lemsml.jlems.core.eval.AbstractDVal;
-import org.lemsml.jlems.core.eval.Power;
-import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jld.eval.AbstractDVal;
+import org.lemsml.jld.eval.Power;
+import org.lemsml.jld.exception.ExpressionError; 
+import org.lemsml.jld.io.E;
 
 public class PowerNode extends AbstractFloatResultNode {
 
@@ -45,7 +45,7 @@ public class PowerNode extends AbstractFloatResultNode {
         } else if (dr.isDimensionless()) {
             double dpow = dr.getDoubleValue();
             if (Double.isNaN(dpow)) {
-                E.repeatableWarning("Can't check dimensionality in power operation (power not known to be constant) " + dl + " " + dr);
+                E.warning("Can't check dimensionality in power operation (power not known to be constant) " + dl + " " + dr);
                 E.info("class of power node is " + dr.getClass() + " left=" + leftEvaluable + " right=" + rightEvaluable);
             } else {
                 ret = dl.power(dpow);

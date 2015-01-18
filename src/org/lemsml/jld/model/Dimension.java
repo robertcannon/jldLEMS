@@ -17,6 +17,9 @@ public class Dimension extends AbstractLemsElement {
 	protected int n;
 	protected int j;
 	
+	private boolean any = false;
+	
+	
 	public static enum SI {
 		MASS {void apply(Dimension d, int i) { d.setM(i); }},
 		LENGTH {void apply(Dimension d, int i) { d.setL(i); }},
@@ -111,7 +114,15 @@ public class Dimension extends AbstractLemsElement {
 	public int getI() {
 		return i;
 	}
+
+
+	public void setAny() {
+		any = true;
+	}
 	
+	public boolean isAny() {
+		return any;
+	}
 
 	
 	

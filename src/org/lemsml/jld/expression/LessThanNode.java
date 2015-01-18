@@ -2,9 +2,10 @@ package org.lemsml.jld.expression;
 
 import java.util.HashMap;
 
+import org.lemsml.jld.eval.AbstractBComp;
+import org.lemsml.jld.eval.LTComp;
 import org.lemsml.jld.exception.ExpressionError;
-import org.lemsml.jlems.core.eval.AbstractBComp;
-import org.lemsml.jlems.core.eval.LTComp;
+ 
 
 public class LessThanNode extends AbstractComparisonNode {
 

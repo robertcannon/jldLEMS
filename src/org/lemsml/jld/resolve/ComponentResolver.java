@@ -1,18 +1,31 @@
 package org.lemsml.jld.resolve;
 
+import java.util.ArrayList;
+
+import org.lemsml.jld.expression.Dim;
+import org.lemsml.jld.expression.ParseError;
 import org.lemsml.jld.io.E;
 import org.lemsml.jld.model.Component;
+import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.Lems;
 import org.lemsml.jld.model.ParameterValue;
+import org.lemsml.jld.model.core.DimensionalQuantity;
+import org.lemsml.jld.model.core.ParseException;
+import org.lemsml.jld.model.core.QuantityReader;
+import org.lemsml.jld.model.type.Child;
 import org.lemsml.jld.model.type.ComponentType;
+import org.lemsml.jld.model.type.Parameter;
 
 public class ComponentResolver {
 
 	private Lems lems;
 	
+	private QuantityReader quantityReader;
+	
 	
 	public ComponentResolver(Lems lems) {
 		this.lems = lems;
+		quantityReader = new QuantityReader(lems);
 	}
 	
 	
@@ -25,9 +38,13 @@ public class ComponentResolver {
 	
 		allocateChildren(cpt);
 		
+		parseParameters(cpt);
+		
 		for (Component c : cpt.getComponents()) {
 			resolveComponent(c);
 		}
+		
+		
 	
 		int ncpt = cpt.getComponents().size();
 		int nall = cpt.getAllSubcomponents().size();
@@ -37,7 +54,115 @@ public class ComponentResolver {
 			E.error("Could not allocate some children: total=" + ncpt + ", allocated " + nall + " in " + cpt);
 		}
 		
+		locateReferenceChilds(cpt);
+		 
 	}
+	
+	
+	private void locateReferenceChilds(Component cpt) {
+		ComponentType ct = cpt.getComponentType();
+		for (Child ch : ct.getChilds()) {
+			String cnm = ch.getName();
+			
+			Component current = cpt.getChild(cnm);
+			if (current == null) {
+				// the child component is not defined in-place. The child name should be present in the 
+				// parent component as an attribute of which the value provides the id of the component to use 
+				ParameterValue pv = cpt.getParameterValue(cnm);
+				if (pv != null) {
+					String id = pv.getValue();
+
+					// first try resolving in the local context, ie, as a child of our parent
+					Component ref = null;
+					Component p = cpt.getParent();
+					if (p != null) {
+						// maybe it is a named child? TODO does this ever happen
+						ref = p.getChild(id);
+						
+						if (ref == null) {
+							ref = getChildWithId(p, id);							 
+						}
+						
+					}
+					if (ref == null) {
+						ref = lems.getComponent(id);
+					}
+					
+					if (ref != null) {
+						cpt.allocateToChild(ref, cnm);
+					} else {
+						E.error("No component found with id: " + id);
+					}
+					
+				} else {
+					E.error("Component needs a child '" + cnm + "' but there is no local child or reference of that name");
+				}
+			}
+			
+			
+		}
+	}
+
+
+	private Component getChildWithId(Component p, String id) {
+		Component ret = null;
+		for (Component c : p.getComponents()) {
+			if (id.equals(c.getId())) {
+				ret = c;
+			}
+		}
+		return ret;
+	}
+	
+	
+	
+
+	private void parseParameters(Component cpt) {
+		ComponentType ct = cpt.getComponentType();
+		for (Parameter p : ct.getParameters()) {
+			ParameterValue pv = cpt.getParameterValue(p.getName());
+			if (pv != null) {
+				try {
+					resolveParameterValue(pv, p);
+				} catch (ParseError pe) {
+					E.error("Can't parse " + pv.getValue() + ": " + pe);
+				}
+			}
+		}
+	}
+	
+	private void resolveParameterValue(ParameterValue pv, Parameter p) throws ParseError {			
+		
+		DimensionalQuantity dq = quantityReader.parseValue(pv.getValue());
+	
+		Dimension dtgt = p.getDimensionObject();
+		
+		Dim dim = new Dim(dq.getDimensionObject());
+ 				
+		if (dtgt == null) {
+			E.error("No dimension for param " + p);
+			
+		} else {
+			Dim dimtgt = new Dim(dtgt);
+			
+			if (dimtgt.isAny()) {
+				double value = dq.getDoubleValue();
+				pv.setDoubleValue(value);
+			
+			} else if (dimtgt.matches(dim)) {
+				double value = dq.getDoubleValue();
+				pv.setDoubleValue(value);
+			
+			} else if (dq.isZero()) {
+	 			pv.setDoubleValue(0.);
+			
+			} else {			
+				E.error("Can't set parameter: "+ p +" with dimensions " + p.getDimension() + " with string " + pv.getValue());
+			}
+		}
+	}
+	 
+	
 	
 	
 

@@ -103,6 +103,17 @@ public class Dynamics extends AbstractTypeElement {
 		return onEventMap.getItems();
 	}
 
+
+	public Object getStructures() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public StateVariable getStateVariable(String s) {
+		return stateVariableMap.get(s);
+	}
+
  
 	
 	

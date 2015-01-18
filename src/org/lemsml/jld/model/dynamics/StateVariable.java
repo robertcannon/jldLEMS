@@ -1,6 +1,7 @@
 package org.lemsml.jld.model.dynamics;
 
 import org.lemsml.jld.model.Dimension;
+import org.lemsml.jld.model.type.Exposure;
 
 public class StateVariable extends AbstractDynamicsElement {
 
@@ -9,6 +10,8 @@ public class StateVariable extends AbstractDynamicsElement {
 	protected String dimension;
 	
 	private Dimension r_dimension;
+	
+	private Exposure r_exposure;
 	
 	
 	public StateVariable(Dynamics d, String n) {
@@ -51,7 +54,16 @@ public class StateVariable extends AbstractDynamicsElement {
 	public Dimension getDimensionObject() {
 		return r_dimension;
 	}
+
+
+
+	public void setExposure(Exposure e) {
+		r_exposure = e;
+	}
 	
+	public Exposure getExposureObject() {
+		return r_exposure;
+	}
 	
 	
 	

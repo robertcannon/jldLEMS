@@ -2,12 +2,11 @@ package org.lemsml.jld.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jld.exception.ExpressionError;
-import org.lemsml.jlems.core.eval.AbstractDVal;
-import org.lemsml.jlems.core.eval.DFunc;
-import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.type.Lems;
-
+import org.lemsml.jld.eval.AbstractDVal;
+import org.lemsml.jld.eval.DFunc;
+import org.lemsml.jld.exception.ExpressionError; 
+import org.lemsml.jld.io.E;
+import org.lemsml.jld.model.Lems;
 
 public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNode {
 
@@ -76,7 +75,8 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 			ret = Math.sqrt(arg);
 
 		} else if (fname.equals("random")) {
-			ret = arg * Lems.getRandomGenerator().nextDouble();
+			ret = Math.random(); // TODO
+			//ret = arg * Lems.getRandomGenerator().nextDouble();
 
 		} else {
 			E.error("unrecognized function: " + fname);

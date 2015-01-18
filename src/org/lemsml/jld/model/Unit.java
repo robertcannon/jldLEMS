@@ -9,6 +9,9 @@ public class Unit extends AbstractLemsElement {
 	protected String dimension = null;
 	protected int power = 0;
 	protected String symbol = null;
+	protected double offset = 0.;
+	protected double scale = 1.0;
+	
 	
 	private Dimension r_dimension = null;
 
@@ -31,7 +34,11 @@ public class Unit extends AbstractLemsElement {
 		r_dimension = d;
 	}
 
-
+	public Dimension getDimensionObject() {
+		return r_dimension;
+	}
+	
+	
 	public void setPower(int p) {
 		power = p;
 	}
@@ -49,5 +56,21 @@ public class Unit extends AbstractLemsElement {
 	public int getPower() {
 		return power;
 	}
-
+	
+	public void setOffset(double d) {
+		offset = d;
+	}
+	
+	public double getOffset() {
+		return offset;
+	}
+	
+	public void setScale(double s) {
+		scale = s;
+	}
+	
+	public double getScale() {
+		return scale;
+	}
+	
 }
