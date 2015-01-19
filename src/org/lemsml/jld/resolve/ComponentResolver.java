@@ -1,6 +1,7 @@
 package org.lemsml.jld.resolve;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.lemsml.jld.expression.Dim;
 import org.lemsml.jld.expression.ParseError;
@@ -36,9 +37,12 @@ public class ComponentResolver {
 	
 		findType(cpt);
 	
-		allocateChildren(cpt);
+		ComponentType ct = cpt.getComponentType();
+		ArrayList<ComponentType> typeChain = getTypeChain(ct);
 		
-		parseParameters(cpt);
+		allocateChildren(cpt, typeChain);
+		
+		parseParameters(cpt, typeChain);
 		
 		for (Component c : cpt.getComponents()) {
 			resolveComponent(c);
@@ -57,6 +61,22 @@ public class ComponentResolver {
 		locateReferenceChilds(cpt);
 		 
 	}
+	
+	
+
+	private ArrayList<ComponentType> getTypeChain(ComponentType ct) {
+		ArrayList<ComponentType> ret = new ArrayList<ComponentType>();
+		ComponentType wk = ct;
+		while (wk != null) {
+			ret.add(wk);
+			wk = wk.getSupertype();
+		}
+		// Collections.reverse(ret);
+		return ret;
+	}
+	
+	
+	
 	
 	
 	private void locateReferenceChilds(Component cpt) {
@@ -117,19 +137,22 @@ public class ComponentResolver {
 	
 	
 
-	private void parseParameters(Component cpt) {
-		ComponentType ct = cpt.getComponentType();
-		for (Parameter p : ct.getParameters()) {
-			ParameterValue pv = cpt.getParameterValue(p.getName());
-			if (pv != null) {
-				try {
-					resolveParameterValue(pv, p);
-				} catch (ParseError pe) {
-					E.error("Can't parse " + pv.getValue() + ": " + pe);
+	private void parseParameters(Component cpt, ArrayList<ComponentType> typeChain) {
+		for (ComponentType ct : typeChain) {
+			for (Parameter p : ct.getParameters()) {
+				ParameterValue pv = cpt.getParameterValue(p.getName());
+				if (pv != null) {
+					try {
+						resolveParameterValue(pv, p);
+					} catch (ParseError pe) {
+						E.error("Can't parse " + pv.getValue() + ": " + pe);
+					}
 				}
 			}
 		}
 	}
+	
+	
 	
 	private void resolveParameterValue(ParameterValue pv, Parameter p) throws ParseError {			
 		
@@ -252,9 +275,8 @@ public class ComponentResolver {
 	}
 	
 	
-	private void allocateChildren(Component cpt) {
-		ComponentType typ = cpt.getComponentType();
-		
+	private void allocateChildren(Component cpt, ArrayList<ComponentType> typeChain) {
+	 	
 		int nsub = cpt.getComponents().size();
 		
 		for (Component ch : cpt.getComponents()) {
@@ -262,40 +284,40 @@ public class ComponentResolver {
 			
 			String enm = ch.getElement();
 			boolean done = false;
-			if (typ.hasChild(enm)) {
+			if (hasChild(typeChain, enm)) {
 				cpt.allocateToChild(ch, enm);
 				done = true;
 				
-			} else if (typ.hasChildren(enm)) {
+			} else if (hasChildren(typeChain, enm)) {
 				cpt.allocateToChild(ch, enm);
 				done = true;
 				
-			} else if (typ.hasChildType(enm)) {
-				cpt.allocateToChild(ch, typ.getChildNameForType(enm));
+			} else if (hasChildType(typeChain, enm)) {
+				cpt.allocateToChild(ch, getChildNameForType(typeChain, enm));
 				done = true;
-			} else if (typ.hasChildrenType(enm)) {
-				cpt.allocateToChildren(ch, typ.getChildrenNameForType(enm));
+			} else if (hasChildrenType(typeChain, enm)) {
+				cpt.allocateToChildren(ch, getChildrenNameForType(typeChain, enm));
 				done = true;
 				
 			} else {
 				String tnm = ch.getType();
-				if (typ.hasChildType(tnm)) {
-					cpt.allocateToChild(ch, typ.getChildNameForType(tnm));
+				if (hasChildType(typeChain, tnm)) {
+					cpt.allocateToChild(ch, getChildNameForType(typeChain, tnm));
 					done = true;
 					
-				} else if (typ.hasChildrenType(tnm)) {
-					cpt.allocateToChild(cpt, typ.getChildrenNameForType(tnm));
+				} else if (hasChildrenType(typeChain, tnm)) {
+					cpt.allocateToChild(cpt, getChildrenNameForType(typeChain, tnm));
 					done = true;
 				}
 			}
 			if (!done) {
-				int nchn = typ.getChildrenCount();
-				int nchd = typ.getChildCount();
+				int nchn = getChildrenCount(typeChain);
+				int nchd = getChildCount(typeChain);
 				if (nchn == 1 && nchd == 0) {
-					cpt.allocateToChildren(cpt, typ.getSoleChildrenName());
+					cpt.allocateToChildren(cpt, getSoleChildrenName(typeChain));
 					done = true;
 				} else if (nchd == 1 && nchn == 0) {
-					cpt.allocateToChild(cpt, typ.getSoleChildName());
+					cpt.allocateToChild(cpt, getSoleChildName(typeChain));
 					done = true;
 				}
 			} 
@@ -307,4 +329,116 @@ public class ComponentResolver {
 		}
 	}
 
+	
+	
+	// TODO these iterations over the type chain could be generalized to cut down on the repetitive code
+
+
+	private String getSoleChildrenName(ArrayList<ComponentType> typeChain) {
+		String ret = null;
+		for (ComponentType ct : typeChain) {
+			ret = ct.getSoleChildrenName();
+			if (ret != null) {
+				break;
+			}
+		}
+		return ret;
+	}
+
+	private String getSoleChildName(ArrayList<ComponentType> typeChain) {
+		String ret = null;
+		for (ComponentType ct : typeChain) {
+			ret = ct.getSoleChildName();
+			if (ret != null) {
+				break;
+			}
+		}
+		return ret;
+	}
+
+	private int getChildrenCount(ArrayList<ComponentType> typeChain) {
+		int ret = 0;
+		for (ComponentType ct : typeChain) {
+			ret += ct.getChildrenCount();
+		}
+		return ret;
+	}
+
+	private int getChildCount(ArrayList<ComponentType> typeChain) {
+		int ret = 0;
+		for (ComponentType ct : typeChain) {
+			ret += ct.getChildCount();
+		}
+		return ret;
+	}
+
+
+	
+	private String getChildNameForType(ArrayList<ComponentType> typeChain, String enm) {	
+		String ret = null;
+		for (ComponentType ct : typeChain) {
+			if (ct.hasChildType(enm)) {
+				ret = ct.getChildNameForType(enm);
+			}
+		}
+		return ret;
+	}
+
+	private String getChildrenNameForType(ArrayList<ComponentType> typeChain, String enm) {	
+		String ret = null;
+		for (ComponentType ct : typeChain) {
+			if (ct.hasChildrenType(enm)) {
+				ret = ct.getChildrenNameForType(enm);
+			}
+		}
+		return ret;
+	}
+
+
+	private boolean hasChildType(ArrayList<ComponentType> typeChain, String enm) {
+		boolean ret = false;
+		for (ComponentType ct : typeChain) {
+			if (ct.hasChildType(enm)) {
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+	private boolean hasChildrenType(ArrayList<ComponentType> typeChain, String enm) {
+		boolean ret = false;
+		for (ComponentType ct : typeChain) {
+			if (ct.hasChildrenType(enm)) {
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+
+
+	private boolean hasChild(ArrayList<ComponentType> typeChain, String enm) {
+		boolean ret = false;
+		for (ComponentType ct : typeChain) {
+			if (ct.hasChild(enm)) {
+				ret = true;
+			}
+		}
+		return ret;
+	}
+	
+	private boolean hasChildren(ArrayList<ComponentType> typeChain, String enm) {
+		boolean ret = false;
+		for (ComponentType ct : typeChain) {
+			if (ct.hasChildren(enm)) {
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+	
+	
+	
+	
 }

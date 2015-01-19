@@ -1,6 +1,7 @@
 package org.lemsml.jld.hsim;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -24,6 +25,7 @@ import org.lemsml.jld.model.simulation.Run;
 import org.lemsml.jld.model.simulation.Simulation;
 import org.lemsml.jld.model.type.ComponentType;
 import org.lemsml.jld.model.type.Exposure;
+import org.lemsml.jld.model.type.Parameter;
 import org.lemsml.jld.model.type.Property;
 import org.lemsml.jld.model.type.Requirement;
 import org.lemsml.jld.model.type.Text;
@@ -66,23 +68,47 @@ public class StateTypeBuilder {
 		
 		
 		ComponentType type = target.getComponentType();
+		
+		ArrayList<ComponentType> typeChain = getTypeChain(type);
+		
 		StateType ret = new StateType(target.getId(), type.getName());
 		
-	
-		 for (ParameterValue pv : target.getParameterValues()) {
-			 String qn = pv.getName();
-			 double qv = pv.getDoubleValue();
-			 ret.addFixed(qn, qv);
-		 }
-		 
-		 for (Requirement rv : type.getRequirements()) {
-			 ret.addIndependentVariable(rv.getName(), rv.getDimension());
-		 }
-		 
-		 for (Exposure ev : type.getExposures()) {
-			 ret.addExposedVariable(ev.getName(), ev.getDimension());
-		 }
 		
+		 
+		 
+		for (ComponentType c : typeChain) {
+			for (Parameter p : c.getParameters()) {
+				String qn = p.getName();
+				ParameterValue pv = target.getParameterValue(qn);
+				double qv = pv.getDoubleValue();
+				
+				E.info("Setting fixed value in stat type for " + qn + " " + qv + " " + pv.getValue());
+				ret.addFixed(qn, qv);
+			}
+			
+			for (Requirement rv : c.getRequirements()) {
+				ret.addIndependentVariable(rv.getName(), rv.getDimension());
+			}
+		 
+			for (Exposure ev : c.getExposures()) {
+				ret.addExposedVariable(ev.getName(), ev.getDimension());
+			}
+			
+			
+			for (Property p : c.getPropertys()) {
+				String pnm = p.getName();
+				ret.addExposureMapping(pnm, pnm);
+			}
+
+			for (Text text : c.getTexts()) {
+				String tnm = text.getName();
+				ParameterValue pv = target.getParameterValue(tnm);
+				if (pv != null) {
+					ret.addTextParam(tnm, pv.getValue());
+				}
+			}
+
+		}
 		
 		Dynamics dynamics = type.getDynamics();
 		if (dynamics != null) {
@@ -97,19 +123,7 @@ public class StateTypeBuilder {
 	 */
 		
 	
-		for (Property p : type.getPropertys()) {
-			String pnm = p.getName();
-			ret.addExposureMapping(pnm, pnm);
-		}
-
-		for (Text text : type.getTexts()) {
-			String tnm = text.getName();
-			ParameterValue pv = target.getParameterValue(tnm);
-			if (pv != null) {
-				ret.addTextParam(tnm, pv.getValue());
-			}
-		}
-
+		
 		
 		HashMap<String, Component> childHM = target.getChildMap();
 		for (String s : childHM.keySet()) {
@@ -163,6 +177,19 @@ public class StateTypeBuilder {
 	
 	
 	
+	private ArrayList<ComponentType> getTypeChain(ComponentType ct) {
+		ArrayList<ComponentType> ret = new ArrayList<ComponentType>();
+		ComponentType wk = ct;
+		while (wk != null) {
+			ret.add(wk);
+			wk = wk.getSupertype();
+		}
+		Collections.reverse(ret);
+		return ret;
+	}
+	
+	
+	
 	
 	private void applySimulation(Simulation sim, Component target, StateType ret) {
 		for (Run run : sim.getRuns()) {
@@ -188,6 +215,7 @@ public class StateTypeBuilder {
 			
 			RunConfig rc = new RunConfig(targetST, dt, trun);
 			ret.addRunConfig(rc);
+			E.info("Added a run config to " + ret.hashCode() + " " + ret);
 		}
 			
 	}
@@ -253,10 +281,9 @@ public class StateTypeBuilder {
 				
             	 
 			 } else if (select != null) {	 
-				 String func = null; // dv.getFunc();
 				 boolean isRequired = false; // dv.getRequired();
 				 
-				 ret.addPathDerived(dv.getName(), select, func, isRequired, dv.getReduce(), dv.getDimension());
+				 ret.addPathDerived(dv.getName(), select, isRequired, dv.getReduce(), dv.getDimension());
 				 
 			 } else {
 				E.error("Derived variable " + dv + " should contain either a value expression or a path selection.");

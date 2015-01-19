@@ -15,8 +15,7 @@ import org.lemsml.jld.io.E;
 public class Sim {
 
    StateType rootBehavior;
-    StateType targetBehavior;
-    
+   
      
     HashMap<String, DataViewer> dvHM;
     HashMap<String, ResultWriter> rwHM;
@@ -34,9 +33,7 @@ public class Sim {
     
     public Sim(StateType st) {
     	rootBehavior = st;
-    
-    	RunConfig rc = rootBehavior.getRunConfig();
-    	targetBehavior = rc.getTargetStateType();
+
     }
  
  	
@@ -99,11 +96,12 @@ public class Sim {
     
     public void run(RunConfig rc, boolean flatten) throws   RuntimeError, ConnectionError {
     
-      
-  	    StateInstance rootState = targetBehavior.newInstance();
-  	    rootState.checkBuilt();
+    	StateType targetStateType = rc.getTargetStateType();
+    	
+  	    StateInstance targetState = targetStateType.newInstance();
+  	    targetState.checkBuilt();
   	
-  	    RunnableAccessor ra = new RunnableAccessor(rootState);
+  	    RunnableAccessor ra = new RunnableAccessor(targetState);
   	       
   	    ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
   	    
@@ -134,7 +132,7 @@ public class Sim {
         double t = 0;
         
        
-        rootState.initialize(null);  
+        targetState.initialize(null);  
           
         long realTimeStart = System.currentTimeMillis();
         int nsDone = 0;
@@ -142,7 +140,7 @@ public class Sim {
         for (int istep = 0; istep < nstep; istep++) {
         	if (istep > 0) {
         		eventManager.advance(t);
-                rootState.advance(null, t, dt);
+                targetState.advance(null, t, dt);
         	}
         	
         	

@@ -9,8 +9,7 @@ public class PathDerivedVariable {
     String varname;
     String path;
     String dimension;
-   
-    String func;
+ 
     String tgtvar;
     boolean simple = false;
   
@@ -22,18 +21,19 @@ public class PathDerivedVariable {
     boolean required;
     
 
-    public PathDerivedVariable(String snm, String p, String f, boolean rd, String reduce, String dim) {
+    public PathDerivedVariable(String snm, String p, boolean rd, String reduce, String dim) {
         varname = snm;
         path = p;
-        func = f;
         required = rd;
         dimension = dim;
       
         if (reduce != null) {
         	if (reduce.equals("add")) {
         		mode = SUM;
+        		fbase = 0;
         	} else if (reduce.equals("multiply")) {
         		mode = PROD;
+        		fbase = 1;
         	} else {
         		E.warning("Unrecognized reduce value: " + reduce);
         	}
@@ -45,35 +45,21 @@ public class PathDerivedVariable {
 
         if (path.indexOf("[") > 0 || path.indexOf("*") > 0) {
             simple = false; 
-            parseFunc(p);
+            if (reduce == null) {
+            	E.error("No reduction function specified for multi-selector " + path);
+            }
          
         } else {
             simple = true;
         }
     }
 
-    
-    private void parseFunc(String p) {
-    	 if (func == null) {
-             E.error("no reduce function specified with multi-selector " + p);
-         }
-         if (func.equals("sum") || func.equals("add") || func.equals("plus") || func.equals("+")) {
-             mode = SUM;
-             fbase = 0;
-
-         } else if (func.equals("product") || func.equals("times") || func.equals("multiply") || func.equals("*")) {
-             mode = PROD;
-             fbase = 1;
-
-         } else {
-             E.error("unrecognized function " + path);
-         }
-    }
+   
     
     
     @Override
     public String toString() {
-        return "PathDerivedVariable{" + "varname=" + varname + ", path=" + path + ",  func=" + func + ", tgtvar=" + tgtvar + '}';
+        return "PathDerivedVariable{" + "varname=" + varname + ", path=" + path + ", tgtvar=" + tgtvar + '}';
     }
     
     
@@ -311,8 +297,7 @@ public class PathDerivedVariable {
 		} else if (mode == PROD) {
 			modeString = "multiply";
 		}
-		PathDerivedVariable ret = new PathDerivedVariable(pfx + varname, flattenPath(pfx), 
-				func, required, modeString, dimension); 
+		PathDerivedVariable ret = new PathDerivedVariable(pfx + varname, flattenPath(pfx), required, modeString, dimension); 
 		return ret;
 	}
 	

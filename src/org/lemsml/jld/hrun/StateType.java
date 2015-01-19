@@ -665,9 +665,9 @@ public class StateType implements RuntimeType {
 
 	 
 	
-	public PathDerivedVariable addPathDerived(String snm, String path, String rf, 
+	public PathDerivedVariable addPathDerived(String snm, String path, 
 			boolean reqd, String reduce, String dimension) {
-		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, rf, reqd, reduce, dimension);
+		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, reqd, reduce, dimension);
 		pathderiveds.add(pdv);
         return pdv;
 	}
@@ -746,11 +746,13 @@ public class StateType implements RuntimeType {
 			String vnm = vroc.getVariableName();
 			vars.add(vnm);
 			vHS.add(vnm);
+			E.info("Vars added " + vnm);
 		}
 		for (String s : svars) {
 			if (!vHS.contains(s)) {
 				vars.add(s);
 				vHS.add(s);
+				E.info("ST vars added " + s);
 			}
 		}
 		for (PathDerivedVariable pdv : pathderiveds) {
