@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.lemsml.jld.imodel.IComponent;
+import org.lemsml.jld.imodel.IComponentType;
 import org.lemsml.jld.io.E;
 import org.lemsml.jld.model.core.AbstractElement;
 import org.lemsml.jld.model.core.ListMap;
 import org.lemsml.jld.model.type.ComponentType;
 
 
-public class Component {
+public class Component implements IComponent {
 
 	protected String element;   // "Component", or the type ("iaf"), or the role in the parent ("Forward")
 
@@ -96,6 +98,16 @@ public class Component {
 		 return parameterValueMap.getItems();
 	}
 
+	@Override
+	public double getSIParameterValue(String s) {
+		return parameterValueMap.get(s).getDoubleValue();
+	}
+	
+	@Override
+	public String getTextParameterValue(String s) {
+		return parameterValueMap.get(s).getValue();
+	}
+	
 
 	public List<Component> getComponents() {
 		return componentMap.getItems();
@@ -126,6 +138,11 @@ public class Component {
 		return r_componentType;
 	}
 
+	public IComponentType getIComponentType() {
+		return r_componentType;
+	}
+	
+	
 	public void allocateToChild(Component cpt, String elt) {
 		 if (childHM.containsKey(elt)) {
 			 E.error("Tried to overwriting child " + elt + " in " + this);
@@ -163,10 +180,21 @@ public class Component {
 		return childHM;
 	}
 	
-	public HashMap<String, ArrayList<Component>> getChildrenMap() {
-		return childrenHM;
+	
+	public List<String> getChildNames() {
+		ArrayList<String> ret = new ArrayList<String>();
+		// List or Set = do we ever need to care about the order?
+		ret.addAll(childHM.keySet());
+		return ret;
 	}
-
+	
+	public List<String> getChildrenNames() {
+		ArrayList<String> ret = new ArrayList<String>();
+		// List? as above
+		ret.addAll(childrenHM.keySet());
+		return ret;
+	}
+	
 
 	public Component getChild(String s) {
 		Component ret = null;
@@ -176,6 +204,13 @@ public class Component {
 		return ret;
 	}
 	
+	public IComponent getIChild(String s) {
+		return getChild(s);
+	}
+	
+	public List<? extends IComponent> getIChildren(String s) {
+		return childrenHM.get(s);
+	}
 	
 	
 }

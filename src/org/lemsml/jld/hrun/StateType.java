@@ -219,13 +219,8 @@ public class StateType implements RuntimeType {
 	}
 		
     private StateInstance ownNewInstance() throws ConnectionError, RuntimeError {
-					
-    	
-    	E.info("Making new instance " + dimensions);
-    	
-    	
-    	
-		StateInstance uin = new StateInstance(this);
+	
+    	StateInstance uin = new StateInstance(this);
 		// E.info("Creating new state instance of " + cptid + " " + typeName);
 		
 		uin.setVariables(vars);
@@ -746,8 +741,7 @@ public class StateType implements RuntimeType {
 			String vnm = vroc.getVariableName();
 			vars.add(vnm);
 			vHS.add(vnm);
-			E.info("Vars added " + vnm);
-		}
+ 		}
 		for (String s : svars) {
 			if (!vHS.contains(s)) {
 				vars.add(s);

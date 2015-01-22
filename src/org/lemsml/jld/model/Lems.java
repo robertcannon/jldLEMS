@@ -1,9 +1,12 @@
 package org.lemsml.jld.model;
  
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.lemsml.jld.expression.Dim;
+import org.lemsml.jld.imodel.IConstant;
+import org.lemsml.jld.imodel.ILems;
 import org.lemsml.jld.model.core.AbstractElement;
 import org.lemsml.jld.model.core.ComponentMap;
 import org.lemsml.jld.model.core.ListMap;
@@ -14,7 +17,7 @@ import org.lemsml.jld.model.type.ComponentTypeBuilder;
 // NB this should be the only way to access lems components from outside - 
 // no direct access to Component or ComponentType objects so we can refactor 
 // them and not worry about breaking the API.
-public class Lems {
+public class Lems implements ILems {
   
 	// track the last element we added to avoid doing things out of sequence which 
 	// is likely to be an error
@@ -157,7 +160,13 @@ public class Lems {
 	public List<Constant> getConstants() {
 		return constantMap.getItems();
 	}
-
+	
+	public List<IConstant> getIConstants() {
+		ArrayList<IConstant> ret = new ArrayList<IConstant>();
+		ret.addAll(getConstants());
+		return ret;
+	}
+	
 
 	public List<ComponentType> getComponentTypes() {
 		return componentTypeMap.getItems();

@@ -1,6 +1,8 @@
 package org.lemsml.jld.model.simulation;
 
-public class Run extends AbstractSimulationElement {
+import org.lemsml.jld.imodel.simulation.IRun;
+
+public class Run extends AbstractSimulationElement implements IRun {
 
 	protected String component;
 	

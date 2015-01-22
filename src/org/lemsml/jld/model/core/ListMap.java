@@ -60,6 +60,13 @@ public class ListMap<T> {
 		 return items.get(items.size() - 1);
 	}
 
+
+	public List<String> getKeys() {
+		 ArrayList<String> ret = new ArrayList<String>();
+		ret.addAll(map.keySet());
+		return ret;
+	}
+
  
 	
 	

@@ -1,9 +1,13 @@
 package org.lemsml.jld.model.type;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.lemsml.jld.api.APIException;
+import org.lemsml.jld.imodel.IComponentType;
+import org.lemsml.jld.imodel.dynamics.IDynamics;
+import org.lemsml.jld.imodel.simulation.ISimulation;
 import org.lemsml.jld.io.E;
 import org.lemsml.jld.model.Component;
 import org.lemsml.jld.model.Dimension;
@@ -18,7 +22,7 @@ import org.lemsml.jld.model.simulation.SimulationBuilder;
 import org.lemsml.jld.model.structure.Structure;
 import org.lemsml.jld.model.structure.StructureBuilder;
 
-public class ComponentType extends AbstractElement {
+public class ComponentType extends AbstractElement implements IComponentType {
 
 	
 	private Lems lems;
@@ -58,6 +62,14 @@ public class ComponentType extends AbstractElement {
 	}
 	
 	
+	
+
+	
+	
+	
+	
+	
+	
 	public Parameter addParameter(String s) {
 		Parameter p = new Parameter(this, s);
 		parameterMap.put(s, p);
@@ -76,6 +88,9 @@ public class ComponentType extends AbstractElement {
 		return ret;
 	}
 
+	
+	
+	
 	
 	public Text addText(String s) {
 		Text ret = new Text(this, s);
@@ -396,6 +411,62 @@ public class ComponentType extends AbstractElement {
 
 	public Exposure getExposure(String expo) {
 		return exposureMap.get(expo);
+	}
+
+
+	@Override
+	public List<String> getParameterNames() {
+		return parameterMap.getKeys();
+	}
+
+
+	@Override
+	public List<String> getRequirementNames() {
+		 return requirementMap.getKeys();
+	}
+
+
+	@Override
+	public List<String> getExposureNames() {
+		return exposureMap.getKeys();
+	}
+
+
+	@Override
+	public List<String> getPropertyNames() {
+		return propertyMap.getKeys();
+	}
+
+
+	@Override
+	public List<String> getTextNames() {
+		return textMap.getKeys();
+	}
+
+
+	@Override
+	public String getDimension(String rn) {
+		String ret = null;
+		if (parameterMap.containsKey(rn)) {
+			ret = parameterMap.get(rn).getDimension();
+		} else if (exposureMap.containsKey(rn)) {
+			ret = exposureMap.get(rn).getDimension();
+		} else if (requirementMap.containsKey(rn)) {
+			ret = requirementMap.get(rn).getDimension();
+		}
+		return ret;
+ 	}
+
+
+	@Override
+	public IDynamics getIDynamics() {
+	 return null; // getDynamics();
+	}
+	
+
+	@Override
+	public ISimulation getISimulation() {
+		return getSimulation();
 	}
 
 	

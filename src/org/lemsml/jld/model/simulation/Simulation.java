@@ -2,11 +2,13 @@ package org.lemsml.jld.model.simulation;
 
 import java.util.List;
 
+import org.lemsml.jld.imodel.simulation.IRun;
+import org.lemsml.jld.imodel.simulation.ISimulation;
 import org.lemsml.jld.model.core.AbstractTypeElement;
 import org.lemsml.jld.model.core.ListMap;
 import org.lemsml.jld.model.type.ComponentType;
 
-public class Simulation extends AbstractTypeElement {
+public class Simulation extends AbstractTypeElement implements ISimulation {
 
 	protected ListMap<DataDisplay> dataDisplayMap = new ListMap<DataDisplay>();
 	
@@ -39,10 +41,14 @@ public class Simulation extends AbstractTypeElement {
 		return recordingMap.getItems();
 	}
 	
+	@Override
+	public List<? extends IRun> getIRuns() {
+		return runMap.getItems();
+	}
+	
 	public List<Run> getRuns() {
 		return runMap.getItems();
 	}
-
 
 
 	public DataDisplay addDataDisplay(String eltname) {

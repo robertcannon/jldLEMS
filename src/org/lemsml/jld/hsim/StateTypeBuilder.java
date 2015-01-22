@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import org.lemsml.jld.eval.DoubleEvaluator;
 import org.lemsml.jld.exception.ExpressionError;
@@ -11,42 +12,38 @@ import org.lemsml.jld.expression.ParseError;
 import org.lemsml.jld.hrun.RunConfig;
 import org.lemsml.jld.hrun.RuntimeError;
 import org.lemsml.jld.hrun.StateType;
+import org.lemsml.jld.imodel.IComponent;
+import org.lemsml.jld.imodel.IComponentType;
+import org.lemsml.jld.imodel.IConstant;
+import org.lemsml.jld.imodel.ILems;
+import org.lemsml.jld.imodel.dynamics.IDerivedVariable; 
+import org.lemsml.jld.imodel.dynamics.IDynamics;
+import org.lemsml.jld.imodel.dynamics.IStateVariable;
+import org.lemsml.jld.imodel.dynamics.ITimeDerivative;
+import org.lemsml.jld.imodel.simulation.IRun;
+import org.lemsml.jld.imodel.simulation.ISimulation;
 import org.lemsml.jld.io.E;
-import org.lemsml.jld.model.Component;
-import org.lemsml.jld.model.Constant;
-import org.lemsml.jld.model.Lems;
-import org.lemsml.jld.model.ParameterValue;
 import org.lemsml.jld.model.core.AbstractAST;
-import org.lemsml.jld.model.dynamics.DerivedVariable;
-import org.lemsml.jld.model.dynamics.Dynamics;
-import org.lemsml.jld.model.dynamics.StateVariable;
-import org.lemsml.jld.model.dynamics.TimeDerivative;
-import org.lemsml.jld.model.simulation.Run;
-import org.lemsml.jld.model.simulation.Simulation;
-import org.lemsml.jld.model.type.ComponentType;
-import org.lemsml.jld.model.type.Exposure;
-import org.lemsml.jld.model.type.Parameter;
-import org.lemsml.jld.model.type.Property;
-import org.lemsml.jld.model.type.Requirement;
-import org.lemsml.jld.model.type.Text;
+ 
+ 
  
 
 public class StateTypeBuilder {
 
 	
-	private Lems lems;
+	private ILems lems;
 	
 	
 	
-	private HashMap<Component, StateType> stateTypeMap = new HashMap<Component, StateType>();
+	private HashMap<IComponent, StateType> stateTypeMap = new HashMap<IComponent, StateType>();
 	
 	
-	public StateTypeBuilder(Lems lems) {
+	public StateTypeBuilder(ILems lems) {
 		this.lems = lems;
 	}
 
 
-	private StateType getOrMakeStateType(Component target) {
+	private StateType getOrMakeStateType(IComponent target) {
 		StateType ret = null;
 		if (stateTypeMap.containsKey(target)) {
 			ret = stateTypeMap.get(target);
@@ -58,59 +55,56 @@ public class StateTypeBuilder {
 	}
 	
 	
-	public StateType makeStateType(Component target) {
+	public StateType makeStateType(IComponent target) {
 	 
 		HashMap<String, Double> fixedHM = new HashMap<String, Double>();
 
-		for (Constant c : lems.getConstants()) {
+		for (IConstant c : lems.getIConstants()) {
 			fixedHM.put(c.getName(), c.getValue());
 		}
 		
 		
-		ComponentType type = target.getComponentType();
+		IComponentType type = target.getIComponentType();
 		
-		ArrayList<ComponentType> typeChain = getTypeChain(type);
+		ArrayList<IComponentType> typeChain = getTypeChain(type);
 		
 		StateType ret = new StateType(target.getId(), type.getName());
 		
 		
 		 
 		 
-		for (ComponentType c : typeChain) {
-			for (Parameter p : c.getParameters()) {
-				String qn = p.getName();
-				ParameterValue pv = target.getParameterValue(qn);
-				double qv = pv.getDoubleValue();
+		for (IComponentType c : typeChain) {
+
+			for (String qn : c.getParameterNames()) {
 				
-				E.info("Setting fixed value in stat type for " + qn + " " + qv + " " + pv.getValue());
-				ret.addFixed(qn, qv);
+//				IParameterValue pv = target.getParameterValue(qn);
+				double qv = target.getSIParameterValue(qn);
+ 				ret.addFixed(qn, qv);
 			}
 			
-			for (Requirement rv : c.getRequirements()) {
-				ret.addIndependentVariable(rv.getName(), rv.getDimension());
+			for (String rn : c.getRequirementNames()) {
+				ret.addIndependentVariable(rn, c.getDimension(rn));
 			}
 		 
-			for (Exposure ev : c.getExposures()) {
-				ret.addExposedVariable(ev.getName(), ev.getDimension());
+			for (String en : c.getExposureNames()) {
+				ret.addExposedVariable(en, c.getDimension(en));
 			}
 			
-			
-			for (Property p : c.getPropertys()) {
-				String pnm = p.getName();
+			for (String pnm : c.getPropertyNames()) {
 				ret.addExposureMapping(pnm, pnm);
 			}
-
-			for (Text text : c.getTexts()) {
-				String tnm = text.getName();
-				ParameterValue pv = target.getParameterValue(tnm);
-				if (pv != null) {
-					ret.addTextParam(tnm, pv.getValue());
+			
+			for (String tnm : c.getTextNames()) {
+			 
+				String tv = target.getTextParameterValue(tnm);
+				if (tv != null) {
+					ret.addTextParam(tnm, tv);
 				}
 			}
 
 		}
 		
-		Dynamics dynamics = type.getDynamics();
+		IDynamics dynamics = type.getIDynamics();
 		if (dynamics != null) {
 			applyDynamics(dynamics, ret, fixedHM);
 		}
@@ -124,33 +118,30 @@ public class StateTypeBuilder {
 		
 	
 		
-		
-		HashMap<String, Component> childHM = target.getChildMap();
-		for (String s : childHM.keySet()) {
-			Component ch = childHM.get(s);
-			
-			StateType st = getOrMakeStateType(ch);
-		 	
+		for (String s : target.getChildNames()) {
+			IComponent ch = target.getIChild(s);
+			StateType st = getOrMakeStateType(ch);	
 			ret.addChildStateType(s, st);
-			
+		}
+ 	 
 			// if not directly defined?
 			// ret.addRefStateType(s, chb);
-			
-		}
-
-		HashMap<String, ArrayList<Component>> childrenHM = target.getChildrenMap();
-		for (String s : childrenHM.keySet()) {
-			ArrayList<Component> cpts = childrenHM.get(s);
-			for (Component c : cpts) {
+		 
+		for (String s : target.getChildrenNames()) {
+			List<? extends IComponent> cpts = target.getIChildren(s);
+			for (IComponent c : cpts) {
 				StateType cst = getOrMakeStateType(c);
 				ret.addListStateType(s, cst);
 			}
 		}
+		
+		
+		 
 	 
 		/* 
 		
 		for (Attachments ats : getAttachmentss()) {
- 			ret.addAttachmentSet(ats.getName(), ats.getComponentType().getName());
+ 			ret.addAttachmentSet(ats.getName(), ats.getIComponentType().getName());
 		}
 
 		for (Collection c : getCollections()) {
@@ -165,7 +156,7 @@ public class StateTypeBuilder {
 		
 		
 		
-		Simulation sim = type.getSimulation();
+		ISimulation sim = type.getISimulation();
 		if (sim != null) {
 			applySimulation(sim, target, ret);
 		}
@@ -177,9 +168,9 @@ public class StateTypeBuilder {
 	
 	
 	
-	private ArrayList<ComponentType> getTypeChain(ComponentType ct) {
-		ArrayList<ComponentType> ret = new ArrayList<ComponentType>();
-		ComponentType wk = ct;
+	private ArrayList<IComponentType> getTypeChain(IComponentType ct) {
+		ArrayList<IComponentType> ret = new ArrayList<IComponentType>();
+		IComponentType wk = ct;
 		while (wk != null) {
 			ret.add(wk);
 			wk = wk.getSupertype();
@@ -191,24 +182,20 @@ public class StateTypeBuilder {
 	
 	
 	
-	private void applySimulation(Simulation sim, Component target, StateType ret) {
-		for (Run run : sim.getRuns()) {
+	private void applySimulation(ISimulation sim, IComponent target, StateType ret) {
+		for (IRun run : sim.getIRuns()) {
 			
 			
 			String incField = run.getIncrement();
-			ParameterValue pv = target.getParameterValue(incField);
-			E.info("inc param val " + pv + " " + pv.hashCode());
-			double dt = pv.getDoubleValue();
-			
+			double dt = target.getSIParameterValue(incField);
+	 		
 			String totField = run.getTotal();
-			ParameterValue pvt = target.getParameterValue(totField);
-			double trun = pvt.getDoubleValue();
-			 	
-
+			double trun = target.getSIParameterValue(totField);
+		 
 			String fieldName = run.getComponent();
 			
 
-			Component runTarget = target.getChild(fieldName);
+			IComponent runTarget = target.getIChild(fieldName);
 			E.info("** processing a run, need '" + fieldName + "' within " + target + " got: " + runTarget);
 			
 			StateType targetST = stateTypeMap.get(runTarget);
@@ -223,7 +210,7 @@ public class StateTypeBuilder {
 	
 	
 
-	public void applyDynamics(Dynamics dynamics, StateType ret, HashMap<String, Double> fxdHM) {
+	public void applyDynamics(IDynamics dynamics, StateType ret, HashMap<String, Double> fxdHM) {
  	 	 
 		// ret.setSimultaneous(dynamics.getSimultaneous());
         
@@ -238,8 +225,8 @@ public class StateTypeBuilder {
         
          
 		 
-		 HashSet<StateVariable> varHS = new HashSet<StateVariable>();
-		 for (StateVariable sv : dynamics.getStateVariables()) {
+		 HashSet<IStateVariable> varHS = new HashSet<IStateVariable>();
+		 for (IStateVariable sv : dynamics.getStateVariables()) {
 			varHS.add(sv); 
 			try {
 				ret.addStateVariable(sv.getName(), sv.getDimension());
@@ -265,7 +252,7 @@ public class StateTypeBuilder {
 		 */
 		 
 		 
-		 for (DerivedVariable dv : dynamics.getDerivedVariables()) {
+		 for (IDerivedVariable dv : dynamics.getDerivedVariables()) {
 			 AbstractAST ast = dv.getAST();
 			 
 			 String select = dv.getSelect();
@@ -288,9 +275,9 @@ public class StateTypeBuilder {
 			 } else {
 				E.error("Derived variable " + dv + " should contain either a value expression or a path selection.");
 			 }
-			 Exposure e = dv.getExposureObject();
-			 if (e != null) {
-				 ret.addExposureMapping(dv.getName(), e.getName());
+			 String en = dv.getExposure();
+			 if (en != null) {
+				 ret.addExposureMapping(dv.getName(), en);
 			 }
 		 }
 		 
@@ -308,8 +295,8 @@ public class StateTypeBuilder {
 		 */
 		 
 		 
-		 for (TimeDerivative sd : dynamics.getTimeDerivatives()) {
-			 StateVariable sv = sd.getStateVariable();
+		 for (ITimeDerivative sd : dynamics.getTimeDerivatives()) {
+			 IStateVariable sv = sd.getStateVariable();
 			 varHS.remove(sv);
 			 AbstractAST ast = sd.getAST();
 		 
@@ -363,8 +350,8 @@ public class StateTypeBuilder {
 		 
 		 
 		 for (KineticScheme ks : kineticSchemes) {
-			 ArrayList<Component> states = cpt.getChildrenAL(ks.getNodesName());
-			 ArrayList<Component> rates = cpt.getChildrenAL(ks.getEdgesName());
+			 ArrayList<IComponent> states = cpt.getChildrenAL(ks.getNodesName());
+			 ArrayList<IComponent> rates = cpt.getChildrenAL(ks.getEdgesName());
 			 
 			 KScheme scheme = ks.makeKScheme(states, rates);
 			 
@@ -377,14 +364,14 @@ public class StateTypeBuilder {
 		 }
 		  	
 		 for (Regime reg : regimes) {
-			  ComponentRegime crb = reg.makeComponentRegime(ret, cpt, copyFixed(fixedHM));
-			  ret.addComponentRegime(crb);
+			  IComponentRegime crb = reg.makeIComponentRegime(ret, cpt, copyFixed(fixedHM));
+			  ret.addIComponentRegime(crb);
 		 }
 		 */
 		 
 		 
 		 // TODO - could do something with children of parent type here, but don't have to as they 
-		 // come in again via the structure of the component itself.
+		 // come in again via the structure of the IComponent itself.
 		 
 		 /*
 		 for (StateVariable sv : varHS) {
