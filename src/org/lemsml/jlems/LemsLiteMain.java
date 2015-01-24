@@ -2,7 +2,6 @@ package org.lemsml.jlems;
  
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.lite.model.LemsLite;
@@ -19,9 +18,6 @@ import org.lemsml.jlems.core.xml.XMLElementReader;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.data.FileDataSource;
 import org.lemsml.jlems.io.logging.DefaultLogger;
-import org.lemsml.jlems.io.main.ArgReader;
-import org.lemsml.jlems.io.main.Discretizer;
-import org.lemsml.jlems.io.main.SimulationRunner;
 import org.lemsml.jlems.io.util.FileUtil;
 import org.lemsml.jlems.validation.LemsLiteValidator;
 import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;

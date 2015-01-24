@@ -2,6 +2,9 @@ package org.lemsml.jld.model.simulation;
 
 import java.util.List;
 
+import org.lemsml.jld.imodel.simulation.IDataDisplay;
+import org.lemsml.jld.imodel.simulation.IDataWriter;
+import org.lemsml.jld.imodel.simulation.IRecord;
 import org.lemsml.jld.imodel.simulation.IRun;
 import org.lemsml.jld.imodel.simulation.ISimulation;
 import org.lemsml.jld.model.core.AbstractTypeElement;
@@ -45,6 +48,23 @@ public class Simulation extends AbstractTypeElement implements ISimulation {
 	public List<? extends IRun> getIRuns() {
 		return runMap.getItems();
 	}
+	
+	
+	@Override
+	public List<? extends IDataDisplay> getIDataDisplays() {
+		return dataDisplayMap.getItems();
+	}
+	
+	@Override
+	public List<? extends IDataWriter> getIDataWriters() {
+		return dataWriterMap.getItems();
+	}
+	
+	@Override
+	public List<? extends IRecord> getIRecords() {
+		return recordingMap.getItems();
+	}
+	
 	
 	public List<Run> getRuns() {
 		return runMap.getItems();

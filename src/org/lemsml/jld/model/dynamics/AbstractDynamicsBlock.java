@@ -5,16 +5,14 @@ import java.util.List;
 import org.lemsml.jld.model.core.ListMap;
 
 public class AbstractDynamicsBlock {
-
-	private Dynamics dynamics;
 	
 	protected ListMap<StateAssignment> stateAssignmentMap = new ListMap<StateAssignment>();
 
 	protected ListMap<EventOut> eventOutMap = new ListMap<EventOut>();
 	
 	
-	public AbstractDynamicsBlock(Dynamics d) {
-		dynamics = d;
+	public AbstractDynamicsBlock() {
+		
 	}
 	
 	public List<StateAssignment> getStateAssignments() {

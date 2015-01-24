@@ -12,8 +12,6 @@ import org.lemsml.jlems.core.flatten.ComponentFlattener;
 import org.lemsml.jlems.core.lite.convert.DUStateTypeBuilder;
 import org.lemsml.jlems.core.lite.model.DiscreteUpdateComponent;
 import org.lemsml.jlems.core.lite.run.component.DiscreteUpdateStateType;
- 
- 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.numerics.DiscreteUpdateGenerator;
 import org.lemsml.jlems.core.numerics.IntegrationScheme;

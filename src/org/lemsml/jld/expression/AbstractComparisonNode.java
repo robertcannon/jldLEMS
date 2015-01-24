@@ -2,7 +2,7 @@ package org.lemsml.jld.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jld.exception.ExpressionError; 
+import org.lemsml.jld.exception.ExpressionError;
 import org.lemsml.jld.hrun.RuntimeError;
  
 

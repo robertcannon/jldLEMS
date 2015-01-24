@@ -1011,7 +1011,8 @@ public class StateType implements RuntimeType {
 		
 		if (builders != null) {
 			for (Builder b : builders) {
-				b.consolidateStateTypes();
+				E.missing();
+				// b.consolidateStateTypes();
 			}
 		}
 		

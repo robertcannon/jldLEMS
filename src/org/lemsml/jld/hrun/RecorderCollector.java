@@ -1,6 +1,8 @@
 package org.lemsml.jld.hrun;
 
 import java.util.ArrayList;
+
+import org.lemsml.jld.io.E;
  
 public class RecorderCollector implements StateTypeVisitor {
 
@@ -15,7 +17,7 @@ public class RecorderCollector implements StateTypeVisitor {
 		ArrayList<RuntimeRecorder> a = cb.getRuntimeRecorders();
 		if (a != null && !a.isEmpty()) {
 			recorders.addAll(a);
-			// E.info("Added recorder " + a + " from " + cb);
+			E.info("XXXXXXXXXXXXXXXXX Added recorder " + a + " from " + cb);
 		}
 		
 	}

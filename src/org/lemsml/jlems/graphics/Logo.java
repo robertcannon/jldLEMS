@@ -1,13 +1,17 @@
 package org.lemsml.jlems.graphics;
 
-import javax.imageio.*;
- 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.*;
-import java.io.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 
 public class Logo {
 

@@ -12,7 +12,6 @@ public abstract class BuilderElement {
 	public void add(BuilderElement be) {
 		elts.add(be);
 	}
-
-	public abstract void consolidateStateTypes() throws RuntimeError;
+ 
   
 }

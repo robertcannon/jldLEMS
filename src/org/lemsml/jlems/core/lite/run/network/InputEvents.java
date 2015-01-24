@@ -1,10 +1,6 @@
 package org.lemsml.jlems.core.lite.run.network;
 
-import org.lemsml.jlems.core.display.DataViewer;
-import org.lemsml.jlems.core.lite.run.component.DiscreteUpdateStateInstance;
-import org.lemsml.jlems.core.lite.run.component.DiscreteUpdateStateType;
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.sim.ContentError;
 

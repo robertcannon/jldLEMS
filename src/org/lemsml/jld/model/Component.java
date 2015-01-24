@@ -7,7 +7,6 @@ import java.util.List;
 import org.lemsml.jld.imodel.IComponent;
 import org.lemsml.jld.imodel.IComponentType;
 import org.lemsml.jld.io.E;
-import org.lemsml.jld.model.core.AbstractElement;
 import org.lemsml.jld.model.core.ListMap;
 import org.lemsml.jld.model.type.ComponentType;
 
@@ -39,6 +38,10 @@ public class Component implements IComponent {
 		this.id = id;
 	}
 	 
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	
 	public String toString() {
 		return "Component, elt=" + element + ", type=" + type + ", id=" + id + ", extends=" + eXtends;
@@ -61,7 +64,7 @@ public class Component implements IComponent {
 
 	public void setParameterValue(String sn, Quantity q) {
 		// TODO Auto-generated method stub
-		
+		E.missing();
 	}
 
  
@@ -99,15 +102,22 @@ public class Component implements IComponent {
 	}
 
 	@Override
-	public double getSIParameterValue(String s) {
+	public double getNumericalParameterValue(String s) {	
 		return parameterValueMap.get(s).getDoubleValue();
 	}
 	
+	
 	@Override
-	public String getTextParameterValue(String s) {
-		return parameterValueMap.get(s).getValue();
+	public String getStringParameterValue(String s) {
+		String ret = null;
+		ParameterValue pv = parameterValueMap.get(s);
+		if (pv != null) {
+			ret = pv.getValue();
+		} 
+		return ret;
 	}
 	
+
 
 	public List<Component> getComponents() {
 		return componentMap.getItems();

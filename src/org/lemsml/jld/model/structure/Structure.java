@@ -1,8 +1,9 @@
 package org.lemsml.jld.model.structure;
  
+import org.lemsml.jld.imodel.structure.IStructure;
 import org.lemsml.jld.model.type.ComponentType;
 
-public class Structure extends AbstractStructureBlock {
+public class Structure extends AbstractStructureBlock implements IStructure {
 
 	ComponentType componentType;
 

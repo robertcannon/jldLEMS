@@ -1,6 +1,6 @@
 package org.lemsml.jld.hrun;
 
-import java.util.HashMap; 
+import java.util.HashMap;
 import java.util.Set;
 
 import org.lemsml.jld.eval.DoublePointer;

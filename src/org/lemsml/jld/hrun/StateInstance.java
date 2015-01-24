@@ -69,6 +69,8 @@ public class StateInstance implements StateRunnable {
 
 	boolean bList;
 	String listName;
+	
+	boolean doneCount = false;
 	 
 	// EventManager eventManager;
 	
@@ -480,6 +482,7 @@ public class StateInstance implements StateRunnable {
 
 		if (ret == null) {
 			String err = "No such child element or variable " + snm + " in " + this + "\n";
+			err += "singleAMI=" + singleAMI + ", doneCount=" + doneCount + "\n";
 			err += "childHM= " + childHM + "\n"; 
 			err += "childA= " + childA;
 			throw new ConnectionError(err);
@@ -624,6 +627,8 @@ public class StateInstance implements StateRunnable {
 	}
 	
 	private void countMIs() {
+		doneCount = true;
+		
 		singleAMI = false;
 		onlyAMI = null;
 		if (multiA.size() == 1) {

@@ -1,6 +1,5 @@
 package org.lemsml.jld.resolve;
 
-import org.lemsml.jld.expression.ExpressionParser;
 import org.lemsml.jld.io.E;
 import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.Lems;

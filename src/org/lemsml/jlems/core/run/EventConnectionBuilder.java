@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.eval.DoubleEvaluator;
- 
 import org.lemsml.jlems.core.sim.ContentError;
 
 public class EventConnectionBuilder extends AbstractPostBuilder {

@@ -1,15 +1,12 @@
 package org.lemsml.jld.model.type;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.lemsml.jld.api.APIException;
 import org.lemsml.jld.imodel.IComponentType;
 import org.lemsml.jld.imodel.dynamics.IDynamics;
 import org.lemsml.jld.imodel.simulation.ISimulation;
-import org.lemsml.jld.io.E;
-import org.lemsml.jld.model.Component;
+import org.lemsml.jld.imodel.structure.IStructure;
 import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.Lems;
 import org.lemsml.jld.model.core.AbstractElement;
@@ -23,10 +20,7 @@ import org.lemsml.jld.model.structure.Structure;
 import org.lemsml.jld.model.structure.StructureBuilder;
 
 public class ComponentType extends AbstractElement implements IComponentType {
-
-	
-	private Lems lems;
-	
+ 
 	protected String eXtends;
 		
 	protected ListMap<Parameter> parameterMap = new ListMap<Parameter>();
@@ -51,9 +45,8 @@ public class ComponentType extends AbstractElement implements IComponentType {
 	
 	private ComponentType r_supertype = null;
 	
-	protected ComponentType(Lems l, String s) {
+	protected ComponentType(String s) {
 		super(s);
-		lems = l;
 	}
 	
 	
@@ -445,22 +438,26 @@ public class ComponentType extends AbstractElement implements IComponentType {
 
 
 	@Override
-	public String getDimension(String rn) {
+	public String getFieldDimension(String rn) {
 		String ret = null;
+	
 		if (parameterMap.containsKey(rn)) {
 			ret = parameterMap.get(rn).getDimension();
+			
 		} else if (exposureMap.containsKey(rn)) {
 			ret = exposureMap.get(rn).getDimension();
+		
 		} else if (requirementMap.containsKey(rn)) {
 			ret = requirementMap.get(rn).getDimension();
 		}
+		
 		return ret;
  	}
 
 
 	@Override
 	public IDynamics getIDynamics() {
-	 return null; // getDynamics();
+		return getDynamics();
 	}
 	
 
@@ -469,5 +466,8 @@ public class ComponentType extends AbstractElement implements IComponentType {
 		return getSimulation();
 	}
 
-	
+	@Override
+	public IStructure getIStructure() {
+		return getStructure();
+	}
 }

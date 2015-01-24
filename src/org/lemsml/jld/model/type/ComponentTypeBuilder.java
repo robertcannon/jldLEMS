@@ -4,13 +4,13 @@ import org.lemsml.jld.model.Lems;
 
 public class ComponentTypeBuilder {
 
-	public ComponentType newComponentType(Lems lems, String s) {
-		ComponentType ret=  new ComponentType(lems, s);
+	public ComponentType newComponentType(String s) {
+		ComponentType ret=  new ComponentType(s);
 		return ret;
 	}
 
-	public RootComponentType newRootType(Lems lems) {
-		 RootComponentType ret = new RootComponentType(lems);
+	public RootComponentType newRootType() {
+		 RootComponentType ret = new RootComponentType();
 		 return ret;
 	}
 

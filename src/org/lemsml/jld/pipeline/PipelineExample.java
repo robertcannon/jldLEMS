@@ -13,7 +13,6 @@ import org.lemsml.jld.io.E;
 import org.lemsml.jld.io.reader.FileInclusionReader;
 import org.lemsml.jld.io.reader.FileUtil;
 import org.lemsml.jld.io.reader.GeneratedModelReader;
-import org.lemsml.jld.io.reader.JLDModelReader;
 import org.lemsml.jld.io.writer.GeneratedModelWriter;
 import org.lemsml.jld.io.xml.XMLElement;
 import org.lemsml.jld.io.xml.XMLElementReader;
@@ -23,8 +22,8 @@ import org.lemsml.jld.model.core.ModelException;
 import org.lemsml.jld.report.Reporter;
 import org.lemsml.jld.resolve.LemsResolver;
 import org.lemsml.jld.validation.ConsistencyCheck;
-import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
- 
+import org.lemsml.jld.viz.SwingDataViewerFactory;
+
 public class PipelineExample {
 
 	
@@ -55,7 +54,7 @@ public class PipelineExample {
 		
 		// list the component types that we've read so far
 		Reporter reporter = new Reporter(lems);
-		// reporter.reportTypes();
+		reporter.reportTypes();
 		
 		
 		// resolve references to dimensions and other component types; parse expressions in Dynamics blocks
@@ -84,13 +83,13 @@ public class PipelineExample {
 		
 		
 		Component target = lems.getTargetComponent();
+		
+		E.info("Target id is " + target.getId());
 		 
 		StateTypeBuilder sb = new StateTypeBuilder(lems);
 		
-		StateType rootType = sb.makeStateType(target);
-
-		E.info("Made a state type: " + rootType);
-		
+		StateType rootType = sb.makeStateType(target, 0);
+ 
 		Sim sim = new Sim(rootType);
 		
 		SwingDataViewerFactory.initialize();

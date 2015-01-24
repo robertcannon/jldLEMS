@@ -12,8 +12,8 @@ public class OnEvent extends AbstractDynamicsBlock {
 		this.port = port;
 	}
 
-	public OnEvent(Dynamics d) {
-		super(d);
+	public OnEvent() {
+
  	}
 
 	

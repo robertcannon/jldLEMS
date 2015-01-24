@@ -1,6 +1,7 @@
 package org.lemsml.jlems.core.reader;
 
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.numerics.IntegrationScheme;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.About;
 import org.lemsml.jlems.core.type.Assertion;
@@ -13,7 +14,6 @@ import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.Meta;
 import org.lemsml.jlems.core.type.Target;
 import org.lemsml.jlems.core.type.Unit;
-import org.lemsml.jlems.core.numerics.IntegrationScheme;
 import org.lemsml.jlems.core.xml.XMLAttribute;
 import org.lemsml.jlems.core.xml.XMLElement;
 

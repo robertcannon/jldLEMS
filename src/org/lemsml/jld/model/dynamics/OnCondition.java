@@ -1,6 +1,5 @@
 package org.lemsml.jld.model.dynamics;
 
-import org.lemsml.jld.model.core.ListMap;
 
 public class OnCondition extends AbstractDynamicsBlock {
 
@@ -10,8 +9,8 @@ public class OnCondition extends AbstractDynamicsBlock {
 
 	
 	
-	public OnCondition(Dynamics d) {
-		super(d);
+	public OnCondition() {
+		super();
 	}
 	
 	public void setTest(String s) {

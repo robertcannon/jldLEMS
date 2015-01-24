@@ -5,9 +5,9 @@ import java.util.HashMap;
 import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.Dimensional;
+import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.ExpressionParser;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 

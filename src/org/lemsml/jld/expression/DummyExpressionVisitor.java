@@ -1,10 +1,6 @@
 package org.lemsml.jld.expression;
 
-import java.util.HashSet;
-
 import org.lemsml.jld.exception.ExpressionError;
-import org.lemsml.jld.io.E;
-import org.lemsml.jld.model.core.AbstractAST;
 
 
 

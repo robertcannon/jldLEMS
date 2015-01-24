@@ -1,9 +1,10 @@
 package org.lemsml.jld.model;
 
-import org.lemsml.jld.model.core.AbstractLemsElement;
+import org.lemsml.jld.model.core.AbstractElement;
+ 
 
 
-public class Unit extends AbstractLemsElement {
+public class Unit extends AbstractElement {
 
 	
 	protected String dimension = null;
@@ -16,8 +17,8 @@ public class Unit extends AbstractLemsElement {
 	private Dimension r_dimension = null;
 
 	
-	protected Unit(Lems l, String s) {
-		super(l, s);
+	protected Unit(String s) {
+		super(s);
 	}
 
 

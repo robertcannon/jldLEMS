@@ -3,8 +3,8 @@ package org.lemsml.jlems.core.check;
  
 import java.util.HashMap;
 
-import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.expression.ExpressionParser;
+import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.logging.E;
 
  

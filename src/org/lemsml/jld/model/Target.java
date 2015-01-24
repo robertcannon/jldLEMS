@@ -1,15 +1,16 @@
 package org.lemsml.jld.model;
 
-import org.lemsml.jld.model.core.AbstractLemsElement;
+import org.lemsml.jld.model.core.AbstractElement;
+ 
 
-public class Target extends AbstractLemsElement {
+public class Target extends AbstractElement {
 
 	protected String component;
 	
 	private Component r_component;
 	
-	protected Target(Lems l, String s) {
-		super(l, s);
+	protected Target(String s) {
+		super(s);
 	}
 	
 	public void setComponent(String s) {

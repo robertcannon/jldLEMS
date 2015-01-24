@@ -2,7 +2,6 @@ package org.lemsml.jld.hrun;
 
 import org.lemsml.jlems.core.display.LineDisplay;
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.sim.ContentError;
 
 
 // TODO this shouldn't implement StateRunnable 

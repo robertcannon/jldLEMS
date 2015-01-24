@@ -4,8 +4,8 @@ import org.lemsml.jld.model.Lems;
 
 public class RootComponentType extends ComponentType {
 
-	protected RootComponentType(Lems l) {
-		super(l, "Type");
+	protected RootComponentType() {
+		super("Type");
 	}
 
 }

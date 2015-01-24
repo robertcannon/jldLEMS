@@ -4,17 +4,23 @@ import java.util.List;
 
 import org.lemsml.jld.imodel.dynamics.IDynamics;
 import org.lemsml.jld.imodel.simulation.ISimulation;
+import org.lemsml.jld.imodel.structure.IStructure;
 
 public interface IComponentType {
 
 	String getName();
 
+
 	IComponentType getSupertype();
 
+	
 	IDynamics getIDynamics();
+
+	IStructure getIStructure();
 
 	ISimulation getISimulation();
 
+	
 	
 	List<String> getParameterNames();
 
@@ -26,10 +32,8 @@ public interface IComponentType {
 
 	List<String> getTextNames();
 	
-	String getDimension(String rn);
+
+	String getFieldDimension(String rn);
  
-
-
-
 
 }

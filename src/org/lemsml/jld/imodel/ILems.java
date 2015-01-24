@@ -4,6 +4,9 @@ import java.util.List;
 
 public interface ILems {
 
+
+	IComponent getIComponent(String id);
+ 
 	List<IConstant> getIConstants();
 
 }

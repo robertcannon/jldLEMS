@@ -6,4 +6,10 @@ public interface ISimulation {
 
 	List<? extends IRun> getIRuns();
 
+	List<? extends IDataDisplay> getIDataDisplays();
+
+	List<? extends IDataWriter> getIDataWriters();
+
+	List<? extends IRecord> getIRecords();
+
 }

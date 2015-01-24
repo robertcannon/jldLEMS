@@ -1,10 +1,11 @@
 package org.lemsml.jld.model.dynamics;
 
+import org.lemsml.jld.imodel.dynamics.IDerivedVariable;
 import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.core.AbstractAST;
 import org.lemsml.jld.model.type.Exposure;
 
-public class DerivedVariable extends AbstractDynamicsElement {
+public class DerivedVariable extends AbstractDynamicsElement implements IDerivedVariable {
 
 	protected String name;
 	

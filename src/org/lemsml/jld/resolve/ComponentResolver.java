@@ -1,7 +1,6 @@
 package org.lemsml.jld.resolve;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import org.lemsml.jld.expression.Dim;
 import org.lemsml.jld.expression.ParseError;
@@ -11,7 +10,6 @@ import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.Lems;
 import org.lemsml.jld.model.ParameterValue;
 import org.lemsml.jld.model.core.DimensionalQuantity;
-import org.lemsml.jld.model.core.ParseException;
 import org.lemsml.jld.model.core.QuantityReader;
 import org.lemsml.jld.model.type.Child;
 import org.lemsml.jld.model.type.ComponentType;
@@ -277,8 +275,6 @@ public class ComponentResolver {
 	
 	private void allocateChildren(Component cpt, ArrayList<ComponentType> typeChain) {
 	 	
-		int nsub = cpt.getComponents().size();
-		
 		for (Component ch : cpt.getComponents()) {
 			ch.setParent(cpt);
 			

@@ -1,9 +1,10 @@
 package org.lemsml.jld.model.dynamics;
 
+import org.lemsml.jld.imodel.dynamics.IStateVariable;
 import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.type.Exposure;
 
-public class StateVariable extends AbstractDynamicsElement {
+public class StateVariable extends AbstractDynamicsElement implements IStateVariable {
 
 	protected String name;
 	protected String exposure;

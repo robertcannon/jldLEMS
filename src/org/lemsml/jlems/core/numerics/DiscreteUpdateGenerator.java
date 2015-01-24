@@ -3,7 +3,6 @@ package org.lemsml.jlems.core.numerics;
 import java.util.HashMap;
 import java.util.HashSet;
 
- 
 import org.lemsml.jlems.core.eval.BooleanEvaluator;
 import org.lemsml.jlems.core.eval.DVar;
 import org.lemsml.jlems.core.eval.Plus;

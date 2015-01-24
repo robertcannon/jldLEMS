@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.jld.eval.AbstractBComp;
 import org.lemsml.jld.eval.NEQComp;
-import org.lemsml.jld.exception.ExpressionError; 
+import org.lemsml.jld.exception.ExpressionError;
 import org.lemsml.jld.hrun.RuntimeError;
 
 public class NotEqualsNode extends AbstractComparisonNode {

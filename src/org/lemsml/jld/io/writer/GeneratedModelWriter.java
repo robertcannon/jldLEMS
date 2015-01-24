@@ -1,14 +1,58 @@
 package org.lemsml.jld.io.writer;
 
-import org.lemsml.jld.io.xml.*;
-
-import org.lemsml.jld.api.*;
-import org.lemsml.jld.model.*;
-import org.lemsml.jld.model.core.*;
-import org.lemsml.jld.model.type.*;
-import org.lemsml.jld.model.dynamics.*;
-import org.lemsml.jld.model.structure.*;
-import org.lemsml.jld.model.simulation.*;
+import org.lemsml.jld.api.APIException;
+import org.lemsml.jld.io.xml.XMLElement;
+import org.lemsml.jld.model.Assertion;
+import org.lemsml.jld.model.Constant;
+import org.lemsml.jld.model.Dimension;
+import org.lemsml.jld.model.Insertion;
+import org.lemsml.jld.model.Lems;
+import org.lemsml.jld.model.Target;
+import org.lemsml.jld.model.Unit;
+import org.lemsml.jld.model.core.ModelException;
+import org.lemsml.jld.model.dynamics.ConditionalDerivedVariable;
+import org.lemsml.jld.model.dynamics.DerivedParameter;
+import org.lemsml.jld.model.dynamics.DerivedVariable;
+import org.lemsml.jld.model.dynamics.Dynamics;
+import org.lemsml.jld.model.dynamics.EventOut;
+import org.lemsml.jld.model.dynamics.KineticScheme;
+import org.lemsml.jld.model.dynamics.OnCondition;
+import org.lemsml.jld.model.dynamics.OnEntry;
+import org.lemsml.jld.model.dynamics.OnEvent;
+import org.lemsml.jld.model.dynamics.OnStart;
+import org.lemsml.jld.model.dynamics.Regime;
+import org.lemsml.jld.model.dynamics.StateAssignment;
+import org.lemsml.jld.model.dynamics.StateVariable;
+import org.lemsml.jld.model.dynamics.Super;
+import org.lemsml.jld.model.dynamics.TimeDerivative;
+import org.lemsml.jld.model.dynamics.Transition;
+import org.lemsml.jld.model.simulation.DataDisplay;
+import org.lemsml.jld.model.simulation.DataWriter;
+import org.lemsml.jld.model.simulation.Recording;
+import org.lemsml.jld.model.simulation.Run;
+import org.lemsml.jld.model.simulation.Simulation;
+import org.lemsml.jld.model.structure.EventConnection;
+import org.lemsml.jld.model.structure.ForEach;
+import org.lemsml.jld.model.structure.Instance;
+import org.lemsml.jld.model.structure.MultiInstance;
+import org.lemsml.jld.model.structure.Structure;
+import org.lemsml.jld.model.structure.Tunnel;
+import org.lemsml.jld.model.structure.With;
+import org.lemsml.jld.model.type.About;
+import org.lemsml.jld.model.type.Attachments;
+import org.lemsml.jld.model.type.Child;
+import org.lemsml.jld.model.type.Children;
+import org.lemsml.jld.model.type.ComponentType;
+import org.lemsml.jld.model.type.Exposure;
+import org.lemsml.jld.model.type.Fixed;
+import org.lemsml.jld.model.type.InstanceRequirement;
+import org.lemsml.jld.model.type.Parameter;
+import org.lemsml.jld.model.type.Path;
+import org.lemsml.jld.model.type.Property;
+import org.lemsml.jld.model.type.ReceivePort;
+import org.lemsml.jld.model.type.Requirement;
+import org.lemsml.jld.model.type.SendPort;
+import org.lemsml.jld.model.type.Text;
 
 // NB this is generated code. Don't edit it. If there is a problem, fix the superclass,
 // the generator - org.lemsml.jld.generation.ModelFactoryGenerator, or the class being instantiated.

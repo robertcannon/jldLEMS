@@ -7,15 +7,13 @@ import java.util.Map;
 import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.Dimensional;
-import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ExpressionParser;
+import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.Valued;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.Constants;
-import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
- 
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.Equilibrium;
 import org.lemsml.jlems.core.type.geometry.Geometry;

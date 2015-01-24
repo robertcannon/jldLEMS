@@ -1,6 +1,5 @@
 package org.lemsml.jld.io.writer;
 
-import org.lemsml.jld.io.E;
 import org.lemsml.jld.io.xml.XMLElement;
 import org.lemsml.jld.model.Component;
 import org.lemsml.jld.model.Lems;

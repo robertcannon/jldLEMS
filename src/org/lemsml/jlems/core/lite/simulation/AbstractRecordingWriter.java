@@ -1,7 +1,7 @@
 package org.lemsml.jlems.core.lite.simulation;
  
 import java.util.ArrayList;
- 
+
 import org.lemsml.jlems.core.run.RuntimeError;
 
 public abstract class AbstractRecordingWriter {

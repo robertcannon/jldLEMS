@@ -97,13 +97,6 @@ public final class QuantityReader {
 
 	
 
-	private double getLocalValue(Unit u) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-
 
 	private String[] split(String arg) {
 		int ild = 0;

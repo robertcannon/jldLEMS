@@ -2,11 +2,11 @@ package org.lemsml.jld.model;
 
 import java.util.HashMap;
 
-import org.lemsml.jld.api.APIException;
-import org.lemsml.jld.model.core.AbstractLemsElement;
+import org.lemsml.jld.model.core.AbstractElement;
+ 
 import org.lemsml.jld.model.core.ModelException;
  
-public class Dimension extends AbstractLemsElement {
+public class Dimension extends AbstractElement {
  
 	
 	protected int m;
@@ -35,8 +35,8 @@ public class Dimension extends AbstractLemsElement {
 	HashMap<SI, Integer> dims = new HashMap<SI, Integer>();
  
 
-	protected Dimension(Lems m, String s) {
-		super(m, s);
+	protected Dimension(String s) {
+		super(s);
 	}
 	
 	

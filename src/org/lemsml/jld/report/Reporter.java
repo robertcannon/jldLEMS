@@ -3,6 +3,8 @@ package org.lemsml.jld.report;
 import org.lemsml.jld.io.E;
 import org.lemsml.jld.model.Component;
 import org.lemsml.jld.model.Lems;
+import org.lemsml.jld.model.dynamics.Dynamics;
+import org.lemsml.jld.model.simulation.Simulation;
 import org.lemsml.jld.model.type.ComponentType;
 
 public class Reporter {
@@ -19,7 +21,16 @@ public class Reporter {
 		StringBuilder sb = new StringBuilder();
 		sb.append("All component types:\n");
 		for (ComponentType ct : lems.getComponentTypes()) {
-			sb.append("    " + ct.getName() + "\n");
+			sb.append("    " + ct.getName() + " (");
+			Simulation s = ct.getSimulation();
+			if (s != null) {
+				sb.append("Simulation, ");
+			}
+			Dynamics d = ct.getDynamics();
+			if (d != null) {
+				sb.append("Dynamics");
+			}				
+			sb.append(")\n");
 		}
 		E.info(sb.toString());
 	}

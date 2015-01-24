@@ -235,7 +235,7 @@ public class PathDerivedVariable {
             			if (required) {
             				String msg = ("No match to path element '" + cnm + "' in " + 
             						path + " on " + par + " base=" + base + ", parent=" + base.parent);
-
+            				E.info(msg);
             				// TODO - need some check on required
             				//            				throw new ContentError(msg);
             			}

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.lemsml.jld.io.E;
 import org.lemsml.jld.io.reader.FileUtil;
@@ -151,20 +150,6 @@ public class ModelReaderGenerator {
 		return ret;
 	}
 	
-	private boolean hasFields(Class<?> c, Class tgt) {
-		boolean ret = false;
-		for (Field f : c.getDeclaredFields()) {
-			if (Modifier.isProtected(f.getModifiers())) {
-				if (f.getType() == tgt) {
-					ret = true;
-					break;
-				}
-			}
-		}
-		return ret;
-	}
-	
-	 
 	
 	
 	

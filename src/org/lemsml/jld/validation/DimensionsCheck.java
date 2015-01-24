@@ -103,8 +103,7 @@ public class DimensionsCheck {
 						 
 					 } else {
 						 Dim tgt = new Dim(dvd);
-						 if (tgt == null) {
-						 } else if (dim.matches(tgt)) {
+						 if (dim.matches(tgt)) {
 							 E.info("Dimension match OK for " + dv.getValue());
 						 } else {
 							 E.error("Dimension mismatch for " + dv.getValue() + " LHS: " + tgt + ", RHS: " + dim);

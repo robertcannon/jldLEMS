@@ -1,6 +1,5 @@
 package org.lemsml.jld.model.core;
 
-import org.lemsml.jld.expression.Dim;
 import org.lemsml.jld.model.Dimension;
 
 public class DimensionalQuantity {

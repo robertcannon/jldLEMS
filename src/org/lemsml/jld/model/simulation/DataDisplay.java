@@ -1,6 +1,8 @@
 package org.lemsml.jld.model.simulation;
 
-public class DataDisplay extends AbstractSimulationElement {
+import org.lemsml.jld.imodel.simulation.IDataDisplay;
+ 
+public class DataDisplay extends AbstractSimulationElement implements IDataDisplay {
 
 	protected String title;
 	 
@@ -40,6 +42,7 @@ public class DataDisplay extends AbstractSimulationElement {
 	}
 
 
+ 
 
 
 }

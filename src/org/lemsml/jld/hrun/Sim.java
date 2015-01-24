@@ -50,9 +50,11 @@ public class Sim {
 	    rootBehavior.visitAll(oc);
 	   
 	    // build the displays and keep them in dvHM
+	    
 	    dvHM = new HashMap<String, DataViewer>();
 	    for (RuntimeDisplay ro : runtimeDisplays) {
 	    	DataViewer dv = DataViewerFactory.getFactory().newDataViewer(ro.getTitle());
+	    	
 	    	dvHM.put(ro.getID(), dv);
 	    	dv.setRegion(ro.getBox());
 	    }
@@ -104,10 +106,8 @@ public class Sim {
   	    RunnableAccessor ra = new RunnableAccessor(targetState);
   	       
   	    ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
-  	    
-  	    
-  	    
-  	    
+  	    E.info("N recorders: " + recorders.size());
+  	 
   	    for (RuntimeRecorder rr : recorders) {
   	    	String disp = rr.getDisplay();
   	    	if (dvHM.containsKey(disp)) {
@@ -172,7 +172,7 @@ public class Sim {
     	}
         
         long end = System.currentTimeMillis();
-        E.info("Finished " + nsDone + " steps, end time " + end);
+        E.info("Finished " + nsDone + " steps, time takesn " + (0.001 * (end - realTimeStart)) + "s");
     }
 
     

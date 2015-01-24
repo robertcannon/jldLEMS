@@ -7,7 +7,7 @@ package org.lemsml.examplemains;
 
 import java.io.File;
 import java.io.IOException;
-  
+
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
 import org.lemsml.jlems.core.logging.E;

@@ -1,7 +1,5 @@
 package org.lemsml.jld.resolve;
 
-import java.util.HashMap;
-
 import org.lemsml.jld.expression.ExpressionParser;
 import org.lemsml.jld.expression.ParseError;
 import org.lemsml.jld.expression.ParseTree;
@@ -12,7 +10,6 @@ import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.Lems;
 import org.lemsml.jld.model.Unit;
 import org.lemsml.jld.model.core.AbstractTypeElement;
-import org.lemsml.jld.model.core.ParseException;
 import org.lemsml.jld.model.dynamics.DerivedVariable;
 import org.lemsml.jld.model.dynamics.Dynamics;
 import org.lemsml.jld.model.dynamics.TimeDerivative;
@@ -49,8 +46,7 @@ public class LemsResolver {
 	
 	
 	public void resolveComponents() {
-		int ncpt = lems.getComponents().size();		
-		for (Component cpt : lems.getComponents()) {
+ 		for (Component cpt : lems.getComponents()) {
 			resolveSingleComponent(cpt);
 		}
 	}

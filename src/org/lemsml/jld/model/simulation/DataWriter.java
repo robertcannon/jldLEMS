@@ -1,6 +1,8 @@
 package org.lemsml.jld.model.simulation;
 
-public class DataWriter extends AbstractSimulationElement {
+import org.lemsml.jld.imodel.simulation.IDataWriter;
+
+public class DataWriter extends AbstractSimulationElement implements IDataWriter {
 
 	protected String path;
 	

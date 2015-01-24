@@ -1,25 +1,34 @@
 package org.lemsml.jld.imodel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public interface IComponent {
 
-	IComponentType getIComponentType();
-
 	String getId();
 
+	void setId(String autoID);
+
+	
+	IComponent getParent();
+
+	IComponentType getIComponentType();
+
+	
+	
+	double getNumericalParameterValue(String qn);
+
+	String getStringParameterValue(String tnm);
  
-	IComponent getIChild(String fieldName);
-
-	double getSIParameterValue(String qn);
-
-	String getTextParameterValue(String tnm);
-
+	
+	
 	List<String> getChildNames();
+
+	IComponent getIChild(String fieldName);
 
 	List<String> getChildrenNames();
 
 	List<? extends IComponent> getIChildren(String s);
+
+
+
 }

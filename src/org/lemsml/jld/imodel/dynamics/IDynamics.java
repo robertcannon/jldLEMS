@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface IDynamics {
 
-	List<IStateVariable> getStateVariables();
+	List<? extends IStateVariable> getIStateVariables();
 
-	List<IDerivedVariable> getDerivedVariables();
+	List<? extends IDerivedVariable> getIDerivedVariables();
 
-	List<ITimeDerivative> getTimeDerivatives();
+	List<? extends ITimeDerivative> getITimeDerivatives();
 
 }

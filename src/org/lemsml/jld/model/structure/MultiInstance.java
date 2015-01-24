@@ -30,4 +30,10 @@ public class MultiInstance extends AbstractStructureElement {
 		this.component = component;
 	}
 
+
+	public String getIndexVariable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

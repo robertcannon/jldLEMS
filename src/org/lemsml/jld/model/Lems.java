@@ -1,10 +1,9 @@
 package org.lemsml.jld.model;
  
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import org.lemsml.jld.expression.Dim;
+import org.lemsml.jld.imodel.IComponent;
 import org.lemsml.jld.imodel.IConstant;
 import org.lemsml.jld.imodel.ILems;
 import org.lemsml.jld.model.core.AbstractElement;
@@ -36,7 +35,7 @@ public class Lems implements ILems {
 	protected ComponentMap componentMap = new ComponentMap();
 	
 	private String sourceName = null;
-	private boolean errorsFound = false;
+	private boolean b_errorsFound = false;
 	
 	
 	public Dimension TIME_DIMENSION;
@@ -45,23 +44,23 @@ public class Lems implements ILems {
 	
 	
 	public Lems() {
-		// the implcit super-type of all ComponentTypes
-		// QUERY - is this the right way to do it? We need a generic type for cases where we declare a 
-		// Child or Children element that can contain anything
+	 
 		ComponentTypeBuilder ctb = new ComponentTypeBuilder();
-		ComponentType ct = ctb.newRootType(this);
+		
+		// the implicit super-type of all ComponentTypes
+		ComponentType ct = ctb.newRootType();
 		componentTypeMap.put(ct.getName(), ct);
 
 	
-		NONE_DIMENSION = new Dimension(this, "none");
+		NONE_DIMENSION = new Dimension("none");
 		dimensionMap.put("none", NONE_DIMENSION);
 		
-		ANY_DIMENSION = new Dimension(this, "*");
+		ANY_DIMENSION = new Dimension("*");
 		dimensionMap.put("*", ANY_DIMENSION);
 		ANY_DIMENSION.setAny();
 		
 		
-		TIME_DIMENSION = new Dimension(this, "t");
+		TIME_DIMENSION = new Dimension("t");
 		TIME_DIMENSION.setT(1);
 		dimensionMap.put("t", TIME_DIMENSION);
 		
@@ -69,13 +68,13 @@ public class Lems implements ILems {
 	
 	
 	public Dimension addDimension(String name) {
-		Dimension ret = new Dimension(this, name);
+		Dimension ret = new Dimension(name);
 		dimensionMap.put(name, ret);
 		return ret;
 	}
 	
 	public Unit addUnit(String s) {
-		Unit ret = new Unit(this, s);
+		Unit ret = new Unit(s);
 		unitMap.put(s, ret);
 		return ret;
 	}
@@ -83,7 +82,7 @@ public class Lems implements ILems {
 
 	public ComponentType addComponentType(String s) {
 		ComponentTypeBuilder ctb = new ComponentTypeBuilder();
-		ComponentType ret = ctb.newComponentType(this, s);
+		ComponentType ret = ctb.newComponentType(s);
 		componentTypeMap.put(s, ret);
 		return ret;
 	}
@@ -122,13 +121,13 @@ public class Lems implements ILems {
 
 
 	public Target addTarget(String eltname) {
-		Target ret = new Target(this, eltname);
+		Target ret = new Target(eltname);
 		targetMap.put(eltname, ret);
 		return ret;
 	}
 	
 	public Constant addConstant(String eltname) {
-		Constant ret = new Constant(this, eltname);
+		Constant ret = new Constant(eltname);
 		constantMap.put(eltname, ret);
 		return ret;
 	}
@@ -182,7 +181,7 @@ public class Lems implements ILems {
 
 
 	public void setError() {
-		 errorsFound = true;
+		 b_errorsFound = true;
 	}
 
 
@@ -195,7 +194,12 @@ public class Lems implements ILems {
 		return componentMap.get(ext);
 	}
 
-
+	@Override
+	public IComponent getIComponent(String s) {
+		return getComponent(s);
+	}
+	
+	
 	public Component getTargetComponent() {
 		Component ret = null;
 		Target tgt = null;
@@ -210,6 +214,10 @@ public class Lems implements ILems {
 		}
 	 
 		return ret;
+	}
+	
+	public boolean errorsFound() {
+		return b_errorsFound;
 	}
 	
 }

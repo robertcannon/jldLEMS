@@ -7,7 +7,6 @@ import org.lemsml.jld.api.APIException;
 import org.lemsml.jld.io.reader.FileInclusionReader;
 import org.lemsml.jld.io.reader.FileUtil;
 import org.lemsml.jld.io.reader.GeneratedModelReader;
-import org.lemsml.jld.io.reader.JLDModelReader;
 import org.lemsml.jld.io.writer.GeneratedModelWriter;
 import org.lemsml.jld.io.xml.XMLElement;
 import org.lemsml.jld.io.xml.XMLElementReader;

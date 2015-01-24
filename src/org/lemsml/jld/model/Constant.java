@@ -1,9 +1,9 @@
 package org.lemsml.jld.model;
 
 import org.lemsml.jld.imodel.IConstant;
-import org.lemsml.jld.model.core.AbstractLemsElement;
+import org.lemsml.jld.model.core.AbstractElement;
 
-public class Constant extends AbstractLemsElement implements IConstant {
+public class Constant extends AbstractElement implements IConstant {
 
 	protected String dimension;
 	protected double value;
@@ -21,8 +21,8 @@ public class Constant extends AbstractLemsElement implements IConstant {
 	}
 
 
-	protected Constant(Lems l, String s) {
-		super(l, s);
+	protected Constant(String s) {
+		super(s);
 	}
 	
 	

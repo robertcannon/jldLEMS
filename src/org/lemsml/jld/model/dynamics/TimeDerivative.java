@@ -1,8 +1,10 @@
 package org.lemsml.jld.model.dynamics;
 
+import org.lemsml.jld.imodel.dynamics.IStateVariable;
+import org.lemsml.jld.imodel.dynamics.ITimeDerivative;
 import org.lemsml.jld.model.core.AbstractAST;
 
-public class TimeDerivative extends AbstractDynamicsElement {
+public class TimeDerivative extends AbstractDynamicsElement implements ITimeDerivative {
 
 	
 	protected String variable;
@@ -44,7 +46,10 @@ public class TimeDerivative extends AbstractDynamicsElement {
 	public StateVariable getStateVariable() {
 		return r_stateVariable;
 	}
-
+	
+	public IStateVariable getIStateVariable() {
+		return r_stateVariable;
+	}
 
 	public void setAST(AbstractAST ast) {
 		r_ast = ast;

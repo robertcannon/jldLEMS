@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.jld.eval.AbstractDVal;
 import org.lemsml.jld.eval.DCon;
-import org.lemsml.jld.exception.ExpressionError; 
+import org.lemsml.jld.exception.ExpressionError;
  
 
 public class ConstantNode extends Node implements DoubleParseTreeNode {

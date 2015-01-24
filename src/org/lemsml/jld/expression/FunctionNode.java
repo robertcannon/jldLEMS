@@ -4,9 +4,8 @@ import java.util.HashMap;
 
 import org.lemsml.jld.eval.AbstractDVal;
 import org.lemsml.jld.eval.DFunc;
-import org.lemsml.jld.exception.ExpressionError; 
+import org.lemsml.jld.exception.ExpressionError;
 import org.lemsml.jld.io.E;
-import org.lemsml.jld.model.Lems;
 
 public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNode {
 

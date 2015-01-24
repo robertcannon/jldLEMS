@@ -1,7 +1,6 @@
 package org.lemsml.jld.model.core;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.lemsml.jld.eval.DoubleEvaluator;
 import org.lemsml.jld.exception.ExpressionError;

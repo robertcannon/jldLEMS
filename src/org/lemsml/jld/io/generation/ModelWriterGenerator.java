@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.lemsml.jld.io.E;
 import org.lemsml.jld.io.reader.FileUtil;
@@ -70,8 +69,7 @@ public class ModelWriterGenerator {
 		for (Field f : getProtectedFields(c)) {					
 			 
 			String fnm = f.getName();
-			String exfn = null;
-			
+ 			
 			String mnm = fnm;
 			
 			if (fnm.equals("eXtends")) {

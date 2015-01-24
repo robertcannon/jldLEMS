@@ -3,12 +3,16 @@ package org.lemsml.jld.model.dynamics;
 import java.util.List;
 
 import org.lemsml.jld.api.APIException;
+import org.lemsml.jld.imodel.dynamics.IDerivedVariable;
+import org.lemsml.jld.imodel.dynamics.IDynamics;
+import org.lemsml.jld.imodel.dynamics.IStateVariable;
+import org.lemsml.jld.imodel.dynamics.ITimeDerivative;
 import org.lemsml.jld.model.core.AbstractTypeElement;
 import org.lemsml.jld.model.core.ListMap;
 import org.lemsml.jld.model.core.Single;
 import org.lemsml.jld.model.type.ComponentType;
 
-public class Dynamics extends AbstractTypeElement {
+public class Dynamics extends AbstractTypeElement implements IDynamics {
 
 	protected ListMap<StateVariable> stateVariableMap = new ListMap<StateVariable>();
 	
@@ -56,20 +60,20 @@ public class Dynamics extends AbstractTypeElement {
 
 
 	public OnStart createOnStart() throws APIException {
-		 OnStart os = new OnStart(this);
+		 OnStart os = new OnStart();
 		 onStartSingle.setValue(os);
 		 return os;
 	}
 
 
 	public OnCondition addOnCondition(String eltname) {
-		OnCondition oc = new OnCondition(this);
+		OnCondition oc = new OnCondition();
 		onConditionMap.put(eltname, oc);
 		return oc;
 	}
 
 	public OnEvent addOnEvent(String eltname) {
-		OnEvent oe = new OnEvent(this);
+		OnEvent oe = new OnEvent();
 		onEventMap.put(eltname, oe);
 		return oe;
 	}
@@ -78,6 +82,10 @@ public class Dynamics extends AbstractTypeElement {
 		 return stateVariableMap.getItems();
 	}
 
+	public List<? extends IStateVariable> getIStateVariables() {
+		return stateVariableMap.getItems();
+	}
+	
 
 	 public List<OnCondition> getOnConditions() {
 		return onConditionMap.getItems();
@@ -93,12 +101,20 @@ public class Dynamics extends AbstractTypeElement {
 		return timeDerivativeMap.getItems();
 	}
 
+	public List<? extends ITimeDerivative> getITimeDerivatives() {
+		return getTimeDerivatives();
+	}
 
 	public List<DerivedVariable> getDerivedVariables() {
 		return derivedVariableMap.getItems();
 	}
 
-
+	
+	public List<? extends IDerivedVariable> getIDerivedVariables() {
+		return getDerivedVariables();
+	}
+	
+	
 	public List<OnEvent> getOnEvents() {
 		return onEventMap.getItems();
 	}

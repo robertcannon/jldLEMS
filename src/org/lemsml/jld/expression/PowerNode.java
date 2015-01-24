@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.jld.eval.AbstractDVal;
 import org.lemsml.jld.eval.Power;
-import org.lemsml.jld.exception.ExpressionError; 
+import org.lemsml.jld.exception.ExpressionError;
 import org.lemsml.jld.io.E;
 
 public class PowerNode extends AbstractFloatResultNode {

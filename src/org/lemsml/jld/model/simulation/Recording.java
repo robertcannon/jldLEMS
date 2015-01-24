@@ -1,6 +1,8 @@
 package org.lemsml.jld.model.simulation;
 
-public class Recording extends AbstractSimulationElement {
+import org.lemsml.jld.imodel.simulation.IRecord;
+
+public class Recording extends AbstractSimulationElement implements IRecord {
 
 	protected String quantity;
 	

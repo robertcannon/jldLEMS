@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.lemsml.jld.model.Component;
-import org.lemsml.jld.model.Dimension;
-
 public class ListMap<T> {
 
 	private ArrayList<T> items = new ArrayList<T>();

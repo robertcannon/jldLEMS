@@ -3,10 +3,10 @@ package org.lemsml.jlems.core.type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
- 
+
 import org.lemsml.jlems.core.sim.ContentError;
 
-@SuppressWarnings("StringConcatenationInsideStringBufferAppend")
+
 public class LemsCollection<T> implements Iterable<T> {
 
  

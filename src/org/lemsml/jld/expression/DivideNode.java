@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.jld.eval.AbstractDVal;
 import org.lemsml.jld.eval.Divide;
-import org.lemsml.jld.exception.ExpressionError; 
+import org.lemsml.jld.exception.ExpressionError;
 
 public class DivideNode extends AbstractFloatResultNode {
 

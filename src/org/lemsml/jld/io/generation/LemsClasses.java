@@ -3,7 +3,6 @@ package org.lemsml.jld.io.generation;
 import java.util.ArrayList;
 
 import org.lemsml.jld.model.Assertion;
-import org.lemsml.jld.model.Component;
 import org.lemsml.jld.model.Constant;
 import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.Insertion;
@@ -12,7 +11,6 @@ import org.lemsml.jld.model.Target;
 import org.lemsml.jld.model.Unit;
 import org.lemsml.jld.model.dynamics.ConditionalDerivedVariable;
 import org.lemsml.jld.model.dynamics.DerivedParameter;
-import org.lemsml.jld.model.dynamics.DerivedScalarField;
 import org.lemsml.jld.model.dynamics.DerivedVariable;
 import org.lemsml.jld.model.dynamics.Dynamics;
 import org.lemsml.jld.model.dynamics.EventOut;

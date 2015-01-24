@@ -1,7 +1,6 @@
 package org.lemsml.jlems.core.type.structure;
 
 import org.lemsml.jlems.core.expression.ParseError;
- 
 import org.lemsml.jlems.core.run.Builder;
 import org.lemsml.jlems.core.run.BuilderElement;
 import org.lemsml.jlems.core.sim.ContentError;

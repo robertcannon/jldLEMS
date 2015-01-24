@@ -27,10 +27,7 @@ public class Builder {
 	
  
 
-	public void add(BuilderElement be) throws RuntimeError {
-		if (be == null) {
-			throw new RuntimeError("Adding a null builder");
-		}
+	public void add(BuilderElement be) {
 		builderElements.add(be);
 	}
  
@@ -65,13 +62,13 @@ public class Builder {
 	}
 
 
-
+/*
 	public void consolidateStateTypes() throws RuntimeError {
 		for (BuilderElement be : builderElements) {
 			be.consolidateStateTypes();
 		}
 	}
-
+*/
 
 
 	public boolean isSubstitutionBuilder() {
