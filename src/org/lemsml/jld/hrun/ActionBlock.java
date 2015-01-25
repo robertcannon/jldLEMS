@@ -2,6 +2,7 @@ package org.lemsml.jld.hrun;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.lemsml.jld.eval.BooleanEvaluator;
 import org.lemsml.jld.eval.DoubleEvaluator;
@@ -65,14 +66,22 @@ public class ActionBlock {
 	}
 
 
+	// TODO shouldn't pass the list in here to change
 	public void addPortsTo(ArrayList<String> opa) {
-		 opa.addAll(outPorts);
-		
+		if (outPorts.size() > 0) {
+			HashSet<String> hs = new HashSet<String>();
+			hs.addAll(opa);
+			for (String s : outPorts) {
+				if (!hs.contains(s)) {
+					opa.add(s);
+				}
+			}
+		}
 	}
+	
 
     public void run(StateInstance uin) throws RuntimeError {
-        E.info("Running action blocks for "+ uin.getID());
-        HashMap<String, DoublePointer> varHM = uin.getVarHM();
+    	HashMap<String, DoublePointer> varHM = uin.getVarHM();
         for (VariableAssignment vass : assignments) {
             double v = vass.evalptr(varHM);
             varHM.get(vass.varname).set(v);

@@ -1,10 +1,10 @@
 package org.lemsml.jld.model;
 
-import org.lemsml.jld.model.core.AbstractElement;
+import org.lemsml.jld.model.core.Element;
  
 
 
-public class Unit extends AbstractElement {
+public class Unit extends Element {
 
 	
 	protected String dimension = null;
@@ -17,22 +17,37 @@ public class Unit extends AbstractElement {
 	private Dimension r_dimension = null;
 
 	
-	protected Unit(String s) {
-		super(s);
+	protected Unit(String name) {
+		super(name);
 	}
 
 
-	public void setSymbol(String s) {
-		symbol = s;
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
 	}
 
 
-	public void setDimension(String s) {
-		dimension = s;
+	public void setDimension(String dimension) {
+		this.dimension = dimension;
 	}
 	
-	public void setDimension(Dimension d) {
-		r_dimension = d;
+	public void setOffset(double d) {
+		offset = d;
+	}
+
+
+	public void setScale(double scale) {
+		this.scale = scale;
+	}
+
+
+	public void setPower(int power) {
+		this.power = power;
+	}
+
+
+	public void setDimension(Dimension dimension) {
+		r_dimension = dimension;
 	}
 
 	public Dimension getDimensionObject() {
@@ -40,11 +55,6 @@ public class Unit extends AbstractElement {
 	}
 	
 	
-	public void setPower(int p) {
-		power = p;
-	}
-
-
 	public String getDimension() {
 		return dimension;
 	}
@@ -58,16 +68,8 @@ public class Unit extends AbstractElement {
 		return power;
 	}
 	
-	public void setOffset(double d) {
-		offset = d;
-	}
-	
 	public double getOffset() {
 		return offset;
-	}
-	
-	public void setScale(double s) {
-		scale = s;
 	}
 	
 	public double getScale() {

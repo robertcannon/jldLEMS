@@ -59,14 +59,14 @@
 
 <ComponentType name="spikeGenerator">
     <Parameter name="period" dimension="time"/>
-    <SendPort name="a"/>
+    <SendPort name="sga"/>
     <Exposure name="tsince" dimension="time"/>
     <Dynamics>
         <StateVariable name="tsince" exposure="tsince" dimension="time"/>
         <TimeDerivative variable="tsince" value="1"/>
         <OnCondition test="tsince .gt. period">
             <StateAssignment variable="tsince" value="0"/>
-            <EventOut port="a"/>
+            <EventOut port="sga"/>
         </OnCondition>
     </Dynamics>
 </ComponentType>

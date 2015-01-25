@@ -2,11 +2,11 @@ package org.lemsml.jld.model;
 
 import java.util.HashMap;
 
-import org.lemsml.jld.model.core.AbstractElement;
+import org.lemsml.jld.model.core.Element;
  
 import org.lemsml.jld.model.core.ModelException;
  
-public class Dimension extends AbstractElement {
+public class Dimension extends Element {
  
 	
 	protected int m;
@@ -40,37 +40,37 @@ public class Dimension extends AbstractElement {
 	}
 	
 	
-	public void setJ(int v) {
-			j = v;
+	public void setJ(int j) {
+		this.j = j;
 	}
 
-	public void setN(int v) {
-		n = v;
-	}
-
-
-	public void setK(int v) {
-		k = v;
+	public void setN(int n) {
+		this.n = n;
 	}
 
 
-	public void setI(int v) {
-		i = v;
+	public void setK(int k) {
+		this.k = k;
 	}
 
 
-	public void setT(int v) {
-		t = v;
+	public void setI(int i) {
+		this.i = i;
 	}
 
 
-	public void setL(int v) {
-		l = v;
+	public void setT(int t) {
+		this.t = t;
 	}
 
 
-	public void setM(int v) {
-		m = v;
+	public void setL(int l) {
+		this.l = l;
+	}
+
+
+	public void setM(int m) {
+		this.m = m;
 	}
 
 

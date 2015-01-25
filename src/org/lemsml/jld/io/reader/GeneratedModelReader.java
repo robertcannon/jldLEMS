@@ -574,7 +574,8 @@ public class GeneratedModelReader extends AbstractModelReader {
                 populateTimeDerivativeFromXMLElement(obj, cel);
 
             } else if (xn.equals("OnStart")) {
-                OnStart obj = tgt.createOnStart();
+            	String eltname = getNameAttribute(cel);
+                OnStart obj = tgt.addOnStart(eltname);
                 populateOnStartFromXMLElement(obj, cel);
 
             } else if (xn.equals("OnCondition")) {

@@ -1,8 +1,8 @@
 package org.lemsml.jld.model.type;
 
-import org.lemsml.jld.model.core.AbstractTypeElement;
+import org.lemsml.jld.model.core.TypeElement;
 
-public class Path extends AbstractTypeElement {
+public class Path extends TypeElement {
 
 	protected Path(ComponentType ct, String s) {
 		super(ct, s);

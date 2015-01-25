@@ -404,9 +404,9 @@ public class GeneratedModelWriter extends AbstractModelWriter {
        for (TimeDerivative x : tgt.getTimeDerivatives()) {
           ret.addXMLElement(writeTimeDerivativeToXML(x));
        }
-      OnStart onStart = tgt.getOnStart();
-       if (onStart != null) {
-          ret.addXMLElement(writeOnStartToXML(onStart));
+      
+       for (OnStart x : tgt.getOnStarts()) {
+          ret.addXMLElement(writeOnStartToXML(x));
        }
        for (OnCondition x : tgt.getOnConditions()) {
           ret.addXMLElement(writeOnConditionToXML(x));

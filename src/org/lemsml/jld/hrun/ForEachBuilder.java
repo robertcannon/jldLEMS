@@ -1,11 +1,10 @@
-package org.lemsml.jlems.core.run;
+package org.lemsml.jld.hrun;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jld.io.E;
-import org.lemsml.jlems.core.sim.ContentError;
-
+ 
 
 public class ForEachBuilder extends AbstractPostBuilder {
 
@@ -21,7 +20,7 @@ public class ForEachBuilder extends AbstractPostBuilder {
 
 
 	 
-	public void postBuild(StateRunnable base, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
+	public void postBuild(StateRunnable base, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError, RuntimeError {
 
 
 		//E.info("postBuild on: " + base + ", bc: " + bc);
@@ -35,22 +34,17 @@ public class ForEachBuilder extends AbstractPostBuilder {
 		// MUSTDO base is not the right starting point: should be relative to the link target in enclosing cpt
 		ArrayList<StateRunnable> asi = base.getStateInstances(path);
  		
-		E.info("Running foreach builder on " + asi.size());
+		E.info("Running a for-each build n=" + asi.size());
 		
 		for (StateRunnable si : asi) {
-			E.info("FEB " + si);
+			E.info("running with " + var + "=" + si + " " + si.hashCode());
 			passHM.put(var, si);		
 	 		postChildren(base, passHM, bc);	
 		}
 	}
 
 
-
-	@Override
-	public void consolidateStateTypes() {
-		// TODO Auto-generated method stub
-		
-	}	
+ 
 	
 
  

@@ -3,9 +3,9 @@ package org.lemsml.jld.io;
 import org.lemsml.jld.model.Component;
 import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.Lems;
-import org.lemsml.jld.model.Quantity;
 import org.lemsml.jld.model.Unit;
 import org.lemsml.jld.model.core.ModelException;
+import org.lemsml.jld.model.core.Quantity;
 import org.lemsml.jld.model.type.ComponentType;
 
 public class APIExample {

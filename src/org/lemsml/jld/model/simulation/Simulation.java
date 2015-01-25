@@ -7,11 +7,11 @@ import org.lemsml.jld.imodel.simulation.IDataWriter;
 import org.lemsml.jld.imodel.simulation.IRecord;
 import org.lemsml.jld.imodel.simulation.IRun;
 import org.lemsml.jld.imodel.simulation.ISimulation;
-import org.lemsml.jld.model.core.AbstractTypeElement;
+import org.lemsml.jld.model.core.TypeElement;
 import org.lemsml.jld.model.core.ListMap;
 import org.lemsml.jld.model.type.ComponentType;
 
-public class Simulation extends AbstractTypeElement implements ISimulation {
+public class Simulation extends TypeElement implements ISimulation {
 
 	protected ListMap<DataDisplay> dataDisplayMap = new ListMap<DataDisplay>();
 	

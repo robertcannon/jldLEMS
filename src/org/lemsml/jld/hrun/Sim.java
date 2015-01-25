@@ -106,8 +106,7 @@ public class Sim {
   	    RunnableAccessor ra = new RunnableAccessor(targetState);
   	       
   	    ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
-  	    E.info("N recorders: " + recorders.size());
-  	 
+    	 
   	    for (RuntimeRecorder rr : recorders) {
   	    	String disp = rr.getDisplay();
   	    	if (dvHM.containsKey(disp)) {

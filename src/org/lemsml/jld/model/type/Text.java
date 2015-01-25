@@ -1,8 +1,8 @@
 package org.lemsml.jld.model.type;
 
-import org.lemsml.jld.model.core.AbstractTypeElement;
+import org.lemsml.jld.model.core.TypeElement;
 
-public class Text extends AbstractTypeElement {
+public class Text extends TypeElement {
 
 	protected Text(ComponentType ct, String s) {
 		super(ct, s);

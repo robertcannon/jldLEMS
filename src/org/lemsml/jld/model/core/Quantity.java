@@ -1,4 +1,6 @@
-package org.lemsml.jld.model;
+package org.lemsml.jld.model.core;
+
+import org.lemsml.jld.model.Unit;
 
 
 public class Quantity {

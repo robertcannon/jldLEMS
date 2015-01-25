@@ -2,6 +2,8 @@ package org.lemsml.jld.hrun;
 
 import java.util.ArrayList;
 
+import org.lemsml.jld.io.E;
+
  
 public class OutPort {
 
@@ -31,7 +33,7 @@ public class OutPort {
 	}
 	
 	public void send() throws RuntimeError {
-		for (InPort ip : recipients) {
+ 		for (InPort ip : recipients) {
 			ip.receive();
 		}
 		for (DelayRecipient dr : delayRecipients) {

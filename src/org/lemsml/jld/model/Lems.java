@@ -6,7 +6,7 @@ import java.util.List;
 import org.lemsml.jld.imodel.IComponent;
 import org.lemsml.jld.imodel.IConstant;
 import org.lemsml.jld.imodel.ILems;
-import org.lemsml.jld.model.core.AbstractElement;
+import org.lemsml.jld.model.core.Element;
 import org.lemsml.jld.model.core.ComponentMap;
 import org.lemsml.jld.model.core.ListMap;
 import org.lemsml.jld.model.type.ComponentType;
@@ -20,7 +20,7 @@ public class Lems implements ILems {
   
 	// track the last element we added to avoid doing things out of sequence which 
 	// is likely to be an error
-	AbstractElement focusElement;
+	Element focusElement;
 	
 	protected ListMap<Target> targetMap = new ListMap<Target>();
 
@@ -97,7 +97,7 @@ public class Lems implements ILems {
 	}
 
 
-	public void setFocusElement(AbstractElement le) {
+	public void setFocusElement(Element le) {
 		focusElement = le;
 	}
 

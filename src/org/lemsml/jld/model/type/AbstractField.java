@@ -1,10 +1,10 @@
 package org.lemsml.jld.model.type;
 
 import org.lemsml.jld.model.Dimension;
-import org.lemsml.jld.model.core.AbstractTypeElement;
+import org.lemsml.jld.model.core.TypeElement;
 
 
-public abstract class AbstractField extends AbstractTypeElement {
+public abstract class AbstractField extends TypeElement {
 	
 	protected String dimension = null;
 	

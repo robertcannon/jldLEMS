@@ -7,10 +7,16 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.lemsml.jld.display.RuntimeOutput;
+import org.lemsml.jld.eval.BooleanEvaluator;
 import org.lemsml.jld.eval.DoubleEvaluator;
 import org.lemsml.jld.exception.ExpressionError;
+import org.lemsml.jld.hrun.ActionBlock;
 import org.lemsml.jld.hrun.Builder;
 import org.lemsml.jld.hrun.BuilderElement;
+import org.lemsml.jld.hrun.ConditionAction;
+import org.lemsml.jld.hrun.EventAction;
+import org.lemsml.jld.hrun.EventConnectionBuilder;
+import org.lemsml.jld.hrun.ForEachBuilder;
 import org.lemsml.jld.hrun.MultiBuilder;
 import org.lemsml.jld.hrun.RunConfig;
 import org.lemsml.jld.hrun.RuntimeDisplay;
@@ -32,11 +38,21 @@ import org.lemsml.jld.imodel.simulation.ISimulation;
 import org.lemsml.jld.imodel.structure.IStructure;
 import org.lemsml.jld.io.E;
 import org.lemsml.jld.model.core.AbstractAST;
+import org.lemsml.jld.model.dynamics.AbstractDynamicsBlock;
+import org.lemsml.jld.model.dynamics.Dynamics;
+import org.lemsml.jld.model.dynamics.EventOut;
+import org.lemsml.jld.model.dynamics.OnCondition;
+import org.lemsml.jld.model.dynamics.OnEvent;
+import org.lemsml.jld.model.dynamics.OnStart;
+import org.lemsml.jld.model.dynamics.StateAssignment;
+import org.lemsml.jld.model.dynamics.Transition;
+import org.lemsml.jld.model.structure.AbstractStructureBlock;
 import org.lemsml.jld.model.structure.EventConnection;
 import org.lemsml.jld.model.structure.ForEach;
 import org.lemsml.jld.model.structure.MultiInstance;
 import org.lemsml.jld.model.structure.Structure;
- 
+import org.lemsml.jld.path.PathEvaluator;
+
  
  
 
@@ -82,7 +98,7 @@ public class StateTypeBuilder {
 		
 		IComponentType type = target.getIComponentType();
 		
-		E.info(indent(depth) + "Making ST for " + target.getId() + "(" + type.getName() + ")");
+	//	E.info(indent(depth) + "Making ST for " + target.getId() + "(" + type.getName() + ")");
 		
 		ArrayList<IComponentType> typeChain = getTypeChain(type);
 		
@@ -120,6 +136,15 @@ public class StateTypeBuilder {
 				}
 			}
 
+			 for (String s : c.getReceivePortNames()) {
+				 ret.addInputPort(s);
+			 }
+			 
+			 for (String s : c.getSendPortNames()) {
+ 				 ret.addOutputPort(s);
+			 }
+			 
+			 
 		}
 		
 		IDynamics dynamics = type.getIDynamics();
@@ -130,27 +155,21 @@ public class StateTypeBuilder {
 		
 		ISimulation sim = type.getISimulation();
 		if (sim != null) {
-			E.info(indent(depth) + "applying sim");
 			applySimulation(sim, target, ret, depth);
-		} else {
-			E.info(indent(depth) + "no simulation elt");
-		}
-	 
+		}  
 
 		
 		
 		IStructure str = type.getIStructure();
 
 		if (str != null) {
-		
 			ret.addBuilder(makeStructureBuilder(str, target));
 		 
-		
 		} else {
 			// default behavior is just to instantiate each child
 		for (String s : target.getChildNames()) {
 			
-			E.info(indent(depth) + "STB processing child " + s);
+			// E.info(indent(depth) + "STB processing child " + s);
 			
 			IComponent ch = target.getIChild(s);
 			StateType st = getOrMakeStateType(ch, depth + 1);	
@@ -162,7 +181,7 @@ public class StateTypeBuilder {
 		 
 		for (String s : target.getChildrenNames()) {
 			List<? extends IComponent> cpts = target.getIChildren(s);
-			E.info(indent(depth) + "STB processing children: " + s + " (" + cpts.size() + ")");
+			// E.info(indent(depth) + "STB processing children: " + s + " (" + cpts.size() + ")");
 			for (IComponent c : cpts) {
 				StateType cst = getOrMakeStateType(c, depth + 1);
 				ret.addListStateType(s, cst);
@@ -232,19 +251,14 @@ public class StateTypeBuilder {
 			
 
 			IComponent runTarget = target.getIChild(fieldName);
-			E.info(indent(depth) + "** processing a run, need '" + fieldName + "' within " + target + " got: " + runTarget);
-			
+ 			
 			StateType targetST = getOrMakeStateType(runTarget);
 			
 			RunConfig rc = new RunConfig(targetST, dt, trun);
 			ret.addRunConfig(rc);
-			E.info(indent(depth) + "Added a run config to " + ret.hashCode() + " " + ret);
-		
-		}
+ 		}
 			
-		 
-		E.info(indent(depth) + "Processing data displays " + sim.getIDataDisplays().size());
-			
+	 			
 		for (IDataDisplay dd : sim.getIDataDisplays()) {
 			final RuntimeDisplay ro = getRuntimeDisplay(dd, target);
 			ret.addRuntimeDisplay(ro);
@@ -475,22 +489,45 @@ public class StateTypeBuilder {
 			 }
 		 }
 		 
-		 /*
 		 
-		 for (OnStart os : onStarts) {
-			 ActionBlock ea = os.makeEventAction(fixedHM);
+		 
+		 // TODO tmp
+		 Dynamics rdynamics = (Dynamics)dynamics;
+		 
+		 for (OnStart os : rdynamics.getOnStarts()) {
+			 ActionBlock ea = makeEventAction(os, fixedHM);
 			 ret.addInitialization(ea);
 		 }
 		 
-		 for (OnEvent oe : onEvents) {
+		 for (OnEvent oe : rdynamics.getOnEvents()) {
 			 EventAction er = new EventAction(oe.getPortName());	 
-			 ActionBlock ea = oe.makeEventAction(fixedHM);
+			 ActionBlock ea = makeEventAction(oe, fixedHM);
 			 er.setAction(ea);
-			 if (ea == null) {
-				 throw new ContentError("Null action block from OnEvent " + oe);
-			 }
 			 ret.addEventResponse(er);
 		 }
+		 
+		 
+		 for (OnCondition oc : rdynamics.getOnConditions()) {
+		
+			 AbstractAST pt = oc.getAST();
+			 if (pt == null) {
+				 E.error("No AST in OnCondition");
+			 } else {
+			 try {
+				 BooleanEvaluator bb = pt.makeBooleanFixedEvaluator(fixedHM);
+			
+				 ConditionAction cr = new ConditionAction(bb);
+				 ActionBlock ea = makeEventAction(oc, fixedHM);
+				 cr.setAction(ea);
+				 ret.addConditionResponse(cr);
+			 } catch (Exception e) {
+				 E.error("cant make onCondition " + e);
+			 }
+			 }
+		 }
+		 
+		 /*
+		 
 		 if (regimes.size() > 0) {
 			 for (ReceivePort p :  r_type.getReceivePorts()) {
 				 if (onEvents.hasName(p.getName())) {
@@ -502,18 +539,7 @@ public class StateTypeBuilder {
 			 }
 		 }
 		 
-		 
-		 for (OnCondition oc : onConditions) {
-		
-			 ParseTree pt = oc.getParseTree();
-			 BooleanEvaluator bb = pt.makeBooleanFixedEvaluator(fixedHM);
-			
-			 ConditionAction cr = new ConditionAction(bb);
-			 ActionBlock ea = oc.makeEventAction(fixedHM);
-			 cr.setAction(ea);
-			 ret.addConditionResponse(cr);
-		 }
-		 
+	 
 		 
 		 for (KineticScheme ks : kineticSchemes) {
 			 ArrayList<IComponent> states = cpt.getChildrenAL(ks.getNodesName());
@@ -550,6 +576,48 @@ public class StateTypeBuilder {
 	}
 
 	
+	 private ActionBlock makeEventAction(AbstractDynamicsBlock pr, HashMap<String, Double> fixedHM) {
+		 ActionBlock ret = new ActionBlock();
+		 
+		
+		 for (StateAssignment sa : pr.getStateAssignments()) {
+			 AbstractAST ast = sa.getAST();
+			 try {
+			 DoubleEvaluator dase = ast.makeFloatFixedEvaluator(fixedHM); 
+			 ret.addAssignment(sa.getVariable(), dase);
+			 } catch (Exception ex) {
+				 E.error("Cant make evaluator in block " + ex);
+			 }
+		} 
+		 
+		 /*
+		 for (IfCondition ic : pr.getIfConditions()) {
+			 ParseTree pt = ic.getParseTree();
+			 BooleanEvaluator be = pt.makeBooleanFixedEvaluator(fixedHM);
+			 ActionBlock ab = ic.makeEventAction(fixedHM);
+			 ret.addConditionalActionBlock(be, ab);
+		 }
+		 */
+		 
+		 
+		 for (EventOut eout : pr.getEventOuts()) {
+			 ret.addEventOut(eout.getPort());
+		 }
+		 
+		 for (Transition t : pr.getTransitions()) {
+			E.missing();
+			 //  ret.addTransition(t.getRegime());
+		 }
+		 return ret;
+	 }
+	
+	
+	
+	
+	
+	
+	
+	
 	private HashMap<String, Double> copyFixed(HashMap<String, Double> fixedHM) {
 		 HashMap<String, Double> ret = new HashMap<String, Double>();
 		 for (String s : fixedHM.keySet()) {
@@ -565,18 +633,11 @@ public class StateTypeBuilder {
 		
 		Structure str = (Structure)astr;
 		
-		for (MultiInstance mi : str.getMultiInstances()) {
-			BuilderElement bde = makeMultiInstanceBuilder(mi, target);
-			b.add(bde);
+		List<BuilderElement> abe = makeChildBuilders(str, target);
+		for (BuilderElement be : abe) {
+			b.add(be);
 		}
-		
-		for (ForEach fe : str.getForEachs()) {
-			E.missing();
-		}
-		
-		for (EventConnection ec : str.getEventConnections()) {
-			E.missing();
-		}
+		 
 		return b;
 	}
 
@@ -622,6 +683,125 @@ public class StateTypeBuilder {
 		return mb;	
 	
 	}
+	
+	
+	
+	public BuilderElement makeEventConnectionBuilder(EventConnection ec, IComponent cpt) {
+
+        //E.info("makeBuilder on "+cpt+" from: "+from+" ("+sourcePort+"), to: "+to+" ("+targetPort+") -> "+ receiver +", assigns: "+assigns);
+		EventConnectionBuilder ret = new EventConnectionBuilder(ec.getFrom(), ec.getTo());
+	
+		E.info("********* makung ec builkder");
+		
+		String sourcePort = ec.getSourcePort();
+		
+		if (sourcePort != null)  {
+			String s = cpt.getStringParameterValue(sourcePort);
+			if (s != null) {
+				ret.setSourcePortID(s);
+			}
+		}
+		
+		String targetPort = ec.getTargetPort();
+		if (targetPort != null) {
+			String s = cpt.getStringParameterValue(targetPort);
+			if (s != null) {
+				ret.setTargetPortID(s);
+			}
+		}
+		
+		String delay = ec.getDelay();
+		if (delay != null) {
+			double d = cpt.getNumericalParameterValue(delay);
+			if (d != 0.) {
+				ret.setDelay(d);
+			}
+		}
+		//System.out.println("cpt: "+cpt+", atr: "+cpt.attributes);
+              
+		String receiver = ec.getReceiver();
+		if (receiver != null) {
+			
+			// TODO maybe receiver is relative to us?
+			IComponent receiverComponent = lems.getIComponent(receiver);
+			
+			// IComponent receiverComponent = cpt.getRelativeComponent(receiver);
+            //E.info("EventConnection, receiver: ["+receiver+"] resolved to: ["+receiverComponent+"]");
+			StateType rst = getOrMakeStateType(receiverComponent);
+			ret.setReceiverStateType(rst);
+
+			/*  TODO reinstate
+            for (Assign ass : assigns) {
+                String ea = ass.getExposeAs();
+                if (ea != null) {
+                    E.warning("Expose as in EventConnection is not used");
+                 }
+                String dim = "unknown";
+                E.missing("No dimensions on assigns");
+                ret.addAssignment(ass.getProperty(), ass.getDoubleEvaluator(), dim);
+            }
+            */
+		}
+
+		String rc = ec.getReceiverContainer();
+		if (rc != null) {
+			String sv = cpt.getStringParameterValue(rc);
+			if (sv != null) {
+				ret.setReceiverContainer(sv);
+			}
+		}
+	
+		return ret;
+	}
+	
+	
+	public BuilderElement makeForEachBuilder(ForEach fe, IComponent cpt) {
+			BuilderElement ret = null;
+		
+	     //E.info("ForEach makeBuilder on: " + cpt+", instances: "+instances+", as: "+ as);
+			PathEvaluator pe = new PathEvaluator(null, cpt, fe.getInstances());
+			
+			try {
+				String insval = pe.getStringValue();	
+			
+			
+			// E.info("ForEeach instances value in builder: " + insval);
+			
+			String as = fe.getAs();
+			ret = new ForEachBuilder(insval, as);
+			
+			ArrayList<BuilderElement> abe = makeChildBuilders(fe, cpt);
+			for (BuilderElement be: abe) {
+				ret.add(be);
+			}
+			} catch (RuntimeError e) {
+				E.error("Cant make ForEach builder " + e);
+			}
+			return ret;
+	}
+	
+	
+	public ArrayList<BuilderElement> makeChildBuilders(AbstractStructureBlock asb, IComponent target) {
+		ArrayList<BuilderElement> ret = new ArrayList<BuilderElement>();
+	
+		for (MultiInstance mi : asb.getMultiInstances()) {
+			BuilderElement bde = makeMultiInstanceBuilder(mi, target);
+			ret.add(bde);
+		}
+		
+		for (ForEach fe : asb.getForEachs()) {
+			BuilderElement bde = makeForEachBuilder(fe, target);
+			ret.add(bde);
+		}
+		
+		for (EventConnection ec : asb.getEventConnections()) {
+			BuilderElement bde = makeEventConnectionBuilder(ec, target);
+			ret.add(bde);
+		}
+		return ret;
+	}
+	
+	
 	
 	
 }

@@ -34,6 +34,10 @@ public interface IComponentType {
 	
 
 	String getFieldDimension(String rn);
- 
 
+
+	List<String> getReceivePortNames();
+ 
+	List<String> getSendPortNames();
+	
 }

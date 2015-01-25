@@ -9,9 +9,14 @@ import org.lemsml.jld.model.Constant;
 import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.Lems;
 import org.lemsml.jld.model.Unit;
-import org.lemsml.jld.model.core.AbstractTypeElement;
+import org.lemsml.jld.model.core.TargetTypeElement;
+import org.lemsml.jld.model.dynamics.AbstractDynamicsBlock;
 import org.lemsml.jld.model.dynamics.DerivedVariable;
 import org.lemsml.jld.model.dynamics.Dynamics;
+import org.lemsml.jld.model.dynamics.OnCondition;
+import org.lemsml.jld.model.dynamics.OnEvent;
+import org.lemsml.jld.model.dynamics.OnStart;
+import org.lemsml.jld.model.dynamics.StateAssignment;
 import org.lemsml.jld.model.dynamics.TimeDerivative;
 import org.lemsml.jld.model.type.Child;
 import org.lemsml.jld.model.type.Children;
@@ -97,7 +102,7 @@ public class LemsResolver {
 	}
 
 
-	private void resolveChildReference(AbstractTypeElement child) {
+	private void resolveChildReference(TargetTypeElement child) {
 		String typ = child.getType();
 		if (typ == null) {
 			E.error("Child " + child + " does not specify its ComponentType.");
@@ -180,8 +185,39 @@ public class LemsResolver {
 		for (TimeDerivative td : d.getTimeDerivatives()) {
 			parseTimeDerivativeExpression(td, ep);
 		}
+		
+		for (OnCondition oc : d.getOnConditions()) {
+			E.info("------------Parsing an OnCondition, test = " + oc.getTest());
+			 try {
+				 ParseTree pt = ep.parseCondition(oc.getTest());
+				 oc.setAST(pt);
+			 } catch (Exception ex) {
+				 E.error("Failed to parse " + oc.getTest());
+			 }
+			 parseDynamicsBlockExpressions(oc, ep);
+		}
+		
+		for (OnStart os : d.getOnStarts()) {
+			parseDynamicsBlockExpressions(os, ep);
+		}
+		
+		for (OnEvent oe : d.getOnEvents()) {
+			parseDynamicsBlockExpressions(oe, ep);
+		}
 	}
 
+	
+	private void parseDynamicsBlockExpressions(AbstractDynamicsBlock adb, ExpressionParser ep) {
+		for (StateAssignment sa : adb.getStateAssignments()) {
+			try {
+				ParseTree pt = ep.parseExpression(sa.getValue());
+				sa.setAST(pt);
+			} catch (Exception ex) {
+				E.error("Cant parse " + sa.getValue() + " " + ex);
+			}
+		}
+ 	}
+	
 
 
 	private void parseDerivedVariableExpressions(DerivedVariable dv,

@@ -7,9 +7,10 @@ public class ParameterValue {
 	
 	private double doubleValue;
 	
-	public ParameterValue(String sn, String sv) {
-		name = sn;
-		value = sv;
+	
+	public ParameterValue(String name, String value) {
+		this.name = name;
+		this.value = value;
 	}
  
 

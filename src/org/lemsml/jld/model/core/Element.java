@@ -2,21 +2,19 @@ package org.lemsml.jld.model.core;
 
 
 
-public class AbstractElement {
+public class Element {
  
 	protected String name;
 	
-	protected AbstractElement(String s) {
-		name = s;
+	protected Element(String name) {
+		this.name = name;
 		 
 	}
 	
-	 
 	
 	public String getName() {
 		return name;
 	}
-	
 	
 	
 	protected void checkFocus() throws ModelException {

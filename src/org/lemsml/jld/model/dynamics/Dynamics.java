@@ -7,12 +7,12 @@ import org.lemsml.jld.imodel.dynamics.IDerivedVariable;
 import org.lemsml.jld.imodel.dynamics.IDynamics;
 import org.lemsml.jld.imodel.dynamics.IStateVariable;
 import org.lemsml.jld.imodel.dynamics.ITimeDerivative;
-import org.lemsml.jld.model.core.AbstractTypeElement;
+import org.lemsml.jld.model.core.TypeElement;
 import org.lemsml.jld.model.core.ListMap;
 import org.lemsml.jld.model.core.Single;
 import org.lemsml.jld.model.type.ComponentType;
 
-public class Dynamics extends AbstractTypeElement implements IDynamics {
+public class Dynamics extends TypeElement implements IDynamics {
 
 	protected ListMap<StateVariable> stateVariableMap = new ListMap<StateVariable>();
 	
@@ -20,7 +20,7 @@ public class Dynamics extends AbstractTypeElement implements IDynamics {
 	
 	protected ListMap<TimeDerivative> timeDerivativeMap = new ListMap<TimeDerivative>();
 	
-	protected Single<OnStart> onStartSingle = new Single<OnStart>();
+	protected ListMap<OnStart> onStartMap = new ListMap<OnStart>();
 
 	protected ListMap<OnCondition> onConditionMap = new ListMap<OnCondition>();
 	
@@ -59,9 +59,9 @@ public class Dynamics extends AbstractTypeElement implements IDynamics {
 	}
 
 
-	public OnStart createOnStart() throws APIException {
+	public OnStart addOnStart(String eltname) throws APIException {
 		 OnStart os = new OnStart();
-		 onStartSingle.setValue(os);
+		 onStartMap.put(eltname, os);
 		 return os;
 	}
 
@@ -92,8 +92,8 @@ public class Dynamics extends AbstractTypeElement implements IDynamics {
 	}
 
 
-	public OnStart getOnStart() {
-		return onStartSingle.getItem();
+	public List<OnStart> getOnStarts() {
+		return onStartMap.getItems();
 	}
 
 

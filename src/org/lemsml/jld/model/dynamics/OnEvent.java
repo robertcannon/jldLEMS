@@ -16,5 +16,9 @@ public class OnEvent extends AbstractDynamicsBlock {
 
  	}
 
+	public String getPortName() {
+		return port;
+	}
+
 	
 }

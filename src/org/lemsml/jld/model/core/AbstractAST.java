@@ -2,6 +2,7 @@ package org.lemsml.jld.model.core;
 
 import java.util.HashMap;
 
+import org.lemsml.jld.eval.BooleanEvaluator;
 import org.lemsml.jld.eval.DoubleEvaluator;
 import org.lemsml.jld.exception.ExpressionError;
 import org.lemsml.jld.expression.Dim;
@@ -15,6 +16,8 @@ public abstract class AbstractAST {
 
 	public abstract DoubleEvaluator makeFloatFixedEvaluator(HashMap<String, Double> fixedHM) throws ExpressionError;
 	 
+	public abstract BooleanEvaluator makeBooleanFixedEvaluator(HashMap<String, Double> fixedHM) throws ExpressionError;
+	
 	 
  
 }

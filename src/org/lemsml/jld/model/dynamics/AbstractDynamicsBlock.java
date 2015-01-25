@@ -10,7 +10,9 @@ public class AbstractDynamicsBlock {
 
 	protected ListMap<EventOut> eventOutMap = new ListMap<EventOut>();
 	
+	protected ListMap<Transition> transitionMap = new ListMap<Transition>();
 	
+ 	
 	public AbstractDynamicsBlock() {
 		
 	}
@@ -35,6 +37,12 @@ public class AbstractDynamicsBlock {
 	public List<EventOut> getEventOuts() {
 		return eventOutMap.getItems();
 	}
+
+	
+	public List<Transition> getTransitions() {
+		return transitionMap.getItems();
+	}
+ 
 
 	
 }

@@ -1,5 +1,6 @@
 package org.lemsml.jld.model.type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lemsml.jld.api.APIException;
@@ -9,7 +10,7 @@ import org.lemsml.jld.imodel.simulation.ISimulation;
 import org.lemsml.jld.imodel.structure.IStructure;
 import org.lemsml.jld.model.Dimension;
 import org.lemsml.jld.model.Lems;
-import org.lemsml.jld.model.core.AbstractElement;
+import org.lemsml.jld.model.core.Element;
 import org.lemsml.jld.model.core.ListMap;
 import org.lemsml.jld.model.core.Single;
 import org.lemsml.jld.model.dynamics.Dynamics;
@@ -18,8 +19,9 @@ import org.lemsml.jld.model.simulation.Simulation;
 import org.lemsml.jld.model.simulation.SimulationBuilder;
 import org.lemsml.jld.model.structure.Structure;
 import org.lemsml.jld.model.structure.StructureBuilder;
+ 
 
-public class ComponentType extends AbstractElement implements IComponentType {
+public class ComponentType extends Element implements IComponentType {
  
 	protected String eXtends;
 		
@@ -272,16 +274,32 @@ public class ComponentType extends AbstractElement implements IComponentType {
 		this.eXtends = eXtends;
 	}
 
-
 	public List<ReceivePort> getReceivePorts() {
-		 return receivePortMap.getItems();
+		return receivePortMap.getItems();
 	}
+	
+
+	public List<String> getReceivePortNames() {
+		ArrayList<String> ret = new ArrayList<String>();
+		for (ReceivePort rp : receivePortMap.getItems()) {
+			ret.add(rp.getName());
+		}
+		return ret;
+ 	}
 
 	public List<SendPort> getSendPorts() {
 		return sendPortMap.getItems();
 	}
 
-
+	public List<String> getSendPortNames() {
+		ArrayList<String> ret = new ArrayList<String>();
+		for (SendPort rp : sendPortMap.getItems()) {
+ 			ret.add(rp.getName());
+		}
+		return ret;
+ 	}
+	
+	
 	public List<Fixed> getFixeds() {
 		return fixedMap.getItems();
 	}

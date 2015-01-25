@@ -17,8 +17,7 @@ public class RecorderCollector implements StateTypeVisitor {
 		ArrayList<RuntimeRecorder> a = cb.getRuntimeRecorders();
 		if (a != null && !a.isEmpty()) {
 			recorders.addAll(a);
-			E.info("XXXXXXXXXXXXXXXXX Added recorder " + a + " from " + cb);
-		}
+ 		}
 		
 	}
 

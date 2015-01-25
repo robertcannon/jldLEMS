@@ -8,6 +8,7 @@ import org.lemsml.jld.imodel.IComponent;
 import org.lemsml.jld.imodel.IComponentType;
 import org.lemsml.jld.io.E;
 import org.lemsml.jld.model.core.ListMap;
+import org.lemsml.jld.model.core.Quantity;
 import org.lemsml.jld.model.type.ComponentType;
 
 
@@ -184,11 +185,6 @@ public class Component implements IComponent {
 		return parameterValueMap.get(name);
 	}
 
-	
-	// TODO - lists of new objects here instead?
-	public HashMap<String, Component> getChildMap() {
-		return childHM;
-	}
 	
 	
 	public List<String> getChildNames() {

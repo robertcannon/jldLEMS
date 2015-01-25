@@ -1,20 +1,20 @@
 package org.lemsml.jld.model;
 
-import org.lemsml.jld.model.core.AbstractElement;
+import org.lemsml.jld.model.core.Element;
  
 
-public class Target extends AbstractElement {
+public class Target extends Element {
 
 	protected String component;
 	
 	private Component r_component;
 	
-	protected Target(String s) {
-		super(s);
+	protected Target(String name) {
+		super(name);
 	}
 	
-	public void setComponent(String s) {
-		component = s;
+	public void setComponent(String component) {
+		this.component = component;
 	}
 
 	public String getComponent() {

@@ -2,6 +2,8 @@ package org.lemsml.jld.hrun;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.lemsml.jld.io.E;
  
 public class Builder {
 
@@ -21,6 +23,8 @@ public class Builder {
 				AbstractPostBuilder pb = (AbstractPostBuilder)be;
 				pb.postBuild(si, siHM, bc);
 				
+			} else {
+				E.missing();
 			}
 		}
 	}

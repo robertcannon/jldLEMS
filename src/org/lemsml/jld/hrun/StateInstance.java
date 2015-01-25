@@ -383,7 +383,7 @@ public class StateInstance implements StateRunnable {
 		if (outPortHM == null) {
 			outPortHM = new HashMap<String, OutPort>();
 		}
-		outPortHM.put(s, op);
+ 		outPortHM.put(s, op);
 	}
 
 	public void sendFromPort(String sop) throws RuntimeError {

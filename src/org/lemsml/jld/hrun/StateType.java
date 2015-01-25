@@ -746,8 +746,7 @@ public class StateType implements RuntimeType {
 			if (!vHS.contains(s)) {
 				vars.add(s);
 				vHS.add(s);
-				E.info("ST vars added " + s);
-			}
+ 			}
 		}
 		for (PathDerivedVariable pdv : pathderiveds) {
 			String s = pdv.getVariableName();
@@ -876,7 +875,13 @@ public class StateType implements RuntimeType {
 		}
 	}
 	
-	 
+	public void addOutputPort(String name) {
+ 		if (outPorts.contains(name)) {
+			E.error("Already have a port called " + name);
+		} else {
+			outPorts.add(name);
+		}
+	}
 
 	public void addExposedVariable(String name, String dim) {
 		exposedNames.add(name);
