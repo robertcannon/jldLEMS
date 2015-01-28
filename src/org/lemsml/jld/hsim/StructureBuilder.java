@@ -30,15 +30,20 @@ public class StructureBuilder {
 		stateTypeBuilder = sb;
 	}
 	
+	 
+	// IStructure and IForEach are blocks that can contain other elements including blocks
+	// Here we make a tree of builders that corresponds to the Structure block in the XML
+	// each builder has a 'build' method implementing its logic which also calls any child builders
 	
-	
-	
-	
+	// the main distinction between the definitions and what goes in the StateType is that the 
+	// structure definitions contain the names of the fields in their ComponentType for each of the 
+	// properties. The builders that are created here are specific to a particular component, so for 
+	// each property we get the field name from the Structure element, look it up in the target
+	// component and put that in the builder.
 	
 	public Builder makeStructureBuilder(IStructure str, IComponent target) {
 		Builder b = new Builder();
 		
-	 	
 		List<BuilderElement> abe = makeChildBuilders(str, target);
 		for (BuilderElement be : abe) {
 			b.add(be);
@@ -47,10 +52,38 @@ public class StructureBuilder {
 		return b;
 	}
 
+	
+	
+
+	public ArrayList<BuilderElement> makeChildBuilders(IStructureBlock asb, IComponent target) {
+		ArrayList<BuilderElement> ret = new ArrayList<BuilderElement>();
+	
+		for (IMultiInstance mi : asb.getIMultiInstances()) {
+			BuilderElement bde = makeMultiInstanceBuilder(mi, target);
+			ret.add(bde);
+		}
+		
+		for (IForEach fe : asb.getIForEachs()) {
+			BuilderElement bde = makeForEachBuilder(fe, target);
+			ret.add(bde);
+		}
+		
+		for (IEventConnection ec : asb.getIEventConnections()) {
+			BuilderElement bde = makeEventConnectionBuilder(ec, target);
+			ret.add(bde);
+		}
+		return ret;
+	}
+	
+	
+	
+	
 	private BuilderElement makeMultiInstanceBuilder(IMultiInstance mi, IComponent target) {
 		MultiBuilder mb = null;
 		
 		StateType cb = null;
+		// mi.getComponent returns the name of the field in the ComponentType that is set 
+		// to the target component in the model
 		if (target != null) {
 			IComponent c = target.getIChild(mi.getComponent());
 			if (c != null) {
@@ -59,6 +92,7 @@ public class StructureBuilder {
 		}
 		if (cb == null) {
 			IComponent c = stateTypeBuilder.getIComponent(mi.getComponent());
+			cb = stateTypeBuilder.getOrMakeStateType(c);
 		}
 		if (cb == null) {
 			E.error("Can't locate component in multibuilder: " + mi.getComponent());
@@ -96,8 +130,6 @@ public class StructureBuilder {
 
         //E.info("makeBuilder on "+cpt+" from: "+from+" ("+sourcePort+"), to: "+to+" ("+targetPort+") -> "+ receiver +", assigns: "+assigns);
 		EventConnectionBuilder ret = new EventConnectionBuilder(ec.getFrom(), ec.getTo());
-	
-		E.info("********* makung ec builkder");
 		
 		String sourcePort = ec.getSourcePort();
 		
@@ -174,6 +206,8 @@ public class StructureBuilder {
 			// E.info("ForEeach instances value in builder: " + insval);
 			
 			String as = fe.getAs();
+			// the ForEach builder will look up each of the instances targeted by the instances
+			// path and run the child builders on them
 			ret = new ForEachBuilder(insval, as);
 			
 			ArrayList<BuilderElement> abe = makeChildBuilders(fe, cpt);
@@ -186,26 +220,6 @@ public class StructureBuilder {
 			return ret;
 	}
 	
-	
-	public ArrayList<BuilderElement> makeChildBuilders(IStructureBlock asb, IComponent target) {
-		ArrayList<BuilderElement> ret = new ArrayList<BuilderElement>();
-	
-		for (IMultiInstance mi : asb.getIMultiInstances()) {
-			BuilderElement bde = makeMultiInstanceBuilder(mi, target);
-			ret.add(bde);
-		}
-		
-		for (IForEach fe : asb.getIForEachs()) {
-			BuilderElement bde = makeForEachBuilder(fe, target);
-			ret.add(bde);
-		}
-		
-		for (IEventConnection ec : asb.getIEventConnections()) {
-			BuilderElement bde = makeEventConnectionBuilder(ec, target);
-			ret.add(bde);
-		}
-		return ret;
-	}
 	
 	
 	
