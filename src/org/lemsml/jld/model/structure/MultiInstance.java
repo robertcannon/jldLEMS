@@ -1,6 +1,8 @@
 package org.lemsml.jld.model.structure;
 
-public class MultiInstance extends AbstractStructureElement {
+import org.lemsml.jld.imodel.structure.IMultiInstance;
+
+public class MultiInstance extends AbstractStructureElement implements IMultiInstance {
 
 	protected String number;
 	protected String component;

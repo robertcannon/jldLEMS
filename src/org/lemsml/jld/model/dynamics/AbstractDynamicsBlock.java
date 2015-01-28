@@ -2,9 +2,13 @@ package org.lemsml.jld.model.dynamics;
 
 import java.util.List;
 
+import org.lemsml.jld.imodel.dynamics.IEventOut;
+import org.lemsml.jld.imodel.dynamics.IOn;
+import org.lemsml.jld.imodel.dynamics.IStateAssignment;
+import org.lemsml.jld.imodel.dynamics.ITransition;
 import org.lemsml.jld.model.core.ListMap;
 
-public class AbstractDynamicsBlock {
+public class AbstractDynamicsBlock implements IOn {
 	
 	protected ListMap<StateAssignment> stateAssignmentMap = new ListMap<StateAssignment>();
 
@@ -42,8 +46,23 @@ public class AbstractDynamicsBlock {
 	public List<Transition> getTransitions() {
 		return transitionMap.getItems();
 	}
- 
+	
+	
+	@Override
+	public List<? extends IStateAssignment> getIStateAssignments() {
+		 return getStateAssignments();
+	}
 
+	@Override
+	public List<? extends IEventOut> getIEventOuts() {
+		return getEventOuts();
+	}
+
+	@Override
+	public List<? extends ITransition> getITransitions() {
+		 return getTransitions();
+	}
+	 
 	
 }
 

@@ -1,8 +1,9 @@
 package org.lemsml.jld.model.dynamics;
  
+import org.lemsml.jld.imodel.dynamics.IStateAssignment;
 import org.lemsml.jld.model.core.AbstractAST;
 
-public class StateAssignment extends AbstractDynamicsBlockElement {
+public class StateAssignment extends AbstractDynamicsBlockElement implements IStateAssignment {
 
 	protected String value;
 	protected String variable;

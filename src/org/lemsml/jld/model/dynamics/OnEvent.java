@@ -1,6 +1,13 @@
 package org.lemsml.jld.model.dynamics;
 
-public class OnEvent extends AbstractDynamicsBlock {
+import java.util.List;
+
+import org.lemsml.jld.imodel.dynamics.IEventOut;
+import org.lemsml.jld.imodel.dynamics.IOnEvent;
+import org.lemsml.jld.imodel.dynamics.IStateAssignment;
+import org.lemsml.jld.imodel.dynamics.ITransition;
+
+public class OnEvent extends AbstractDynamicsBlock implements IOnEvent {
 
 	protected String port;
 	
@@ -19,6 +26,8 @@ public class OnEvent extends AbstractDynamicsBlock {
 	public String getPortName() {
 		return port;
 	}
+
+	
 
 	
 }

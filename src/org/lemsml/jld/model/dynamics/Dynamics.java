@@ -5,6 +5,9 @@ import java.util.List;
 import org.lemsml.jld.api.APIException;
 import org.lemsml.jld.imodel.dynamics.IDerivedVariable;
 import org.lemsml.jld.imodel.dynamics.IDynamics;
+import org.lemsml.jld.imodel.dynamics.IOnCondition;
+import org.lemsml.jld.imodel.dynamics.IOnEvent;
+import org.lemsml.jld.imodel.dynamics.IOnStart;
 import org.lemsml.jld.imodel.dynamics.IStateVariable;
 import org.lemsml.jld.imodel.dynamics.ITimeDerivative;
 import org.lemsml.jld.model.core.TypeElement;
@@ -90,9 +93,17 @@ public class Dynamics extends TypeElement implements IDynamics {
 	 public List<OnCondition> getOnConditions() {
 		return onConditionMap.getItems();
 	}
-
+	 
+	 public List<? extends IOnCondition> getIOnConditions() {
+		 return onConditionMap.getItems();
+	 }
 
 	public List<OnStart> getOnStarts() {
+		return onStartMap.getItems();
+	}
+
+	
+	public List<? extends IOnStart> getIOnStarts() {
 		return onStartMap.getItems();
 	}
 
@@ -116,6 +127,10 @@ public class Dynamics extends TypeElement implements IDynamics {
 	
 	
 	public List<OnEvent> getOnEvents() {
+		return onEventMap.getItems();
+	}
+	
+	public List<? extends IOnEvent> getIOnEvents() {
 		return onEventMap.getItems();
 	}
 

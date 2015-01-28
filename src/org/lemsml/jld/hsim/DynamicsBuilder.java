@@ -13,18 +13,21 @@ import org.lemsml.jld.hrun.RuntimeError;
 import org.lemsml.jld.hrun.StateType;
 import org.lemsml.jld.imodel.dynamics.IDerivedVariable;
 import org.lemsml.jld.imodel.dynamics.IDynamics;
+import org.lemsml.jld.imodel.dynamics.IEventOut;
+import org.lemsml.jld.imodel.dynamics.IOn;
+import org.lemsml.jld.imodel.dynamics.IOnCondition;
+import org.lemsml.jld.imodel.dynamics.IOnEvent;
+import org.lemsml.jld.imodel.dynamics.IOnStart;
+import org.lemsml.jld.imodel.dynamics.IStateAssignment;
 import org.lemsml.jld.imodel.dynamics.IStateVariable;
 import org.lemsml.jld.imodel.dynamics.ITimeDerivative;
+import org.lemsml.jld.imodel.dynamics.ITransition;
 import org.lemsml.jld.io.E;
-import org.lemsml.jld.model.core.AbstractAST;
-import org.lemsml.jld.model.dynamics.AbstractDynamicsBlock;
-import org.lemsml.jld.model.dynamics.Dynamics;
-import org.lemsml.jld.model.dynamics.EventOut;
-import org.lemsml.jld.model.dynamics.OnCondition;
-import org.lemsml.jld.model.dynamics.OnEvent;
-import org.lemsml.jld.model.dynamics.OnStart;
-import org.lemsml.jld.model.dynamics.StateAssignment;
-import org.lemsml.jld.model.dynamics.Transition;
+
+
+import org.lemsml.jld.model.core.AbstractAST; 
+
+
 
 public class DynamicsBuilder {
 
@@ -133,14 +136,13 @@ public class DynamicsBuilder {
 		 
 		 
 		 // TODO tmp
-		 Dynamics rdynamics = (Dynamics)dynamics;
-		 
-		 for (OnStart os : rdynamics.getOnStarts()) {
+		 	 
+		 for (IOnStart os : dynamics.getIOnStarts()) {
 			 ActionBlock ea = makeEventAction(os, fixedHM);
 			 ret.addInitialization(ea);
 		 }
 		 
-		 for (OnEvent oe : rdynamics.getOnEvents()) {
+		 for (IOnEvent oe : dynamics.getIOnEvents()) {
 			 EventAction er = new EventAction(oe.getPortName());	 
 			 ActionBlock ea = makeEventAction(oe, fixedHM);
 			 er.setAction(ea);
@@ -148,7 +150,7 @@ public class DynamicsBuilder {
 		 }
 		 
 		 
-		 for (OnCondition oc : rdynamics.getOnConditions()) {
+		 for (IOnCondition oc : dynamics.getIOnConditions()) {
 		
 			 AbstractAST pt = oc.getAST();
 			 if (pt == null) {
@@ -217,11 +219,11 @@ public class DynamicsBuilder {
 	}
 
 	
-	 private ActionBlock makeEventAction(AbstractDynamicsBlock pr, HashMap<String, Double> fixedHM) {
+	 private ActionBlock makeEventAction(IOn pr, HashMap<String, Double> fixedHM) {
 		 ActionBlock ret = new ActionBlock();
 		 
 		
-		 for (StateAssignment sa : pr.getStateAssignments()) {
+		 for (IStateAssignment sa : pr.getIStateAssignments()) {
 			 AbstractAST ast = sa.getAST();
 			 try {
 			 DoubleEvaluator dase = ast.makeFloatFixedEvaluator(fixedHM); 
@@ -241,11 +243,11 @@ public class DynamicsBuilder {
 		 */
 		 
 		 
-		 for (EventOut eout : pr.getEventOuts()) {
+		 for (IEventOut eout : pr.getIEventOuts()) {
 			 ret.addEventOut(eout.getPort());
 		 }
 		 
-		 for (Transition t : pr.getTransitions()) {
+		 for (ITransition t : pr.getITransitions()) {
 			E.missing();
 			 //  ret.addTransition(t.getRegime());
 		 }

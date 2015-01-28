@@ -1,6 +1,8 @@
 package org.lemsml.jld.model.structure;
 
-public class EventConnection extends AbstractStructureElement {
+import org.lemsml.jld.imodel.structure.IEventConnection;
+
+public class EventConnection extends AbstractStructureElement implements IEventConnection {
 
 	protected String from;
 	protected String to;

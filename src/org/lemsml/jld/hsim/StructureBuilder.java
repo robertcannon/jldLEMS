@@ -10,15 +10,17 @@ import org.lemsml.jld.hrun.ForEachBuilder;
 import org.lemsml.jld.hrun.MultiBuilder;
 import org.lemsml.jld.hrun.RuntimeError;
 import org.lemsml.jld.hrun.StateType;
+
 import org.lemsml.jld.imodel.IComponent;
+import org.lemsml.jld.imodel.structure.IEventConnection;
+import org.lemsml.jld.imodel.structure.IForEach;
+import org.lemsml.jld.imodel.structure.IMultiInstance;
 import org.lemsml.jld.imodel.structure.IStructure;
+import org.lemsml.jld.imodel.structure.IStructureBlock;
 import org.lemsml.jld.io.E;
-import org.lemsml.jld.model.structure.AbstractStructureBlock;
-import org.lemsml.jld.model.structure.EventConnection;
-import org.lemsml.jld.model.structure.ForEach;
-import org.lemsml.jld.model.structure.MultiInstance;
-import org.lemsml.jld.model.structure.Structure;
+
 import org.lemsml.jld.path.PathEvaluator;
+
 
 public class StructureBuilder {
 
@@ -33,11 +35,10 @@ public class StructureBuilder {
 	
 	
 	
-	public Builder makeStructureBuilder(IStructure astr, IComponent target) {
+	public Builder makeStructureBuilder(IStructure str, IComponent target) {
 		Builder b = new Builder();
 		
-		Structure str = (Structure)astr;
-		
+	 	
 		List<BuilderElement> abe = makeChildBuilders(str, target);
 		for (BuilderElement be : abe) {
 			b.add(be);
@@ -46,7 +47,7 @@ public class StructureBuilder {
 		return b;
 	}
 
-	private BuilderElement makeMultiInstanceBuilder(MultiInstance mi, IComponent target) {
+	private BuilderElement makeMultiInstanceBuilder(IMultiInstance mi, IComponent target) {
 		MultiBuilder mb = null;
 		
 		StateType cb = null;
@@ -91,7 +92,7 @@ public class StructureBuilder {
 	
 	
 	
-	public BuilderElement makeEventConnectionBuilder(EventConnection ec, IComponent cpt) {
+	public BuilderElement makeEventConnectionBuilder(IEventConnection ec, IComponent cpt) {
 
         //E.info("makeBuilder on "+cpt+" from: "+from+" ("+sourcePort+"), to: "+to+" ("+targetPort+") -> "+ receiver +", assigns: "+assigns);
 		EventConnectionBuilder ret = new EventConnectionBuilder(ec.getFrom(), ec.getTo());
@@ -160,7 +161,7 @@ public class StructureBuilder {
 	}
 	
 	
-	public BuilderElement makeForEachBuilder(ForEach fe, IComponent cpt) {
+	public BuilderElement makeForEachBuilder(IForEach fe, IComponent cpt) {
 			BuilderElement ret = null;
 		
 	     //E.info("ForEach makeBuilder on: " + cpt+", instances: "+instances+", as: "+ as);
@@ -186,20 +187,20 @@ public class StructureBuilder {
 	}
 	
 	
-	public ArrayList<BuilderElement> makeChildBuilders(AbstractStructureBlock asb, IComponent target) {
+	public ArrayList<BuilderElement> makeChildBuilders(IStructureBlock asb, IComponent target) {
 		ArrayList<BuilderElement> ret = new ArrayList<BuilderElement>();
 	
-		for (MultiInstance mi : asb.getMultiInstances()) {
+		for (IMultiInstance mi : asb.getIMultiInstances()) {
 			BuilderElement bde = makeMultiInstanceBuilder(mi, target);
 			ret.add(bde);
 		}
 		
-		for (ForEach fe : asb.getForEachs()) {
+		for (IForEach fe : asb.getIForEachs()) {
 			BuilderElement bde = makeForEachBuilder(fe, target);
 			ret.add(bde);
 		}
 		
-		for (EventConnection ec : asb.getEventConnections()) {
+		for (IEventConnection ec : asb.getIEventConnections()) {
 			BuilderElement bde = makeEventConnectionBuilder(ec, target);
 			ret.add(bde);
 		}

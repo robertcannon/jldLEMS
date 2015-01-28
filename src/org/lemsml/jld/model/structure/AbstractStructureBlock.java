@@ -2,9 +2,13 @@ package org.lemsml.jld.model.structure;
 
 import java.util.List;
 
+import org.lemsml.jld.imodel.structure.IEventConnection;
+import org.lemsml.jld.imodel.structure.IForEach;
+import org.lemsml.jld.imodel.structure.IMultiInstance;
+import org.lemsml.jld.imodel.structure.IStructureBlock;
 import org.lemsml.jld.model.core.ListMap;
 
-public class AbstractStructureBlock {
+public class AbstractStructureBlock implements IStructureBlock {
 	
 	AbstractStructureBlock parent;
 	
@@ -49,6 +53,24 @@ public class AbstractStructureBlock {
 
 	public List<EventConnection> getEventConnections() {
 		return eventConnectionMap.getItems();
+	}
+
+
+	@Override
+	public List<? extends IMultiInstance> getIMultiInstances() {
+		return getMultiInstances();
+	}
+
+
+	@Override
+	public List<? extends IEventConnection> getIEventConnections() {
+		return getEventConnections();
+	}
+
+
+	@Override
+	public List<? extends IForEach> getIForEachs() {
+		return getForEachs();
 	}
 	
 	

@@ -1,6 +1,8 @@
 package org.lemsml.jld.model.dynamics;
 
-public class EventOut extends AbstractDynamicsBlockElement {
+import org.lemsml.jld.imodel.dynamics.IEventOut;
+
+public class EventOut extends AbstractDynamicsBlockElement implements IEventOut {
 
 	protected String port;
 	

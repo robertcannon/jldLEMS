@@ -10,4 +10,10 @@ public interface IDynamics {
 
 	List<? extends ITimeDerivative> getITimeDerivatives();
 
+	List<? extends IOnStart> getIOnStarts();
+
+	List<? extends IOnEvent> getIOnEvents();
+	
+	List<? extends IOnCondition> getIOnConditions();
+	
 }

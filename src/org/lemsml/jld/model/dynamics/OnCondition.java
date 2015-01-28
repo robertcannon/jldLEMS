@@ -1,9 +1,10 @@
 package org.lemsml.jld.model.dynamics;
 
+import org.lemsml.jld.imodel.dynamics.IOnCondition;
 import org.lemsml.jld.model.core.AbstractAST;
 
 
-public class OnCondition extends AbstractDynamicsBlock {
+public class OnCondition extends AbstractDynamicsBlock implements IOnCondition {
 
 	
 	protected String test;

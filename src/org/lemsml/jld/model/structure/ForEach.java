@@ -1,6 +1,8 @@
 package org.lemsml.jld.model.structure;
 
-public class ForEach extends AbstractStructureBlock {
+import org.lemsml.jld.imodel.structure.IForEach;
+
+public class ForEach extends AbstractStructureBlock implements IForEach {
  	
 	protected String instances;
 	protected String as;

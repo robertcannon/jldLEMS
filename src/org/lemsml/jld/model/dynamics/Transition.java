@@ -1,5 +1,7 @@
 package org.lemsml.jld.model.dynamics;
 
-public class Transition {
+import org.lemsml.jld.imodel.dynamics.ITransition;
+
+public class Transition implements ITransition {
 
 }
