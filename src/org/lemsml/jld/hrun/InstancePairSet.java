@@ -2,7 +2,8 @@ package org.lemsml.jld.hrun;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jld.io.E;
+ 
 
 public class InstancePairSet<T> {
 

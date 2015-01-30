@@ -1,6 +1,5 @@
 package org.lemsml.jld.io.xml;
 
-import org.lemsml.jlems.core.type.Attribute;
  
 public class XMLAttribute implements Attribute {
 

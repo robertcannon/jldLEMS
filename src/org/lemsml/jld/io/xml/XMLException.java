@@ -1,6 +1,7 @@
 package org.lemsml.jld.io.xml;
 
-import org.lemsml.jlems.core.sim.LEMSException;
+import org.lemsml.jld.exception.LEMSException;
+
 
 public class XMLException extends LEMSException {
  

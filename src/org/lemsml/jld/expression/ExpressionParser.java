@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.lemsml.jlems.core.logging.E;
-
+import org.lemsml.jld.io.E;
+ 
 public class ExpressionParser {
 	
 	static String[] sf = {"sin", "cos", "tan", "exp", "sqrt", "sum", "product", "ln", "log", "random"};

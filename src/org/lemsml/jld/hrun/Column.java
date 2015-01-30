@@ -1,6 +1,5 @@
 package org.lemsml.jld.hrun;
-
-import org.lemsml.jlems.core.logging.E;
+ 
  
 public final class Column {
 
@@ -112,7 +111,6 @@ public final class Column {
        }
     }
     sb.append(")");
-    E.info("column: " + sb.toString());
    }
 
    public void positivize() {

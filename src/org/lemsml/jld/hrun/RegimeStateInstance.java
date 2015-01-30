@@ -3,9 +3,9 @@ package org.lemsml.jld.hrun;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lemsml.jld.display.LineDisplay;
 import org.lemsml.jld.eval.DoublePointer;
-import org.lemsml.jlems.core.display.LineDisplay;
-import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jld.io.E;
  
 
 public class RegimeStateInstance {

@@ -1,7 +1,8 @@
 package org.lemsml.jld.expression;
 
+import org.lemsml.jld.io.E;
 import org.lemsml.jld.model.Dimension;
-import org.lemsml.jlems.core.logging.E;
+ 
 
 public class Dim {
 

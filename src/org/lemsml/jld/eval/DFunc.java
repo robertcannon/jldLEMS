@@ -3,9 +3,9 @@ package org.lemsml.jld.eval;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.type.Lems;
-
+import org.lemsml.jld.io.E;
+import org.lemsml.jld.model.Lems;
+ 
 
 public class DFunc extends AbstractDVal {
 	
@@ -64,7 +64,9 @@ public class DFunc extends AbstractDVal {
 			ret = Math.sqrt(aval);
 		
 		} else if (fname.equals("random")) {
-			ret = aval * Lems.getRandomGenerator().nextDouble();
+			// TODO
+			ret = Math.random();
+			//			ret = aval * Lems.getRandomGenerator().nextDouble();
 		} else {
 			E.missing();
 		}

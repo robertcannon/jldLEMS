@@ -23,8 +23,8 @@ import java.util.jar.Manifest;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jld.exception.LEMSException;
+import org.lemsml.jld.io.E;
  
 
 
@@ -273,7 +273,7 @@ public final class FileUtil {
 	   }
 
 
-   public static String getRelativeDirectory(File ftgt, File rtFolder) throws ContentError {
+   public static String getRelativeDirectory(File ftgt, File rtFolder) throws LEMSException {
       File fpar = ftgt.getParentFile();
       int ns = 0;
 
@@ -289,7 +289,7 @@ public final class FileUtil {
 
          ns += 1;
          if (ns > 8) {
-            throw new ContentError("too many steps trying to get relative files ? " + ftgt.getAbsolutePath() + " "
+            throw new LEMSException("too many steps trying to get relative files ? " + ftgt.getAbsolutePath() + " "
                   + rtFolder.getAbsolutePath());
           
          }

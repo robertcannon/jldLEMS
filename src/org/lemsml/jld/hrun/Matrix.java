@@ -1,7 +1,8 @@
 package org.lemsml.jld.hrun;
 
 import org.lemsml.jld.exception.MatrixException;
-import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jld.io.E;
+ 
  
 
 public final class Matrix extends Object implements Cloneable {
