@@ -21,12 +21,12 @@ import org.lemsml.jld.display.DataViewer;
 import org.lemsml.jld.io.E;
 import org.lemsml.jld.io.FormattedDataUtil;
 import org.lemsml.jld.io.reader.FileUtil;
-
-import org.lemsml.jlems.viz.plot.DataDisplay;
-import org.lemsml.jlems.viz.plot.DisplayList;
-import org.lemsml.jlems.viz.plot.DisplayListPainter;
-import org.lemsml.jlems.viz.plot.PaintInstructor;
-import org.lemsml.jlems.viz.plot.WorldCanvas;
+import org.lemsml.jld.plot.DataDisplay;
+import org.lemsml.jld.plot.DisplayList;
+import org.lemsml.jld.plot.DisplayListPainter;
+import org.lemsml.jld.plot.PaintInstructor;
+import org.lemsml.jld.plot.WorldCanvas;
+ 
 
 public final class StandaloneViewer implements ActionListener, DataViewer, DataViewPort {
 	JFrame frame;
@@ -113,7 +113,7 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	
 	private File fpref() {
 		File fu = new File(System.getProperty("user.home"));
-		File fjl = new File(fu, ".jlems");
+		File fjl = new File(fu, ".jld");
 		return fjl;
 	}
 	
