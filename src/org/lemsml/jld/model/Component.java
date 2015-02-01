@@ -214,8 +214,14 @@ public class Component implements IComponent {
 		return getChild(s);
 	}
 	
-	public List<? extends IComponent> getIChildren(String s) {
+
+	public List<Component> getChildren(String s) {
 		return childrenHM.get(s);
+	}
+	
+	
+	public List<? extends IComponent> getIChildren(String s) {
+		return getChildren(s);
 	}
 	
 	

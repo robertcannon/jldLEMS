@@ -107,6 +107,12 @@ public class ComponentType extends Element implements IComponentType {
 		return p;
 	}
 
+
+	public void removeRequirement(String name) {
+		requirementMap.remove(name);
+	}
+	
+	
 	public Requirement addRequirement(String s, Dimension d) {
 		Requirement ret = addRequirement(s);
 		ret.setDimension(d);
@@ -418,7 +424,9 @@ public class ComponentType extends Element implements IComponentType {
 		return ret;
 	}
 
-	
+	public Requirement getRequirement(String nm) {
+		return requirementMap.get(nm);
+	}
 
 	public Exposure getExposure(String expo) {
 		return exposureMap.get(expo);
@@ -488,4 +496,6 @@ public class ComponentType extends Element implements IComponentType {
 	public IStructure getIStructure() {
 		return getStructure();
 	}
+
+
 }

@@ -64,6 +64,15 @@ public class ListMap<T> {
 		return ret;
 	}
 
+
+	public void remove(String name) {
+		if (map.containsKey(name)) {
+			T t = map.get(name);
+			items.remove(t);
+			map.remove(name);
+		}
+	}
+
  
 	
 	
